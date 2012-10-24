@@ -1,9 +1,14 @@
-# Build and Release Folders
-bin-debug/
-bin-release/
-
 # Project property files
 .actionScriptProperties
 .flexProperties
 .settings/
 .project
+
+# Flash Develop AS3
+*.p12
+*.swf
+*.mobileprovision
+*.apk
+*.ipa
+*.tmp
+*.DS_Store

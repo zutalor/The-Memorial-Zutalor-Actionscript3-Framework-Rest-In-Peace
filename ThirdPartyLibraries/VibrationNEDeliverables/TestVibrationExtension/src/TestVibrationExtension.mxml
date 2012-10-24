@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" applicationComplete="application1_applicationCompleteHandler(event)">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.adobe.nativeExtensions.Vibration;
+			
+			import mx.events.FlexEvent;
+			protected function vibrateDeviceBtn_clickHandler(event:MouseEvent):void
+			{
+				if(Vibration.isSupported)
+				{
+					var vb:Vibration=new Vibration();
+					vb.vibrate(2000);
+				}
+			}
+			
+			protected function application1_applicationCompleteHandler(event:FlexEvent):void
+			{
+				vibrationSupportedLabel.text="Vibration Supported : "+ Vibration.isSupported;
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+	<s:Label id="vibrationSupportedLabel" />
+	<s:Button id="vibrateDeviceBtn" label="Click to Vibrate" click="vibrateDeviceBtn_clickHandler(event)"/>
+</s:Application>

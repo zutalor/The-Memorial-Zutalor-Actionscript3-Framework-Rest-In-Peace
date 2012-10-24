@@ -1,0 +1,262 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../../print.css" type="text/css" media="print">
+<meta content="RSS10Metadata,com.adobe.xml.syndication.generic.RSS10Metadata,title,authors,link,rights,image,date,description" name="keywords">
+<title></title>
+</head>
+<body class="MainContent">
+<script type="text/javascript" language="javascript" src="../../../../../asdoc.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'RSS10Metadata - XML Syndication Libraries';
+				window.onload = configPage;
+			--></script>
+<div class="pageTop"></div>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td style="padding-left:5px" width="64" valign="left"><img title="Macromedia Logo" alt="Macromedia Logo" border="0" src="../../../../../images/mm-icon.jpg"></td><td valign="middle" align="center">
+<h1 style="font-size:20px">XML Syndication Libraries</h1>
+</td>
+</tr>
+<tr>
+<td height="5px" colspan="2"></td>
+</tr>
+</table>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell1"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;| <a href="../../../../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../../../../index.html?com/adobe/xml/syndication/generic/RSS10Metadata.html&amp;./com/adobe/xml/syndication/generic/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></span>
+</div>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#propertySummary">Properties</a>&nbsp;| <a href="#constructorSummary">Constructor</a></span>
+</div>com.adobe.xml.syndication.generic<h1>Class RSS10Metadata</h1>
+<p></p>
+<pre>
+<script type="text/javascript">var tabCount=3;</script><script type="text/javascript">var showInheritance = false;</script><script type="text/javascript">if (showInheritance) { for (var cnt=0; cnt < tabCount; cnt++)document.write(" ");document.write("<img src='../../../../../images/inherit-arrow.jpg' />");document.write(" ");};</script><script type="text/javascript">document.writeln("com.adobe.xml.syndication.generic.RSS10Metadata");</script>
+</pre>
+<br>
+<a name="implements"></a><b>All implemented interfaces</b>
+<table>
+<tr>
+<td width="25px"></td><td><a href="../generic/IMetadata.html">IMetadata</a></td>
+</tr>
+</table>
+<hr>
+<p></p>public class <b>RSS10Metadata</b>
+<p></p>
+  Class that abstracts out the specific characteristics of an RSS 1.0 feed
+  into generic metadata. In this case, metadata refers to any data not
+  contained in an item (in other words, data about the feed itself).
+  You create an instance using an RSS10 object, then you can access it
+  in a generic way.
+  
+  <p></p>
+<hr>
+<br>
+<br>
+<a name="propertySummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Property Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#authors"><b>authors</b></a>:Array</code>&nbsp;&nbsp;[read-only]<br>
+   An array of authors.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#date"><b>date</b></a>:Date</code>&nbsp;&nbsp;[read-only]<br>
+   The date this feed was last published.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#description"><b>description</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   A description of this feed.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#image"><b>image</b></a>:<a href="../generic/Image.html">Image</a></code>&nbsp;&nbsp;[read-only]<br>
+   An image associated with this feed.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#link"><b>link</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   This feed's link.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#rights"><b>rights</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   Who ownes the rights to this feed.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#title"><b>title</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   This feed's title.</td>
+</tr>
+</table>
+<br>
+<br>
+<a name="constructorSummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Constructor Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"></td><td align="left" valign="top"><code><a href="#RSS10Metadata()"><b>RSS10Metadata</b></a>(rss10:<a href="../rss/RSS10.html">RSS10</a>)</code>
+<br>
+   Create a new RSS10Metadata instance.</td>
+</tr>
+</table>
+<br>
+<br>
+<a name="propertyDetail"></a>
+<table class="withBorder" width="100%" cellpadding="2" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Property Detail</b></font></td>
+</tr>
+</table>
+<a name="authors"></a>
+<p></p>
+<h2>authors Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;authors</code><code>:Array</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get authors() : Array</code>
+<br>
+<br>
+   An array of authors.
+      <hr>
+<a name="date"></a>
+<p></p>
+<h2>date Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;date</code><code>:Date</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get date() : Date</code>
+<br>
+<br>
+   The date this feed was last published.
+      <hr>
+<a name="description"></a>
+<p></p>
+<h2>description Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;description</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get description() : String</code>
+<br>
+<br>
+   A description of this feed.
+      <hr>
+<a name="image"></a>
+<p></p>
+<h2>image Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;image</code><code>:<a href="../generic/Image.html">Image</a></code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get image() : <a href="../generic/Image.html">Image</a></code>
+<br>
+<br>
+   An image associated with this feed.
+      <hr>
+<a name="link"></a>
+<p></p>
+<h2>link Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;link</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get link() : String</code>
+<br>
+<br>
+   This feed's link.
+      <hr>
+<a name="rights"></a>
+<p></p>
+<h2>rights Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;rights</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get rights() : String</code>
+<br>
+<br>
+   Who ownes the rights to this feed.
+      <hr>
+<a name="title"></a>
+<p></p>
+<h2>title Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;title</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get title() : String</code>
+<br>
+<br>
+   This feed's title.
+      <br>
+<br>
+<a name="constructorDetail"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Constructor Detail</b></font></td>
+</tr>
+</table>
+<p></p>
+<h2>RSS10Metadata Constructor<a name="RSS10Metadata()"></a>
+</h2>
+<p></p>
+<p>
+<code>public function <b>RSS10Metadata</b>(rss10:<a href="../rss/RSS10.html">RSS10</a>)</code>
+</p>
+   Create a new RSS10Metadata instance.
+      <p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>rss10</b>:<a href="../rss/RSS10.html">RSS10</a></code> &mdash; An RSS10 object.
+   
+   </td>
+</tr>
+</table>
+<br>
+<br>
+<hr>
+<br>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#propertySummary">Properties</a>&nbsp;| <a href="#constructorSummary">Constructor</a></span>
+</div>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell2"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;| <a href="../../../../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../../../../index.html?com/adobe/xml/syndication/generic/RSS10Metadata.html&amp;./com/adobe/xml/syndication/generic/class-list.html" id="framesLink2">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink2">No&nbsp;Frames</a></span>
+</div>
+<p></p>
+<center class="copyright">Copyright &copy; 2005 Macromedia Inc. All rights reserved.<br>Mon May 8 2006, 15:56 PDT</center>
+</body>
+</html>
+<!--Copyright &copy; 2005 Macromedia Inc. All rights reserved.Mon May 8 2006, 15:56 PDT-->

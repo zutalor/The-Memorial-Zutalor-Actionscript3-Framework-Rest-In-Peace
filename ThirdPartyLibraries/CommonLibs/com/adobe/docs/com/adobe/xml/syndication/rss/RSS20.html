@@ -1,0 +1,210 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../../print.css" type="text/css" media="print">
+<meta content="RSS20,com.adobe.xml.syndication.rss.RSS20,channel,image,items" name="keywords">
+<title></title>
+</head>
+<body class="MainContent">
+<script type="text/javascript" language="javascript" src="../../../../../asdoc.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'RSS20 - XML Syndication Libraries';
+				window.onload = configPage;
+			--></script>
+<div class="pageTop"></div>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td style="padding-left:5px" width="64" valign="left"><img title="Macromedia Logo" alt="Macromedia Logo" border="0" src="../../../../../images/mm-icon.jpg"></td><td valign="middle" align="center">
+<h1 style="font-size:20px">XML Syndication Libraries</h1>
+</td>
+</tr>
+<tr>
+<td height="5px" colspan="2"></td>
+</tr>
+</table>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell1"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;| <a href="../../../../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../../../../index.html?com/adobe/xml/syndication/rss/RSS20.html&amp;./com/adobe/xml/syndication/rss/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></span>
+</div>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#propertySummary">Properties</a>&nbsp;| <a href="#constructorSummary">Constructor</a>&nbsp;| <a href="#methodSummary">Methods</a></span>
+</div>com.adobe.xml.syndication.rss<h1>Class RSS20</h1>
+<p></p>
+<pre>
+<script type="text/javascript">var tabCount=3;</script><a href="../../syndication/NewsParser.html">com.adobe.xml.syndication.NewsParser</a><script type="text/javascript">document.writeln();</script><script type="text/javascript">var showInheritance = true;</script><script type="text/javascript">if (showInheritance) { for (var cnt=0; cnt < tabCount; cnt++)document.write(" ");document.write("<img src='../../../../../images/inherit-arrow.jpg' />");document.write(" ");};</script><script type="text/javascript">document.writeln("com.adobe.xml.syndication.rss.RSS20");</script>
+</pre>
+<br>
+<a name="implements"></a><b>All implemented interfaces</b>
+<table>
+<tr>
+<td width="25px"></td><td><a href="../rss/IRSS.html">IRSS</a></td>
+</tr>
+</table>
+<hr>
+<p></p>public class <b>RSS20</b>
+<br>extends <a href="../../syndication/NewsParser.html">NewsParser</a>
+<p></p>
+  Class for parsing RSS 1.0 feeds. Note: the RSS20 class can be used
+  to parse RSS versions 0.91, 0.92, and 2.0. It cannot be used to parse
+  RSS 1.0. Use the RSS10 class instead.
+  
+  <p></p>
+<p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><a href="http://web.resource.org/rss/1.0/" target="mm_external">http://web.resource.org/rss/1.0/</a></td>
+</tr>
+</table>
+<hr>
+<br>
+<br>
+<a name="propertySummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Property Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#channel"><b>channel</b></a>:<a href="../rss/IChannel.html">IChannel</a></code>&nbsp;&nbsp;[read-only]<br>
+   The Channel20 object associated with this feed.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#image"><b>image</b></a>:<a href="../rss/IImage.html">IImage</a></code>&nbsp;&nbsp;[read-only]<br>
+   The Image20 object associated with this feed.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#items"><b>items</b></a>:Array</code>&nbsp;&nbsp;[read-only]<br>
+   An array of Item20 objects associated with this feed.</td>
+</tr>
+</table>
+<p></p>
+<a name="propertiesInheritedFromNewsParser"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr class="InheritedTableHeader" bgcolor="#EEEEEE">
+<td><b>Properties inherited from class <a href="../../syndication/NewsParser.html">NewsParser</a></b></td>
+</tr>
+<tr>
+<td><code><a href="../../syndication/NewsParser.html#x">x</a></code></td>
+</tr>
+</table>
+<br>
+<br>
+<a name="constructorSummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Constructor Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"></td><td align="left" valign="top"><code><a href="#RSS20()"><b>RSS20</b></a>()</code>
+<br>
+   Create a new RSS20 instance.</td>
+</tr>
+</table>
+<br>
+<br>
+<a name="methodSummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Method Summary</b></font></td>
+</tr>
+</table>
+<p></p>
+<a name="methodsInheritedFromNewsParser"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr class="InheritedTableHeader" bgcolor="#EEEEEE">
+<td><b>Methods inherited from class <a href="../../syndication/NewsParser.html">NewsParser</a></b></td>
+</tr>
+<tr>
+<td><code><a href="../../syndication/NewsParser.html#parse()">parse</a>, <a href="../../syndication/NewsParser.html#populate()">populate</a></code></td>
+</tr>
+</table>
+<br>
+<br>
+<a name="propertyDetail"></a>
+<table class="withBorder" width="100%" cellpadding="2" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Property Detail</b></font></td>
+</tr>
+</table>
+<a name="channel"></a>
+<p></p>
+<h2>channel Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;channel</code><code>:<a href="../rss/IChannel.html">IChannel</a></code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get channel() : <a href="../rss/IChannel.html">IChannel</a></code>
+<br>
+<br>
+   The Channel20 object associated with this feed.
+   
+   <hr>
+<a name="image"></a>
+<p></p>
+<h2>image Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;image</code><code>:<a href="../rss/IImage.html">IImage</a></code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get image() : <a href="../rss/IImage.html">IImage</a></code>
+<br>
+<br>
+   The Image20 object associated with this feed.
+   
+   <hr>
+<a name="items"></a>
+<p></p>
+<h2>items Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;items</code><code>:Array</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get items() : Array</code>
+<br>
+<br>
+   An array of Item20 objects associated with this feed.
+   
+   <br>
+<br>
+<a name="constructorDetail"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Constructor Detail</b></font></td>
+</tr>
+</table>
+<p></p>
+<h2>RSS20 Constructor<a name="RSS20()"></a>
+</h2>
+<p></p>
+<p>
+<code>public function <b>RSS20</b>()</code>
+</p>
+   Create a new RSS20 instance.
+      <br>
+<br>
+<hr>
+<br>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#propertySummary">Properties</a>&nbsp;| <a href="#constructorSummary">Constructor</a>&nbsp;| <a href="#methodSummary">Methods</a></span>
+</div>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell2"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;| <a href="../../../../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../../../../index.html?com/adobe/xml/syndication/rss/RSS20.html&amp;./com/adobe/xml/syndication/rss/class-list.html" id="framesLink2">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink2">No&nbsp;Frames</a></span>
+</div>
+<p></p>
+<center class="copyright">Copyright &copy; 2005 Macromedia Inc. All rights reserved.<br>Mon May 8 2006, 15:56 PDT</center>
+</body>
+</html>
+<!--Copyright &copy; 2005 Macromedia Inc. All rights reserved.Mon May 8 2006, 15:56 PDT-->

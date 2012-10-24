@@ -1,0 +1,406 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
+<meta content="Carousel,be.nascom.flash.ui.Carousel,angle,depthOfField,horizontalRadius,perspectiveCorrect,rotationSpeed,verticalRadius,currentRotationSpeed,addChild,autoRotate,centerToChild,stopAutoRotate" name="keywords">
+<title>be.nascom.flash.ui.Carousel</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'Carousel - NascomASLib';
+				var baseRef = '../../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">NascomASLib</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../index-list.html')" href="../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../index.html?be/nascom/flash/ui/Carousel.html&amp;be/nascom/flash/ui/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;Carousel</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class Carousel"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">be.nascom.flash.ui</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class Carousel</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">Carousel <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../../../images/inherit-arrow.gif"> flash.display.MovieClip</td>
+</tr>
+</table>
+<p></p> 
+  
+  Typically used for product or image showcases, Carousel places instances DisplayObject in a circle with depth transformation, which rotates according to the mouse movements, mimicking the movement of a carousel amusement ride. When an item is clicked, it is centered automatically and the automatic rotation stops until autoRotate() is called.
+  Carousel uses the Caurina Tweener engine to do the automatic rotation.
+  
+  <p></p>
+<br>
+<span class="label">Example</span>
+<br>The following code creates a Carousel for which the rotational ellipse has a horizontal radius of 300px and a vertical radius of 35px (ie. 600px wide and 70px high), assuming movieClip1-6 are assumed to be instanciated but not placed on the stage. When an item is clicked, it will be centered and the automatic rotation is halted.
+   <div class='listing'><pre>
+    import be.nascom.flash.ui.Carousel;
+    
+    var carousel : Carousel = new Carousel(300, 35);
+    carousel.depthOfField = 10;
+    carousel.x = stage.stageWidth/2;
+    carousel.y = stage.stageHeight/2;
+    addChild(carousel);
+  
+    carousel.addChild(movieClip1);
+    carousel.addChild(movieClip2);
+    carousel.addChild(movieClip3);
+    carousel.addChild(movieClip4);
+    carousel.addChild(movieClip5);
+    carousel.addChild(movieClip6);
+  </pre></div>
+  
+  <p></p>
+<p>
+<span class="classHeaderTableLabel">See also</span>
+</p>
+<div class="seeAlso">
+<a href="http://code.google.com/p/tweener/" target="mm_external">http://code.google.com/p/tweener/</a>
+</div>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#angle">angle</a> : Number<div class="summaryTableDescription">
+   The current amount of rotation
+   </div>
+</td><td class="summaryTableOwnerCol">Carousel</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#currentRotationSpeed">currentRotationSpeed</a> : Number<div class="summaryTableDescription"></div>
+</td><td class="summaryTableOwnerCol">Carousel</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#depthOfField">depthOfField</a> : Number<div class="summaryTableDescription">
+   Blurs items that are farther away.</div>
+</td><td class="summaryTableOwnerCol">Carousel</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#horizontalRadius">horizontalRadius</a> : Number<div class="summaryTableDescription">
+   The horizontal radius of the ellipse on which the items will be arranged.</div>
+</td><td class="summaryTableOwnerCol">Carousel</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#perspectiveCorrect">perspectiveCorrect</a> : Boolean<div class="summaryTableDescription">
+   Defines the positioning of the items.</div>
+</td><td class="summaryTableOwnerCol">Carousel</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#rotationSpeed">rotationSpeed</a> : Number<div class="summaryTableDescription">
+   The maximum speed by which the items will rotate automatically.</div>
+</td><td class="summaryTableOwnerCol">Carousel</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#verticalRadius">verticalRadius</a> : Number<div class="summaryTableDescription">
+   The vertical radius of the ellipse on which the items will be arranged.</div>
+</td><td class="summaryTableOwnerCol">Carousel</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#Carousel()">Carousel</a>(horizontalRadius:Number, verticalRadius:Number, hitField:Sprite = null, perspectiveCorrect:Boolean = false)</div>
+<div class="summaryTableDescription">
+   Instantiates a Carousel object.</div>
+</td><td class="summaryTableOwnerCol">Carousel</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#addChild()">addChild</a>(child:DisplayObject):DisplayObject</div>
+<div class="summaryTableDescription">
+   Adds a DisplayObject to the caroussel.</div>
+</td><td class="summaryTableOwnerCol">Carousel</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#autoRotate()">autoRotate</a>():void</div>
+<div class="summaryTableDescription">
+   Rotates the items automatically according to mouse position.</div>
+</td><td class="summaryTableOwnerCol">Carousel</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#centerToChild()">centerToChild</a>(child:DisplayObject):void</div>
+<div class="summaryTableDescription">
+   Stops the automatic rotation based oon the mouse position, and rotates the carousel so that the child DisplayObject is centered in the front of the viewer.</div>
+</td><td class="summaryTableOwnerCol">Carousel</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#stopAutoRotate()">stopAutoRotate</a>():void</div>
+<div class="summaryTableDescription">
+   Stops the automatic rotation based on the mouse position
+   </div>
+</td><td class="summaryTableOwnerCol">Carousel</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="angle"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">angle</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>angle:Number</code>&nbsp;&nbsp;[read-write]<p>
+   The current amount of rotation
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get angle():Number</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set angle(value:Number):void</code>
+<br>
+</div>
+<a name="currentRotationSpeed"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">currentRotationSpeed</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>currentRotationSpeed:Number</code>&nbsp;&nbsp;[read-write]<span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get currentRotationSpeed():Number</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set currentRotationSpeed(value:Number):void</code>
+<br>
+</div>
+<a name="depthOfField"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">depthOfField</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>depthOfField:Number</code>&nbsp;&nbsp;[read-write]<p>
+   Blurs items that are farther away. Higher values create a stronger blur.
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get depthOfField():Number</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set depthOfField(value:Number):void</code>
+<br>
+</div>
+<a name="horizontalRadius"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">horizontalRadius</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>horizontalRadius:Number</code>&nbsp;&nbsp;[read-write]<p>
+   The horizontal radius of the ellipse on which the items will be arranged.
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get horizontalRadius():Number</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set horizontalRadius(value:Number):void</code>
+<br>
+</div>
+<a name="perspectiveCorrect"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">perspectiveCorrect</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>perspectiveCorrect:Boolean</code>&nbsp;&nbsp;[read-write]<p>
+   Defines the positioning of the items. A value of true will place them in a more realistic fashion, but the spacing will look less even.
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get perspectiveCorrect():Boolean</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set perspectiveCorrect(value:Boolean):void</code>
+<br>
+</div>
+<a name="rotationSpeed"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">rotationSpeed</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>rotationSpeed:Number</code>&nbsp;&nbsp;[read-write]<p>
+   The maximum speed by which the items will rotate automatically. The speed is the difference in the rotation angle per frame.
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get rotationSpeed():Number</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set rotationSpeed(value:Number):void</code>
+<br>
+</div>
+<a name="verticalRadius"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">verticalRadius</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>verticalRadius:Number</code>&nbsp;&nbsp;[read-write]<p>
+   The vertical radius of the ellipse on which the items will be arranged.
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get verticalRadius():Number</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set verticalRadius(value:Number):void</code>
+<br>
+</div>
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="Carousel()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">Carousel</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function Carousel(horizontalRadius:Number, verticalRadius:Number, hitField:Sprite = null, perspectiveCorrect:Boolean = false)</code><p>
+   Instantiates a Carousel object.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">horizontalRadius</span>:Number</code> &mdash; The horizontal radius of the ellipse on which the items will be arranged.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">verticalRadius</span>:Number</code> &mdash; The horizontal radius of the ellipse on which the items will be arranged.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">hitField</span>:Sprite</code> (default = <code>null</code>)<code></code> &mdash; The hitfield area in which the interaction occurs. If provided, the carousel will only rotate when the mouse is over the hitfield.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">perspectiveCorrect</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; Defines the positioning of the items. A value of true will place them in a more realistic fashion, but the spacing will look less even.
+   </td>
+</tr>
+</table>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="addChild()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">addChild</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public override function addChild(child:DisplayObject):DisplayObject</code><p>
+   Adds a DisplayObject to the caroussel.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">child</span>:DisplayObject</code> &mdash; The DisplayObject to be added. It can not be on the stage already.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>DisplayObject</code></td>
+</tr>
+</table>
+</div>
+<a name="autoRotate()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">autoRotate</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function autoRotate():void</code><p>
+   Rotates the items automatically according to mouse position.
+   </p></div>
+<a name="centerToChild()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">centerToChild</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function centerToChild(child:DisplayObject):void</code><p>
+   Stops the automatic rotation based oon the mouse position, and rotates the carousel so that the child DisplayObject is centered in the front of the viewer.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">child</span>:DisplayObject</code> &mdash; The child DisplayObject to be shown in the center.
+   </td>
+</tr>
+</table>
+</div>
+<a name="stopAutoRotate()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">stopAutoRotate</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function stopAutoRotate():void</code><p>
+   Stops the automatic rotation based on the mouse position
+   </p></div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright">
+<footer> 
+</footer>
+</center>
+</div>
+</body>
+</html>
+<!-- -->

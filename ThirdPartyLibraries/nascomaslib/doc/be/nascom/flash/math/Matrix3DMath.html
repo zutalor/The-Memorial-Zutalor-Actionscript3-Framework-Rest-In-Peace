@@ -1,0 +1,357 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
+<meta content="Matrix3DMath,be.nascom.flash.math.Matrix3DMath,matrixVectorProduct,multiply,nullMatrix,rotationMatrix,unityMatrix,xRotationMatrix,yRotationMatrix,zRotationMatrix" name="keywords">
+<title>be.nascom.flash.math.Matrix3DMath</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'Matrix3DMath - NascomASLib';
+				var baseRef = '../../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">NascomASLib</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../index-list.html')" href="../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../index.html?be/nascom/flash/math/Matrix3DMath.html&amp;be/nascom/flash/math/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;Matrix3DMath</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#methodSummary">Methods</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class Matrix3DMath"); titleBar_setSubNav(false,false,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">be.nascom.flash.math</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class Matrix3DMath</td>
+</tr>
+</table>
+<p></p>
+    The static Matrix3DMath class provides mathematical functions to be performed on 3D Matrices
+  
+  <p></p>
+<p>
+<span class="classHeaderTableLabel">See also</span>
+</p>
+<div class="seeAlso">
+<a href="Matrix3D.html" target="">Matrix3D</a>
+<br>
+<a href="Point3D.html" target="">Point3D</a>
+<br>
+<a href="http://en.wikipedia.org/wiki/Matrix_%28mathematics%29" target="mm_external">http://en.wikipedia.org/wiki/Matrix_%28mathematics%29</a>
+</div>
+<br>
+<hr>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#matrixVectorProduct()">matrixVectorProduct</a>(A:<a href="Matrix3D.html">Matrix3D</a>, V:<a href="Point3D.html">Point3D</a>):<a href="../math/Point3D.html">Point3D</a>
+</div>
+<div class="summaryTableDescription">[static]
+   Multiplies a matrix with a vector (or point) and returns the result.</div>
+</td><td class="summaryTableOwnerCol">Matrix3DMath</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#multiply()">multiply</a>(A:<a href="Matrix3D.html">Matrix3D</a>, B:<a href="Matrix3D.html">Matrix3D</a>):<a href="../math/Matrix3D.html">Matrix3D</a>
+</div>
+<div class="summaryTableDescription">[static]
+   Multiplies two Matrices and returns the result.</div>
+</td><td class="summaryTableOwnerCol">Matrix3DMath</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#nullMatrix()">nullMatrix</a>():<a href="../math/Matrix3D.html">Matrix3D</a>
+</div>
+<div class="summaryTableDescription">[static]
+   Initializes a null matrix.</div>
+</td><td class="summaryTableOwnerCol">Matrix3DMath</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#rotationMatrix()">rotationMatrix</a>(angles:<a href="Point3D.html">Point3D</a>):<a href="../math/Matrix3D.html">Matrix3D</a>
+</div>
+<div class="summaryTableDescription">[static]
+   Initializes a rotation matrix for a rotation around all axes.</div>
+</td><td class="summaryTableOwnerCol">Matrix3DMath</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#unityMatrix()">unityMatrix</a>():<a href="../math/Matrix3D.html">Matrix3D</a>
+</div>
+<div class="summaryTableDescription">[static]
+   Initializes a unity matrix.</div>
+</td><td class="summaryTableOwnerCol">Matrix3DMath</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#xRotationMatrix()">xRotationMatrix</a>(angle:Number):<a href="../math/Matrix3D.html">Matrix3D</a>
+</div>
+<div class="summaryTableDescription">[static]
+   Initializes a rotation matrix for a rotation around the X-axis.</div>
+</td><td class="summaryTableOwnerCol">Matrix3DMath</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#yRotationMatrix()">yRotationMatrix</a>(angle:Number):<a href="../math/Matrix3D.html">Matrix3D</a>
+</div>
+<div class="summaryTableDescription">[static]
+   Initializes a rotation matrix for a rotation around the Y-axis.</div>
+</td><td class="summaryTableOwnerCol">Matrix3DMath</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#zRotationMatrix()">zRotationMatrix</a>(angle:Number):<a href="../math/Matrix3D.html">Matrix3D</a>
+</div>
+<div class="summaryTableDescription">[static]
+   Initializes a rotation matrix for a rotation around the Z-axis.</div>
+</td><td class="summaryTableOwnerCol">Matrix3DMath</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="matrixVectorProduct()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">matrixVectorProduct</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function matrixVectorProduct(A:<a href="Matrix3D.html">Matrix3D</a>, V:<a href="Point3D.html">Point3D</a>):<a href="../math/Point3D.html">Point3D</a></code><p>
+   Multiplies a matrix with a vector (or point) and returns the result.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">A</span>:<a href="Matrix3D.html">Matrix3D</a></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">V</span>:<a href="Point3D.html">Point3D</a></code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../math/Point3D.html">Point3D</a></code></td>
+</tr>
+</table>
+</div>
+<a name="multiply()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">multiply</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function multiply(A:<a href="Matrix3D.html">Matrix3D</a>, B:<a href="Matrix3D.html">Matrix3D</a>):<a href="../math/Matrix3D.html">Matrix3D</a></code><p>
+   Multiplies two Matrices and returns the result.
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">A</span>:<a href="Matrix3D.html">Matrix3D</a></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">B</span>:<a href="Matrix3D.html">Matrix3D</a></code></td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../math/Matrix3D.html">Matrix3D</a></code></td>
+</tr>
+</table>
+</div>
+<a name="nullMatrix()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">nullMatrix</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function nullMatrix():<a href="../math/Matrix3D.html">Matrix3D</a></code><p>
+   Initializes a null matrix.
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../math/Matrix3D.html">Matrix3D</a></code></td>
+</tr>
+</table>
+</div>
+<a name="rotationMatrix()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">rotationMatrix</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function rotationMatrix(angles:<a href="Point3D.html">Point3D</a>):<a href="../math/Matrix3D.html">Matrix3D</a></code><p>
+   Initializes a rotation matrix for a rotation around all axes.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">angles</span>:<a href="Point3D.html">Point3D</a></code> &mdash; A Point3D object containing the angles for all axes.
+   
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../math/Matrix3D.html">Matrix3D</a></code></td>
+</tr>
+</table>
+<p>
+<span class="label">See also</span>
+</p>
+<div class="seeAlso">
+<a href="Point3D.html" target="">Point3D</a>
+</div>
+</div>
+<a name="unityMatrix()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">unityMatrix</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function unityMatrix():<a href="../math/Matrix3D.html">Matrix3D</a></code><p>
+   Initializes a unity matrix.
+   </p><p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../math/Matrix3D.html">Matrix3D</a></code></td>
+</tr>
+</table>
+</div>
+<a name="xRotationMatrix()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">xRotationMatrix</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function xRotationMatrix(angle:Number):<a href="../math/Matrix3D.html">Matrix3D</a></code><p>
+   Initializes a rotation matrix for a rotation around the X-axis.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">angle</span>:Number</code> &mdash; The angle in radians of the rotation.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../math/Matrix3D.html">Matrix3D</a></code></td>
+</tr>
+</table>
+</div>
+<a name="yRotationMatrix()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">yRotationMatrix</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function yRotationMatrix(angle:Number):<a href="../math/Matrix3D.html">Matrix3D</a></code><p>
+   Initializes a rotation matrix for a rotation around the Y-axis.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">angle</span>:Number</code> &mdash; The angle in radians of the rotation.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../math/Matrix3D.html">Matrix3D</a></code></td>
+</tr>
+</table>
+</div>
+<a name="zRotationMatrix()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">zRotationMatrix</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static function zRotationMatrix(angle:Number):<a href="../math/Matrix3D.html">Matrix3D</a></code><p>
+   Initializes a rotation matrix for a rotation around the Z-axis.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">angle</span>:Number</code> &mdash; The angle in radians of the rotation.
+   </td>
+</tr>
+</table>
+<p></p>
+<span class="label">Returns</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../math/Matrix3D.html">Matrix3D</a></code></td>
+</tr>
+</table>
+</div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright">
+<footer> 
+</footer>
+</center>
+</div>
+</body>
+</html>
+<!-- -->

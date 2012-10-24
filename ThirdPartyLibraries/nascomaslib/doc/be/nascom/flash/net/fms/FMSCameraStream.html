@@ -1,0 +1,388 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../../print.css" type="text/css" media="print">
+<meta content="FMSCameraStream,be.nascom.flash.net.fms.FMSCameraStream,CAMERA_NOT_AVAILABLE,CAMERA_READY,RESOLUTION_320_240,RESOLUTION_640_480,bandwidth,camera,quality,targetDisplay,useMic,size,start,stop" name="keywords">
+<title>be.nascom.flash.net.fms.FMSCameraStream</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'FMSCameraStream - NascomASLib';
+				var baseRef = '../../../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">NascomASLib</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../../index.html?be/nascom/flash/net/fms/FMSCameraStream.html&amp;be/nascom/flash/net/fms/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;FMSCameraStream</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#constantSummary">Constants</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class FMSCameraStream"); titleBar_setSubNav(true,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">be.nascom.flash.net.fms</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class FMSCameraStream</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">FMSCameraStream <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../../../../images/inherit-arrow.gif"> flash.events.EventDispatcher</td>
+</tr>
+</table>
+<p></p> 
+  
+  FMSCameraStream provides functionality to easily control recording or publishing a webcam stream using
+  Flash Media Server or a third-party rtpm-based server (such as Wowza).
+  
+  <p>Only tested in Flex</p>
+  
+  <p></p>
+<p>
+<span class="classHeaderTableLabel">See also</span>
+</p>
+<div class="seeAlso">
+<a href="FMSConnection.html" target="">FMSConnection</a>
+</div>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#bandwidth">bandwidth</a> : uint<div class="summaryTableDescription">
+   The maximum amount of bandwidth per second of the current outgoing video feed.</div>
+</td><td class="summaryTableOwnerCol">FMSCameraStream</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#camera">camera</a> : Camera<div class="summaryTableDescription">[read-only]
+   A reference to the camera object used for the stream.</div>
+</td><td class="summaryTableOwnerCol">FMSCameraStream</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#quality">quality</a> : uint<div class="summaryTableDescription">
+   The required picture quality of the current outgoing video feed.</div>
+</td><td class="summaryTableOwnerCol">FMSCameraStream</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#size">size</a> : uint<div class="summaryTableDescription">[write-only]
+   The picture size for the video feed.</div>
+</td><td class="summaryTableOwnerCol">FMSCameraStream</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#targetDisplay">targetDisplay</a> : *<div class="summaryTableDescription">
+   The video DisplayObject which displays the webcam stream directly.</div>
+</td><td class="summaryTableOwnerCol">FMSCameraStream</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#useMic">useMic</a> : Boolean<div class="summaryTableDescription">
+   Indicates whether or not to use the microphone.</div>
+</td><td class="summaryTableOwnerCol">FMSCameraStream</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#FMSCameraStream()">FMSCameraStream</a>(connection:<a href="FMSConnection.html">FMSConnection</a>, errorFunction:Function = null, targetDisplay:* = null)</div>
+<div class="summaryTableDescription">
+   Initializes the FMSCameraStream object using an FMS connection.</div>
+</td><td class="summaryTableOwnerCol">FMSCameraStream</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#start()">start</a>(filename:String, type:String):void</div>
+<div class="summaryTableDescription">
+   Publishes the stream to the media server, using a certain type.</div>
+</td><td class="summaryTableOwnerCol">FMSCameraStream</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#stop()">stop</a>():void</div>
+<div class="summaryTableDescription">
+   Stops the camera stream.</div>
+</td><td class="summaryTableOwnerCol">FMSCameraStream</td>
+</tr>
+</table>
+</div>
+<a name="constantSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Constants</div>
+<table id="summaryTableConstant" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#CAMERA_NOT_AVAILABLE">CAMERA_NOT_AVAILABLE</a> : String = "cameraNotAvailable"<div class="summaryTableDescription">[static]
+   Event type indicating that a camera is not available.</div>
+</td><td class="summaryTableOwnerCol">FMSCameraStream</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#CAMERA_READY">CAMERA_READY</a> : String = "cameraReady"<div class="summaryTableDescription">[static]
+   Event type indicating that the camera is ready for streaming.</div>
+</td><td class="summaryTableOwnerCol">FMSCameraStream</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#RESOLUTION_320_240">RESOLUTION_320_240</a> : uint = 0<div class="summaryTableDescription">[static]
+   </div>
+</td><td class="summaryTableOwnerCol">FMSCameraStream</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#RESOLUTION_640_480">RESOLUTION_640_480</a> : uint = 1<div class="summaryTableDescription">[static]
+   Specifies that the webcam should use a resolution of 640 x 480.</div>
+</td><td class="summaryTableOwnerCol">FMSCameraStream</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="bandwidth"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">bandwidth</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>bandwidth:uint</code>&nbsp;&nbsp;[read-write]<p>
+   The maximum amount of bandwidth per second of the current outgoing video feed.
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get bandwidth():uint</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set bandwidth(value:uint):void</code>
+<br>
+</div>
+<a name="camera"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">camera</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>camera:Camera</code>&nbsp;&nbsp;[read-only]<p>
+   A reference to the camera object used for the stream.
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get camera():Camera</code>
+<br>
+</div>
+<a name="quality"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">quality</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>quality:uint</code>&nbsp;&nbsp;[read-write]<p>
+   The required picture quality of the current outgoing video feed.
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get quality():uint</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set quality(value:uint):void</code>
+<br>
+</div>
+<a name="size"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">size</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>size:uint</code>&nbsp;&nbsp;[write-only]<p>
+   The picture size for the video feed. Options are:
+   <ul>
+   <li>FMSCameraStream.RESOLUTION_320_240</li>
+   <li>FMSCameraStream.RESOLUTION_640_480</li>
+   </ul>
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set size(value:uint):void</code>
+<br>
+</div>
+<a name="targetDisplay"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">targetDisplay</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>targetDisplay:*</code>&nbsp;&nbsp;[read-write]<p>
+   The video DisplayObject which displays the webcam stream directly.
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get targetDisplay():*</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set targetDisplay(value:*):void</code>
+<br>
+</div>
+<a name="useMic"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">useMic</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>useMic:Boolean</code>&nbsp;&nbsp;[read-write]<p>
+   Indicates whether or not to use the microphone.
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get useMic():Boolean</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set useMic(value:Boolean):void</code>
+<br>
+</div>
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="FMSCameraStream()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">FMSCameraStream</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function FMSCameraStream(connection:<a href="FMSConnection.html">FMSConnection</a>, errorFunction:Function = null, targetDisplay:* = null)</code><p>
+   Initializes the FMSCameraStream object using an FMS connection.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">connection</span>:<a href="FMSConnection.html">FMSConnection</a></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">errorFunction</span>:Function</code> (default = <code>null</code>)<code></code></td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">targetDisplay</span>:*</code> (default = <code>null</code>)<code></code></td>
+</tr>
+</table>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="start()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">start</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function start(filename:String, type:String):void</code><p>
+   Publishes the stream to the media server, using a certain type.
+   
+   </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">filename</span>:String</code> &mdash; The filename of the stream that will be saved or broadcasted on the server.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">type</span>:String</code> &mdash; The publish type of the stream, typically "record" or "live". Consult media server
+   documenation for details of available types.
+   
+   </td>
+</tr>
+</table>
+</div>
+<a name="stop()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">stop</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function stop():void</code><p>
+   Stops the camera stream. 
+   </p></div>
+<a name="constantDetail"></a>
+<div class="detailSectionHeader">Constant detail</div>
+<a name="CAMERA_NOT_AVAILABLE"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">CAMERA_NOT_AVAILABLE</td><td class="detailHeaderType">constant</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const CAMERA_NOT_AVAILABLE:String = "cameraNotAvailable"</code><p>
+   Event type indicating that a camera is not available.
+   </p></div>
+<a name="CAMERA_READY"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">CAMERA_READY</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const CAMERA_READY:String = "cameraReady"</code><p>
+   Event type indicating that the camera is ready for streaming.
+   </p></div>
+<a name="RESOLUTION_320_240"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">RESOLUTION_320_240</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const RESOLUTION_320_240:uint = 0</code><p>
+   </p></div>
+<a name="RESOLUTION_640_480"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">RESOLUTION_640_480</td><td class="detailHeaderType">constant</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public static const RESOLUTION_640_480:uint = 1</code><p>
+   Specifies that the webcam should use a resolution of 640 x 480.
+   </p></div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright">
+<footer> 
+</footer>
+</center>
+</div>
+</body>
+</html>
+<!-- -->

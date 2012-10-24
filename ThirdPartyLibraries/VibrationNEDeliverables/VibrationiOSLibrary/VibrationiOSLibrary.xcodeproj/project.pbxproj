@@ -1,0 +1,219 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		02D6F90414078ECB00D6A6E7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02D6F90314078ECB00D6A6E7 /* Foundation.framework */; };
+		02D6F9121407941A00D6A6E7 /* VibrationExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 02D6F9111407941A00D6A6E7 /* VibrationExtension.m */; };
+		02D6F9141407944700D6A6E7 /* FlashRuntimeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 02D6F9131407944700D6A6E7 /* FlashRuntimeExtensions.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		02D6F90014078ECB00D6A6E7 /* libVibrationiOSLibrary.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libVibrationiOSLibrary.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		02D6F90314078ECB00D6A6E7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		02D6F90714078ECB00D6A6E7 /* VibrationiOSLibrary-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VibrationiOSLibrary-Prefix.pch"; sourceTree = "<group>"; };
+		02D6F9111407941A00D6A6E7 /* VibrationExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VibrationExtension.m; sourceTree = "<group>"; };
+		02D6F9131407944700D6A6E7 /* FlashRuntimeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashRuntimeExtensions.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		02D6F8FD14078ECB00D6A6E7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				02D6F90414078ECB00D6A6E7 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		02D6F8F514078ECB00D6A6E7 = {
+			isa = PBXGroup;
+			children = (
+				02D6F9131407944700D6A6E7 /* FlashRuntimeExtensions.h */,
+				02D6F9111407941A00D6A6E7 /* VibrationExtension.m */,
+				02D6F90514078ECB00D6A6E7 /* VibrationiOSLibrary */,
+				02D6F90214078ECB00D6A6E7 /* Frameworks */,
+				02D6F90114078ECB00D6A6E7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		02D6F90114078ECB00D6A6E7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				02D6F90014078ECB00D6A6E7 /* libVibrationiOSLibrary.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		02D6F90214078ECB00D6A6E7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				02D6F90314078ECB00D6A6E7 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		02D6F90514078ECB00D6A6E7 /* VibrationiOSLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				02D6F90614078ECB00D6A6E7 /* Supporting Files */,
+			);
+			path = VibrationiOSLibrary;
+			sourceTree = "<group>";
+		};
+		02D6F90614078ECB00D6A6E7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				02D6F90714078ECB00D6A6E7 /* VibrationiOSLibrary-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		02D6F8FE14078ECB00D6A6E7 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				02D6F9141407944700D6A6E7 /* FlashRuntimeExtensions.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		02D6F8FF14078ECB00D6A6E7 /* VibrationiOSLibrary */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 02D6F90A14078ECB00D6A6E7 /* Build configuration list for PBXNativeTarget "VibrationiOSLibrary" */;
+			buildPhases = (
+				02D6F8FC14078ECB00D6A6E7 /* Sources */,
+				02D6F8FD14078ECB00D6A6E7 /* Frameworks */,
+				02D6F8FE14078ECB00D6A6E7 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VibrationiOSLibrary;
+			productName = VibrationiOSLibrary;
+			productReference = 02D6F90014078ECB00D6A6E7 /* libVibrationiOSLibrary.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		02D6F8F714078ECB00D6A6E7 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 02D6F8FA14078ECB00D6A6E7 /* Build configuration list for PBXProject "VibrationiOSLibrary" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 02D6F8F514078ECB00D6A6E7;
+			productRefGroup = 02D6F90114078ECB00D6A6E7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				02D6F8FF14078ECB00D6A6E7 /* VibrationiOSLibrary */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		02D6F8FC14078ECB00D6A6E7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				02D6F9121407941A00D6A6E7 /* VibrationExtension.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		02D6F90814078ECB00D6A6E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		02D6F90914078ECB00D6A6E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+		02D6F90B14078ECB00D6A6E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/VibrationiOSLibrary.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VibrationiOSLibrary/VibrationiOSLibrary-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		02D6F90C14078ECB00D6A6E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/VibrationiOSLibrary.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VibrationiOSLibrary/VibrationiOSLibrary-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		02D6F8FA14078ECB00D6A6E7 /* Build configuration list for PBXProject "VibrationiOSLibrary" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				02D6F90814078ECB00D6A6E7 /* Debug */,
+				02D6F90914078ECB00D6A6E7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		02D6F90A14078ECB00D6A6E7 /* Build configuration list for PBXNativeTarget "VibrationiOSLibrary" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				02D6F90B14078ECB00D6A6E7 /* Debug */,
+				02D6F90C14078ECB00D6A6E7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 02D6F8F714078ECB00D6A6E7 /* Project object */;
+}

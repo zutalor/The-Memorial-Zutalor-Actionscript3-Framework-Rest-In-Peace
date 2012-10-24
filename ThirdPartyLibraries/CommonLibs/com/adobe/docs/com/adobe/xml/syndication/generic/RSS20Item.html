@@ -1,0 +1,267 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../../print.css" type="text/css" media="print">
+<meta content="RSS20Item,com.adobe.xml.syndication.generic.RSS20Item,title,link,id,date,authors,excerpt,media" name="keywords">
+<title></title>
+</head>
+<body class="MainContent">
+<script type="text/javascript" language="javascript" src="../../../../../asdoc.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'RSS20Item - XML Syndication Libraries';
+				window.onload = configPage;
+			--></script>
+<div class="pageTop"></div>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td style="padding-left:5px" width="64" valign="left"><img title="Macromedia Logo" alt="Macromedia Logo" border="0" src="../../../../../images/mm-icon.jpg"></td><td valign="middle" align="center">
+<h1 style="font-size:20px">XML Syndication Libraries</h1>
+</td>
+</tr>
+<tr>
+<td height="5px" colspan="2"></td>
+</tr>
+</table>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell1"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;| <a href="../../../../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../../../../index.html?com/adobe/xml/syndication/generic/RSS20Item.html&amp;./com/adobe/xml/syndication/generic/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></span>
+</div>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#propertySummary">Properties</a>&nbsp;| <a href="#constructorSummary">Constructor</a></span>
+</div>com.adobe.xml.syndication.generic<h1>Class RSS20Item</h1>
+<p></p>
+<pre>
+<script type="text/javascript">var tabCount=3;</script><script type="text/javascript">var showInheritance = false;</script><script type="text/javascript">if (showInheritance) { for (var cnt=0; cnt < tabCount; cnt++)document.write(" ");document.write("<img src='../../../../../images/inherit-arrow.jpg' />");document.write(" ");};</script><script type="text/javascript">document.writeln("com.adobe.xml.syndication.generic.RSS20Item");</script>
+</pre>
+<br>
+<a name="implements"></a><b>All implemented interfaces</b>
+<table>
+<tr>
+<td width="25px"></td><td><a href="../generic/IItem.html">IItem</a></td>
+</tr>
+</table>
+<hr>
+<p></p>public class <b>RSS20Item</b>
+<p></p>
+  Class that abstracts out the specific characteristics of an RSS 2.0 item
+  into a generic Item. You create an instance using an Item20 object,
+  then you can access it in a generic way.
+  
+  <p></p>
+<hr>
+<br>
+<br>
+<a name="propertySummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Property Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#authors"><b>authors</b></a>:Array</code>&nbsp;&nbsp;[read-only]<br>
+    One or more authors of this item.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#date"><b>date</b></a>:Date</code>&nbsp;&nbsp;[read-only]<br>
+    The date this item was published.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#excerpt"><b>excerpt</b></a>:<a href="../generic/Excerpt.html">Excerpt</a></code>&nbsp;&nbsp;[read-only]<br>
+    An excerpt or description of this item.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#id"><b>id</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+    This item's unique ID.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#link"><b>link</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+    This item's link.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#media"><b>media</b></a>:<a href="../generic/Media.html">Media</a></code>&nbsp;&nbsp;[read-only]<br>
+    Any media associated with this item.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#title"><b>title</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+    This item's title.</td>
+</tr>
+</table>
+<br>
+<br>
+<a name="constructorSummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Constructor Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"></td><td align="left" valign="top"><code><a href="#RSS20Item()"><b>RSS20Item</b></a>(item:<a href="../rss/Item20.html">Item20</a>)</code>
+<br>
+   Create a new RSS20Item instance.</td>
+</tr>
+</table>
+<br>
+<br>
+<a name="propertyDetail"></a>
+<table class="withBorder" width="100%" cellpadding="2" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Property Detail</b></font></td>
+</tr>
+</table>
+<a name="authors"></a>
+<p></p>
+<h2>authors Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;authors</code><code>:Array</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get authors() : Array</code>
+<br>
+<br>
+    One or more authors of this item.
+   
+   <hr>
+<a name="date"></a>
+<p></p>
+<h2>date Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;date</code><code>:Date</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get date() : Date</code>
+<br>
+<br>
+    The date this item was published.
+   
+   <hr>
+<a name="excerpt"></a>
+<p></p>
+<h2>excerpt Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;excerpt</code><code>:<a href="../generic/Excerpt.html">Excerpt</a></code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get excerpt() : <a href="../generic/Excerpt.html">Excerpt</a></code>
+<br>
+<br>
+    An excerpt or description of this item.
+   
+   <hr>
+<a name="id"></a>
+<p></p>
+<h2>id Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;id</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get id() : String</code>
+<br>
+<br>
+    This item's unique ID.
+   
+   <hr>
+<a name="link"></a>
+<p></p>
+<h2>link Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;link</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get link() : String</code>
+<br>
+<br>
+    This item's link.
+   
+   <hr>
+<a name="media"></a>
+<p></p>
+<h2>media Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;media</code><code>:<a href="../generic/Media.html">Media</a></code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get media() : <a href="../generic/Media.html">Media</a></code>
+<br>
+<br>
+    Any media associated with this item.
+   
+   <hr>
+<a name="title"></a>
+<p></p>
+<h2>title Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;title</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get title() : String</code>
+<br>
+<br>
+    This item's title.
+   
+   <br>
+<br>
+<a name="constructorDetail"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Constructor Detail</b></font></td>
+</tr>
+</table>
+<p></p>
+<h2>RSS20Item Constructor<a name="RSS20Item()"></a>
+</h2>
+<p></p>
+<p>
+<code>public function <b>RSS20Item</b>(item:<a href="../rss/Item20.html">Item20</a>)</code>
+</p>
+   Create a new RSS20Item instance.
+      <p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>item</b>:<a href="../rss/Item20.html">Item20</a></code> &mdash; An Item20 object that you want abstracted.
+   
+   </td>
+</tr>
+</table>
+<br>
+<br>
+<hr>
+<br>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#propertySummary">Properties</a>&nbsp;| <a href="#constructorSummary">Constructor</a></span>
+</div>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell2"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;| <a href="../../../../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../../../../index.html?com/adobe/xml/syndication/generic/RSS20Item.html&amp;./com/adobe/xml/syndication/generic/class-list.html" id="framesLink2">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink2">No&nbsp;Frames</a></span>
+</div>
+<p></p>
+<center class="copyright">Copyright &copy; 2005 Macromedia Inc. All rights reserved.<br>Mon May 8 2006, 15:56 PDT</center>
+</body>
+</html>
+<!--Copyright &copy; 2005 Macromedia Inc. All rights reserved.Mon May 8 2006, 15:56 PDT-->

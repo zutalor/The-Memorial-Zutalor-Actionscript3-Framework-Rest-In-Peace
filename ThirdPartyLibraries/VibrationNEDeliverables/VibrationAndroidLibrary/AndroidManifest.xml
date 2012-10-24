@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+
+	ADOBE SYSTEMS INCORPORATED
+	Copyright 2011 Adobe Systems Incorporated
+	All Rights Reserved.
+	
+	NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance with the 
+	terms of the Adobe license agreement accompanying it.  If you have received this file from a 
+	source other than Adobe, then your use, modification, or distribution of it requires the prior 
+	written permission of Adobe.
+
+ -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="air.extensions"
+      android:versionCode="1"
+      android:versionName="1.0">
+    <uses-sdk android:minSdkVersion="8" />
+
+    <application android:icon="@drawable/icon" android:label="@string/app_name">
+        <activity android:name=".VibrationAndroidLibraryActivity"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+</manifest>

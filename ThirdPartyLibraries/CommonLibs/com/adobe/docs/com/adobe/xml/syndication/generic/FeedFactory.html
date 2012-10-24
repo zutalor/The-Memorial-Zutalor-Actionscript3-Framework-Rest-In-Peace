@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../../print.css" type="text/css" media="print">
+<meta content="FeedFactory,com.adobe.xml.syndication.generic.FeedFactory,getFeedByString,getFeedByXML" name="keywords">
+<title></title>
+</head>
+<body class="MainContent">
+<script type="text/javascript" language="javascript" src="../../../../../asdoc.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'FeedFactory - XML Syndication Libraries';
+				window.onload = configPage;
+			--></script>
+<div class="pageTop"></div>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td style="padding-left:5px" width="64" valign="left"><img title="Macromedia Logo" alt="Macromedia Logo" border="0" src="../../../../../images/mm-icon.jpg"></td><td valign="middle" align="center">
+<h1 style="font-size:20px">XML Syndication Libraries</h1>
+</td>
+</tr>
+<tr>
+<td height="5px" colspan="2"></td>
+</tr>
+</table>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell1"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;| <a href="../../../../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../../../../index.html?com/adobe/xml/syndication/generic/FeedFactory.html&amp;./com/adobe/xml/syndication/generic/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></span>
+</div>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#methodSummary">Methods</a></span>
+</div>com.adobe.xml.syndication.generic<h1>Class FeedFactory</h1>
+<p></p>
+<pre>
+<script type="text/javascript">var tabCount=3;</script><script type="text/javascript">var showInheritance = false;</script><script type="text/javascript">if (showInheritance) { for (var cnt=0; cnt < tabCount; cnt++)document.write(" ");document.write("<img src='../../../../../images/inherit-arrow.jpg' />");document.write(" ");};</script><script type="text/javascript">document.writeln("com.adobe.xml.syndication.generic.FeedFactory");</script>
+</pre>
+<br>
+<hr>
+<p></p>public class <b>FeedFactory</b>
+<p></p>
+  The FeedFactory allows you to create generic IFeed objects from any
+  version of RSS or Atom. You can then access data within the feed
+  without knowing what type of feed or which version it is. For most
+  people, this will be the starting point for the XML syndication
+  project.
+  
+  <p></p>
+<hr>
+<br>
+<br>
+<a name="methodSummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Method Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1">static </font></code></td><td valign="top"><code><a href="#getFeedByString()"><b>getFeedByString</b></a>(xmlStr:String) : <a href="../generic/IFeed.html">IFeed</a></code>
+<br>
+   Allows you to get a generic IFeed object from a string of XML.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1">static </font></code></td><td valign="top"><code><a href="#getFeedByXML()"><b>getFeedByXML</b></a>(x:XML) : <a href="../generic/IFeed.html">IFeed</a></code>
+<br>
+   Allows you to get a generic IFeed object from an XML object.</td>
+</tr>
+</table>
+<br>
+<br>
+<a name="methodDetail"></a>
+<table class="withBorder" width="100%" cellpadding="2" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Method Detail</b></font></td>
+</tr>
+</table>
+<a name="getFeedByString()"></a>
+<p></p>
+<h2>getFeedByString Method</h2>
+<p></p>
+<p>
+<code>public static function <b>getFeedByString</b>(xmlStr:String) : <a href="../generic/IFeed.html">IFeed</a></code>
+</p>
+   Allows you to get a generic IFeed object from a string of XML. The
+   string can be any version of RSS or Atom.
+      <p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>xmlStr</b>:String</code> &mdash; A string of XML that is any type of RSS or Atom.
+   </td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../generic/IFeed.html">IFeed</a></code> &mdash; 
+                        A generic IFeed object that lets you access data in the
+           feed without having to know what kind of feed it is.
+   
+                        
+                     </td>
+</tr>
+</table>
+<p></p>
+<b>Throws</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code></code> &mdash; If it can't determine what kind of feed
+           you passed in.
+      </td>
+</tr>
+</table>
+<hr>
+<a name="getFeedByXML()"></a>
+<p></p>
+<h2>getFeedByXML Method</h2>
+<p></p>
+<p>
+<code>public static function <b>getFeedByXML</b>(x:XML) : <a href="../generic/IFeed.html">IFeed</a></code>
+</p>
+   Allows you to get a generic IFeed object from an XML object. The
+   XML can represent any version of RSS or Atom.
+      <p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>x</b>:XML</code> &mdash; An XML object that represents any type of RSS or Atom.
+   </td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../generic/IFeed.html">IFeed</a></code> &mdash; 
+                        A generic IFeed object that lets you access data in the
+           feed without having to know what kind of feed it is.
+   
+                        
+                     </td>
+</tr>
+</table>
+<p></p>
+<b>Throws</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code></code> &mdash; If it can't determine what kind of feed
+           you passed in.
+      </td>
+</tr>
+</table>
+<br>
+<br>
+<hr>
+<br>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#methodSummary">Methods</a></span>
+</div>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell2"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;| <a href="../../../../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../../../../index.html?com/adobe/xml/syndication/generic/FeedFactory.html&amp;./com/adobe/xml/syndication/generic/class-list.html" id="framesLink2">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink2">No&nbsp;Frames</a></span>
+</div>
+<p></p>
+<center class="copyright">Copyright &copy; 2005 Macromedia Inc. All rights reserved.<br>Mon May 8 2006, 15:56 PDT</center>
+</body>
+</html>
+<!--Copyright &copy; 2005 Macromedia Inc. All rights reserved.Mon May 8 2006, 15:56 PDT-->

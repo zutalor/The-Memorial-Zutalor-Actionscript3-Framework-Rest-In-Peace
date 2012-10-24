@@ -1,0 +1,119 @@
+<!--livedocs:no-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>XML Syndication Libraries</title>
+<link rel="stylesheet" href="style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="print.css" type="text/css" media="print">
+</head>
+<body class="MainContent">
+<script type="text/javascript" language="javascript" src="asdoc.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'XML Syndication Libraries';
+				window.onload = configPage;
+			--></script>
+<div class="pageTop"></div>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td style="padding-left:5px" width="64" valign="left"><img title="Macromedia Logo" alt="Macromedia Logo" border="0" src="images/mm-icon.jpg"></td><td valign="middle" align="center">
+<h1 style="font-size:20px">XML Syndication Libraries</h1>
+</td>
+</tr>
+<tr>
+<td height="5px" colspan="2"></td>
+</tr>
+</table>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell1"><a onclick="loadClassListFrame('all-classes.html')" href="class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('index-list.html')" href="all-index-A.html">Index</a>&nbsp;| <a href="appendixes.html">Appendixes</a>&nbsp;| <a href="index.html?package-summary.html&amp;all-classes.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></span>
+</div>
+<div align="right" class="topLinks" width="100%">
+<span></span>
+</div>
+<h1>All Packages</h1>
+<br>
+<p>
+            
+                <p>The XML Syndication project provides simple APIs for parsing RSS .91, .92,
+                1.0, and 2.0 XML documents, as well as Atom 1.0 XML documents. It also provides
+                a way to generically parse and access any type of RSS or Atom document without
+                having to know what kind of document it is (useful for projects like news
+                aggregators).</p>
+
+                <p>There are three packages in the XML Syndication project: rss, atom, and
+                generic. The rss packages provides APIs for parsing all versions of RSS, the
+                atom package provides APIs for parsing Atom 1.0, and the generic package
+                provides APIs for automatically determining what kind of XML document you have,
+                parsing it, and giving you a generic way to access data from it. By generic, I
+                mean that the generic package uses APIs that are higher level than both the rss
+                and atom packages, allowing you to access data which is more or less common or
+                equivalent across all versions of RSS and Atom 1.0.</p>
+
+                <p>None of the parsers strictly enforce any of the RSS or Atom specifications.
+                They support almost everything in all the specifications in the sense that they
+                can be used to access anything that might be present in any type of feed,
+                however they don't require the feeds to strictly comply with the
+                specifications. They parse and allow you to access everything that is there,
+                regardless of dependencies, and whenever something is not there, whether the
+                specification indicates that it's required or not, the APIs will return null
+                for Strings or NaN for numbers. The parsers are therefore comprehensive, but
+                not strict, which allows them to parse the largest possible number of feeds.
+                The feeds are required to be well-formed, however. Although the XML Syndication
+                package is forgiving with respect to the RSS and Atom specifications, it is
+                strict with respect to the XML specification.</p>
+
+                <p>For parsing RSS .91, .92, and 2.0 documents, use the RSS20 class in the rss
+                package. Since RSS 2.0 is backward-compatible with .91 and .92, the RSS20 class
+                will successfully parse them all. For RSS 1.0 documents, use the RSS10 class
+                (RSS 1.0 is not closely related to .91, .92, or 2.0). Wherever there is overlap
+                between RSS 1.0 and RSS 2.0, the rss package uses interfaces to enable you to
+                treat them as though they were the same. For instance, since all versions of
+                RSS have a concept of a channel, you can access both RSS 1.0 and RSS 2.0
+                channels using the "IChannel" interface in a more generic way.</p>
+
+                <p>For parsing Atom 1.0 documents, use the Atom10 class in the atom package.
+                Since the Atom 1.0 specification has not been finalized, it is not 100%
+                comprehensive, however it will definitely successfully parse the overwhelming
+                majority of Atom feeds out there, and will definitely allow you to get at the
+                core information of all of them.</p>
+
+                <p>If you don't know what kind of feed you want to parse, you can use the
+                FeedFactory class in the generic package. It will figure out what kind of feed
+                you gave it, and will return an object that implements the IFeed interface.
+                That means you can access data that is common or equivalent across all versions
+                of RSS and Atom without having to know what kind of feed you have. Of course,
+                you give up some of the more fine-grained aspects of each specification, but
+                you can get at all the most important information. If you hand the FeedFactory
+                class a feed it doesn't recognize, it will throw an UnknownFeedError.</p>
+            
+        </p>
+<br>
+<table width="100%" border="0" cellspacing="0" cellpadding="2">
+<tr class="PackageTableHeader" valign="top">
+<td width="30%"><b>Name</b></td><td width="70%"><b>Description</b></td>
+</tr>
+<tr class="prow0">
+<td valign="top"><a onclick="javascript:loadClassListFrame('com/adobe/xml/syndication/class-list.html');" href="com/adobe/xml/syndication/package-detail.html">com.adobe.xml.syndication</a></td><td valign="top"></td>
+</tr>
+<tr class="prow1">
+<td valign="top"><a onclick="javascript:loadClassListFrame('com/adobe/xml/syndication/atom/class-list.html');" href="com/adobe/xml/syndication/atom/package-detail.html">com.adobe.xml.syndication.atom</a></td><td valign="top"></td>
+</tr>
+<tr class="prow0">
+<td valign="top"><a onclick="javascript:loadClassListFrame('com/adobe/xml/syndication/generic/class-list.html');" href="com/adobe/xml/syndication/generic/package-detail.html">com.adobe.xml.syndication.generic</a></td><td valign="top"></td>
+</tr>
+<tr class="prow1">
+<td valign="top"><a onclick="javascript:loadClassListFrame('com/adobe/xml/syndication/rss/class-list.html');" href="com/adobe/xml/syndication/rss/package-detail.html">com.adobe.xml.syndication.rss</a></td><td valign="top"></td>
+</tr>
+</table>
+<p></p>
+<div align="right" class="topLinks" width="100%">
+<span></span>
+</div>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell2"><a onclick="loadClassListFrame('all-classes.html')" href="class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('index-list.html')" href="all-index-A.html">Index</a>&nbsp;| <a href="appendixes.html">Appendixes</a>&nbsp;| <a href="index.html?package-summary.html&amp;all-classes.html" id="framesLink2">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink2">No&nbsp;Frames</a></span>
+</div>
+<p></p>
+<center class="copyright">Copyright &copy; 2005 Macromedia Inc. All rights reserved.<br>Mon May 8 2006, 15:56 PDT</center>
+</body>
+</html>
+<!--Copyright &copy; 2005 Macromedia Inc. All rights reserved.Mon May 8 2006, 15:56 PDT-->

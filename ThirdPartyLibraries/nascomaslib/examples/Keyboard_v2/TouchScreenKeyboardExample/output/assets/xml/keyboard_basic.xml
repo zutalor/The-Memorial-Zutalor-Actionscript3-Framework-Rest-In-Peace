@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<keyboard>
+	<default>
+		<row>
+			<key scale="0.5">
+				<char><![CDATA[]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[a]]></char>
+				<shift><![CDATA[A]]></shift>
+				<specialchars>
+					<key>
+						<char><![CDATA[á]]></char>
+						<shift><![CDATA[Á]]></shift>
+					</key>
+					<key>
+						<char><![CDATA[à]]></char>
+						<shift><![CDATA[À]]></shift>
+					</key>
+					<key>
+						<char><![CDATA[ä]]></char>
+						<shift><![CDATA[Ä]]></shift>
+					</key>
+					<key>
+						<char><![CDATA[â]]></char>
+						<shift><![CDATA[Â]]></shift>
+					</key>
+				</specialchars>
+			</key>
+			<key scale="1">
+				<char><![CDATA[z]]></char>
+				<shift><![CDATA[Z]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[e]]></char>
+				<shift><![CDATA[E]]></shift>
+				<specialchars>
+					<key>
+						<char><![CDATA[é]]></char>
+						<shift><![CDATA[É]]></shift>
+					</key>
+					<key>
+						<char><![CDATA[è]]></char>
+						<shift><![CDATA[È]]></shift>
+					</key>
+					<key>
+						<char><![CDATA[ë]]></char>
+						<shift><![CDATA[Ë]]></shift>
+					</key>
+					<key>
+						<char><![CDATA[ê]]></char>
+						<shift><![CDATA[Ê]]></shift>
+					</key>
+				</specialchars>
+				<longpress>
+					<key>
+						<char><![CDATA[é]]></char>
+						<shift><![CDATA[É]]></shift>
+					</key>
+					<key>
+						<char><![CDATA[è]]></char>
+						<shift><![CDATA[È]]></shift>
+					</key>
+					<key>
+						<char><![CDATA[ë]]></char>
+						<shift><![CDATA[Ë]]></shift>
+					</key>
+					<key>
+						<char><![CDATA[ê]]></char>
+						<shift><![CDATA[Ê]]></shift>
+					</key>
+				</longpress>
+			</key>
+			<key scale="1">
+				<char><![CDATA[r]]></char>
+				<shift><![CDATA[R]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[t]]></char>
+				<shift><![CDATA[T]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[y]]></char>
+				<shift><![CDATA[Y]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[u]]></char>
+				<shift><![CDATA[U]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[i]]></char>
+				<shift><![CDATA[I]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[o]]></char>
+				<shift><![CDATA[O]]></shift>
+				<specialchars>
+					<key>
+						<char><![CDATA[ó]]></char>
+						<shift><![CDATA[Ó]]></shift>
+					</key>
+					<key>
+						<char><![CDATA[ò]]></char>
+						<shift><![CDATA[Ò]]></shift>
+					</key>
+					<key>
+						<char><![CDATA[ö]]></char>
+						<shift><![CDATA[Ö]]></shift>
+					</key>
+					<key>
+						<char><![CDATA[ô]]></char>
+						<shift><![CDATA[Ô]]></shift>
+					</key>
+				</specialchars>
+			</key>
+			<key scale="1">
+				<char><![CDATA[p]]></char>
+				<shift><![CDATA[P]]></shift>
+			</key>
+			<backspace id="backspace" scale="1.5">
+				<char><![CDATA[Backspace]]></char>
+			</backspace>
+		</row>
+		<row>
+			<key scale="1">
+				<char><![CDATA[]]></char>
+				<shift><![CDATA[]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[q]]></char>
+				<shift><![CDATA[Q]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[s]]></char>
+				<shift><![CDATA[S]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[d]]></char>
+				<shift><![CDATA[D]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[f]]></char>
+				<shift><![CDATA[F]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[g]]></char>
+				<shift><![CDATA[G]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[h]]></char>
+				<shift><![CDATA[H]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[j]]></char>
+				<shift><![CDATA[J]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[k]]></char>
+				<shift><![CDATA[K]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[l]]></char>
+				<shift><![CDATA[L]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[m]]></char>
+				<shift><![CDATA[M]]></shift>
+			</key>
+			<key scale="1.5">
+				<char><![CDATA[]]></char>
+				<shift><![CDATA[]]></shift>
+			</key>
+		</row>
+		<row>
+			<shift scale="1.5">
+				<char><![CDATA[Shift]]></char>
+			</shift>
+			<key scale="1">
+				<char><![CDATA[w]]></char>
+				<shift><![CDATA[W]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[x]]></char>
+				<shift><![CDATA[X]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[c]]></char>
+				<shift><![CDATA[C]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[v]]></char>
+				<shift><![CDATA[V]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[b]]></char>
+				<shift><![CDATA[B]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[n]]></char>
+				<shift><![CDATA[N]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[?]]></char>
+				<shift visible="true"><![CDATA[,]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[.]]></char>
+				<shift visible="true"><![CDATA[@]]></shift>
+			</key>
+			<key scale="1">
+				<char><![CDATA[_]]></char>
+				<shift visible="true"><![CDATA[-]]></shift>
+			</key>
+			<capslock scale="1.5">
+				<char><![CDATA[Caps]]></char>
+			</capslock>
+		</row>
+		<row>
+			<keyboard scale="2" name="symbols">
+				<char><![CDATA[?123]]></char>
+			</keyboard>
+			<spacebar scale="8">
+				<char><![CDATA[Space Bar]]></char>
+			</spacebar>
+			<enter scale="2">
+				<char><![CDATA[Enter]]></char>
+			</enter>
+		</row>
+	</default>
+	<symbols>
+		<row>
+			<key scale="0.5">
+				<char><![CDATA[]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[1]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[2]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[3]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[4]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[5]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[6]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[7]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[8]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[9]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[0]]></char>
+			</key>
+			<backspace scale="1.5">
+				<char><![CDATA[Backspace]]></char>
+			</backspace>
+		</row>
+		<row>
+			<key scale="1">
+				<char><![CDATA[]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[@]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[#]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[€]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[%]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[&]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[-]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[+]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[=]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[(]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[)]]></char>
+			</key>
+		</row>
+		<row>
+			<key scale="0.5">
+				<char><![CDATA[]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[!]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[?]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[:]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[;]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[.]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[,]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[_]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[/]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA["]]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[']]></char>
+			</key>
+			<key scale="1">
+				<char><![CDATA[*]]></char>
+			</key>
+		</row>
+		<row>
+			<keyboard scale="2" name="default">
+				<char><![CDATA[ABC]]></char>
+			</keyboard>
+			<spacebar scale="8">
+				<char><![CDATA[Space Bar]]></char>
+			</spacebar>
+			<enter scale="2">
+				<char><![CDATA[Enter]]></char>
+			</enter>
+		</row>
+	</symbols>
+</keyboard>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" applicationComplete="init()" viewSourceURL="srcview/index.html">
+	<mx:Script>
+		<![CDATA[
+			import be.nascom.components.flash.object_handles.ObjectHandleProperties;
+			import be.nascom.components.flash.object_handles.ObjectHandle;
+			import com.adobe.viewsource.ViewSource;
+			
+		[Embed (source="alpha_male.jpg")]
+		protected var AlphaMale:Class;
+			
+		[Embed (source="calculator_watch.jpg")]
+		protected var CalculatorWatch:Class;
+			
+		[Embed (source="chihuaha_8_burgers.jpg")]
+		protected var Chihuaha:Class;
+			
+		[Embed (source="fart.jpg")]
+		protected var Fart:Class;
+		
+		
+		/**
+		 * ***************************OBJECT HANDLES DEMO**********************************
+		 * These object handles were created for the ibbt userplus annotation tool
+		 * it's a relatively simple implementation.
+		 * To add functionality to the object handles, just subclass them, and override things like the update function etc.
+		 */
+		
+		protected function init():void{
+			 ViewSource.addMenuItem(this, "srcview/index.html");
+			
+			//these are the "drag bounds" used by the object handles.
+			var bounds:Rectangle=new Rectangle(0,0,stage.stageWidth,stage.stage.stageHeight);
+			
+			container.graphics.beginFill(0,0xFFFFFF);
+			//it's important for the UIComponent to have a set width and height (or the container for the object handles)
+			//comment this out and you'll see what I mean, the dragging is totally buggy. This is because the dragging listens to events of the parent container.
+			container.graphics.drawRect(0,0,bounds.width,bounds.height);
+			
+			var oh:ObjectHandle;
+			
+			//the "child" which must be a displayObject (or subclass of), which is manipulated by the object handles
+			var bm:Bitmap=new AlphaMale as Bitmap;
+			oh=new ObjectHandle(bm,bounds,200,200);//child,bounds,width,height (width and height at creation time)
+			oh.addEventListener(ObjectHandle.HANDLE_SELECTED,handleSelectObjectHandle);
+			oh.addEventListener(ObjectHandle.UPDATE,handleObjectHandleUpdate);
+			oh.x=200;//the object handles are "centered"
+			oh.y=200;
+			container.addChild(oh);
+			
+			bm=new CalculatorWatch as Bitmap;
+			oh=new ObjectHandle(bm,bounds,200,200,40);
+			oh.addEventListener(ObjectHandle.HANDLE_SELECTED,handleSelectObjectHandle);
+			oh.addEventListener(ObjectHandle.UPDATE,handleObjectHandleUpdate);
+			oh.x=500;
+			oh.y=200;
+			container.addChild(oh);
+			
+			bm=new Chihuaha as Bitmap;
+			oh=new ObjectHandle(bm,bounds,200,200);
+			oh.addEventListener(ObjectHandle.HANDLE_SELECTED,handleSelectObjectHandle);
+			oh.addEventListener(ObjectHandle.UPDATE,handleObjectHandleUpdate);
+			oh.x=200;
+			oh.y=500;
+			container.addChild(oh);
+			
+			bm=new Fart as Bitmap;
+			oh=new ObjectHandle(bm,bounds,200,200);
+			oh.addEventListener(ObjectHandle.HANDLE_SELECTED,handleSelectObjectHandle);
+			oh.addEventListener(ObjectHandle.UPDATE,handleObjectHandleUpdate);
+			oh.x=500;
+			oh.y=500;
+			container.addChild(oh);
+			
+		}
+		
+		protected function deselectAllExcept(oh:ObjectHandle):void{
+			for(var i:uint=0;i<container.numChildren;i++){
+				if(container.getChildAt(i)!=oh){
+					ObjectHandle(container.getChildAt(i)).deselect();
+				}
+			}		
+		}
+		
+		protected function handleSelectObjectHandle(e:Event):void{
+			container.setChildIndex(ObjectHandle(e.target),container.numChildren-1);//move current item to top of display stack
+			deselectAllExcept(ObjectHandle(e.target));
+		}
+		
+		
+		//use the ObjectHandleProperties to store edits in, oh, a database or whatever
+		protected function handleObjectHandleUpdate(e:Event):void{
+			var props:ObjectHandleProperties=ObjectHandle(e.target).getObjectHandleProperties();
+			output.text="YOU HAVE UPDATED\n AN OBJECT HANDLE!!!!\n great job!!!\nhere's its current properties:\n\n"+props.toString();
+		}
+			
+		]]>
+	</mx:Script>
+
+	<mx:UIComponent id="container"  />
+	<mx:TextArea width="300" height="400" id="output" right="10" y="10" />
+	<mx:Label fontSize="20" fontFamily="Arial" color="0xFFFFFF" text="The Riveting Object Handle DEMO!!!!  Click to select and edit items!!! Right click to view source! Yeah!" />
+	
+</mx:Application>

@@ -1,0 +1,550 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../../print.css" type="text/css" media="print">
+<meta content="Channel20,com.adobe.xml.syndication.rss.Channel20,title,link,description,language,copyright,managingEditor,webMaster,rating,pubDate,lastBuildDate,docs,skipDays,skipHours,categories,generator,ttl,cloud" name="keywords">
+<title></title>
+</head>
+<body class="MainContent">
+<script type="text/javascript" language="javascript" src="../../../../../asdoc.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'Channel20 - XML Syndication Libraries';
+				window.onload = configPage;
+			--></script>
+<div class="pageTop"></div>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td style="padding-left:5px" width="64" valign="left"><img title="Macromedia Logo" alt="Macromedia Logo" border="0" src="../../../../../images/mm-icon.jpg"></td><td valign="middle" align="center">
+<h1 style="font-size:20px">XML Syndication Libraries</h1>
+</td>
+</tr>
+<tr>
+<td height="5px" colspan="2"></td>
+</tr>
+</table>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell1"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;| <a href="../../../../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../../../../index.html?com/adobe/xml/syndication/rss/Channel20.html&amp;./com/adobe/xml/syndication/rss/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></span>
+</div>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#propertySummary">Properties</a>&nbsp;| <a href="#constructorSummary">Constructor</a></span>
+</div>com.adobe.xml.syndication.rss<h1>Class Channel20</h1>
+<p></p>
+<pre>
+<script type="text/javascript">var tabCount=3;</script><a href="../../syndication/NewsFeedElement.html">com.adobe.xml.syndication.NewsFeedElement</a><script type="text/javascript">document.writeln();</script><script type="text/javascript">var showInheritance = true;</script><script type="text/javascript">if (showInheritance) { for (var cnt=0; cnt < tabCount; cnt++)document.write(" ");document.write("<img src='../../../../../images/inherit-arrow.jpg' />");document.write(" ");};</script><script type="text/javascript">document.writeln("com.adobe.xml.syndication.rss.Channel20");</script>
+</pre>
+<br>
+<a name="implements"></a><b>All implemented interfaces</b>
+<table>
+<tr>
+<td width="25px"></td><td><a href="../rss/IChannel.html">IChannel</a></td>
+</tr>
+</table>
+<hr>
+<p></p>public class <b>Channel20</b>
+<br>extends <a href="../../syndication/NewsFeedElement.html">NewsFeedElement</a>
+<p></p>
+  Class that represents an RSS 2.0 Channel element.
+  
+  <p></p>
+<p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><a href="http://blogs.law.harvard.edu/tech/rss#requiredChannelElements" target="mm_external">http://blogs.law.harvard.edu/tech/rss#requiredChannelElements</a>, <a href="http://blogs.law.harvard.edu/tech/rss#optionalChannelElements" target="mm_external">http://blogs.law.harvard.edu/tech/rss#optionalChannelElements</a></td>
+</tr>
+</table>
+<hr>
+<br>
+<br>
+<a name="propertySummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Property Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#categories"><b>categories</b></a>:Array</code>&nbsp;&nbsp;[read-only]<br>
+   Specify one or more categories that the channel belongs to.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#cloud"><b>cloud</b></a>:<a href="../rss/Cloud.html">Cloud</a></code>&nbsp;&nbsp;[read-only]<br>
+   Allows processes to register with a cloud to be notified of updates
+   to the channel, implementing a lightweight publish-subscribe
+   protocol for RSS feeds.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#copyright"><b>copyright</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   Copyright notice for content in the channel.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#description"><b>description</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   Phrase or sentence describing the channel.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#docs"><b>docs</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   A URL that points to the documentation for the format used in the
+   RSS file.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#generator"><b>generator</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   A string indicating the program used to generate the channel.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#language"><b>language</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   The language the channel is written in.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#lastBuildDate"><b>lastBuildDate</b></a>:Date</code>&nbsp;&nbsp;[read-only]<br>
+   The last time the content of the channel changed.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#link"><b>link</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   The URL to the HTML website corresponding to the channel.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#managingEditor"><b>managingEditor</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   Email address for person responsible for editorial content.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#pubDate"><b>pubDate</b></a>:Date</code>&nbsp;&nbsp;[read-only]<br>
+   The publication date for the content in the channel.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#rating"><b>rating</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   The PICS rating for the channel.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#skipDays"><b>skipDays</b></a>:Array</code>&nbsp;&nbsp;[read-only]<br>
+   A hint for aggregators telling them which days they can skip.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#skipHours"><b>skipHours</b></a>:Array</code>&nbsp;&nbsp;[read-only]<br>
+   A hint for aggregators telling them which hours they can skip.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#title"><b>title</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   The name of the channel.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#ttl"><b>ttl</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   ttl stands for time to live.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#webMaster"><b>webMaster</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   Email address for person responsible for technical issues relating to channel.</td>
+</tr>
+</table>
+<p></p>
+<a name="propertiesInheritedFromNewsFeedElement"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr class="InheritedTableHeader" bgcolor="#EEEEEE">
+<td><b>Properties inherited from class <a href="../../syndication/NewsFeedElement.html">NewsFeedElement</a></b></td>
+</tr>
+<tr>
+<td><code><a href="../../syndication/NewsFeedElement.html#x">x</a>, <a href="../../syndication/NewsFeedElement.html#xml">xml</a></code></td>
+</tr>
+</table>
+<br>
+<br>
+<a name="constructorSummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Constructor Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"></td><td align="left" valign="top"><code><a href="#Channel20()"><b>Channel20</b></a>(x:XMLList)</code>
+<br>
+   Create a new Channel20 instance.</td>
+</tr>
+</table>
+<br>
+<br>
+<a name="propertyDetail"></a>
+<table class="withBorder" width="100%" cellpadding="2" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Property Detail</b></font></td>
+</tr>
+</table>
+<a name="categories"></a>
+<p></p>
+<h2>categories Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;categories</code><code>:Array</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get categories() : Array</code>
+<br>
+<br>
+   Specify one or more categories that the channel belongs to.
+   
+   <p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><a href="http://blogs.law.harvard.edu/tech/rss#syndic8" target="mm_external">http://blogs.law.harvard.edu/tech/rss#syndic8</a></td>
+</tr>
+</table>
+<hr>
+<a name="cloud"></a>
+<p></p>
+<h2>cloud Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;cloud</code><code>:<a href="../rss/Cloud.html">Cloud</a></code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get cloud() : <a href="../rss/Cloud.html">Cloud</a></code>
+<br>
+<br>
+   Allows processes to register with a cloud to be notified of updates
+   to the channel, implementing a lightweight publish-subscribe
+   protocol for RSS feeds.
+   
+   <p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><a href="http://blogs.law.harvard.edu/tech/rss#ltcloudgtSubelementOfLtchannelgt" target="mm_external">http://blogs.law.harvard.edu/tech/rss#ltcloudgtSubelementOfLtchannelgt</a></td>
+</tr>
+</table>
+<hr>
+<a name="copyright"></a>
+<p></p>
+<h2>copyright Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;copyright</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get copyright() : String</code>
+<br>
+<br>
+   Copyright notice for content in the channel.
+   
+   <hr>
+<a name="description"></a>
+<p></p>
+<h2>description Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;description</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get description() : String</code>
+<br>
+<br>
+   Phrase or sentence describing the channel.
+   
+   <hr>
+<a name="docs"></a>
+<p></p>
+<h2>docs Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;docs</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get docs() : String</code>
+<br>
+<br>
+   A URL that points to the documentation for the format used in the
+   RSS file.
+   
+   <hr>
+<a name="generator"></a>
+<p></p>
+<h2>generator Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;generator</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get generator() : String</code>
+<br>
+<br>
+   A string indicating the program used to generate the channel.
+   
+   <hr>
+<a name="language"></a>
+<p></p>
+<h2>language Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;language</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get language() : String</code>
+<br>
+<br>
+   The language the channel is written in.
+   
+   <p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><a href="http://blogs.law.harvard.edu/tech/stories/storyReader$15" target="mm_external">http://blogs.law.harvard.edu/tech/stories/storyReader$15</a>, <a href="http://www.w3.org/TR/REC-html40/struct/dirlang.html#langcodes" target="mm_external">http://www.w3.org/TR/REC-html40/struct/dirlang.html#langcodes</a></td>
+</tr>
+</table>
+<hr>
+<a name="lastBuildDate"></a>
+<p></p>
+<h2>lastBuildDate Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;lastBuildDate</code><code>:Date</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get lastBuildDate() : Date</code>
+<br>
+<br>
+   The last time the content of the channel changed.
+   
+   <hr>
+<a name="link"></a>
+<p></p>
+<h2>link Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;link</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get link() : String</code>
+<br>
+<br>
+   The URL to the HTML website corresponding to the channel.
+   
+   <hr>
+<a name="managingEditor"></a>
+<p></p>
+<h2>managingEditor Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;managingEditor</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get managingEditor() : String</code>
+<br>
+<br>
+   Email address for person responsible for editorial content.
+   
+   <hr>
+<a name="pubDate"></a>
+<p></p>
+<h2>pubDate Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;pubDate</code><code>:Date</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get pubDate() : Date</code>
+<br>
+<br>
+   The publication date for the content in the channel.
+   
+   <hr>
+<a name="rating"></a>
+<p></p>
+<h2>rating Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;rating</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get rating() : String</code>
+<br>
+<br>
+   The PICS rating for the channel.
+   
+   <p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><a href="http://www.w3.org/PICS/" target="mm_external">http://www.w3.org/PICS/</a></td>
+</tr>
+</table>
+<hr>
+<a name="skipDays"></a>
+<p></p>
+<h2>skipDays Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;skipDays</code><code>:Array</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get skipDays() : Array</code>
+<br>
+<br>
+   A hint for aggregators telling them which days they can skip.
+   
+   <p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><a href="http://blogs.law.harvard.edu/tech/skipHoursDays#skipdays" target="mm_external">http://blogs.law.harvard.edu/tech/skipHoursDays#skipdays</a></td>
+</tr>
+</table>
+<hr>
+<a name="skipHours"></a>
+<p></p>
+<h2>skipHours Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;skipHours</code><code>:Array</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get skipHours() : Array</code>
+<br>
+<br>
+   A hint for aggregators telling them which hours they can skip.
+   
+   <p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><a href="http://blogs.law.harvard.edu/tech/skipHoursDays#skipdays" target="mm_external">http://blogs.law.harvard.edu/tech/skipHoursDays#skipdays</a></td>
+</tr>
+</table>
+<hr>
+<a name="title"></a>
+<p></p>
+<h2>title Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;title</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get title() : String</code>
+<br>
+<br>
+   The name of the channel. It's how people refer to your service.
+   
+   <hr>
+<a name="ttl"></a>
+<p></p>
+<h2>ttl Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;ttl</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get ttl() : String</code>
+<br>
+<br>
+   ttl stands for time to live. It's a number of minutes that
+   indicates how long a channel can be cached before refreshing
+   from the source.
+   
+   <p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><a href="http://blogs.law.harvard.edu/tech/rss#ltttlgtSubelementOfLtchannelgt" target="mm_external">http://blogs.law.harvard.edu/tech/rss#ltttlgtSubelementOfLtchannelgt</a></td>
+</tr>
+</table>
+<hr>
+<a name="webMaster"></a>
+<p></p>
+<h2>webMaster Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;webMaster</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get webMaster() : String</code>
+<br>
+<br>
+   Email address for person responsible for technical issues relating to channel.
+   
+   <br>
+<br>
+<a name="constructorDetail"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Constructor Detail</b></font></td>
+</tr>
+</table>
+<p></p>
+<h2>Channel20 Constructor<a name="Channel20()"></a>
+</h2>
+<p></p>
+<p>
+<code>public function <b>Channel20</b>(x:XMLList)</code>
+</p>
+   Create a new Channel20 instance.
+   
+   <p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>x</b>:XMLList</code> &mdash; The XML with which to construct the channel.
+      </td>
+</tr>
+</table>
+<br>
+<br>
+<hr>
+<br>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#propertySummary">Properties</a>&nbsp;| <a href="#constructorSummary">Constructor</a></span>
+</div>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell2"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;| <a href="../../../../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../../../../index.html?com/adobe/xml/syndication/rss/Channel20.html&amp;./com/adobe/xml/syndication/rss/class-list.html" id="framesLink2">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink2">No&nbsp;Frames</a></span>
+</div>
+<p></p>
+<center class="copyright">Copyright &copy; 2005 Macromedia Inc. All rights reserved.<br>Mon May 8 2006, 15:56 PDT</center>
+</body>
+</html>
+<!--Copyright &copy; 2005 Macromedia Inc. All rights reserved.Mon May 8 2006, 15:56 PDT-->

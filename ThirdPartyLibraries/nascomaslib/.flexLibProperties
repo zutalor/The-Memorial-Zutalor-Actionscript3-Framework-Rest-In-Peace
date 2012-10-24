@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flexLibProperties version="1">
+<includeClasses>
+<classEntry path="be.nascom.air.UpdateManager"/>
+<classEntry path="be.nascom.air.data.EntityManager"/>
+<classEntry path="be.nascom.air.util.AIRInstallUtil"/>
+<classEntry path="be.nascom.flash.display.Carousel"/>
+<classEntry path="be.nascom.flash.display.GradientField"/>
+<classEntry path="be.nascom.flash.display.HtmlTypewriter"/>
+<classEntry path="be.nascom.flash.display.ImageCropper"/>
+<classEntry path="be.nascom.flash.display.Scrollbar"/>
+<classEntry path="be.nascom.flash.display.ScrollbarHorizontal"/>
+<classEntry path="be.nascom.flash.display.Slider"/>
+<classEntry path="be.nascom.flash.display.keyboard.KeyButton"/>
+<classEntry path="be.nascom.flash.display.keyboard.KeyboardTouch"/>
+<classEntry path="be.nascom.flash.display.keyboard.Keys"/>
+<classEntry path="be.nascom.flash.display.keyboard.touchscreen.Key"/>
+<classEntry path="be.nascom.flash.display.keyboard.touchscreen.KeyEvent"/>
+<classEntry path="be.nascom.flash.display.keyboard.touchscreen.KeyName"/>
+<classEntry path="be.nascom.flash.display.keyboard.touchscreen.Keyboard"/>
+<classEntry path="be.nascom.flash.display.objectHandle.Handle"/>
+<classEntry path="be.nascom.flash.display.objectHandle.HotSpot"/>
+<classEntry path="be.nascom.flash.display.objectHandle.ObjectHandle"/>
+<classEntry path="be.nascom.flash.display.objectHandle.ObjectHandleMathUtil"/>
+<classEntry path="be.nascom.flash.display.objectHandle.ObjectHandleProperties"/>
+<classEntry path="be.nascom.flash.display.objectHandle.RotateIcon"/>
+<classEntry path="be.nascom.flash.events.CuePointEvent"/>
+<classEntry path="be.nascom.flash.events.DateCountDownEvent"/>
+<classEntry path="be.nascom.flash.events.FileEvent"/>
+<classEntry path="be.nascom.flash.events.ImageCropperEvent"/>
+<classEntry path="be.nascom.flash.events.PageEvent"/>
+<classEntry path="be.nascom.flash.events.RemoteCallResponseEvent"/>
+<classEntry path="be.nascom.flash.events.RemoteCallStatusEvent"/>
+<classEntry path="be.nascom.flash.graphics.GraphicsUtils"/>
+<classEntry path="be.nascom.flash.graphics.Pixelator"/>
+<classEntry path="be.nascom.flash.graphics.Rippler"/>
+<classEntry path="be.nascom.flash.math.LineSegment"/>
+<classEntry path="be.nascom.flash.math.MathUtils"/>
+<classEntry path="be.nascom.flash.net.XMLLoader"/>
+<classEntry path="be.nascom.flash.net.amf.AbstractAMFService"/>
+<classEntry path="be.nascom.flash.net.upload.FileUploader"/>
+<classEntry path="be.nascom.flash.net.upload.ImageUploader"/>
+<classEntry path="be.nascom.flash.net.upload.UploadPostHelper"/>
+<classEntry path="be.nascom.flash.sound.BackgroundMusic"/>
+<classEntry path="be.nascom.flash.sound.CueSound"/>
+<classEntry path="be.nascom.flash.util.AgeCheckerUtil"/>
+<classEntry path="be.nascom.flash.util.ArrayUtil"/>
+<classEntry path="be.nascom.flash.util.DateCountDownUtil"/>
+<classEntry path="be.nascom.flash.util.DeployUtil"/>
+<classEntry path="be.nascom.flash.util.DisplayUtil"/>
+<classEntry path="be.nascom.flash.util.FontEmbedUtil"/>
+<classEntry path="be.nascom.flash.util.FormUtil"/>
+<classEntry path="be.nascom.flash.util.HtmlUtils"/>
+<classEntry path="be.nascom.flash.util.RegExpUtil"/>
+<classEntry path="be.nascom.flash.util.StringUtil"/>
+<classEntry path="be.nascom.flash.validators.EmailValidator"/>
+<classEntry path="be.nascom.flex.controls.ImageCropper"/>
+<classEntry path="be.nascom.flex.controls.SmoothImage"/>
+</includeClasses>
+<includeResources/>
+<namespaceManifests/>
+</flexLibProperties>

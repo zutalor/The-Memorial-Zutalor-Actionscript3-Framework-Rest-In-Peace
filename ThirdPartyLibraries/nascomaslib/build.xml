@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="NascomASLibBuild" basedir="." default="compile">
+	<property file="../build.properties"/>	
+
+	<taskdef resource="flexTasks.tasks"/>      
+	<property name="app.name" value="NascomASLib"/>
+	<property name="build.home" location="${basedir}/bin"/>
+	<property name="src.home" location="${basedir}/src"/>
+	<property name="lib.home" location="${basedir}/libs"/>			
+	<property name="doc.home" location="${basedir}/doc"/>
+	
+	<!--Cleanup old data before the build-->
+	<target name="clean">
+		<delete includeemptydirs="true">
+			<fileset dir="${build.home}" includes="**/*"/>
+		</delete>    
+	</target>
+
+	<target name="prepare" depends="clean">    	
+		<mkdir dir="${build.home}"/>  
+	</target>	
+		
+	<target name="compile" depends="prepare">
+		<!--Read all the as and mxml files-->
+		<path id="sources">
+			<fileset dir="${src.home}">
+				<include name="**/*.mxml"/>
+				<include name="**/*.as"/>				
+			</fileset>
+		</path>
+		<echo message="Create a list of all the classes"/>
+		<pathconvert property="classes" pathsep=" " refid="sources">
+			<compositemapper>
+				<chainedmapper>
+					<globmapper from="${src.home}/*" to="*" handledirsep="true" />
+					<mapper type="package" from="*.as" to="*"/>
+				</chainedmapper>
+				<chainedmapper>
+					<globmapper from="${src.home}/*" to="*" handledirsep="true" />
+					<mapper type="package" from="*.mxml" to="*"/>
+				</chainedmapper>
+			</compositemapper>			
+		</pathconvert>
+		
+		<echo message="classes is set to = ${classes}"/>
+		<compc output="${build.home}/NascomASLib.swc" include-classes="${classes}" directory="false" >
+			<source-path path-element="${src.home}" />
+			<!-- Get default compiler options. -->
+			<load-config filename="${FLEX_HOME}/frameworks/air-config.xml"/>            
+			<!-- List of path elements that form the roots of ActionScript class hierarchies. -->
+			<source-path path-element="${FLEX_HOME}/frameworks"/>
+			<source-path path-element="${src.home}"/>
+			<!-- List of SWC files or directories that contain SWC files. -->
+			<compiler.library-path dir="${basedir}" append="true">
+				<include name="libs"/>
+			</compiler.library-path>
+			<compiler.library-path dir="${FLEX_HOME}/frameworks" append="true">
+				<include name="lib" />
+				<include name="../bundles/{locale}" />
+			</compiler.library-path>			
+		</compc>
+				
+	</target>	
+	
+	<target name="asdoc" depends="compile">
+		<echo message="Generating ASDOC files"/>
+		<exec executable="${FLEX_HOME}/bin/asdoc.exe" failonerror="true">
+			<arg line="-doc-sources '${src.home}'" />
+			<arg line="-main-title 'NascomASLib'" />
+			<arg line="-window-title 'NascomASLib'" />
+			<arg line="-output '${doc.home}'" />
+			<arg line="-load-config '${FLEX_HOME}/frameworks/air-config.xml'"></arg>
+			<arg line="-library-path '${lib.home}'"></arg>
+			<arg line="-library-path '${FLEX_HOME}/frameworks/libs/'"></arg>
+			<arg line="-library-path '${FLEX_HOME}/frameworks/libs/air'"></arg>
+		</exec>		
+	</target>
+
+</project>

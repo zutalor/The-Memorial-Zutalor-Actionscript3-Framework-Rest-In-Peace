@@ -1,0 +1,309 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../../print.css" type="text/css" media="print">
+<meta content="AbstractAMFService,be.nascom.flash.net.amf.AbstractAMFService,_connection,_delegateClassPath,_encodingMethod,_gatewayUrl,delegateClassPath,connect,disconnect" name="keywords">
+<title>be.nascom.flash.net.amf.AbstractAMFService</title>
+</head>
+<body>
+<script type="text/javascript" language="javascript" src="../../../../../asdoc.js"></script><script type="text/javascript" language="javascript" src="../../../../../cookies.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'AbstractAMFService - NascomASLib';
+				var baseRef = '../../../../../';
+				window.onload = configPage;
+			--></script>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" class="titleTable">
+<tr>
+<td align="left" class="titleTableTitle">NascomASLib</td><td align="right" class="titleTableTopNav"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;|&nbsp;<a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;|&nbsp;<a href="../../../../../index.html?be/nascom/flash/net/amf/AbstractAMFService.html&amp;be/nascom/flash/net/amf/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></td><td rowspan="3" align="right" class="titleTableLogo"><img alt="Adobe Logo" title="Adobe Logo" class="logoImage" src="../../../../../images/logo.jpg"></td>
+</tr>
+<tr class="titleTableRow2">
+<td align="left" id="subTitle" class="titleTableSubTitle">Class&nbsp;AbstractAMFService</td><td align="right" id="subNav" class="titleTableSubNav"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a></td>
+</tr>
+<tr class="titleTableRow3">
+<td colspan="2">&nbsp;</td>
+</tr>
+</table>
+<script type="text/javascript" language="javascript">
+<!--
+if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Class AbstractAMFService"); titleBar_setSubNav(false,true,false,false,false,false,true,false,false,false,false,false,false,false);}
+--></script>
+<div class="MainContent">
+<table cellspacing="0" cellpadding="0" class="classHeaderTable">
+<tr>
+<td class="classHeaderTableLabel">Package</td><td><a onclick="javascript:loadClassListFrame('class-list.html')" href="package-detail.html">be.nascom.flash.net.amf</a></td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Class</td><td class="classSignature">public class AbstractAMFService</td>
+</tr>
+<tr>
+<td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">AbstractAMFService <img class="inheritArrow" alt="Inheritance" title="Inheritance" src="../../../../../images/inherit-arrow.gif"> flash.events.EventDispatcher</td>
+</tr>
+</table>
+<p></p>
+  AbstractAMFService is a bass class used for AMF-based services. This class needs to be subclassed
+  and the subclass implements functions that will handle individual remote calls.
+  Use <code>flash.net.Responder</code> if callbacks are needed, and register class aliases in the constructor
+  if needed. 
+  
+  <p>Work in progress</p>
+  
+  <p></p>
+<br>
+<span class="label">Example</span>
+<br>The following code creates an AMF service class using AbstractAMFService.
+  <div class='listing'><pre>
+   package services { 
+    import be.nascom.flash.net.amf.AbstractAMFService;
+    import flash.net.Responder;
+    import flash.net.registerClassAlias;
+  
+    public class JavaService extends AbstractAMFService {
+     private static const GATEWAY_URL : String = Paths.JAVA_SERVICE;
+     private const DELEGATE_CLASSPATH : String = "be.nascom.lifeislive.services.AmfRemotingService";
+     
+     public function JavaService() { 
+      super(GATEWAY_URL, DELEGATE_CLASSPATH); 
+    }
+  
+     public function updateLanguage(userId : uint, language : String) : void {
+      _connection.call(DELEGATE_CLASSPATH+".updateLanguage", null, userId, language);
+     }
+    }
+   }
+  </pre></div>
+   <p></p>
+<p>
+<span class="classHeaderTableLabel">See also</span>
+</p>
+<div class="seeAlso">flash.net.NetConnection<br>flash.net.ObjectEncoding<br>flash.net.registerClassAlias<br>flash.net.Responder</div>
+<br>
+<hr>
+</div>
+<a name="propertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Properties</div>
+<table id="summaryTableProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#delegateClassPath">delegateClassPath</a> : String<div class="summaryTableDescription">
+   The full qualified class path of the remote service delegate class
+   </div>
+</td><td class="summaryTableOwnerCol">AbstractAMFService</td>
+</tr>
+</table>
+</div>
+<a name="protectedPropertySummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Properties</div>
+<table id="summaryTableProtectedProperty" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_connection">_connection</a> : NetConnection<div class="summaryTableDescription">
+   Reference to the <code>NetConnection</code> object, which will be executing the actual calls
+   </div>
+</td><td class="summaryTableOwnerCol">AbstractAMFService</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_delegateClassPath">_delegateClassPath</a> : String<div class="summaryTableDescription">
+   The serverside full qualified classpath of the delegate service class which contains the methods that will be called remotely
+   </div>
+</td><td class="summaryTableOwnerCol">AbstractAMFService</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_encodingMethod">_encodingMethod</a> : uint<div class="summaryTableDescription">
+   The AMF version to use:<ul><li><code>ObjectEncoding.AMF0</code></li><li><code>ObjectEncoding.AMF3</code></li></ul>
+   </div>
+</td><td class="summaryTableOwnerCol">AbstractAMFService</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#_gatewayUrl">_gatewayUrl</a> : String<div class="summaryTableDescription">
+   The url to the serverside AMF gateway
+   </div>
+</td><td class="summaryTableOwnerCol">AbstractAMFService</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Public Methods</div>
+<table id="summaryTableMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#AbstractAMFService()">AbstractAMFService</a>(gatewayUrl:String, delegateClassPath:String = "", encoding:uint = 3)</div>
+<div class="summaryTableDescription">
+ Initializes an AMF service
+ 
+ </div>
+</td><td class="summaryTableOwnerCol">AbstractAMFService</td>
+</tr>
+</table>
+</div>
+<a name="methodSummary"></a><a name="protectedMethodSummary"></a>
+<div class="summarySection">
+<div class="summaryTableTitle">Protected Methods</div>
+<table id="summaryTableProtectedMethod" class="summaryTable " cellpadding="3" cellspacing="0">
+<tr>
+<th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#connect()">connect</a>():void</div>
+<div class="summaryTableDescription">
+ Connects to the AMF gateway
+ </div>
+</td><td class="summaryTableOwnerCol">AbstractAMFService</td>
+</tr>
+<tr class="">
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
+<div class="summarySignature">
+<a class="signatureLink" href="#disconnect()">disconnect</a>():void</div>
+<div class="summaryTableDescription">
+ Closes the connection to the AMF gateway
+ </div>
+</td><td class="summaryTableOwnerCol">AbstractAMFService</td>
+</tr>
+</table>
+</div>
+<script type="text/javascript" language="javascript">
+<!--
+showHideInherited();
+--></script>
+<div class="MainContent">
+<a name="propertyDetail"></a>
+<div class="detailSectionHeader">Property detail</div>
+<a name="_connection"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_connection</td><td class="detailHeaderType">property</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _connection:NetConnection</code><p>
+   Reference to the <code>NetConnection</code> object, which will be executing the actual calls
+   </p></div>
+<a name="_delegateClassPath"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_delegateClassPath</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _delegateClassPath:String</code><p>
+   The serverside full qualified classpath of the delegate service class which contains the methods that will be called remotely
+   </p></div>
+<a name="delegateClassPath"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">delegateClassPath</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>delegateClassPath:String</code>&nbsp;&nbsp;[read-write]<p>
+   The full qualified class path of the remote service delegate class
+   </p><span class="label">Implementation</span>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get delegateClassPath():String</code>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function set delegateClassPath(value:String):void</code>
+<br>
+</div>
+<a name="_encodingMethod"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_encodingMethod</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _encodingMethod:uint</code><p>
+   The AMF version to use:<ul><li><code>ObjectEncoding.AMF0</code></li><li><code>ObjectEncoding.AMF3</code></li></ul>
+   </p></div>
+<a name="_gatewayUrl"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">_gatewayUrl</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected var _gatewayUrl:String</code><p>
+   The url to the serverside AMF gateway
+   </p></div>
+<a name="constructorDetail"></a>
+<div class="detailSectionHeader">Constructor detail</div>
+<a name="AbstractAMFService()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">AbstractAMFService</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">constructor</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>public function AbstractAMFService(gatewayUrl:String, delegateClassPath:String = "", encoding:uint = 3)</code><p>
+ Initializes an AMF service
+ 
+ </p><span class="label">Parameters</span>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><span class="label">gatewayUrl</span>:String</code> &mdash; The url to the serverside AMF gateway
+ </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">delegateClassPath</span>:String</code> (default = "<code></code>")<code></code> &mdash; The serverside full qualified classpath of the delegate service class which contains the methods that will be called remotely
+ </td>
+</tr>
+<tr>
+<td class="paramSpacer">&nbsp;</td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><span class="label">encoding</span>:uint</code> (default = <code>3</code>)<code></code> &mdash; The AMF version to use:<ul><li><code>ObjectEncoding.AMF0</code></li><li><code>ObjectEncoding.AMF3</code></li></ul>
+ </td>
+</tr>
+</table>
+</div>
+<a name="methodDetail"></a>
+<div class="detailSectionHeader">Method detail</div>
+<a name="connect()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">connect</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function connect():void</code><p>
+ Connects to the AMF gateway
+ </p></div>
+<a name="disconnect()"></a>
+<table cellspacing="0" cellpadding="0" class="detailHeader">
+<tr>
+<td class="detailHeaderName">disconnect</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td>
+</tr>
+</table>
+<div class="detailBody">
+<code>protected function disconnect():void</code><p>
+ Closes the connection to the AMF gateway
+ </p></div>
+<br>
+<br>
+<hr>
+<br>
+<p></p>
+<center class="copyright">
+<footer> 
+</footer>
+</center>
+</div>
+</body>
+</html>
+<!-- -->

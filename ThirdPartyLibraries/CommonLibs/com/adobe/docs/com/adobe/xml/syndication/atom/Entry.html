@@ -1,0 +1,345 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../../print.css" type="text/css" media="print">
+<meta content="Entry,com.adobe.xml.syndication.atom.Entry,title,links,id,updated,published,authors,contributors,content,categories,source" name="keywords">
+<title></title>
+</head>
+<body class="MainContent">
+<script type="text/javascript" language="javascript" src="../../../../../asdoc.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'Entry - XML Syndication Libraries';
+				window.onload = configPage;
+			--></script>
+<div class="pageTop"></div>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td style="padding-left:5px" width="64" valign="left"><img title="Macromedia Logo" alt="Macromedia Logo" border="0" src="../../../../../images/mm-icon.jpg"></td><td valign="middle" align="center">
+<h1 style="font-size:20px">XML Syndication Libraries</h1>
+</td>
+</tr>
+<tr>
+<td height="5px" colspan="2"></td>
+</tr>
+</table>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell1"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;| <a href="../../../../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../../../../index.html?com/adobe/xml/syndication/atom/Entry.html&amp;./com/adobe/xml/syndication/atom/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></span>
+</div>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#propertySummary">Properties</a>&nbsp;| <a href="#constructorSummary">Constructor</a></span>
+</div>com.adobe.xml.syndication.atom<h1>Class Entry</h1>
+<p></p>
+<pre>
+<script type="text/javascript">var tabCount=3;</script><a href="../../syndication/NewsFeedElement.html">com.adobe.xml.syndication.NewsFeedElement</a><script type="text/javascript">document.writeln();</script><script type="text/javascript">var showInheritance = true;</script><script type="text/javascript">if (showInheritance) { for (var cnt=0; cnt < tabCount; cnt++)document.write(" ");document.write("<img src='../../../../../images/inherit-arrow.jpg' />");document.write(" ");};</script><script type="text/javascript">document.writeln("com.adobe.xml.syndication.atom.Entry");</script>
+</pre>
+<br>
+<hr>
+<p></p>public class <b>Entry</b>
+<br>extends <a href="../../syndication/NewsFeedElement.html">NewsFeedElement</a>
+<p></p>
+ Class that represents an Entry element within an Atom feed
+ 
+  <p></p>
+<p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><a href="http://www.atomenabled.org/developers/syndication/atom-format-spec.php#rfc.section.4.1.2" target="mm_external">http://www.atomenabled.org/developers/syndication/atom-format-spec.php#rfc.section.4.1.2</a></td>
+</tr>
+</table>
+<hr>
+<br>
+<br>
+<a name="propertySummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Property Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#authors"><b>authors</b></a>:Array</code>&nbsp;&nbsp;[read-only]<br>
+  An Array of Author objects that represent the authors for the entry.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#categories"><b>categories</b></a>:Array</code>&nbsp;&nbsp;[read-only]<br>
+  An Array of Category objecst that represent the categories that the
+  feed is associated with.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#content"><b>content</b></a>:<a href="../atom/Content.html">Content</a></code>&nbsp;&nbsp;[read-only]<br>
+  A Content object that contains the content of the entry.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#contributors"><b>contributors</b></a>:Array</code>&nbsp;&nbsp;[read-only]<br>
+  An Array of Author objects that represent the contributors for the entry.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#id"><b>id</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+  A String that uniquely identifies the Entry.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#links"><b>links</b></a>:Array</code>&nbsp;&nbsp;[read-only]<br>
+  An array containing one or more link objects relating to this entry.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#published"><b>published</b></a>:Date</code>&nbsp;&nbsp;[read-only]<br>
+  A Date that represents when the entry was originally published.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#source"><b>source</b></a>:<a href="../atom/FeedData.html">FeedData</a></code>&nbsp;&nbsp;[read-only]<br>
+  A FeedData object that represents the source element of an Atom
+  entry
+     </td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#title"><b>title</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+  A String that contains the title for the entry.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#updated"><b>updated</b></a>:Date</code>&nbsp;&nbsp;[read-only]<br>
+  A Date that represents when the entry was last updated.</td>
+</tr>
+</table>
+<p></p>
+<a name="propertiesInheritedFromNewsFeedElement"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr class="InheritedTableHeader" bgcolor="#EEEEEE">
+<td><b>Properties inherited from class <a href="../../syndication/NewsFeedElement.html">NewsFeedElement</a></b></td>
+</tr>
+<tr>
+<td><code><a href="../../syndication/NewsFeedElement.html#x">x</a>, <a href="../../syndication/NewsFeedElement.html#xml">xml</a></code></td>
+</tr>
+</table>
+<br>
+<br>
+<a name="constructorSummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Constructor Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"></td><td align="left" valign="top"><code><a href="#Entry()"><b>Entry</b></a>(x:XMLList)</code>
+<br>
+  Constructor for class.</td>
+</tr>
+</table>
+<br>
+<br>
+<a name="propertyDetail"></a>
+<table class="withBorder" width="100%" cellpadding="2" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Property Detail</b></font></td>
+</tr>
+</table>
+<a name="authors"></a>
+<p></p>
+<h2>authors Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;authors</code><code>:Array</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get authors() : Array</code>
+<br>
+<br>
+  An Array of Author objects that represent the authors for the entry.
+     <hr>
+<a name="categories"></a>
+<p></p>
+<h2>categories Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;categories</code><code>:Array</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get categories() : Array</code>
+<br>
+<br>
+  An Array of Category objecst that represent the categories that the
+  feed is associated with.
+     <hr>
+<a name="content"></a>
+<p></p>
+<h2>content Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;content</code><code>:<a href="../atom/Content.html">Content</a></code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get content() : <a href="../atom/Content.html">Content</a></code>
+<br>
+<br>
+  A Content object that contains the content of the entry.
+     <hr>
+<a name="contributors"></a>
+<p></p>
+<h2>contributors Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;contributors</code><code>:Array</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get contributors() : Array</code>
+<br>
+<br>
+  An Array of Author objects that represent the contributors for the entry.
+     <hr>
+<a name="id"></a>
+<p></p>
+<h2>id Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;id</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get id() : String</code>
+<br>
+<br>
+  A String that uniquely identifies the Entry.
+    This property conveys a permanent, universally unique identifier for
+  an entry or feed.
+     <hr>
+<a name="links"></a>
+<p></p>
+<h2>links Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;links</code><code>:Array</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get links() : Array</code>
+<br>
+<br>
+  An array containing one or more link objects relating to this entry.
+     <hr>
+<a name="published"></a>
+<p></p>
+<h2>published Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;published</code><code>:Date</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get published() : Date</code>
+<br>
+<br>
+  A Date that represents when the entry was originally published.
+     <hr>
+<a name="source"></a>
+<p></p>
+<h2>source Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;source</code><code>:<a href="../atom/FeedData.html">FeedData</a></code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get source() : <a href="../atom/FeedData.html">FeedData</a></code>
+<br>
+<br>
+  A FeedData object that represents the source element of an Atom
+  entry
+     <p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><a href="http://www.atomenabled.org/developers/syndication/atom-format-spec.php#atomContent" target="mm_external">http://www.atomenabled.org/developers/syndication/atom-format-spec.php#atomContent</a></td>
+</tr>
+</table>
+<hr>
+<a name="title"></a>
+<p></p>
+<h2>title Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;title</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get title() : String</code>
+<br>
+<br>
+  A String that contains the title for the entry.
+     <hr>
+<a name="updated"></a>
+<p></p>
+<h2>updated Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;updated</code><code>:Date</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get updated() : Date</code>
+<br>
+<br>
+  A Date that represents when the entry was last updated.
+     <br>
+<br>
+<a name="constructorDetail"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Constructor Detail</b></font></td>
+</tr>
+</table>
+<p></p>
+<h2>Entry Constructor<a name="Entry()"></a>
+</h2>
+<p></p>
+<p>
+<code>public function <b>Entry</b>(x:XMLList)</code>
+</p>
+  Constructor for class.
+  
+  <p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>x</b>:XMLList</code> &mdash; An XML document that contains an individual Entry element from 
+  an Aton XML feed.
+     </td>
+</tr>
+</table>
+<br>
+<br>
+<hr>
+<br>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#propertySummary">Properties</a>&nbsp;| <a href="#constructorSummary">Constructor</a></span>
+</div>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell2"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;| <a href="../../../../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../../../../index.html?com/adobe/xml/syndication/atom/Entry.html&amp;./com/adobe/xml/syndication/atom/class-list.html" id="framesLink2">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink2">No&nbsp;Frames</a></span>
+</div>
+<p></p>
+<center class="copyright">Copyright &copy; 2005 Macromedia Inc. All rights reserved.<br>Mon May 8 2006, 15:56 PDT</center>
+</body>
+</html>
+<!--Copyright &copy; 2005 Macromedia Inc. All rights reserved.Mon May 8 2006, 15:56 PDT-->

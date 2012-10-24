@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../print.css" type="text/css" media="print">
+<meta content="ParsingTools,com.adobe.xml.syndication.ParsingTools,nullCheck,nanCheck,dateCheck,xmlToCategories" name="keywords">
+<title></title>
+</head>
+<body class="MainContent">
+<script type="text/javascript" language="javascript" src="../../../../asdoc.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'ParsingTools - XML Syndication Libraries';
+				window.onload = configPage;
+			--></script>
+<div class="pageTop"></div>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td style="padding-left:5px" width="64" valign="left"><img title="Macromedia Logo" alt="Macromedia Logo" border="0" src="../../../../images/mm-icon.jpg"></td><td valign="middle" align="center">
+<h1 style="font-size:20px">XML Syndication Libraries</h1>
+</td>
+</tr>
+<tr>
+<td height="5px" colspan="2"></td>
+</tr>
+</table>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell1"><a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../../../index-list.html')" href="../../../../all-index-A.html">Index</a>&nbsp;| <a href="../../../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../../../index.html?com/adobe/xml/syndication/ParsingTools.html&amp;./com/adobe/xml/syndication/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></span>
+</div>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#methodSummary">Methods</a></span>
+</div>com.adobe.xml.syndication<h1>Class ParsingTools</h1>
+<p></p>
+<pre>
+<script type="text/javascript">var tabCount=3;</script><script type="text/javascript">var showInheritance = false;</script><script type="text/javascript">if (showInheritance) { for (var cnt=0; cnt < tabCount; cnt++)document.write(" ");document.write("<img src='../../../../images/inherit-arrow.jpg' />");document.write(" ");};</script><script type="text/javascript">document.writeln("com.adobe.xml.syndication.ParsingTools");</script>
+</pre>
+<br>
+<hr>
+<p></p>public class <b>ParsingTools</b>
+<p></p>
+  Utility class with functions to help parse RSS and Atom feeds.
+  
+  <p></p>
+<hr>
+<br>
+<br>
+<a name="methodSummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Method Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1">static </font></code></td><td valign="top"><code><a href="#dateCheck()"><b>dateCheck</b></a>(x:XMLList, f:Function) : Date</code>
+<br>
+   Checks to see if a piece of XML that should be a date is empty.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1">static </font></code></td><td valign="top"><code><a href="#nanCheck()"><b>nanCheck</b></a>(x:XMLList) : Number</code>
+<br>
+   Checks to see if a piece of XML that should be a number is empty.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1">static </font></code></td><td valign="top"><code><a href="#nullCheck()"><b>nullCheck</b></a>(x:XMLList) : String</code>
+<br>
+   Checks to see if a piece of XML that should be a string is empty.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1">static </font></code></td><td valign="top"><code><a href="#xmlToCategories()"><b>xmlToCategories</b></a>(x:XMLList) : Array</code>
+<br>
+   Checks to see if a piece of XML that should be a string represents
+   categories.</td>
+</tr>
+</table>
+<br>
+<br>
+<a name="methodDetail"></a>
+<table class="withBorder" width="100%" cellpadding="2" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Method Detail</b></font></td>
+</tr>
+</table>
+<a name="dateCheck()"></a>
+<p></p>
+<h2>dateCheck Method</h2>
+<p></p>
+<p>
+<code>public static function <b>dateCheck</b>(x:XMLList, f:Function) : Date</code>
+</p>
+   Checks to see if a piece of XML that should be a date is empty.
+   If so, returns null. If not, parses the string into a date using
+   the specifid date parsing function.
+   
+   <p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>x</b>:XMLList</code> &mdash; The piece of XML to test.
+   </td>
+</tr>
+<tr>
+<td class="paramSpacer"></td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><b>f</b>:Function</code> &mdash; The date parsing function to use to parse the string if
+            it's not null.
+   </td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Date</code> &mdash; null if the date is emply, otherwise a date object created
+           using the specified date-parsing function.
+      </td>
+</tr>
+</table>
+<hr>
+<a name="nanCheck()"></a>
+<p></p>
+<h2>nanCheck Method</h2>
+<p></p>
+<p>
+<code>public static function <b>nanCheck</b>(x:XMLList) : Number</code>
+</p>
+   Checks to see if a piece of XML that should be a number is empty.
+   If so, returns NaN.
+   
+   <p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>x</b>:XMLList</code> &mdash; The piece of XML to test.
+   </td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Number</code> &mdash; null if the number is emply, otherwise the value of the XML
+           node.
+      </td>
+</tr>
+</table>
+<hr>
+<a name="nullCheck()"></a>
+<p></p>
+<h2>nullCheck Method</h2>
+<p></p>
+<p>
+<code>public static function <b>nullCheck</b>(x:XMLList) : String</code>
+</p>
+   Checks to see if a piece of XML that should be a string is empty.
+   If so, returns null.
+   
+   <p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>x</b>:XMLList</code> &mdash; The piece of XML to test.
+   </td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; null if the string is emply, otherwise the value of the XML
+           node.
+      </td>
+</tr>
+</table>
+<hr>
+<a name="xmlToCategories()"></a>
+<p></p>
+<h2>xmlToCategories Method</h2>
+<p></p>
+<p>
+<code>public static function <b>xmlToCategories</b>(x:XMLList) : Array</code>
+</p>
+   Checks to see if a piece of XML that should be a string represents
+   categories. If it's empty, return null. If not, parse the string
+   into an array of category objects.
+   
+   <p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>x</b>:XMLList</code> &mdash; The piece of XML to test.
+   </td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code> &mdash; null if the string is empty, otherwise an array of Category
+           objects.
+      </td>
+</tr>
+</table>
+<br>
+<br>
+<hr>
+<br>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#methodSummary">Methods</a></span>
+</div>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell2"><a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../../../all-classes.html')" href="../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../../../index-list.html')" href="../../../../all-index-A.html">Index</a>&nbsp;| <a href="../../../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../../../index.html?com/adobe/xml/syndication/ParsingTools.html&amp;./com/adobe/xml/syndication/class-list.html" id="framesLink2">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink2">No&nbsp;Frames</a></span>
+</div>
+<p></p>
+<center class="copyright">Copyright &copy; 2005 Macromedia Inc. All rights reserved.<br>Mon May 8 2006, 15:56 PDT</center>
+</body>
+</html>
+<!--Copyright &copy; 2005 Macromedia Inc. All rights reserved.Mon May 8 2006, 15:56 PDT-->

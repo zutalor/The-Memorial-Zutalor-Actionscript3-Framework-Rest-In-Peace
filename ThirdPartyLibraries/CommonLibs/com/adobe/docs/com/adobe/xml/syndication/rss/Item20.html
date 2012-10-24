@@ -1,0 +1,416 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../../../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../../../../print.css" type="text/css" media="print">
+<meta content="Item20,com.adobe.xml.syndication.rss.Item20,title,link,description,creator,comments,author,pubDate,categories,source,enclosure,guid" name="keywords">
+<title></title>
+</head>
+<body class="MainContent">
+<script type="text/javascript" language="javascript" src="../../../../../asdoc.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'Item20 - XML Syndication Libraries';
+				window.onload = configPage;
+			--></script>
+<div class="pageTop"></div>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td style="padding-left:5px" width="64" valign="left"><img title="Macromedia Logo" alt="Macromedia Logo" border="0" src="../../../../../images/mm-icon.jpg"></td><td valign="middle" align="center">
+<h1 style="font-size:20px">XML Syndication Libraries</h1>
+</td>
+</tr>
+<tr>
+<td height="5px" colspan="2"></td>
+</tr>
+</table>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell1"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;| <a href="../../../../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../../../../index.html?com/adobe/xml/syndication/rss/Item20.html&amp;./com/adobe/xml/syndication/rss/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></span>
+</div>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#propertySummary">Properties</a>&nbsp;| <a href="#constructorSummary">Constructor</a></span>
+</div>com.adobe.xml.syndication.rss<h1>Class Item20</h1>
+<p></p>
+<pre>
+<script type="text/javascript">var tabCount=3;</script><a href="../../syndication/NewsFeedElement.html">com.adobe.xml.syndication.NewsFeedElement</a><script type="text/javascript">document.writeln();</script><script type="text/javascript">var showInheritance = true;</script><script type="text/javascript">if (showInheritance) { for (var cnt=0; cnt < tabCount; cnt++)document.write(" ");document.write("<img src='../../../../../images/inherit-arrow.jpg' />");document.write(" ");};</script><script type="text/javascript">document.writeln("com.adobe.xml.syndication.rss.Item20");</script>
+</pre>
+<br>
+<a name="implements"></a><b>All implemented interfaces</b>
+<table>
+<tr>
+<td width="25px"></td><td><a href="../rss/IItem.html">IItem</a></td>
+</tr>
+</table>
+<hr>
+<p></p>public class <b>Item20</b>
+<br>extends <a href="../../syndication/NewsFeedElement.html">NewsFeedElement</a>
+<p></p>
+  Class that represents an RSS 2.0 item.
+  
+  <p></p>
+<p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><a href="http://blogs.law.harvard.edu/tech/rss#hrelementsOfLtitemgt" target="mm_external">http://blogs.law.harvard.edu/tech/rss#hrelementsOfLtitemgt</a></td>
+</tr>
+</table>
+<hr>
+<br>
+<br>
+<a name="propertySummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Property Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#author"><b>author</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   Email address of the author of the item.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#categories"><b>categories</b></a>:Array</code>&nbsp;&nbsp;[read-only]<br>
+   Includes the item in one or more categories.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#comments"><b>comments</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   URL of a page for comments relating to the item.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#creator"><b>creator</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   The name and, optionally, email address of the creator of the feed.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#description"><b>description</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   The item synopsis.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#enclosure"><b>enclosure</b></a>:<a href="../rss/Enclosure.html">Enclosure</a></code>&nbsp;&nbsp;[read-only]<br>
+   Describes a media object that is attached to the item.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#guid"><b>guid</b></a>:<a href="../rss/Guid.html">Guid</a></code>&nbsp;&nbsp;[read-only]<br>
+   A string that uniquely identifies the item.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#link"><b>link</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   The URL of the item.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#pubDate"><b>pubDate</b></a>:Date</code>&nbsp;&nbsp;[read-only]<br>
+   Indicates when the item was published.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#source"><b>source</b></a>:<a href="../rss/Source.html">Source</a></code>&nbsp;&nbsp;[read-only]<br>
+   The RSS channel that the item came from.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#title"><b>title</b></a>:String</code>&nbsp;&nbsp;[read-only]<br>
+   The title of the item.</td>
+</tr>
+</table>
+<p></p>
+<a name="propertiesInheritedFromNewsFeedElement"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr class="InheritedTableHeader" bgcolor="#EEEEEE">
+<td><b>Properties inherited from class <a href="../../syndication/NewsFeedElement.html">NewsFeedElement</a></b></td>
+</tr>
+<tr>
+<td><code><a href="../../syndication/NewsFeedElement.html#x">x</a>, <a href="../../syndication/NewsFeedElement.html#xml">xml</a></code></td>
+</tr>
+</table>
+<br>
+<br>
+<a name="constructorSummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Constructor Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"></td><td align="left" valign="top"><code><a href="#Item20()"><b>Item20</b></a>(x:XMLList)</code>
+<br>
+   Create a new Item20 instance.</td>
+</tr>
+</table>
+<br>
+<br>
+<a name="propertyDetail"></a>
+<table class="withBorder" width="100%" cellpadding="2" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Property Detail</b></font></td>
+</tr>
+</table>
+<a name="author"></a>
+<p></p>
+<h2>author Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;author</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get author() : String</code>
+<br>
+<br>
+   Email address of the author of the item.
+   
+   <p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><a href="http://blogs.law.harvard.edu/tech/rss#ltauthorgtSubelementOfLtitemgt" target="mm_external">http://blogs.law.harvard.edu/tech/rss#ltauthorgtSubelementOfLtitemgt</a></td>
+</tr>
+</table>
+<hr>
+<a name="categories"></a>
+<p></p>
+<h2>categories Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;categories</code><code>:Array</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get categories() : Array</code>
+<br>
+<br>
+   Includes the item in one or more categories.
+   
+   <p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><a href="http://blogs.law.harvard.edu/tech/rss#ltcategorygtSubelementOfLtitemgt" target="mm_external">http://blogs.law.harvard.edu/tech/rss#ltcategorygtSubelementOfLtitemgt</a></td>
+</tr>
+</table>
+<hr>
+<a name="comments"></a>
+<p></p>
+<h2>comments Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;comments</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get comments() : String</code>
+<br>
+<br>
+   URL of a page for comments relating to the item.
+   
+   <p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><a href="http://blogs.law.harvard.edu/tech/rss#ltcommentsgtSubelementOfLtitemgt" target="mm_external">http://blogs.law.harvard.edu/tech/rss#ltcommentsgtSubelementOfLtitemgt</a></td>
+</tr>
+</table>
+<hr>
+<a name="creator"></a>
+<p></p>
+<h2>creator Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;creator</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get creator() : String</code>
+<br>
+<br>
+   The name and, optionally, email address of the creator of the feed.
+   
+   <hr>
+<a name="description"></a>
+<p></p>
+<h2>description Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;description</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get description() : String</code>
+<br>
+<br>
+   The item synopsis.
+   
+   <hr>
+<a name="enclosure"></a>
+<p></p>
+<h2>enclosure Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;enclosure</code><code>:<a href="../rss/Enclosure.html">Enclosure</a></code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get enclosure() : <a href="../rss/Enclosure.html">Enclosure</a></code>
+<br>
+<br>
+   Describes a media object that is attached to the item.
+   
+   <p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><a href="http://blogs.law.harvard.edu/tech/rss#ltenclosuregtSubelementOfLtitemgt" target="mm_external">http://blogs.law.harvard.edu/tech/rss#ltenclosuregtSubelementOfLtitemgt</a></td>
+</tr>
+</table>
+<hr>
+<a name="guid"></a>
+<p></p>
+<h2>guid Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;guid</code><code>:<a href="../rss/Guid.html">Guid</a></code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get guid() : <a href="../rss/Guid.html">Guid</a></code>
+<br>
+<br>
+   A string that uniquely identifies the item.
+   
+   <p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><a href="http://blogs.law.harvard.edu/tech/rss#ltguidgtSubelementOfLtitemgt" target="mm_external">http://blogs.law.harvard.edu/tech/rss#ltguidgtSubelementOfLtitemgt</a></td>
+</tr>
+</table>
+<hr>
+<a name="link"></a>
+<p></p>
+<h2>link Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;link</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get link() : String</code>
+<br>
+<br>
+   The URL of the item.
+   
+   <hr>
+<a name="pubDate"></a>
+<p></p>
+<h2>pubDate Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;pubDate</code><code>:Date</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get pubDate() : Date</code>
+<br>
+<br>
+   Indicates when the item was published.
+   
+   <p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><a href="http://blogs.law.harvard.edu/tech/rss#ltpubdategtSubelementOfLtitemgt" target="mm_external">http://blogs.law.harvard.edu/tech/rss#ltpubdategtSubelementOfLtitemgt</a></td>
+</tr>
+</table>
+<hr>
+<a name="source"></a>
+<p></p>
+<h2>source Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;source</code><code>:<a href="../rss/Source.html">Source</a></code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get source() : <a href="../rss/Source.html">Source</a></code>
+<br>
+<br>
+   The RSS channel that the item came from.
+   
+   <p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><a href="http://blogs.law.harvard.edu/tech/rss#ltsourcegtSubelementOfLtitemgt" target="mm_external">http://blogs.law.harvard.edu/tech/rss#ltsourcegtSubelementOfLtitemgt</a></td>
+</tr>
+</table>
+<hr>
+<a name="title"></a>
+<p></p>
+<h2>title Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;title</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get title() : String</code>
+<br>
+<br>
+   The title of the item.
+   
+   <br>
+<br>
+<a name="constructorDetail"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Constructor Detail</b></font></td>
+</tr>
+</table>
+<p></p>
+<h2>Item20 Constructor<a name="Item20()"></a>
+</h2>
+<p></p>
+<p>
+<code>public function <b>Item20</b>(x:XMLList)</code>
+</p>
+   Create a new Item20 instance.
+   
+   <p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>x</b>:XMLList</code> &mdash; The XML with which to construct the item.
+      </td>
+</tr>
+</table>
+<br>
+<br>
+<hr>
+<br>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#propertySummary">Properties</a>&nbsp;| <a href="#constructorSummary">Constructor</a></span>
+</div>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell2"><a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../all-classes.html')" href="../../../../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../../../../index-list.html')" href="../../../../../all-index-A.html">Index</a>&nbsp;| <a href="../../../../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../../../../index.html?com/adobe/xml/syndication/rss/Item20.html&amp;./com/adobe/xml/syndication/rss/class-list.html" id="framesLink2">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink2">No&nbsp;Frames</a></span>
+</div>
+<p></p>
+<center class="copyright">Copyright &copy; 2005 Macromedia Inc. All rights reserved.<br>Mon May 8 2006, 15:56 PDT</center>
+</body>
+</html>
+<!--Copyright &copy; 2005 Macromedia Inc. All rights reserved.Mon May 8 2006, 15:56 PDT-->
