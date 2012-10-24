@@ -1,6 +1,5 @@
 package com.zutalor.view
 {
-	import com.noteflight.standingwave3.filters.AbstractFilter;
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.controllers.AbstractUXController;
 	import com.zutalor.events.HotKeyEvent;
@@ -47,12 +46,20 @@ package com.zutalor.view
 				_soundPlayer.initialize("audio", new AudioController());				
 			
 				_textToSpeech = new TextToSpeech();
-				_textToSpeech.apiUrl = Props.ap.textToSpeechApiUrl;
+				
+				if (AirStatus.isMobile)
+					_textToSpeech.apiUrl = Props.ap.textToSpeechApiUrlMobile;
+				else
+					_textToSpeech.apiUrl = Props.ap.textToSpeechApiUrlPC;
+					
+				_textToSpeech.enabled = Props.ap.enableTextToSpeech;	
+					
 				_textToSpeech.voice = "usenglishfemale";
 				
 				_hkm.addMapping(StageRef.stage, "LEFT", LEFT);
 				_hkm.addMapping(StageRef.stage, "DOWN", MIDDLE);
 				_hkm.addMapping(StageRef.stage, "RIGHT", RIGHT);
+				
 				
 				_hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey);
 				StageRef.stage.addEventListener(MouseEvent.CLICK, onTap);	
@@ -256,10 +263,10 @@ package com.zutalor.view
 			
 			page = Translate.text(tp.name);
 			
-			if (AirStatus.isPortable)
+			if (AirStatus.isMobile)
 				page = TextUtil.stripStringSurroundedByDelimiter(page, "<PC>", "</PC>");
 			else
-				page = TextUtil.stripStringSurroundedByDelimiter(page, "<PORTABLE>", "</PORTABLE>");
+				page = TextUtil.stripStringSurroundedByDelimiter(page, "<MOBILE>", "</MOBILE>");
 			
 			_uxController.message = page;
 			playSound(page, Translate.getSoundUrl(tp.name), onComplete);
@@ -267,8 +274,8 @@ package com.zutalor.view
 		
 		private function playSound(page:String, url:String, onComplete:Function = null):void
 		{
-			if (page && AirStatus.isPortable)
-				_textToSpeech.speak(page, onComplete);
+			if (page && _textToSpeech.apiUrl)
+				_textToSpeech.speak(TextUtil.stripStringSurroundedByDelimiter(page, "<", ">"), onComplete);
 			else if (url)
 			{
 				if (onComplete != null)

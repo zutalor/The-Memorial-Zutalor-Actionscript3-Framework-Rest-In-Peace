@@ -282,6 +282,17 @@
 				return s;
 		}
 		
+		public static function strip(originalstring:String, whatToStrip:String = " "):String
+		{
+			if (originalstring)
+			{
+				var original:Array=originalstring.split(whatToStrip);
+				return(original.join(""));
+			}
+			else
+				return null;
+		}
+		
 		public static function stripStringSurroundedByDelimiter(str:String, delimiterBegin:String, delimiterEnd:String):String
 		{
 			var result:String;

@@ -11,16 +11,16 @@ package com.zutalor.air
 	public class AirStatus
 	{
 		private static var _isNativeApplication:Boolean;
-		private static var _isPortable:Boolean;
+		private static var _isMobile:Boolean;
 				
 		public static function get isNativeApplication():Boolean
 		{
 			return _isNativeApplication;	
 		}
 		
-		public static function get isPortable():Boolean
+		public static function get isMobile():Boolean
 		{
-			return _isPortable;
+			return _isMobile;
 		}		
 		
 		public static function initialize():void
@@ -36,7 +36,7 @@ package com.zutalor.air
 			if (c.cpuArchitecture=="ARM" || c.screenDPI > 96)
 			{
 				_isNativeApplication = true;
-				_isPortable = true;
+				_isMobile = true;
 			}			
 		}		
 	}

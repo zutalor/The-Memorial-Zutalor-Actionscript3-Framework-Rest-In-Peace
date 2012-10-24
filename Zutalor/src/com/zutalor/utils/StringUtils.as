@@ -968,20 +968,8 @@ package com.zutalor.utils
 			if(b == "true" || b == "1" || b == "yes" || b == "on") return true;
 			else if (b=="" || b == "false" || b == "0" || b == "no" || b == "off") return false; 
 			else throw new Error("BoolConversion.toBoolean() could not convert input to a proper Boolean value");
-		}	
-		
-		
-		public static function stripSpaces(originalstring:String):String
-		{
-			if (originalstring)
-			{
-				var original:Array=originalstring.split(" ");
-				return(original.join(""));
-			}
-			else
-				return null;
 		}
-		
+				
 		public static function getFileName(fullPath: String) : String
 		{
 			if (fullPath)

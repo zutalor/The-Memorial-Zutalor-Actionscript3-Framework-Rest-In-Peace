@@ -33,7 +33,9 @@
 		public var spinningGraphicCyclesPerSecond:Number;
 		public var appXmlUrls:String;
 		public var systemXmlUrls:String;
-		public var textToSpeechApiUrl:String;
+		public var textToSpeechApiUrlMobile:String;
+		public var textToSpeechApiUrlPC:String;
+		public var enableTextToSpeech:Boolean;
 		public var stageVideoAvailable:Boolean;
 		public var useStageVideoIfAvailable:Boolean;
 		public var showFocus:Boolean;
@@ -105,7 +107,9 @@
 			
 			Focus.enabled = StringUtils.toBoolean(appSettings.showFocus.@value);
 		
-			textToSpeechApiUrl = appSettings.textToSpeechApiUrl.@value;
+			textToSpeechApiUrlMobile = appSettings.textToSpeechApiUrlMobile.@value;
+			textToSpeechApiUrlPC = appSettings.textToSpeechApiUrlPC.@value;
+			enableTextToSpeech = StringUtils.toBoolean(appSettings.enableTextToSpeech.@value);
 		}
 	}
 }

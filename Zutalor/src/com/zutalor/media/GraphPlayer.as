@@ -1,17 +1,16 @@
 package com.zutalor.media
 {
-	import com.adobe.nativeExtensions.Vibration;
 	import com.noteflight.standingwave3.elements.AudioDescriptor;
 	import com.zutalor.loaders.URLLoaderG;
 	import com.zutalor.synthesizer.Note;
 	import com.zutalor.synthesizer.Synthesizer;
 	import com.zutalor.synthesizer.SynthPreset;
 	import com.zutalor.synthesizer.Track;
+	import com.zutalor.text.TextUtil;
 	import com.zutalor.ui.Plotter;
 	import com.zutalor.ui.Spinner;
 	import com.zutalor.utils.ArrayUtils;
 	import com.zutalor.utils.MathG;
-	import com.zutalor.utils.StringUtils;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -51,7 +50,6 @@ package com.zutalor.media
 		private var _lastNote:Number;
 		private var _lastGraphPlayed:int;
 		private var _chart:Sprite;
-		private var _vibration:Vibration;
 		private var _onComplete:Function;
 		
 		public function initialize(p:String = null, onComplete:Function = null):void
@@ -76,8 +74,8 @@ package com.zutalor.media
 				y = int(params[1]);
 				width = int(params[2]);
 				height = int(params[3]);
-				xmlUrl = StringUtils.stripSpaces(params[4]);
-				assetPath = StringUtils.stripSpaces(params[5]);
+				xmlUrl = TextUtil.strip(params[4]);
+				assetPath = TextUtil.strip(params[5]);
 				initSynth(); 
 				
 				for (var i:int = 0; i < MAX_GRAPHS; i++)

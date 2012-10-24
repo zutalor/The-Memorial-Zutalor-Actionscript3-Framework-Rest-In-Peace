@@ -258,7 +258,7 @@
 		private function checkOrientation():void
 		{
 			var orientation:String;
-			if (AirStatus.isPortable)
+			if (AirStatus.isMobile)
 			{
 				if (_currentOrientation != StageRef.stage.deviceOrientation)
 				{
