@@ -131,7 +131,6 @@ package com.zutalor.media
 				onComplete();
 			}
 		}		
-	
 		
 		private function cleanString(str:String):String // okay, could do this with regex, maybe also strip punctuation for smaller payload?
 		{
