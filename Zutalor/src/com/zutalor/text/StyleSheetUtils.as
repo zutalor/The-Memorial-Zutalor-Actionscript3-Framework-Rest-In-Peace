@@ -36,17 +36,15 @@ package com.zutalor.text
 			if (cssProps && cssProps.url)
 			{
 				var loader:URLLoaderG = new URLLoaderG();
-				loader.addEventListener(Event.COMPLETE, onLoaded);
-				loader.addEventListener(IOErrorEvent.IO_ERROR, onError);
-				loader.load(cssProps.url);
-				function onLoaded(e:Event):void
+				loader.load(cssProps.url, onLoaded);
+				
+				function onLoaded(lg:URLLoaderG):void
 				{
-					e.target.removeEventListener(Event.COMPLETE, onLoaded);
-					e.target.removeEventListener(IOErrorEvent.IO_ERROR, onError);
 					_numLoaded++;
-					setCss(e.target.data, indx);
+					setCss(lg.data, indx);
 					if (_numLoaded == Props.pr.cssPresets.length)
 					{
+						loader.dispose();
 						loader = null;
 						_onComplete();
 					}

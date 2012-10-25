@@ -19,18 +19,22 @@ package com.zutalor.loaders
 		private var _loader:URLLoader;
 		private var _data:*;
 		private var _url:String;
+		private var _callback:Function;
+		private var _error:Boolean;
 		
-		public function load(url:String, dataFormat:String = URLLoaderDataFormat.TEXT):void
+		public function load(url:String, callBack:Function, dataFormat:String = URLLoaderDataFormat.TEXT):void
 		{
+			_callback = callBack;
 			_url = url;
 			_loader = new URLLoader();
+			_error = false;
 			_loader.dataFormat=dataFormat;
 			_loader.addEventListener(Event.COMPLETE,onLoadComplete);
 			_loader.addEventListener(HTTPStatusEvent.HTTP_STATUS,onHttpStatus);
-			_loader.addEventListener(IOErrorEvent.DISK_ERROR,onIOError);
-			_loader.addEventListener(IOErrorEvent.IO_ERROR,onIOError);
-			_loader.addEventListener(IOErrorEvent.NETWORK_ERROR,onIOError);
-			_loader.addEventListener(IOErrorEvent.VERIFY_ERROR, onIOError);
+			_loader.addEventListener(IOErrorEvent.DISK_ERROR,errorExit);
+			_loader.addEventListener(IOErrorEvent.IO_ERROR,errorExit);
+			_loader.addEventListener(IOErrorEvent.NETWORK_ERROR,errorExit);
+			_loader.addEventListener(IOErrorEvent.VERIFY_ERROR, errorExit);
 			_loader.addEventListener(ProgressEvent.PROGRESS, onProgress);
 			_loader.load(new URLRequest(url));
 		}
@@ -42,9 +46,10 @@ package com.zutalor.loaders
 		
 		public function dispose():void
 		{
-			remove_loaderEvents();
+			removeListeners();
 			_loader = null;
 			_data = null;
+			_error = false;
 		}
 		
 		public function get url():String 
@@ -56,42 +61,43 @@ package com.zutalor.loaders
 		{
 			return _data;
 		}
-				
+			
+		public function get error():Boolean
+		{
+			return _error;
+		}
+		
 		private function onLoadComplete(e:Event):void
 		{
 			e.target.close();
-			remove_loaderEvents();
+			removeListeners();
 			_data = e.target.data;
-			dispatchEvent(new Event(Event.COMPLETE));
+			_callback(this);
 		}
 		
-		private function onIOError(e:IOErrorEvent):void
+		private function errorExit(e:Event):void
 		{
-			exit();
-		}
-		
-		private function exit():void
-		{
-			throw new Error("Load Error: " + url);
-		}
+			_error = true;
+			_callback(this);
+		}		
 		
 		private function onHttpStatus(e:HTTPStatusEvent):void
 		{
 			if(e.status != 0 && e.status != 200)
 			{
+				errorExit(e);
 				trace("WARNING:  file was not loaded, there was status error: "+e.toString());
-				exit();
 			}
 		}
 
-		private function remove_loaderEvents():void
+		private function removeListeners():void
 		{
 			_loader.removeEventListener(Event.COMPLETE,onLoadComplete);
 			_loader.removeEventListener(HTTPStatusEvent.HTTP_STATUS,onHttpStatus);
-			_loader.removeEventListener(IOErrorEvent.DISK_ERROR,onIOError);
-			_loader.removeEventListener(IOErrorEvent.IO_ERROR,onIOError);
-			_loader.removeEventListener(IOErrorEvent.NETWORK_ERROR,onIOError);
-			_loader.removeEventListener(IOErrorEvent.VERIFY_ERROR, onIOError);
+			_loader.removeEventListener(IOErrorEvent.DISK_ERROR,errorExit);
+			_loader.removeEventListener(IOErrorEvent.IO_ERROR,errorExit);
+			_loader.removeEventListener(IOErrorEvent.NETWORK_ERROR,errorExit);
+			_loader.removeEventListener(IOErrorEvent.VERIFY_ERROR, errorExit);
 			_loader.removeEventListener(ProgressEvent.PROGRESS, onProgress);
 		}
 	}	

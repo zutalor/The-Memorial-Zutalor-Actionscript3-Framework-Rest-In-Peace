@@ -77,16 +77,15 @@ package com.zutalor.propertyManagers
 		private static function loadBootXml(url:String):void
 		{
 			var loaderG:URLLoaderG = new URLLoaderG();
-			loaderG.addEventListener(Event.COMPLETE, onBootLoaded, false, 0, true);
-			loaderG.load(url);
+			loaderG.load(url, onBootLoaded);
 		}
 		
-		private static function onBootLoaded(e:Event):void
+		private static function onBootLoaded(lg:URLLoaderG):void
 		{
-			var xml:XML = XML(e.target.data);
+			var xml:XML = XML(lg.data);
 			ap.parseXML(xml.appSettings);
 			parseProps(xml); // in case other settings are included, afterall, the whole xml package could be inside of boot xml rather than separate files.
-			e.target.dispose();
+			lg.dispose();
 			loadXml();
 		}
 		
@@ -113,8 +112,7 @@ package com.zutalor.propertyManagers
 			for (var i:int = 0; i < _xmlFiles; i++)
 			{
 				_loaders[i] = new URLLoaderG();
-				_loaders[i].addEventListener(Event.COMPLETE, onLoadComplete, false, 0, true);
-				_loaders[i].load(urls[i]);
+				_loaders[i].load(urls[i], onLoadComplete);
 			}
 			
 			function addPath(path:String, a:Array):Array
@@ -126,16 +124,15 @@ package com.zutalor.propertyManagers
 			}
 		}
 		
-		private static function onLoadComplete(e:Event):void
+		private static function onLoadComplete(lg:URLLoaderG):void
 		{
 			_xmlFilesProcessed++;
-			parseProps(XML(e.target.data));
+			parseProps(XML(lg.data));
 			
 			if (_xmlFilesProcessed == _xmlFiles)
 			{
 				for (var i:int = 0; i < _xmlFiles; i++)
 				{
-					_loaders[i].removeEventListener(Event.COMPLETE, onLoadComplete);
 					_loaders[i].dispose();
 					_loaders[i] = null;
 				}

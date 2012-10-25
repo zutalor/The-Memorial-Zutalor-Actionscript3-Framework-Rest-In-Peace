@@ -1,8 +1,10 @@
 package com.zutalor.media 
 { 
+	import com.zutalor.ui.Dialog;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.media.Sound;
-	import flash.media.SoundMixer;
+	import flash.media.SoundChannel;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
@@ -11,76 +13,134 @@ package com.zutalor.media
 	{	
 		public var voice:String = "usenglishfemale";
 		public var speed:int = 0;
-		public var pitch:int;
-		public var snd:Sound;
+		public var pitch:int = 5;
 		public var apiUrl:String;
-		public var enabled:Boolean;
+		public var enabled:Boolean = true;
 		public var wordcount:int;
 		
-		public function speak(t:String, onComplete:Function):void
+		private var _callback:Function;
+		private var _stopped:Boolean;
+		private var _channel:SoundChannel;
+		
+		protected function makeURL(text:String):String // this uses the iSpeech.org api, override for another service;
 		{
-			var url:String;
-
-			url = makeURL(cleanString(t));
-			if (enabled && url)
+			return apiUrl + "&voice=" + voice + "&speed=" + speed + "&pitch=" + pitch + "&text=" + unescape(text);
+		}
+		
+		public function speak(text:String, callback:Function):void
+		{
+			var sentences:Array;
+			var l:int;
+			var i:int;
+			
+			if (!enabled)
 			{
-				var urlRequest:URLRequest = new URLRequest(url);
-				var urlLoader:URLLoader = new URLLoader();
+				if (callback != null)
+					callback();
+			}
+			else if (!apiUrl)
+				trace("TextToSpeach: No ApiUrl");
+			else
+			{
+				_callback = callback;
+				sentences = cleanString(text).split(".");
+				l = sentences.length;
+				sayNextSentence();
 				
-				urlLoader.addEventListener(Event.COMPLETE, onLoadComplete);
-				urlLoader.load(urlRequest);
-				
-				SoundMixer.stopAll();
-				snd = new Sound();
-				snd.load(urlRequest);
-				snd.play();
-				
-				if (onComplete != null)
-					snd.addEventListener(Event.COMPLETE, onSoundComplete);
-				
-				function onSoundComplete(e:Event):void
+				function sayNextSentence():void
 				{
-					snd.removeEventListener(Event.COMPLETE, onSoundComplete);
-					onComplete();
+					if (i < l && !_stopped && sentences[i])
+						say(sentences[i++], sayNextSentence);
+					else
+						if (_callback != null)
+						{
+							_callback();
+							_callback = null;
+						}
 				}
 			}
-			else if (onComplete != null)
-				onComplete();
 		}
 		
-		public  function stop():void
+		public function stop():void
 		{
-			SoundMixer.stopAll();			
+			_stopped = true;
+			if (_channel)
+				_channel.stop();
+
+			if (_callback != null)
+				_callback();
 		}
 		
-		private  function onLoadComplete(e:Event):void {
-			var result:String = null;
-			try {
-				var vars:URLVariables = new URLVariables(e.target.data);
-				result = "Error Code " + vars.code + ": " + vars.message;
-			}
-			catch (e:Error) {}
-			if (result != null)
-				trace(result);
-		}
-		
-		private  function makeURL(t:String):String 
+		public function dispose():void
 		{
-			var str:String;
-			if (!apiUrl)
-				trace("no textToSpeehApiUrl");
-			else
-				str = apiUrl + "&voice=" + voice + "&speed=" + speed + "&pitch=" + pitch + "&text=" + unescape(t);
+			//TODO
+		}
+				
+		// private methods
+		
+		private function say(text:String, onComplete:Function):void 
+		{
+			var snd:Sound;
+			var urlRequest:URLRequest;
+			var urlLoader:URLLoader;
+			var url:String;
 			
-			return str;
-		}
+			url = makeURL(text);
+			urlRequest = new URLRequest(url);
+				
+			if (_channel)
+			{
+				_channel.stop();
+				_channel.removeEventListener(Event.SOUND_COMPLETE, onPlaybackComplete);
+			}	
+			
+			snd = new Sound();
+			snd.addEventListener(IOErrorEvent.IO_ERROR, onIOError, false, 0, true);
+			snd.load(urlRequest);
+			_channel = snd.play();
+			_channel.addEventListener(Event.SOUND_COMPLETE, onPlaybackComplete, false, 0, true);
+			
+			function onIOError(ie:IOErrorEvent):void
+			{
+				urlLoader = new URLLoader();
+				urlLoader.addEventListener(Event.COMPLETE, getErrorMessage, false, 0, true);
+				urlLoader.load(urlRequest);
+			}
+			
+			function onPlaybackComplete(e:Event):void
+			{
+				_channel.removeEventListener(Event.SOUND_COMPLETE, onPlaybackComplete);
+				onComplete();
+			}
+			
+			function getErrorMessage(e:Event):void
+			{
+				var result:String = null;
+				try {
+					var vars:URLVariables = new URLVariables(e.target.data);
+					result = "Error Code " + vars.code + ": " + vars.message;
+				}
+				catch (e:Error) {}
+				if (result != null)
+				{
+					if (onComplete != null)
+						onComplete();
+					trace(result);
+				}
+				
+				onComplete();
+			}
+		}		
+	
 		
-		private function cleanString(str:String):String
+		private function cleanString(str:String):String // okay, could do this with regex, maybe also strip punctuation for smaller payload?
 		{
 			var r:Array;
 
 			r = str.split("\n");
-			str =r.join("");
+			str = r.join("");
+			r = str.split("\r");
+			str =r.join(" ");
 			r = str.split("\t");
 			str = r.join("");
 			r = str.split(".  ");

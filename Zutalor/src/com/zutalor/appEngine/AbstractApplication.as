@@ -75,6 +75,7 @@ package com.zutalor.appEngine
 		private function onUncaughtError(e:UncaughtErrorEvent):void
 		{
 			e.preventDefault();
+			trace(e.error);
 			Dialog.show(Dialog.ALERT, e.error, onConfirm);
 			
 			function onConfirm():void

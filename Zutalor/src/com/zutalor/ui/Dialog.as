@@ -4,6 +4,7 @@ package com.zutalor.ui
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.view.ViewController;
 	import com.zutalor.view.ViewControllerRegistry;
+	import com.zutalor.view.ViewLoader;
 	/**
 	 * ...
 	 * @author Geoff Pepos
@@ -30,7 +31,8 @@ package com.zutalor.ui
 			
 		public static function show(type:String, tMessage:String, callBack:Function = null, percentage:Number = 0):void
 		{	
-			var vc:ViewController
+			var vc:ViewController;
+			var viewLoader:ViewLoader;
 			
 			_callback = callBack;
 		
@@ -45,14 +47,17 @@ package com.zutalor.ui
 				if (!_open)
 				{
 					_open = true;
-					Props.uiController.menuCall("dialog");  // Opens the view
+					viewLoader = new ViewLoader();
 					
-					var v:* = ViewControllerRegistry;
-					vc = ViewControllerRegistry.getController("dialog");
+					viewLoader.load("dialog", null, onViewLoaded);
 					
-					_progressBar = vc.getItemByName("progressBar");
-					_progressBar.x = vc.getItemByName("background").width * .5 - (_progressBar.width * .5);
-					Props.uiController.showSheild();
+					function onViewLoaded():void
+					{
+						vc = ViewControllerRegistry.getController("dialog");
+						_progressBar = vc.getItemByName("progressBar");
+						_progressBar.x = vc.getItemByName("background").width * .5 - (_progressBar.width * .5);
+						Props.uiController.showSheild();
+					}
 				}
 				Plugins.callMethod("dialogController", "open", type);
 				_lastType = type;

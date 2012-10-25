@@ -275,23 +275,15 @@ package com.zutalor.media
 		{
 			var xml:XML;
 			var loader:URLLoaderG = new URLLoaderG();
-			loader.addEventListener(Event.COMPLETE, onXMLLoadComplete);
-			loader.addEventListener(IOErrorEvent.IO_ERROR, onError);
-			loader.load(xmlUrl);
+			loader.load(xmlUrl, onXMLLoadComplete);
 		
-			function onXMLLoadComplete(e:Event):void
+			function onXMLLoadComplete(lg:URLLoaderG):void
 			{
-				loader.removeEventListener(Event.COMPLETE, onXMLLoadComplete);
-				loader.removeEventListener(IOErrorEvent.IO_ERROR, onError);
-				xml = XML(e.target.data);
+				//TODO Handle error.
+				xml = XML(lg.data);
 				synthesizer.voices.load(xml, assetPath, finishSetup);
 			}
-			
-			function onError(e:Event):void
-			{
-				throw new Error("Cannot load: " + e.target.url);
-			}
-		
+					
 			function finishSetup():void
 			{
 				synthesizer.presets.parseXml(xml);

@@ -159,7 +159,7 @@
 		
 		public function showSheild():void
 		{
-			ap.contentLayer.addChildAt(_sheild, ap.contentLayer.numChildren - 1);
+			ap.contentLayer.addChildAt(_sheild, 0);
 		}
 		
 		public function hideSheild():void

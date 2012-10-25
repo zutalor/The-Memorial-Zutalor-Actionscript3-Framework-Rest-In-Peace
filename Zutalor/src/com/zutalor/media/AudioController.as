@@ -48,7 +48,7 @@
 			{
 				_loaded = true;
 				_soundContext = new SoundLoaderContext(bufferTime);
-			} 
+			}
 			
 			if (url.indexOf(".embedded") != -1)
 			{
@@ -134,10 +134,7 @@
 		
 		override public function get volume():Number
 		{
-			//if (_channel)
-			//	return _channel.soundTransform.volume;
-			//else
-				return _volume;
+			return _volume;
 		}
 		
 		override public function play(start:Number = 0):void
@@ -237,7 +234,7 @@
 				_sound.removeEventListener(IOErrorEvent.IO_ERROR, callOnIOError);
 			}
 			if (_channel)
-					_channel.removeEventListener(Event.SOUND_COMPLETE, onPlaybackComplete);			
+				_channel.removeEventListener(Event.SOUND_COMPLETE, onPlaybackComplete);			
 		}
 		
 		override public function dispose():void

@@ -14,14 +14,11 @@
 	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.properties.ViewProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
-	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.text.Translate;
 	import com.zutalor.ui.Focus;
 	import com.zutalor.utils.gDictionary;
-	import com.zutalor.utils.MasterClock;
-	import com.zutalor.utils.StageRef;
 	import flash.events.Event;
 
 	public class ViewController implements IDisposable
@@ -52,7 +49,6 @@
 		public var vmg:ViewModelGateway;		
 		public var numViewItems:int;
 
-		//public var vip:ViewItemProperties;
 		public var viewItemTransition:ViewItemTransition;
 		public var statusField:*;
 		public var vp:ViewProperties;

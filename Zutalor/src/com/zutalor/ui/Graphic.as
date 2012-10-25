@@ -176,7 +176,7 @@ package com.zutalor.ui
 									//do nothing
 									break;
 								default :
-									throw new Error("Graphics, no graphic style for: " + _gri.type + " : " + _gri.name);
+									throw new Error("Graphics, no graphic style for: ID: " + _graphicId + " Type: " + _gri.type + "  Style: " + _gri.graphicStyle + " : " + _gri.name);
 							}
 						}
 						switch (_gri.type)
