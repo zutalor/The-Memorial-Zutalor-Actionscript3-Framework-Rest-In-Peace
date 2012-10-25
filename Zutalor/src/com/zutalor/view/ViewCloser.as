@@ -12,6 +12,7 @@ package com.zutalor.view
     import com.zutalor.properties.TransitionProperties;
     import com.zutalor.propertyManagers.Props;
     import com.zutalor.utils.Logger;
+	import com.zutalor.utils.StageRef;
     import flash.events.EventDispatcher;
     /**
      * ...
@@ -77,6 +78,7 @@ package com.zutalor.view
 
         private function resetContainer():void
         {
+			StageRef.stage.removeChild(_vp.container);
 			_vp.container.recycle();
             if (_onComplete != null)
                 _onComplete();

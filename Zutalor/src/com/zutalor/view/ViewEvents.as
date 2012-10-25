@@ -393,8 +393,6 @@ package com.zutalor.view
 			var events:Array;
 			var eventIndx:int;
 			var target:String;	
-		
-			me.stopImmediatePropagation();
 			
 			if (targetName != null)
 				eventTargetName = targetName;
@@ -411,6 +409,9 @@ package com.zutalor.view
 				vip = _vpm.getItemPropsByName(vc.viewId, eventTargetName);
 				if (vip && vip.action)
 				{
+					if (me)
+						me.stopImmediatePropagation();
+					
 					if (!vip.onTapContainerNames)
 					{
 						containerNames = [];

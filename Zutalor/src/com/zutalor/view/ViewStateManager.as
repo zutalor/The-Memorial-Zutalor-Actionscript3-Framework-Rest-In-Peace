@@ -72,6 +72,7 @@ package com.zutalor.view
 				
 			tMeta = getMetaByIndex(_curState);
 			
+trace(tMeta);
 			switch (String(tMeta.actions.@type))
 			{
 				case "request" :

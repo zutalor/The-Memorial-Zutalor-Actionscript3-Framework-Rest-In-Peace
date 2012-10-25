@@ -2,6 +2,8 @@ package com.zutalor.ui
 {
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.Props;
+	import com.zutalor.utils.StageRef;
+	import com.zutalor.view.ViewCloser;
 	import com.zutalor.view.ViewController;
 	import com.zutalor.view.ViewControllerRegistry;
 	import com.zutalor.view.ViewLoader;
@@ -14,9 +16,8 @@ package com.zutalor.ui
 		private static var _callback:Function;
 		private static var _lastType:String;
 		private static var _progressBar:*;
-		private static var _initialized:Boolean;
-		private static var _open:Boolean;
 		private static var _lastMessage:String;
+		private static var _vc:ViewController;
 		
 		private static const CLOSED:String = "";
 		
@@ -31,34 +32,29 @@ package com.zutalor.ui
 			
 		public static function show(type:String, tMessage:String, callBack:Function = null, percentage:Number = 0):void
 		{	
-			var vc:ViewController;
 			var viewLoader:ViewLoader;
 			
 			_callback = callBack;
 		
 			if (type != _lastType)
 			{
-				if (!_initialized)
+				if (!_vc)
 				{
-					_initialized = true;
 					Plugins.callMethod("dialogController", "setOnSelectionCallback", onSelection);
-				}
-				
-				if (!_open)
-				{
-					_open = true;
 					viewLoader = new ViewLoader();
-					
 					viewLoader.load("dialog", null, onViewLoaded);
 					
 					function onViewLoaded():void
 					{
-						vc = ViewControllerRegistry.getController("dialog");
-						_progressBar = vc.getItemByName("progressBar");
-						_progressBar.x = vc.getItemByName("background").width * .5 - (_progressBar.width * .5);
-						Props.uiController.showSheild();
+						_vc = ViewControllerRegistry.getController("dialog");
+						_progressBar = _vc.getItemByName("progressBar");
+						_progressBar.x = _vc.getItemByName("background").width - _progressBar.width * .5;
 					}
 				}
+				else
+					StageRef.stage.addChild(_vc.container);
+
+				Props.uiController.showSheild();
 				Plugins.callMethod("dialogController", "open", type);
 				_lastType = type;
 			}
@@ -80,10 +76,10 @@ package com.zutalor.ui
 		public static function close():void
 		{
 			Props.uiController.hideSheild();
-			Props.uiController.closeView("dialog");
-			_open = false;
 			_progressBar.visible = false;
+			_lastMessage = null;
 			_lastType = CLOSED;
+			StageRef.stage.removeChild(_vc.container);
 		}
 		
 		private static function cancel():void
