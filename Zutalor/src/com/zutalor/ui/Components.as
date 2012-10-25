@@ -60,7 +60,6 @@
 			var up:*;
 			var over:*;
 			var down:*;
-			var selected:*;
 			var disabled:*;
 			
 			bp = Props.pr.buttonPresets.getPropsByName(buttonId);
@@ -94,14 +93,6 @@
 				down = new Sprite();
 				
 
-			if (bp.selectedGid)
-			{
-				selected = new Graphic();
-				selected.render(bp.selectedGid);
-			}
-			else
-				selected = new Sprite();
-
 			if (bp.disabledGid)
 			{
 				disabled = new Graphic();
@@ -110,7 +101,7 @@
 			else
 				disabled = new Sprite();
 			
-			b.create(up, over, down, selected, disabled);
+			b.create(up, over, down, disabled);
 							
 			if (text)
 			{
@@ -124,15 +115,14 @@
 				hPad = bp.hPad;
 				vPad = bp.vPad;
 
-				if (!bp.textAttributesOver)
+				if (!bp.textAttributesDown)
 				{
-					bp.textAttributesOver = bp.textAttributesSelected = bp.textAttributesDown = bp.textAttributesDisabled = bp.textAttributes;
+					bp.textAttributesDown = bp.textAttributesDisabled = bp.textAttributes;
 				}
 				TextUtil.add(b.up, text, bp.textAttributes, width, height, align, hPad, vPad); 
-				TextUtil.add(b.over, text, bp.textAttributesOver, width, height, align, hPad, vPad);
+				TextUtil.add(b.over, text, bp.textAttributes, width, height, align, hPad, vPad);
 				TextUtil.add(b.down, text, bp.textAttributesDown, width, height, align, hPad, vPad);
 				TextUtil.add(b.disabled, text, bp.textAttributesDisabled, width, height,align, hPad, vPad);
-				TextUtil.add(b.selected, text, bp.textAttributesSelected, width, height, align, hPad, vPad);
 			}
 			return b;
 		}
@@ -160,9 +150,9 @@
 		{
 			var bp:ButtonProperties = Props.pr.buttonPresets.getPropsByName(buttonId);
 			var textButton:TextButton = new TextButton();
-			textButton.create(text, int(bp.width), int(bp.height), false, 0, 
-														bp.textAttributes, bp.textAttributesOver, bp.textAttributesDown, 
-														bp.textAttributesSelected, bp.textAttributesDisabled, bp.textAttributesHeading);									
+			textButton.create(text, int(bp.width), int(bp.height), 
+														bp.textAttributes, bp.textAttributesDown, 
+														bp.textAttributesDisabled);									
 			return textButton;
 		}
 		

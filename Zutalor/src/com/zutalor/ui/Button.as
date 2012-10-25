@@ -21,13 +21,11 @@
 				
 		private var _name:String;
 		
-		public function create(up:DisplayObjectContainer, over:DisplayObjectContainer, down:DisplayObjectContainer, 
-								selected:DisplayObjectContainer,
-								disabled:DisplayObjectContainer):void
+		public function create(up:DisplayObjectContainer, over:DisplayObjectContainer,
+								down:DisplayObjectContainer, disabled:DisplayObjectContainer):void
 		{
 			_up = up;
 			_disabled = disabled;
-			_selected = selected;
 			_over = over;
 			_down = down;
 			_hit = down;
@@ -47,10 +45,6 @@
 		{
 			return _down
 		}
-		public function get selected():DisplayObjectContainer
-		{
-			return _selected;
-		}
 		public function get disabled():DisplayObjectContainer
 		{
 			return _disabled;
@@ -69,7 +63,8 @@
 		public function set enabled(e:Boolean):void
 		{
 			_sb.enabled = _sb.mouseEnabled = e;
-			if (e)
+			
+			if (!e)
 				_sb.upState = _disabled;
 			else
 				_sb.upState = _up;		
@@ -78,15 +73,6 @@
 		public function get enabled():Boolean
 		{
 			return _sb.enabled;
-		}
-		
-		public function set select(s:Boolean):void
-		{
-			if (_sb.enabled)
-				if (s)
-					_sb.upState = _selected;
-				else
-					_sb.upState = _up;			
 		}
 	}
 }

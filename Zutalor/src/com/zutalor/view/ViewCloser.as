@@ -51,7 +51,7 @@ package com.zutalor.view
         {
             var tpp:TransitionProperties;
             var mpp:MediaProperties;
-
+			
             _vp.container.stop(_vp.mediaPreset);
             if (_vp.transitionPreset)
             {
@@ -59,7 +59,8 @@ package com.zutalor.view
                 if (tpp)
                 {
                     _transition = ObjectPool.getTransition();
-                    _transition.render(_vp.container, tpp.outType, tpp.outEase, tpp.outTime, tpp.outDelay, TransitionTypes.OUT, tpp.xValue, tpp.yValue, resetContainer);
+                    _transition.render(_vp.container, tpp.outType, tpp.outEase, tpp.outTime, tpp.outDelay, 
+												TransitionTypes.OUT, tpp.xValue, tpp.yValue, resetContainer);
                 }
                 else
                 {
@@ -77,7 +78,6 @@ package com.zutalor.view
         private function resetContainer():void
         {
 			_vp.container.recycle();
-			_vp.container = null;
             if (_onComplete != null)
                 _onComplete();
         }

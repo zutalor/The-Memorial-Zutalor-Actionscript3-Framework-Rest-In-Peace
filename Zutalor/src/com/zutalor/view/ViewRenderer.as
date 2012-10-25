@@ -31,12 +31,11 @@ import com.zutalor.view.ViewController;
 import flash.display.Bitmap;
 import flash.display.Sprite;
 import flash.events.Event;
-import flash.events.EventDispatcher;
 import flash.media.Camera;
 import flash.media.Video;
 import flash.text.TextField;
 
-	public class ViewRenderer extends EventDispatcher
+	public class ViewRenderer
 	{
 		private var _vpm:NestedPropsManager;
 		private var _pr:Presets;
@@ -44,13 +43,15 @@ import flash.text.TextField;
 		private var _vu:ViewUtils;
 		
 		private var _tabIndex:int;
+		private var _onItemRenderCallback:Function;
 		
 		public var vc:ViewController;
 		public var vp:ViewProperties;
 	
 								
-		public function ViewRenderer(viewController:ViewController) 
+		public function ViewRenderer(viewController:ViewController, onItemRenderCallback:Function) 
 		{	
+			_onItemRenderCallback = onItemRenderCallback;
 			vc = viewController;
 			_vpm = Props.views;
 			_pr = Props.pr;
@@ -308,7 +309,7 @@ import flash.text.TextField;
 					push(viewItem);
 					viewItem.name = vip.name;	
 					vc.itemDictionary.addOrReplace(vip.name, viewItem);
-					dispatchEvent(new Event(Event.COMPLETE));
+					_onItemRenderCallback();
 					break;
 				case ViewItemProperties.SLIDE_SHOW :
 					var slideShow:SlideShow = new SlideShow();
@@ -407,7 +408,7 @@ import flash.text.TextField;
 						viewItem.focusRect = true;
 					}	
 				}
-				dispatchEvent(new Event(Event.COMPLETE));
+				_onItemRenderCallback();
 			}
 			
 			// POSITION, CALL STUFF, MOVE THINGS AROUND

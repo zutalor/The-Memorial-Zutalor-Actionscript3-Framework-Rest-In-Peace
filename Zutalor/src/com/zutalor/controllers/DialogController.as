@@ -26,12 +26,12 @@ package com.zutalor.controllers
 			return _vo;
 		}
 				
-		public function setCallback(callback:Function):void
+		public function setOnSelectionCallback(callback:Function):void
 		{
 			_callBack = callback;
 		}
 					
-		public function setChoice(choice:String=null):void
+		public function select(choice:String=null):void
 		{
 			if (_callBack != null)
 				_callBack(choice);
@@ -74,13 +74,11 @@ package com.zutalor.controllers
 			var okButton:Button;
 			
 			okButton = getOkButton();
-			vc.setItemVisibility("htmlText", false);
 			vc.setItemVisibility("cancelButton", false);
 			vc.setItemVisibility("htmlText", true, .75, .2);
 			vc.setItemVisibility("okButton", true, .75, .2);
 			
-			okButton.x =  (vc.container.width * .5) * (1 / vc.container.scaleX)
-										- (okButton.width * .5);
+			okButton.x =  (vc.container.width - okButton.width) * .5;
 		}
 		
 		private function initProgress():void
@@ -88,8 +86,7 @@ package com.zutalor.controllers
 			var cancelButton:Button;
 
 			cancelButton = getCancelButton();
-			cancelButton.x = (vc.container.width * .5) * (1 / vc.container.scaleX)
-										- (cancelButton.width * .5);
+			cancelButton.x = (vc.container.width * .5 - cancelButton.width) * .5;
 			
 			vc.setItemVisibility("cancelButton", true, .75, .2);
 			vc.setItemVisibility("htmlText", true, .75, .2);
@@ -143,7 +140,7 @@ package com.zutalor.controllers
 		
 		private function getX(percentage:Number, b:Button):Number
 		{
-			return (vc.container.width * percentage) * (1 / vc.container.scaleX) - b.width * .5;
+			return (vc.container.width - b.width) * .5;
 		}
 
 	}

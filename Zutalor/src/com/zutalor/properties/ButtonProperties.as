@@ -13,15 +13,15 @@
 		public var upGid:String;
 		public var overGid:String;
 		public var downGid:String;
-		public var selectedGid:String;
 		public var disabledGid:String;
+		
+		//the following apply to the text fields
+		
 		public var textAttributes:String;
-		public var textAttributesOver:String;
 		public var textAttributesDown:String;
-		public var textAttributesSelected:String;
 		public var textAttributesDisabled:String;
-		public var textAttributesHeading:String;
-		public var width:int; //the following apply to the text fields
+		
+		public var width:int; 
 		public var height:int;
 		public var align:String;
 		public var vPad:int;				

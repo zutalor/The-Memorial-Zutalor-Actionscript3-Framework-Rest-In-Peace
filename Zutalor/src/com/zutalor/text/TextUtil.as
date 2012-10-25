@@ -95,13 +95,8 @@
 			txt.text = text;
 			TextUtil.applyTextAttributes(txt, textAttributes);
 			if (align)
-				DisplayUtils.fitIntoRect(txt, width, height, align);
-			else
-			{
-				txt.x = hPad;
-				txt.y = vPad;
-			}
-			
+				DisplayUtils.fitIntoRect(txt, width, height, align, hPad, vPad);
+				
 			d.addChild(txt);
 		}
 		

@@ -58,8 +58,7 @@ package com.zutalor.view
 				
 				_hkm.addMapping(StageRef.stage, "LEFT", LEFT);
 				_hkm.addMapping(StageRef.stage, "DOWN", MIDDLE);
-				_hkm.addMapping(StageRef.stage, "RIGHT", RIGHT);
-				
+				_hkm.addMapping(StageRef.stage, "RIGHT", RIGHT);	
 				
 				_hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey);
 				StageRef.stage.addEventListener(MouseEvent.CLICK, onTap);	

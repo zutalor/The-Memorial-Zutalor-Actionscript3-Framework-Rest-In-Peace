@@ -41,7 +41,7 @@ package com.zutalor.ui
 				if (!_initialized)
 				{
 					_initialized = true;
-					Plugins.callMethod("dialogController", "setCallback", onSelection);
+					Plugins.callMethod("dialogController", "setOnSelectionCallback", onSelection);
 				}
 				
 				if (!_open)

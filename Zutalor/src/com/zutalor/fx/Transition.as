@@ -92,7 +92,8 @@
 			_delay = s;
 		}
 		
-		public function render(dc:DisplayObject, transType:String, ease:Function, seconds:Number, delay:Number, inOut:String, xValue:Number, yValue:Number, onComplete:Function = null, onCompleteParams:*= null):void
+		public function render(dc:DisplayObject, transType:String, ease:Function, seconds:Number, delay:Number,
+								inOut:String, xValue:Number, yValue:Number, onComplete:Function = null, onCompleteParams:*= null):void
 		{
 			_onComplete = onComplete;
 			_onCompleteParams = onCompleteParams;
@@ -185,12 +186,12 @@
 			_dc.x = _savedX;
 			_dc.y = _savedY;
 			removeMask();
-		/*
+		
 			if (_inOut == TransitionTypes.IN)
 				_dc.visible = true;
 			else
 				_dc.visible = false;
-			*/					
+								
 			callOnComplete();
 		}
 		

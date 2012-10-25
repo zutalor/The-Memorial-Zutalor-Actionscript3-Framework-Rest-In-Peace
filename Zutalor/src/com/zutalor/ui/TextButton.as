@@ -20,10 +20,10 @@
 			
 		}
 		
-		public function create(label:String, width:int, height:int, isHeader:Boolean = false, indent:Number = 0, 
+		public function create(label:String, width:int, height:int,
 									textAttributesUp:String = "menu-up", textAttributesOver:String = "menu-over", 
 									textAttributesDown:String = "menu-down", textAttributesSelected:String = "menu-selected", 
-									textAttributesDisabled:String = "menu-disabled", textAttributesMenuHeading:String = "menu-heading" ):void
+									textAttributesDisabled:String = "menu-disabled"):void
 		{
 			var txt:TextField;
 
@@ -33,28 +33,22 @@
 			
 			txt = new TextField();
 			txt.text = label;			
-			if (isHeader)
-			    TextUtil.applyTextAttributes(txt,textAttributesMenuHeading) 
-			else	
-			    TextUtil.applyTextAttributes(txt,textAttributesUp) 
+				
+			TextUtil.applyTextAttributes(txt,textAttributesUp) 
 				
 			_bs.up.addChild(txt);
-			_bs.up.x = indent;
 			
 			txt = new TextField();
 			txt.text = label;
 			TextUtil.applyTextAttributes(txt,textAttributesOver) 
 			_bs.over.addChild(txt);
-			_bs.over.x = indent;
 			
 			txt = new TextField();
 			txt.text = label;
 			TextUtil.applyTextAttributes(txt,textAttributesDown) 
 			_bs.down.addChild(txt);
-			_bs.down.x = indent;
 			
-			if (!isHeader)
-				DrawGraphics.box(_bs.hit, _bs.up.width, _bs.up.height);			
+			DrawGraphics.box(_bs.hit, _bs.up.width, _bs.up.height);			
 		}
 		
 		public function set enabled(e:Boolean):void

@@ -69,7 +69,7 @@
 		
 		private function _init():void
 		{
-			viewRenderer = new ViewRenderer(this);
+			viewRenderer = new ViewRenderer(this, processNextViewItem);
 			vmg = new ViewModelGateway(this);
 			_viewEvents = new ViewEvents(this);
 			
@@ -79,6 +79,8 @@
 	
 		public function load(viewId:String, menuName:String, onComplete:Function):void
 		{			
+			
+			_onComplete = onComplete;
 			vp = vpm.getPropsById(viewId);
 
 			if (!vp)
@@ -91,7 +93,7 @@
 			_container = vp.container;
 			_container.viewController = this;
 			viewRenderer.vp = vp;
-			_onComplete = onComplete;			
+			
 			filters = [];
 			disabledList = [];
 			itemDictionary = new gDictionary();
@@ -99,16 +101,10 @@
 			_itemIndex = 0;
 			initMessages();			
 			
-			Plugins.callMethod(vp.controllerClassInstanceName, PluginMethods.INIT, { controller:this, id:viewId } );
-			_defaultVO = Plugins.callMethod(vp.controllerClassInstanceName, PluginMethods.GET_VALUE_OBJECT);
+			Plugins.callMethod(vp.uxControllerInstanceName, PluginMethods.INIT, { controller:this, id:viewId } );
+			_defaultVO = Plugins.callMethod(vp.uxControllerInstanceName, PluginMethods.GET_VALUE_OBJECT);
 			numViewItems = vpm.getNumItems(viewId);
-			startRender();
-				
-			function startRender():void
-			{
-				viewRenderer.addEventListener(Event.COMPLETE, processNextViewItem);
-				processNextViewItem();
-			}
+			processNextViewItem();
 		}
 		
 		
@@ -119,9 +115,9 @@
 			return _container;
 		}
 		
-		public function callModelMethod(method:String, arg:*):void
+		public function callUXControllerMethod(method:String, arg:*):void
 		{
-			Plugins.callMethod(vp.controllerClassInstanceName, method, arg);
+			Plugins.callMethod(vp.uxControllerInstanceName, method, arg);
 		}
 		
 		public function setModelValue(itemName:String, val:*):void
@@ -202,7 +198,7 @@
 				if (vip)
 				{
 
-					Plugins.callMethod(vp.controllerClassInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
+					Plugins.callMethod(vp.uxControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
 					item = itemDictionary.getByName(itemName);
 					vmg.copyViewItemToValueObject(vip, item);
 				}
@@ -214,7 +210,7 @@
 				{
 					vip = vpm.getItemPropsByIndex(viewId, i);
 						
-					Plugins.callMethod(vp.controllerClassInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
+					Plugins.callMethod(vp.uxControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
 					if (vip.voName)
 					{
 						item = itemDictionary.getByIndex(i);
@@ -307,8 +303,7 @@
 			viewRenderer = null;
 			vmg = null;
 			_viewEvents = null;		
-			viewRenderer.removeEventListener(Event.COMPLETE, processNextViewItem);
-			Plugins.callMethod(vp.controllerClassInstanceName, PluginMethods.DISPOSE)			
+			Plugins.callMethod(vp.uxControllerInstanceName, PluginMethods.DISPOSE)			
 		}
 		
 		// GET THE UI ITEM's OBJECT OR PROPERTIES
@@ -366,7 +361,6 @@
 		
 		public function setAllItemVisibility(visible:Boolean=true, fade:Number = 0, delay:Number = 0):void
 		{
-			var f:ItemFade;
 			var ni:int;
 			
 			setItemVisibility(null, visible, fade, delay);
@@ -374,17 +368,13 @@
 			{
 				ni = itemDictionary.length;
 				for (var i:int = 0; i < ni; i++)
-				{
-					f = new ItemFade()
-					f.item(vp.name, itemDictionary.getByIndex(i), visible, fade, delay);
-				}
+					ItemFX.fade(vp.name, itemDictionary.getByIndex(i), visible, fade, delay);
 			}
 		}
 		
-		public function setItemVisibility(name:String, visible:Boolean = true, fade:int = 1, delay:int = 0):void
+		public function setItemVisibility(name:String, visible:Boolean = true, fade:int = 0, delay:int = 0):void
 		{
-			var f:ItemFade = new ItemFade();
-			f.item(vp.name, itemDictionary.getByName(name), visible, fade, delay);
+			ItemFX.fade(vp.name, itemDictionary.getByName(name), visible, fade, delay);
 		}
 		
 		public function get numItems():int
@@ -494,10 +484,7 @@
 			if (_itemIndex < numViewItems)
 				viewRenderer.renderItem(_itemIndex++);
 			else
-			{
-				viewRenderer.removeEventListener(Event.COMPLETE, processNextViewItem);
 				viewPopulateComplete();
-			}
 		}
 		
 		// PRIVATE METHODS
@@ -552,9 +539,9 @@
 			{
 				initStatusMessage(vp.initialMethod);
 				if (vp.initialMethodParams)
-					Plugins.callMethod(vp.controllerClassInstanceName, vp.initialMethod,vp.initialMethodParams);
+					Plugins.callMethod(vp.uxControllerInstanceName, vp.initialMethod,vp.initialMethodParams);
 				else
-					Plugins.callMethod(vp.controllerClassInstanceName, vp.initialMethod);
+					Plugins.callMethod(vp.uxControllerInstanceName, vp.initialMethod);
 			}
 			vmg.setAllInitialValues();
 		}
