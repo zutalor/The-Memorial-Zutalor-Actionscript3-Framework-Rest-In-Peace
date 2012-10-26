@@ -95,7 +95,7 @@
 			txt.text = text;
 			TextUtil.applyTextAttributes(txt, textAttributes);
 			if (align)
-				DisplayUtils.fitIntoRect(txt, width, height, align, hPad, vPad);
+				DisplayUtils.alignInRect(txt, width, height, align, hPad, vPad);
 				
 			d.addChild(txt);
 		}

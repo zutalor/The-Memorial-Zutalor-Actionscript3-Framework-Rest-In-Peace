@@ -54,7 +54,7 @@ package com.zutalor.ui
 				else
 					StageRef.stage.addChild(_vc.container);
 
-				Props.uiController.showSheild();
+				//Props.uiController.showSheild();
 				Plugins.callMethod("dialogController", "open", type);
 				_lastType = type;
 			}

@@ -24,6 +24,8 @@ import com.zutalor.text.TextUtil;
 import com.zutalor.text.Translate;
 import com.zutalor.ui.Components;
 import com.zutalor.ui.Graphic;
+import com.zutalor.utils.DisplayObjectUtils;
+import com.zutalor.utils.DisplayUtils;
 import com.zutalor.utils.Logger;
 import com.zutalor.utils.MasterClock;
 import com.zutalor.utils.Resources;
@@ -433,8 +435,14 @@ import flash.text.TextField;
 				vc.itemDictionary.addOrReplace(vip.name, viewItem);
 				viewItem.name = vip.name;
 				
-				viewItem.x = x + hPad;
-				viewItem.y = y + vPad;
+				
+				if (vip.align)
+					DisplayUtils.alignInRect(viewItem, vc.vp.width, vc.vp.height, vip.align, vip.hPad, vip.vPad);
+				else
+				{
+					viewItem.x = x + hPad;
+					viewItem.y = y + vPad;
+				}
 				
 				if (vip.width) // this must happen before other properties are set.
 					if (vip.width == "auto")
@@ -450,9 +458,6 @@ import flash.text.TextField;
 				
 				if (vip.rotation)
 					viewItem.rotation = vip.rotation;
-				
-				if (vip.scale)
-					viewItem.scaleX = viewItem.scaleY = vip.scale;
 				
 				if (vip.rotationX)
 					viewItem.rotationX = vip.rotationX;

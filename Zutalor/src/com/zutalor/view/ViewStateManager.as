@@ -10,6 +10,7 @@ package com.zutalor.view
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.text.Translate;
+	import com.zutalor.ui.Dialog;
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.utils.StageRef;
 	import flash.events.MediaEvent;
@@ -29,7 +30,7 @@ package com.zutalor.view
 		
 		private var _soundPlayer:MediaPlayer;
 		private var _textToSpeech:TextToSpeech;
-		private var _hkm:HotKeyManager = HotKeyManager.gi();
+		private var _hkm:HotKeyManager;
 		private var _uxController:AbstractUXController;
 										
 		public function initialize(uxController:AbstractUXController):void
@@ -40,6 +41,7 @@ package com.zutalor.view
 			if (!_intitialized)
 			{
 				_intitialized = true;
+				_hkm = new HotKeyManager();
 				_uxController = uxController;
 				_soundPlayer = new MediaPlayer();
 				_soundPlayer.initialize("audio", new AudioController());				

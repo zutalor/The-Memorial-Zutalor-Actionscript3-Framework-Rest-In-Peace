@@ -164,7 +164,8 @@
 		
 		public function hideSheild():void
 		{
-			ap.contentLayer.removeChild(_sheild);
+			if (ap.contentLayer.getChildByName("__Sheild"))
+				ap.contentLayer.removeChild(_sheild);
 		}	
 		
 		// PRIVATE METHODS
@@ -364,6 +365,7 @@
 			vpm = Props.views;
 			ap.ip = ip;
 			_sheild = new Sprite;
+			_sheild.name = "__Sheild";
 			StageRef.stage.addEventListener(StageVideoAvailabilityEvent.STAGE_VIDEO_AVAILABILITY, 
 																					onStageVideoAbility);	
 			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, onSWFAddressFirstBroadcast);			

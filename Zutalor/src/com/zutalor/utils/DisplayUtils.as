@@ -24,8 +24,8 @@ package com.zutalor.utils
 	public class DisplayUtils 
 	{	
 		public static const BOTTOM : String = "bottom";
-		public static const BOTTOM_LEFT : String = "bottom_left";
-		public static const BOTTOM_RIGHT : String = "bottom_right";
+		public static const BOTTOM_LEFT : String = "bottom-left";
+		public static const BOTTOM_RIGHT : String = "bottom-right";
 		public static const LEFT : String = "left";
 		public static const CENTER : String = "center";
 		public static const RIGHT : String = "right";
@@ -142,6 +142,7 @@ package com.zutalor.utils
 			if (vPad)
 				tY += vPad * s;
 			
+				
 			if (s != 1) 
 			{
 				matrix.scale(s, s);
@@ -153,6 +154,72 @@ package com.zutalor.utils
 				}
 			}
 			return matrix;
+		}
+		
+		public static function alignInRect(displayObject : DisplayObject, width:Number, height:Number, align : String = "center", hPad:int = 0, vPad:int = 0):void
+		{
+			var wD : Number = displayObject.width;
+			var hD : Number = displayObject.height;
+			
+			var wR : Number = width;
+			var hR : Number = height;
+									
+			var tX : Number = 0.0;
+			var tY : Number = 0.0;
+			
+			switch(align)
+			{
+				case LEFT :
+				case TOP_LEFT :
+				case BOTTOM_LEFT :
+					tX = 0.0;
+					break;
+					
+				case RIGHT :
+				case TOP_RIGHT :
+				case BOTTOM_RIGHT :
+					tX = wR - wD
+					break;
+					
+				case CENTER : 					
+					tX = 0.5 * (wR - wD);
+					break;
+				default :
+					tX = 0.0;
+					break;
+			}
+			
+			switch(align)
+			{
+				case TOP :
+				case TOP_LEFT :
+				case TOP_RIGHT :
+					tY = 0.0;
+					break;
+					
+				case BOTTOM :
+				case BOTTOM_LEFT :
+				case BOTTOM_RIGHT :
+					tY = hR - hD;
+					break;
+					
+				case CENTER : 					
+					tY = 0.5 * (hR - hD);
+					break;
+				default :
+					tY = 0.0;
+					break;
+			}
+			if (hPad)
+				tX += hPad;
+			
+			if (vPad)
+				tY += vPad;
+				
+			trace(displayObject.scaleX);	
+				
+			displayObject.x = tX;
+			displayObject.y = tY;
 		}
 	}
 }

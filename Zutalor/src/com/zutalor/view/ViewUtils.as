@@ -153,7 +153,7 @@
 		private function positionContainer(vp:ViewProperties):void
 		{
 			if (vp.align)
-				DisplayUtils.fitIntoRect(vp.container, StageRef.stage.stageWidth, StageRef.stage.stageHeight, vp.align);
+				DisplayUtils.alignInRect(vp.container, StageRef.stage.stageWidth, StageRef.stage.stageHeight, vp.align);
 		}
 		
 		public function callViewContainerMethod(viewName:String, method:String, params:String):void

@@ -61,7 +61,7 @@ package com.zutalor.view
 			_vu = ViewUtils.gi();			
 			_pr = Presets.gi();
 			_mu = MotionUtils.gi();
-			_hkm = HotKeyManager.gi();
+			_hkm = new HotKeyManager();
 		}
 		
 		public function addListenersToContainer(c:StandardContainer):void
@@ -76,7 +76,7 @@ package com.zutalor.view
 			
 			numKeys = navKeys.length - 1;
 			for (i = 0; i < numKeys; i += 2)
-				_hkm.addMapping(StageRef.stage, navKeys[i], navKeys[i + 1]);
+				_hkm.addMapping(c, navKeys[i], navKeys[i + 1]);
 			
 			for (i = 0; i < vc.numViewItems; i++)
 			{

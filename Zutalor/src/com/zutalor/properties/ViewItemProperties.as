@@ -59,13 +59,13 @@
 		public var width:String; // yes string because it can be either "auto" or a number.
 		public var height:String; // same as above
 		public var tabIndex:int;
+		public var align:String;
 		public var x:Number;
 		public var y:Number;
 		public var hPad:Number;
 		public var vPad:Number;
 		public var vx:Number;
 		public var vy:Number;
-		public var scale:Number;
 		public var rotation:Number;
 		public var rotationX:Number;
 		public var rotationY:Number;

@@ -28,7 +28,6 @@
 
 		public function HotKeyManager()
 		{
-			Singleton.assertSingle(HotKeyManager);
 			keyMappings=new Dictionary();
 			wordMappings=new Dictionary();
 			sequenceMessages=new Dictionary();
@@ -37,10 +36,9 @@
 			keysDown="";
 		}
 		
-		public static function gi():HotKeyManager
+		private function init():void
 		{
-			if(!inst) inst=Singleton.gi(HotKeyManager);
-			return inst;
+			
 		}
 		
 		/**
