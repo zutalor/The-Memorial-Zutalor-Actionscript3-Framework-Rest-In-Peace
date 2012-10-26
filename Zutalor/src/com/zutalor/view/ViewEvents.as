@@ -85,7 +85,7 @@ package com.zutalor.view
 				{
 					keys = vip.hotkey.split(",");
 					for (var k:int = 0; k < keys.length; k++)
-						_hkm.addMapping(StageRef.stage, keys[k], vip.name);
+						_hkm.addMapping(vc.container, keys[k], vip.name);
 				}
 			}
 		}
@@ -101,7 +101,7 @@ package com.zutalor.view
 			
 			numKeys = navKeys.length - 1;
 			for (i = 0; i < numKeys; i += 2)
-				_hkm.removeMapping(StageRef.stage, navKeys[i]);
+				_hkm.removeMapping(vc.container, navKeys[i]);
 			
 			for (var i:int = 0; i < vc.numViewItems; i++)
 			{
@@ -110,7 +110,7 @@ package com.zutalor.view
 				{
 					keys = vip.hotkey.split(",");
 					for (var k:int = 0; k < keys.length; k++)
-						_hkm.removeMapping(StageRef.stage, keys[k]);
+						_hkm.removeMapping(vc.container, keys[k]);
 				}
 			}
 		}

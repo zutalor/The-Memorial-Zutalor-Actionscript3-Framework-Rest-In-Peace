@@ -158,6 +158,8 @@
 			keysDown="";
 		}
 
+		// private methods
+		
 		private function getShortcutForKey(keyCode:uint):String
 		{
 			var char:String=null;

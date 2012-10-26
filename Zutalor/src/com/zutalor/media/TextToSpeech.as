@@ -126,6 +126,8 @@ package com.zutalor.media
 					if (onComplete != null)
 						onComplete();
 					trace(result);
+					Dialog.show(Dialog.ALERT, result);
+			
 				}
 				
 				onComplete();
