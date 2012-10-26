@@ -14,7 +14,6 @@ package com.zutalor.view
 	import com.zutalor.utils.StageRef;
 	import flash.events.MediaEvent;
 	import flash.events.MouseEvent;
-	import properties.GraphSettings;
 	
 	public class ViewStateManager
 	{
@@ -72,7 +71,6 @@ package com.zutalor.view
 				
 			tMeta = getMetaByIndex(_curState);
 			
-trace(tMeta);
 			switch (String(tMeta.actions.@type))
 			{
 				case "request" :

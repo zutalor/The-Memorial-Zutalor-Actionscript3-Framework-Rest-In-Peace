@@ -16,7 +16,6 @@ package com.zutalor.media
 	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
 	import flash.utils.getTimer;
-	import properties.GraphSettings;
 	
 	public class GraphPlayer extends Sprite
 	{
