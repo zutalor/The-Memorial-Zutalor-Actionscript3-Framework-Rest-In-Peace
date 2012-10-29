@@ -1,10 +1,13 @@
 package com.zutalor.gesture 
 {
+	import com.adobe.xml.syndication.atom.Generator;
 	import com.zutalor.utils.GetShortCut;
 	import com.zutalor.utils.StageRef;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
+	import flash.utils.getDefinitionByName;
+	import flash.utils.getQualifiedClassName;
 	import org.gestouch.events.GestureEvent;
 	import org.gestouch.gestures.LongPressGesture;
 	import org.gestouch.gestures.PanGesture;
@@ -30,11 +33,8 @@ package com.zutalor.gesture
 		public static const KEY_PRESS:String = "keypress";
 		
 		private var _dict:Dictionary;
-		private var _target:*;
-		private var _gesture:*;
-		private var _callback:Function;
 				
-		public function InputManager() 
+		public function GestureManager() 
 		{
 		}
 		
@@ -91,43 +91,40 @@ package com.zutalor.gesture
 		
 		public function addCallback(target:*, type:String, callback:Function):void
 		{
-			var ip:InputProperties;
+			var gp:GestureProperties;
 			
-			_target = target;
-			_callback = callback;
-
+			gp = new GestureProperties();
+			
 			switch (type)
 			{
 				case KEY_PRESS :
-					ip = new InputProperties();
-					ip.gesture = onKey;
-					ip.gestureId = onKey;
-					ip.callback = _callback;
-					ip.target = StageRef.stage;
-					ip.target.addEventListener(KeyboardEvent.KEY_UP, onKey, false, 0, true);
-					ip.listeners.push(KeyboardEvent.KEY_DOWN);
-					ip.listeners.push(KeyboardEvent.KEY_UP);
-					addToDict(ip);
+					gp.gesture = onKey;
+					gp.gestureId = onKey;
+					gp.callback = callback;
+					gp.target = StageRef.stage;
+					gp.target.addEventListener(KeyboardEvent.KEY_UP, onKey, false, 0, true);
+					gp.listeners.push(KeyboardEvent.KEY_DOWN);
+					gp.listeners.push(KeyboardEvent.KEY_UP);
+					addToDict(gp);
 					break;
 				case TAP :
 				case DOUBLE_TAP :
-					ip = new InputProperties();
-					ip.gesture = new TapGesture(_target);
-					ip.gestureId = TapGesture; 
-					ip.target = _target;
-					ip.callback = _callback;
+					gp.gesture = new TapGesture(target);
+					gp.gestureId = TapGesture; 
+					gp.target = target;
+					gp.callback = callback;
 					if (type == DOUBLE_TAP)
 					{
-						ip.gesture.numTapsRequired = 2;
-						ip.gesture.addEventListener(GestureEvent.GESTURE_RECOGNIZED, onGesture, false, 0, true)
+						gp.gesture.numTapsRequired = 2;
+						gp.gesture.addEventListener(GestureEvent.GESTURE_RECOGNIZED, onGesture, false, 0, true)
 					}
 					else
 					{
-						ip.gesture.numTapsRequired = 1;
-						ip.gesture.addEventListener(GestureEvent.GESTURE_RECOGNIZED, onGesture, false, 0, true)
+						gp.gesture.numTapsRequired = 1;
+						gp.gesture.addEventListener(GestureEvent.GESTURE_RECOGNIZED, onGesture, false, 0, true)
 					}	
-					ip.listeners.push(GestureEvent.GESTURE_RECOGNIZED);
-					addToDict(ip);
+					gp.listeners.push(GestureEvent.GESTURE_RECOGNIZED);
+					addToDict(gp);
 					break;
 				case LONG_PRESS :
 					addGestureListener(LongPressGesture);
@@ -148,63 +145,60 @@ package com.zutalor.gesture
 					addGestureListener(ZoomGesture);
 					break;				
 			}
+			function addGestureListener(gesture:Class):void
+			{
+				gp.callback = callback;
+				gp.gesture = new gesture(target);
+				gp.gestureId = gesture;
+				gp.target = target;
+				gp.gesture.addEventListener(GestureEvent.GESTURE_BEGAN, onGesture);
+				gp.gesture.addEventListener(GestureEvent.GESTURE_CHANGED, onGesture);
+				gp.listeners.push(GestureEvent.GESTURE_BEGAN);
+				gp.listeners.push(GestureEvent.GESTURE_CHANGED);		
+				addToDict(gp);	
+			}
 		}
 		
-		// private methods
+		// private methods	
 		
-		private function addGestureListener(gesture:Class):void
-		{
-			var ip:InputProperties;
-			
-			ip = new InputProperties;
-			ip.callback = _callback;
-			ip.gesture = new gesture(_target);
-			ip.gestureId = gesture;
-			ip.target = _target;
-			ip.gesture.addEventListener(GestureEvent.GESTURE_BEGAN, onGesture);
-			ip.gesture.addEventListener(GestureEvent.GESTURE_CHANGED, onGesture);
-			ip.listeners.push(GestureEvent.GESTURE_BEGAN);
-			ip.listeners.push(GestureEvent.GESTURE_CHANGED);		
-			addToDict(ip);	
-		}
-		
-		private function addToDict(ip:InputProperties):void
+		private function addToDict(gp:GestureProperties):void
 		{
 			if (!_dict)
 				_dict = new Dictionary;
 			
-			if (!_dict[ip.target])
-				_dict[ip.target] = new Dictionary();
+			if (!_dict[gp.target])
+				_dict[gp.target] = new Dictionary();
 
-			if (!_dict[ip.target][ip.gestureId])
-				_dict[ip.target][ip.gestureId] = new Dictionary;
+			if (!_dict[gp.target][gp.gestureId])
+				_dict[gp.target][gp.gestureId] = new Dictionary;
 			
-			removeListeners(_dict[ip.target][ip.gestureId][ip.callback]); // just in case
-			_dict[ip.target][ip.gestureId][ip.callback] = ip;
+			removeListeners(_dict[gp.target][gp.gestureId][gp.callback]); // just in case
+			_dict[gp.target][gp.gestureId][gp.callback] = gp;
 		}
 		
-		private function removeListeners(ip:InputProperties):void
+		private function removeListeners(gp:GestureProperties):void
 		{
-			if (ip)
+			if (gp)
 			{
-				if (ip.gesture is Function)
-					ip.target.removeEventListener(ip.listeners[0], onKey);
+				if (gp.gesture is Function)
+					gp.target.removeEventListener(gp.listeners[0], onKey);
 				else
 				{
-					for (var i:int = 0; i < ip.listeners.length; i++)
+					for (var i:int = 0; i < gp.listeners.length; i++)
 					{
-						ip.gesture.removeEventListener(ip.listeners[i], onGesture);
-						ip.gesture.dispose();
+						gp.gesture.removeEventListener(gp.listeners[i], onGesture);
+						gp.gesture.dispose();
 					}
 				}
-				ip.listeners = [];
-				_dict[ip.target][ip.gestureId][ip.callback] = null;
+				gp.listeners = [];
+				_dict[gp.target][gp.gestureId][gp.callback] = null;
 			}
 		}
 		
 		private function onKey(ke:KeyboardEvent):void
 		{
 			var char:String;
+			var gp:GestureProperties;
 			
 			char = GetShortCut.forKey(ke.keyCode);
 			if (char == null) 
@@ -223,12 +217,24 @@ package com.zutalor.gesture
 				char += "+COMMAND";
 		
 			trace(char);
-			_callback(char);
+			gp = _dict[ke.currentTarget][onKey];
+			
+			if (gp && gp.callback)
+				gp.callback(char);
+			else
+				trace("GestureManager Error:", gp);
 		}
 						
 		private function onGesture(ge:GestureEvent):void
 		{
-			trace("tap", ge.target, TapGesture(ge.currentTarget).location.x);
+			switch (Class(getDefinitionByName(getQualifiedClassName(ge.target))))
+			{
+				case TapGesture :
+					trace("tap", ge.target, TapGesture(ge.currentTarget).location.x);
+					break;
+				default :
+					break;
+			}
 		}
 			
 		private function translateTapRequest(me:MouseEvent):String

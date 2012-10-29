@@ -3,7 +3,7 @@ package com.zutalor.view
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.controllers.AbstractUXController;
 	import com.zutalor.events.HotKeyEvent;
-	import com.zutalor.input.InputManager;
+	import com.zutalor.gesture.GestureManager;
 	import com.zutalor.media.AudioController;
 	import com.zutalor.media.MediaPlayer;
 	import com.zutalor.media.TextToSpeech;
@@ -34,7 +34,7 @@ package com.zutalor.view
 		private var _textToSpeech:TextToSpeech;
 		private var _hkm:HotKeyManager;
 		private var _uxController:AbstractUXController;
-		private var _im:InputManager;
+		private var _gm:GestureManager;
 										
 		public function initialize(uxController:AbstractUXController):void
 		{
@@ -45,7 +45,7 @@ package com.zutalor.view
 			{
 				_intitialized = true;
 				_uxController = uxController;
-				_im = new InputManager();
+				_gm = new GestureManager();
 				_soundPlayer = new MediaPlayer();
 				_soundPlayer.initialize("audio", new AudioController());				
 			
@@ -59,11 +59,11 @@ package com.zutalor.view
 				_textToSpeech.enabled = Props.ap.enableTextToSpeech;	
 				_textToSpeech.voice = "usenglishfemale";
 				
-				_im.addCallback(StageRef.stage, InputManager.KEY_PRESS, stateChange);
-				_im.addCallback(StageRef.stage, InputManager.DOUBLE_TAP, stateChange);
+				_gm.addCallback(StageRef.stage, GestureManager.KEY_PRESS, stateChange);
+				_gm.addCallback(StageRef.stage, GestureManager.DOUBLE_TAP, stateChange);
 				
-				//_im.removeCallback(StageRef.stage, InputManager.KEY_PRESS, stateChange);
-				//_im.dispose();
+				//_gm.removeCallback(StageRef.stage, InputManager.KEY_PRESS, stateChange);
+				//_gm.dispose();
 				
 				activateStateByIndex(0);				
 			}
