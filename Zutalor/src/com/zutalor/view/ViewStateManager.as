@@ -59,8 +59,11 @@ package com.zutalor.view
 				_textToSpeech.enabled = Props.ap.enableTextToSpeech;	
 				_textToSpeech.voice = "usenglishfemale";
 				
-				_im.add(StageRef.stage, InputManager.KEY_UP, stateChange);
-				_im.add(StageRef.stage, InputManager.DOUBLE_TAP, stateChange);
+				_im.addCallback(StageRef.stage, InputManager.KEY_PRESS, stateChange);
+				_im.addCallback(StageRef.stage, InputManager.DOUBLE_TAP, stateChange);
+				
+				//_im.removeCallback(StageRef.stage, InputManager.KEY_PRESS, stateChange);
+				//_im.dispose();
 				
 				activateStateByIndex(0);				
 			}
