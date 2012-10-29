@@ -291,64 +291,67 @@ package com.zutalor.view
 			
 			r = vc.itemWithFocus as RadioGroup;
 			
-			switch (e.message)
+			if (vc.container.visible)
 			{
-				case "left": 
-					if (getQualifiedClassName(vc.itemWithFocus).indexOf("RadioGroup") > -1)
-					{
-						if (r.radioIndex > 0)
-							r.radioIndex--;
-						else
-							r.radioIndex = r.numButtons - 1;
-					}
-					break;
-				case "right": 
-					if (getQualifiedClassName(vc.itemWithFocus).indexOf("RadioGroup") > -1)
-					{
-						if (r.radioIndex < r.numButtons - 1)
-							r.radioIndex++;
-						else
-							r.radioIndex = 0;
-					}
-					break;
-					
-					break;
-				case "down": 
-					if (vc.itemWithFocusIndex < vc.numItems - 1)
-						vc.itemWithFocusIndex++;
-					else
-						vc.itemWithFocusIndex = 0;
-					
-					validateSelection(e);
-					break;
-				case "up": 
-					if (vc.itemWithFocusIndex > 0)
-						vc.itemWithFocusIndex--;
-					else
-						vc.itemWithFocusIndex = vc.numItems - 1;
-					
-					validateSelection(e);
-					break;
-				
-				case "space": 
-					if (getQualifiedClassName(vc.itemWithFocus).indexOf("Button") > -1)
-						onTap(null, vc.itemWithFocus.name);
-					else if (getQualifiedClassName(vc.itemWithFocus).indexOf("Toggle") > -1)
-					{
-						vc.itemWithFocus.value = !vc.itemWithFocus.value;
-						vip = _vpm.getItemPropsByName(vc.viewId, vc.itemWithFocus.name);
-						vc.vmg.copyViewItemToValueObject(vip, vc.itemDictionary.getByName(vip.name));
-					}
-					break;
-				default: 
-					tmp = vc.getItemByName(e.message);
-					if (tmp)
-						if (tmp.visible && tmp.alpha > 0)
+				switch (e.message)
+				{
+					case "left": 
+						if (getQualifiedClassName(vc.itemWithFocus).indexOf("RadioGroup") > -1)
 						{
-							vc.itemWithFocus = tmp;
-							vc.itemWithFocusIndex = vc.getItemIndexByName(e.message);
-							onTap(null, e.message);
+							if (r.radioIndex > 0)
+								r.radioIndex--;
+							else
+								r.radioIndex = r.numButtons - 1;
 						}
+						break;
+					case "right": 
+						if (getQualifiedClassName(vc.itemWithFocus).indexOf("RadioGroup") > -1)
+						{
+							if (r.radioIndex < r.numButtons - 1)
+								r.radioIndex++;
+							else
+								r.radioIndex = 0;
+						}
+						break;
+						
+						break;
+					case "down": 
+						if (vc.itemWithFocusIndex < vc.numItems - 1)
+							vc.itemWithFocusIndex++;
+						else
+							vc.itemWithFocusIndex = 0;
+						
+						validateSelection(e);
+						break;
+					case "up": 
+						if (vc.itemWithFocusIndex > 0)
+							vc.itemWithFocusIndex--;
+						else
+							vc.itemWithFocusIndex = vc.numItems - 1;
+						
+						validateSelection(e);
+						break;
+					
+					case "space": 
+						if (getQualifiedClassName(vc.itemWithFocus).indexOf("Button") > -1)
+							onTap(null, vc.itemWithFocus.name);
+						else if (getQualifiedClassName(vc.itemWithFocus).indexOf("Toggle") > -1)
+						{
+							vc.itemWithFocus.value = !vc.itemWithFocus.value;
+							vip = _vpm.getItemPropsByName(vc.viewId, vc.itemWithFocus.name);
+							vc.vmg.copyViewItemToValueObject(vip, vc.itemDictionary.getByName(vip.name));
+						}
+						break;
+					default: 
+						tmp = vc.getItemByName(e.message);
+						if (tmp)
+							if (tmp.visible && tmp.alpha > 0)
+							{
+								vc.itemWithFocus = tmp;
+								vc.itemWithFocusIndex = vc.getItemIndexByName(e.message);
+								onTap(null, e.message);
+							}
+				}
 			}
 		}
 		

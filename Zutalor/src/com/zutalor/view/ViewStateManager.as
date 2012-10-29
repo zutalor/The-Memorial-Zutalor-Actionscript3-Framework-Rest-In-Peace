@@ -3,6 +3,7 @@ package com.zutalor.view
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.controllers.AbstractUXController;
 	import com.zutalor.events.HotKeyEvent;
+	import com.zutalor.input.InputManager;
 	import com.zutalor.media.AudioController;
 	import com.zutalor.media.MediaPlayer;
 	import com.zutalor.media.TextToSpeech;
@@ -10,9 +11,10 @@ package com.zutalor.view
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.text.Translate;
-	import com.zutalor.ui.Dialog;
+	import com.zutalor.utils.GetShortCut;
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.utils.StageRef;
+	import flash.events.KeyboardEvent;
 	import flash.events.MediaEvent;
 	import flash.events.MouseEvent;
 	
@@ -32,6 +34,7 @@ package com.zutalor.view
 		private var _textToSpeech:TextToSpeech;
 		private var _hkm:HotKeyManager;
 		private var _uxController:AbstractUXController;
+		private var _im:InputManager;
 										
 		public function initialize(uxController:AbstractUXController):void
 		{
@@ -41,8 +44,8 @@ package com.zutalor.view
 			if (!_intitialized)
 			{
 				_intitialized = true;
-				_hkm = new HotKeyManager();
 				_uxController = uxController;
+				_im = new InputManager();
 				_soundPlayer = new MediaPlayer();
 				_soundPlayer.initialize("audio", new AudioController());				
 			
@@ -54,20 +57,16 @@ package com.zutalor.view
 					_textToSpeech.apiUrl = Props.ap.textToSpeechApiUrlPC;
 					
 				_textToSpeech.enabled = Props.ap.enableTextToSpeech;	
-					
 				_textToSpeech.voice = "usenglishfemale";
 				
-				_hkm.addMapping(StageRef.stage, "LEFT", LEFT);
-				_hkm.addMapping(StageRef.stage, "DOWN", MIDDLE);
-				_hkm.addMapping(StageRef.stage, "RIGHT", RIGHT);	
+				_im.add(StageRef.stage, InputManager.KEY_UP, stateChange);
+				_im.add(StageRef.stage, InputManager.DOUBLE_TAP, stateChange);
 				
-				_hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey);
-				StageRef.stage.addEventListener(MouseEvent.CLICK, onTap);	
-				showStateByIndex(0);				
+				activateStateByIndex(0);				
 			}
-		}
+		}	
 	
-		private function stateChange(request:String = null):void
+		private function stateChange(gesture:String = null):void
 		{
 			var tMeta:XML;	
 				
@@ -76,30 +75,27 @@ package com.zutalor.view
 			switch (String(tMeta.actions.@type))
 			{
 				case "request" :
-					handleUserRequest();
+					onUserRequest();
 					break;
 				case "question" :
-					handleQuestion();
+					onQuestion();
 					break;
-				case "simulation" :
-					handleSimulation();
-					break;
-				case "property" :
-					handleProperty();
+				case "uxControllerMethod" :
+					onUxControllerMethod();
 					break;
 				case "confirm" :
-					handleConfirm();
+					onConfirm();
 					break;
 			}
 			
 			if (_nextState != _curState)
-				showStateByIndex(_nextState);
+				activateStateByIndex(_nextState);
 				
-			function handleQuestion():void
+			function onQuestion():void
 			{
 				var answered:Boolean = true;
 				
-				switch (request)
+				switch (gesture)
 				{
 					case LEFT :
 						trace ("answer a");
@@ -119,12 +115,13 @@ package com.zutalor.view
 				
 				if (answered && String(tMeta.question.@next))
 				{
-					_hkm.removeEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey);
-					StageRef.stage.removeEventListener(MouseEvent.CLICK, onTap);
-					_hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onConfirmHotKey);
-					StageRef.stage.addEventListener(MouseEvent.CLICK, onConfirmTap);		
+					//_hkm.removeEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey);
+					//StageRef.stage.removeEventListener(MouseEvent.CLICK, onTap);
+					//_hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onConfirmHotKey);
+					//StageRef.stage.addEventListener(MouseEvent.CLICK, onConfirmTap);		
 				}
 				
+				/*
 				function onConfirmHotKey(hke:HotKeyEvent):void
 				{
 					resetListeners();
@@ -143,30 +140,32 @@ package com.zutalor.view
 						stateChange(REPEAT)
 				}
 				
+				*/
+				
 				function onConfirmed():void
 				{
-					showStateById(String(tMeta.question.@next));
+					activateStateById(String(tMeta.question.@next));
 				}
 					
 				function resetListeners():void
 				{
-					_hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey);
-					StageRef.stage.addEventListener(MouseEvent.CLICK, onTap);
-					_hkm.removeEventListener(HotKeyEvent.HOTKEY_PRESS, onConfirmHotKey);
-					StageRef.stage.removeEventListener(MouseEvent.CLICK, onConfirmTap);		
+					//_hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey);
+					//StageRef.stage.addEventListener(MouseEvent.CLICK, onTap);
+					//_hkm.removeEventListener(HotKeyEvent.HOTKEY_PRESS, onConfirmHotKey);
+					//StageRef.stage.removeEventListener(MouseEvent.CLICK, onConfirmTap);		
 				}
 			}
 			
-			function handleSimulation():void
+			function onUxControllerMethod():void
 			{
 				
 			}
 			
-			function handleUserRequest():void
+			function onUserRequest():void
 			{
 				var command:String;
 				
-				switch (request)
+				switch (gesture)
 				{
 					case LEFT :
 						command = (String(tMeta.actions.@left));
@@ -181,60 +180,28 @@ package com.zutalor.view
 				switch (command)
 				{
 					case "repeat" :
-						showStateByIndex(_curState);
+						activateStateByIndex(_curState);
 						break;
 					case "prev" :
 						_nextState--;
 						break;
 					case "exit" :
-						showStateById("goodbye", _uxController.exit);
+						activateStateById("goodbye", _uxController.exit);
 						break;
 					case "next" :
 						_nextState++;
 						break;
 					case "exit" :
-						showStateById("finish", _uxController.exit);
+						activateStateById("finish", _uxController.exit);
 						break;
 				}
 			}
-			function handleProperty():void
-			{
-				
-			}
-			
-			function handleConfirm():void
+	
+			function onConfirm():void
 			{
 				
 			}
 		}
-			
-		private function onHotKey(hke:HotKeyEvent):void
-		{
-			stateChange(hke.message);
-		}
-		
-		private function onTap(me:MouseEvent):void
-		{
-			stateChange(translateTapRequest(me));
-		}
-			
-		private function translateTapRequest(me:MouseEvent):String
-		{
-			var third:int;
-			
-			third = StageRef.stage.stageWidth / 3;
-
-			if (me.stageX < third)
-			{
-				return LEFT;
-			}
-			else if (me.stageX > third * 2)
-			{
-				return RIGHT;
-			}
-			else
-				return MIDDLE;
-		}			
 		
 		private function getMetaByIndex(index:int):XML
 		{
@@ -244,16 +211,17 @@ package com.zutalor.view
 			return XML(Translate.getMeta(tp.name));
 		}
 
-		private function showStateById(id:String, onComplete:Function = null):void
+		private function activateStateById(id:String, onComplete:Function = null):void
 		{
 			_nextState = Props.translations.getItemIndexByName(Translate.language, id), onComplete
-			showStateByIndex(_nextState, onComplete);
+			activateStateByIndex(_nextState, onComplete);
 		}
 		
-		private function showStateByIndex(index:int, onComplete:Function = null):void
+		private function activateStateByIndex(index:int, onComplete:Function = null):void
 		{
 			var tp:TranslateItemProperties;	
 			var page:String;
+			var forTextToSpeach:String;
 			
 			_uxController.stop();
 			_soundPlayer.stop();		
@@ -268,8 +236,9 @@ package com.zutalor.view
 			else
 				page = TextUtil.stripStringSurroundedByDelimiter(page, "<MOBILE>", "</MOBILE>");
 			
-			_uxController.message = page;
-			playSound(page, Translate.getSoundUrl(tp.name), onComplete);
+			forTextToSpeach = TextUtil.stripStringSurroundedByDelimiter(page, "<DISPLAYTEXT>", "</DISPLAYTEXT>");
+			_uxController.message = TextUtil.stripStringSurroundedByDelimiter(page, "<PHONETIC>", "</PHONETIC>");
+			playSound(forTextToSpeach, Translate.getSoundUrl(tp.name), onComplete);
 		}
 		
 		private function playSound(page:String, url:String, onComplete:Function = null):void

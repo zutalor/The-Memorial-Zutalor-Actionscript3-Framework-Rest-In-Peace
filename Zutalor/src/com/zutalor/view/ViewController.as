@@ -110,7 +110,7 @@
 		
 		// PUBLIC METHODS
 		
-		public function get container():*
+		public function get container():StandardContainer
 		{
 			return _container;
 		}
