@@ -161,11 +161,11 @@
 		
 		private function isShortcutForKeycode(mapping:String):Boolean
 		{
-			var keys:String="BACKSPACE+CONTROL+CAPSLOCK+DELETE+DOWN+";
-			keys += "END+ENTER+ESC";
-			keys += "+HOME+INSERT+LEFT+PAGEDOWN+PAGEUP+RIGHT+SHIFT+SPACE+TAB+UP";
-			keys += "NUMPAD0+NUMPAD1+NUMPAD2+NUMPAD3+NUMPAD4+NUMPAD5+NUMPAD6+NUMPAD7+NUMPAD8+NUMPAD9+";
-			keys += "NUMPAD_ADD+NUMPAD_DECIMAL+NUMPAD_DIVIDE+NUMPAD_ENTER+NUMPAD_MULTIPLY+NUMPAD_SUBTRACT";
+			var keys:String="backspace+control+capslock+delete+down+";
+			keys += "end+enter+esc";
+			keys += "+home+insert+left+pagedown+pageup+right+shift+space+tab+up";
+			keys += "numpad0+numpad1+numpad2+numpad3+numpad4+numpad5+numpad6+numpad7+numpad8+numpad9+";
+			keys += "numpadAdd+numpadDecimal+numpadDivide+numpadEnter+numpadMultiply+numpadSubtract";
 			
 			if (keys.indexOf(mapping) > -1) 
 				return true;
@@ -260,7 +260,7 @@
 		private function onKeyUpForSequence(ke:KeyboardEvent):void
 		{		
 			var scope:* =ke.target.stage;
-			var char:String = GetShortCut.forKey(ke.keyCode);
+			var char:String = KeyUtils.shortCutForKeyCode(ke.keyCode);
 			if (char == null) 
 				char=String.fromCharCode(ke.charCode);
 			
@@ -279,8 +279,10 @@
 		{
 			var scope:* =ke.target.stage;
 			if(!sequenceMessages[scope]) return;
-			var char:String=GetShortCut.forKey(ke.keyCode);
-			if(char == null) char=String.fromCharCode(ke.charCode);
+			var char:String = KeyUtils.shortCutForKeyCode(ke.keyCode);
+			if (char == null) 
+				char=String.fromCharCode(ke.charCode);
+			
 			var c:String=char+"+";
 			if(!keysDown)keysDown="";
 			if(keysDown.indexOf(c)>-1)return;

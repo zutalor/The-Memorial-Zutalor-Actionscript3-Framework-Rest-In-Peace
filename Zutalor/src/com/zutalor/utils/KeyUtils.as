@@ -5,15 +5,15 @@ package com.zutalor.utils
 	 * ...
 	 * @author Geoff
 	 */
-	public class GetShortCut
+	public class KeyUtils
 	{
 		
-		public function GetShortCut() 
-		{
-			
-		}
+		public static const CONTROL:String = "control";
+		public static const SHIFT:String = "shift";
+		public static const ALT:String = "alt";
+		public static const COMMAND:String = "command";
 		
-		public static function forKey(keyCode:uint):String
+		public static function shortCutForKeyCode(keyCode:uint):String
 		{
 			var char:String=null;
 			switch(keyCode)
@@ -21,153 +21,154 @@ package com.zutalor.utils
 				case 0:
 					break;
 				case Keyboard.BACKSPACE:
-					char="BACKSPACE";
+					char="backspace";
 					break;
 				case Keyboard.CONTROL:
-					char="CONTROL";
+					char="control";
 					break;
 				case Keyboard.CAPS_LOCK:
-					char="CAPSLOCK";
+					char="caplock";
 					break;
 				case Keyboard.DELETE:
-					char="DELETE";
+					char="delete";
 					break;
 				case Keyboard.DOWN:
-					char="DOWN";
+					char="down";
 					break;
 				case Keyboard.END:
-					char="END";
+					char="end";
 					break;
 				case Keyboard.ENTER:
-					char="ENTER";
+					char="enter";
 					break;
 				case Keyboard.ESCAPE:
-					char="ESC";
+					char="esc";
 					break;
 				case Keyboard.F1:
-					char="F1";
+					char="f1";
 					break;
 				case Keyboard.F2:
-					char="F2";
+					char="f2";
 					break;
 				case Keyboard.F3:
-					char="F3";
+					char="f3";
 					break;
 				case Keyboard.F4:
-					char="F4";
+					char="f4";
 					break;
 				case Keyboard.F5:
-					char="F5";
+					char="f5";
 					break;
 				case Keyboard.F6:
-					char="F6";
+					char="f6";
 					break;
 				case Keyboard.F7:
-					char="F7";
+					char="f7";
 					break;
 				case Keyboard.F8:
-					char="F8";
+					char="f8";
 					break;
 				case Keyboard.F9:
-					char="F9";
+					char="f9";
 					break;
 				case Keyboard.F10:
-					char="F10";
+					char="f10";
 					break;
 				case Keyboard.F11:
-					char="F11";
+					char="f11";
 					break;
 				case Keyboard.F12:
-					char="F12";
+					char="f12";
 					break;
 				case Keyboard.F13:
-					char="F13";
+					char="f13";
 					break;
 				case Keyboard.F14:
-					char="F14";
+					char="f14";
 					break;
 				case Keyboard.F15:
 					char="F15";
 					break;
 				case Keyboard.HOME:
-					char="HOME";
+					char="home";
 					break;
 				case Keyboard.INSERT:
-					char="INSERT";
+					char="insert";
 					break;
 				case Keyboard.LEFT:
-					char="LEFT";
+					char="left";
 					break;
 				case Keyboard.PAGE_DOWN:
-					char="PAGEDOWN";
+					char="pagedown";
 					break;
 				case Keyboard.PAGE_UP:
-					char="PAGEUP";
+					char="pageup";
 					break;
 				case Keyboard.RIGHT:
-					char="RIGHT";
+					char="right";
 					break;
 				case Keyboard.SHIFT:
-					char="SHIFT";
+					char="shift";
 					break;
 				case Keyboard.SPACE:
-					char="SPACE";
+					char="space";
 					break;
 				case Keyboard.TAB:
-					char="TAB";
+					char="tab";
 					break;
 				case Keyboard.UP:
-					char="UP";
+					char="up";
 					break;
 				case Keyboard.NUMPAD_1:
-					char="NUMPAD1";
+					char="numpad1";
 					break;
 				case Keyboard.NUMPAD_2:
-					char="NUMPAD2";
+					char="numpad2";
 					break;
 				case Keyboard.NUMPAD_3:
-					char="NUMPAD3";
+					char="numpad3";
 					break;
 				case Keyboard.NUMPAD_4:
-					char="NUMPAD4";
+					char="numpad4";
 					break;
 				case Keyboard.NUMPAD_5:
-					char="NUMPAD5";
+					char="numpad5";
 					break;
 				case Keyboard.NUMPAD_6:
-					char="NUMPAD6";
+					char="numpad6";
 					break;
 				case Keyboard.NUMPAD_7:
-					char="NUMPAD7";
+					char="numpad7";
 					break;
 				case Keyboard.NUMPAD_8:
-					char="NUMPAD8";
+					char="numpad8";
 					break;
 				case Keyboard.NUMPAD_9:
-					char="NUMPAD9";
+					char="numpad9";
 					break;
 				case Keyboard.NUMPAD_0:
-					char="NUMPAD0";
+					char="numpad0";
 					break;
 				case Keyboard.NUMPAD_ADD:
-					char="NUMPADADD";
+					char="numpadAdd";
 					break;
 				case Keyboard.NUMPAD_DECIMAL:
-					char="NUMPAD_DECIMAL";
+					char="numpadDecimal";
 					break;
 				case Keyboard.NUMPAD_DIVIDE:
-					char="NUMPAD_DIVIDE";
+					char="numpadDivide";
 					break;
 				case Keyboard.NUMPAD_ENTER:
-					char="NUMPAD_ENTER";
+					char="numpadEnter";
 					break;
 				case Keyboard.NUMPAD_MULTIPLY:
-					char="NUMPAD_MULTIPLY";
+					char="numpadMultiply";
 					break;
 				case Keyboard.NUMPAD_SUBTRACT:
-					char="NUMPAD_SUBTRACT";
+					char="numpadSubtract";
 					break;
 			}
+			
 			return char;
 		}		
 	}

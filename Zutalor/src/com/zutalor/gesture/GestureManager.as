@@ -1,12 +1,8 @@
-package com.zutalor.gesture 
+package com.zutalor.gesture
 {
-	import com.adobe.xml.syndication.atom.Generator;
-	import com.zutalor.utils.GetShortCut;
-	import com.zutalor.utils.StageRef;
+	import com.zutalor.utils.KeyUtils;
 	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
 	import flash.utils.Dictionary;
-	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	import org.gestouch.events.GestureEvent;
 	import org.gestouch.gestures.LongPressGesture;
@@ -16,182 +12,150 @@ package com.zutalor.gesture
 	import org.gestouch.gestures.TapGesture;
 	import org.gestouch.gestures.TransformGesture;
 	import org.gestouch.gestures.ZoomGesture;
+	
 	/**
 	 * ...
-	 * @author Geoff
+	 * @author Geoff Pepos
 	 */
 	public class GestureManager
-	{		
-		public static const LONG_PRESS:String = "longpress";
-		public static const PAN:String = "pan";
-		public static const ROTATE:String = "rotate";
+	{
+		public static const NOT_FOUND:int = -1;
 		public static const SWIPE:String = "swipe";
-		public static const TRANSFORM:String = "transform";
-		public static const ZOOM:String = "zoom";
-		public static const TAP:String = "tap";
-		public static const DOUBLE_TAP:String = "doubletap";
-		public static const KEY_PRESS:String = "keypress";
+		public static const PAN:String = "pan";
 		
-		private var _dict:Dictionary;
-				
-		public function GestureManager() 
+		private var _activeGestures:Dictionary;
+		
+		public function addCallback(target:*, type:String, callback:Function):void 
 		{
-		}
-		
-		public function dispose():void
-		{	
-			for (var target:Object in _dict)
+			// target could use an interface to force compile time errors for methods expected on target.
+			
+			var gp:GestureProperties;
+			
+			gp = new GestureProperties(); // could use an object pool for this...but, it's only a few bytes.
+			
+			if (type.indexOf(SWIPE) != NOT_FOUND)
+				activateGesture(SwipeGesture, false, { direction: GestureUtils.getSwipeDirection(type) } );
+			else if (type.indexOf(PAN) != NOT_FOUND)
+				activateGesture(PanGesture, false, { maxNumTouchesRequired: 2, direction: GestureUtils.getPanDirection(type) } );
+			else 
 			{
-				for (var gestureId:Object in _dict[target])
+				switch (type)
 				{
-					for (var callback:Object in _dict[target][gestureId])
-						removeListeners(_dict[target][gestureId][callback]);	
-
-					_dict[target][gestureId] = null;
+					case GestureTypes.KEY_PRESS: 
+						gp.gestureId = GestureTypes.KEY_PRESS;
+						gp.gesture = onKey;
+						gp.callback = callback;
+						gp.type = type;
+						gp.target = target;
+						gp.target.addEventListener(KeyboardEvent.KEY_UP, onKey, false, 0, true);
+						gp.eventTypes.push(KeyboardEvent.KEY_UP);
+						addToActiveGestures(gp);
+						break;
+					case GestureTypes.TAP: 
+						activateGesture(TapGesture, true);
+						break;
+					case GestureTypes.DOUBLE_TAP: 
+						activateGesture(DoubleTapGesture, true);
+						break;
+					case GestureTypes.LONG_PRESS: 
+						activateGesture(LongPressGesture);
+						break;
+					case GestureTypes.ROTATE: 
+						activateGesture(RotateGesture);
+						break;
+					case GestureTypes.TRANSFORM: 
+						activateGesture(TransformGesture);
+						break;
+					case GestureTypes.ZOOM: 
+						activateGesture(ZoomGesture);
+						break;
 				}
-				_dict[target] = null;
 			}
-			_dict = null;
+			
+			function activateGesture(gestureClass:Class, discrete:Boolean = false, vars:Object = null):void
+			{
+				gp.gestureId = getQualifiedClassName(gestureClass);
+				gp.gesture = new gestureClass(target);
+				gp.callback = callback;
+				gp.target = target;
+				gp.type = type;
+				
+				if (vars)
+					for (var setting:* in vars)
+						gp.gesture[setting] = vars[setting];
+								//this could cause errors, except it's controlled inside this class.
+				
+				if (!discrete) // meaning the default; it's a continuous gesture like most of them.
+				{
+					gp.eventTypes.push(GestureEvent.GESTURE_BEGAN);
+					gp.eventTypes.push(GestureEvent.GESTURE_CHANGED);
+				}
+				else
+					gp.eventTypes.push(GestureEvent.GESTURE_RECOGNIZED);
+				
+				for (var i:int = 0; i < gp.eventTypes.length; i++)
+					gp.gesture.addEventListener(gp.eventTypes[i], onGesture); 
+				
+				addToActiveGestures(gp);
+			}
 		}
 		
 		public function removeCallback(target:*, type:String, callback:Function):void
 		{
-			var gestureId:*;
-			
-			switch (type)
-			{
-				case KEY_PRESS :
-					gestureId = onKey;
-					break;
-				case TAP :
-				case DOUBLE_TAP :
-					gestureId = TapGesture; 
-					break;
-				case LONG_PRESS :
-					gestureId = LongPressGesture;
-					break;
-				case PAN :
-					gestureId = PanGesture;
-					break;
-				case ROTATE :
-					gestureId = RotateGesture;
-					break;
-				case SWIPE :
-					gestureId = SwipeGesture;
-					break;
-				case TRANSFORM :
-					gestureId = TransformGesture;
-					break;
-				case ZOOM :
-					gestureId = ZoomGesture;
-					break;				
-			}
-			removeListeners(_dict[target][gestureId][callback]);
+			removeListeners(_activeGestures[target][getGestureId(type)]);
 		}
 		
-		public function addCallback(target:*, type:String, callback:Function):void
+		public function dispose():void
 		{
-			var gp:GestureProperties;
-			
-			gp = new GestureProperties();
-			
-			switch (type)
+			for (var target:Object in _activeGestures)
 			{
-				case KEY_PRESS :
-					gp.gesture = onKey;
-					gp.gestureId = onKey;
-					gp.callback = callback;
-					gp.target = StageRef.stage;
-					gp.target.addEventListener(KeyboardEvent.KEY_UP, onKey, false, 0, true);
-					gp.listeners.push(KeyboardEvent.KEY_DOWN);
-					gp.listeners.push(KeyboardEvent.KEY_UP);
-					addToDict(gp);
-					break;
-				case TAP :
-				case DOUBLE_TAP :
-					gp.gesture = new TapGesture(target);
-					gp.gestureId = TapGesture; 
-					gp.target = target;
-					gp.callback = callback;
-					if (type == DOUBLE_TAP)
-					{
-						gp.gesture.numTapsRequired = 2;
-						gp.gesture.addEventListener(GestureEvent.GESTURE_RECOGNIZED, onGesture, false, 0, true)
-					}
-					else
-					{
-						gp.gesture.numTapsRequired = 1;
-						gp.gesture.addEventListener(GestureEvent.GESTURE_RECOGNIZED, onGesture, false, 0, true)
-					}	
-					gp.listeners.push(GestureEvent.GESTURE_RECOGNIZED);
-					addToDict(gp);
-					break;
-				case LONG_PRESS :
-					addGestureListener(LongPressGesture);
-					break;
-				case PAN :
-					addGestureListener(PanGesture);
-					break;
-				case ROTATE :
-					addGestureListener(RotateGesture);
-					break;
-				case SWIPE :
-					addGestureListener(SwipeGesture);
-					break;
-				case TRANSFORM :
-					addGestureListener(TransformGesture);
-					break;
-				case ZOOM :
-					addGestureListener(ZoomGesture);
-					break;				
+				for (var gestureId:Object in _activeGestures[target])
+				{
+					removeListeners(_activeGestures[target][gestureId]);
+					_activeGestures[target][gestureId] = null;
+				}
+				_activeGestures[target] = null;
 			}
-			function addGestureListener(gesture:Class):void
-			{
-				gp.callback = callback;
-				gp.gesture = new gesture(target);
-				gp.gestureId = gesture;
-				gp.target = target;
-				gp.gesture.addEventListener(GestureEvent.GESTURE_BEGAN, onGesture);
-				gp.gesture.addEventListener(GestureEvent.GESTURE_CHANGED, onGesture);
-				gp.listeners.push(GestureEvent.GESTURE_BEGAN);
-				gp.listeners.push(GestureEvent.GESTURE_CHANGED);		
-				addToDict(gp);	
-			}
+			_activeGestures = null; // could recyle yet not too hard on the garbage collector.
 		}
 		
 		// private methods	
 		
-		private function addToDict(gp:GestureProperties):void
+		private function addToActiveGestures(gp:GestureProperties):void
 		{
-			if (!_dict)
-				_dict = new Dictionary;
+			if (!_activeGestures)
+				_activeGestures = new Dictionary;
 			
-			if (!_dict[gp.target])
-				_dict[gp.target] = new Dictionary();
-
-			if (!_dict[gp.target][gp.gestureId])
-				_dict[gp.target][gp.gestureId] = new Dictionary;
+			if (!_activeGestures[gp.target])
+				_activeGestures[gp.target] = new Dictionary();
 			
-			removeListeners(_dict[gp.target][gp.gestureId][gp.callback]); // just in case
-			_dict[gp.target][gp.gestureId][gp.callback] = gp;
+			_activeGestures[gp.target][gp.gestureId] = gp;
 		}
 		
 		private function removeListeners(gp:GestureProperties):void
 		{
 			if (gp)
 			{
-				if (gp.gesture is Function)
-					gp.target.removeEventListener(gp.listeners[0], onKey);
+				if (gp.gestureId == GestureTypes.KEY_PRESS)
+					gp.target.removeEventListener(gp.eventTypes[0], onKey);
 				else
-				{
-					for (var i:int = 0; i < gp.listeners.length; i++)
-					{
-						gp.gesture.removeEventListener(gp.listeners[i], onGesture);
-						gp.gesture.dispose();
-					}
-				}
-				gp.listeners = [];
-				_dict[gp.target][gp.gestureId][gp.callback] = null;
+					for (var i:int = 0; i < gp.eventTypes.length; i++)
+						gp.gesture.removeEventListener(gp.eventTypes[i], onGesture);
+				
+				// next: we could recycle the gp object...but why?
+				// it's only a few bytes! Garbage collector won't work hard.
+				
+				gp.gesture.dispose();
+				gp.eventTypes = null;
+				gp.result.location = null;
+				gp.target = null;
+				gp.callback = null;
+				gp.result = null;
+				
+				gp.gesture = null;
+				_activeGestures[gp.target][gp.gestureId] = null;
+				gp.gestureId = null;
+				gp = null;
 			}
 		}
 		
@@ -200,60 +164,103 @@ package com.zutalor.gesture
 			var char:String;
 			var gp:GestureProperties;
 			
-			char = GetShortCut.forKey(ke.keyCode);
-			if (char == null) 
+			char = KeyUtils.shortCutForKeyCode(ke.keyCode);
+			if (char == null)
 				char = String.fromCharCode(ke.charCode);
-	
+			
 			if (ke.ctrlKey)
-				char += "+CTRL";
+				char += KeyUtils.CONTROL;
 			
 			if (ke.altKey)
-				char += "+ALT";
+				char += KeyUtils.ALT;
 			
 			if (ke.shiftKey)
-				char += "+SHIFT";
+				char += KeyUtils.SHIFT;
 			
 			if (ke.commandKey)
-				char += "+COMMAND";
-		
-			trace(char);
-			gp = _dict[ke.currentTarget][onKey];
+				char += KeyUtils.COMMAND;
 			
-			if (gp && gp.callback)
-				gp.callback(char);
-			else
-				trace("GestureManager Error:", gp);
+			gp = _activeGestures[ke.currentTarget][GestureTypes.KEY_PRESS];
+			gp.result.value = char;
+			gp.callback(gp);
 		}
-						
+		
 		private function onGesture(ge:GestureEvent):void
 		{
-			switch (Class(getDefinitionByName(getQualifiedClassName(ge.target))))
-			{
-				case TapGesture :
-					trace("tap", ge.target, TapGesture(ge.currentTarget).location.x);
-					break;
-				default :
-					break;
-			}
-		}
+			var gp:GestureProperties;
 			
-		private function translateTapRequest(me:MouseEvent):String
-		{
-			var third:int;
+			gp = _activeGestures[ge.target.target][getQualifiedClassName(ge.target)];
+			gp.result.value = gp.type;
 			
-			third = StageRef.stage.stageWidth / 3;
-
-			if (me.stageX < third)
+			if (gp.type.indexOf(PAN) != NOT_FOUND || gp.type.indexOf(SWIPE) != NOT_FOUND) // a couple double negatives
 			{
-				return "0";
-			}
-			else if (me.stageX > third * 2)
-			{
-				return "1";
+				gp.result.offsetX = gp.target.offsetX = ge.currentTarget.offsetX;
+				gp.result.offsetY = gp.target.offsetY = ge.currentTarget.offsetY;
 			}
 			else
-				return "2";
-		}			
+			{
+				switch (gp.type)
+				{
+					case GestureTypes.TAP: 
+					case GestureTypes.DOUBLE_TAP: 
+					case GestureTypes.LONG_PRESS: 
+						gp.result.location.x = ge.currentTarget.location.x;
+						gp.result.location.y = ge.currentTarget.location.y;
+						break;
+					case GestureTypes.ROTATE: 
+						gp.result.rotation = gp.target.rotation = ge.currentTarget.rotation;
+						break;	
+					case GestureTypes.TRANSFORM: 
+						gp.result.rotation = gp.target.rotation = ge.currentTarget.rotation;
+						gp.result.scaleX = gp.target.scaleX = ge.currentTarget.scale;
+						gp.result.scaleY = gp.target.scaleY = ge.currentTarget.scale;
+						break;
+					case GestureTypes.ZOOM: 
+						gp.result.scaleX = gp.result.scaleY = ge.currentTarget.scaleX;
+						gp.result.scaleY = gp.result.scaleY = ge.currentTarget.scaleY;
+						gp.target.scaleX = gp.result.scaleX;
+						gp.target.scaleY = gp.result.scaleY;
+						break;
+					default: 
+						break;
+				}
+			}
+			gp.callback(gp);
+		}
 		
+		private function getGestureId(type:String):String
+		{
+			var gesture:Class;
+			
+			if (type.indexOf(PAN) != NOT_FOUND)
+				gesture = PanGesture;
+			else if (type.indexOf(SWIPE) != NOT_FOUND)
+				gesture = SwipeGesture;
+			else
+			{
+				switch (type)
+				{
+					case GestureTypes.TAP: 
+						gesture = TapGesture;
+						break;
+					case GestureTypes.DOUBLE_TAP: 
+						gesture = DoubleTapGesture;
+						break;
+					case GestureTypes.LONG_PRESS: 
+						gesture = LongPressGesture;
+						break;
+					case GestureTypes.ROTATE: 
+						gesture = RotateGesture;
+						break;
+					case GestureTypes.TRANSFORM: 
+						gesture = TransformGesture;
+						break;
+					case GestureTypes.ZOOM: 
+						gesture = ZoomGesture;
+						break;
+				}
+			}
+			return getQualifiedClassName(gesture);
+		}
 	}
 }

@@ -2,8 +2,9 @@ package com.zutalor.view
 {
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.controllers.AbstractUXController;
-	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.gesture.GestureManager;
+	import com.zutalor.gesture.GestureProperties;
+	import com.zutalor.gesture.GestureTypes;
 	import com.zutalor.media.AudioController;
 	import com.zutalor.media.MediaPlayer;
 	import com.zutalor.media.TextToSpeech;
@@ -11,12 +12,9 @@ package com.zutalor.view
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.text.Translate;
-	import com.zutalor.utils.GetShortCut;
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.utils.StageRef;
-	import flash.events.KeyboardEvent;
 	import flash.events.MediaEvent;
-	import flash.events.MouseEvent;
 	
 	public class ViewStateManager
 	{
@@ -59,21 +57,22 @@ package com.zutalor.view
 				_textToSpeech.enabled = Props.ap.enableTextToSpeech;	
 				_textToSpeech.voice = "usenglishfemale";
 				
-				_gm.addCallback(StageRef.stage, GestureManager.KEY_PRESS, stateChange);
-				_gm.addCallback(StageRef.stage, GestureManager.DOUBLE_TAP, stateChange);
-				
-				//_gm.removeCallback(StageRef.stage, InputManager.KEY_PRESS, stateChange);
-				//_gm.dispose();
+				_gm.addCallback(StageRef.stage, GestureTypes.KEY_PRESS, stateChange);
+				//_gm.addCallback(StageRef.stage, GestureTypes.TAP, stateChange);
+				_gm.addCallback(StageRef.stage, GestureTypes.DOUBLE_TAP, stateChange);
+				_gm.addCallback(StageRef.stage, GestureTypes.LONG_PRESS, stateChange);
 				
 				activateStateByIndex(0);				
 			}
 		}	
 	
-		private function stateChange(gesture:String = null):void
+		private function stateChange(gp:GestureProperties):void
 		{
 			var tMeta:XML;	
 				
 			tMeta = getMetaByIndex(_curState);
+			
+			trace(gp.result.value);
 			
 			switch (String(tMeta.actions.@type))
 			{
@@ -98,7 +97,7 @@ package com.zutalor.view
 			{
 				var answered:Boolean = true;
 				
-				switch (gesture)
+				switch (gp.result.value)
 				{
 					case LEFT :
 						trace ("answer a");
@@ -168,7 +167,7 @@ package com.zutalor.view
 			{
 				var command:String;
 				
-				switch (gesture)
+				switch (gp.result.value)
 				{
 					case LEFT :
 						command = (String(tMeta.actions.@left));
