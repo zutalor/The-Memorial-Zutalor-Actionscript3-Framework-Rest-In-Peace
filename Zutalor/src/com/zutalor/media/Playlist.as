@@ -448,7 +448,7 @@ package com.zutalor.media
 			{		
 				pip = _ppm.getItemPropsByIndex(_playlistName, _currentPlaylistIndex);
 				
-				if (!_players.getByName(pip.name))
+				if (!_players.getByKey(pip.name))
 				{
 					p = _state.change(null, UIEvent.PLAY, pip);
 					if (p)
@@ -515,7 +515,7 @@ package com.zutalor.media
 					{
 						if (_state.curItemName)
 						{	
-							p = _players.getByName(_state.curItemName);
+							p = _players.getByKey(_state.curItemName);
 							if (p)
 								p.stop(_pp.clipFadeOut);
 						}
@@ -534,7 +534,7 @@ package com.zutalor.media
 						
 						if (_state.curItemName)
 						{	
-							p = _players.getByName(_state.curItemName);
+							p = _players.getByKey(_state.curItemName);
 							if (p)
 								p.stop(_pp.clipFadeOut);
 						}

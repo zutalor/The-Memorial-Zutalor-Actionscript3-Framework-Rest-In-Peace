@@ -118,7 +118,7 @@
 			menuSelection = vpm.getPropsById(containerName).menuName;
 			if (menuSelection)
 			{
-				_menuCallStack.deleteByName(menuSelection);
+				_menuCallStack.deleteByKey(menuSelection);
 				menuSelection = _menuCallStack.getKeyByIndex(_menuCallStack.length - 1);
 				SWFAddress.setTitle(ap.appName + " - " + menuSelection);
 				SWFAddress.setValue(menuSelection);	
@@ -321,9 +321,9 @@
 						_loadingSequence.play(mp.sequenceName, this, menuCall, menuCallComplete);
 						break;
 					default :
-						if (mp.viewId && !_menuCallStack.getByName(_curMenuSelection)) 
+						if (mp.viewId && !_menuCallStack.getByKey(_curMenuSelection)) 
 						{
-							_menuCallStack.addOrReplace(_curMenuSelection, mp);
+							_menuCallStack.insert(_curMenuSelection, mp);
 							_curViewProps = vpm.getPropsById(mp.viewId);		
 							curContainerLoading = _curViewProps.name;
 							viewLoader = new ViewLoader();

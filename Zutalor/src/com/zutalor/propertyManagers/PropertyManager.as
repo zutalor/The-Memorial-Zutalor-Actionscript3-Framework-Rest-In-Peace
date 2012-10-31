@@ -33,7 +33,7 @@
 				var prc:* = new _PropertiesClass();
 				if (prc.parseXML(xll[i]))
 				{
-					_propertygDictionary.addOrReplace(prc.name, prc);
+					_propertygDictionary.insert(prc.name, prc);
 					if (childClass)
 					{
 						if (!prc.child)
@@ -48,8 +48,8 @@
 				
 		public function getPropsByName(name:String):*
 		{
-			if (_propertygDictionary.getByName(name))
-				return _propertygDictionary.getByName(name) as _PropertiesClass;
+			if (_propertygDictionary.getByKey(name))
+				return _propertygDictionary.getByKey(name) as _PropertiesClass;
 			else
 			{
 				return null;
@@ -68,7 +68,7 @@
 		
 		public function deletePropsByName(name:String):void
 		{
-			_propertygDictionary.deleteByName(name);
+			_propertygDictionary.deleteByKey(name);
 		}
 		
 		public function get length():int
@@ -78,7 +78,7 @@
 		
 		public function getChildIndexByName(name:String):*
 		{
-			return _propertygDictionary.getIndexByName(name);
+			return _propertygDictionary.getIndexByKey(name);
 		}
 		
 		public function getChildByIndex(index:int):*
@@ -93,7 +93,7 @@
 		
 		public function getChildByName(name:String):*
 		{
-			var x:* = _propertygDictionary.getByName(name); 
+			var x:* = _propertygDictionary.getByKey(name); 
 			
 			if (x)
 				return x.child;

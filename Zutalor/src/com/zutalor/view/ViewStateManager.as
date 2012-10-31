@@ -18,10 +18,6 @@ package com.zutalor.view
 	
 	public class ViewStateManager
 	{
-		public static const RIGHT:String = "2";
-		public static const LEFT:String = "0";
-		public static const MIDDLE:String = "1";
-		public static const REPEAT:String = "3";		
 			
 		private var _intitialized:Boolean;		
 		private var _nextState:int;
@@ -99,20 +95,7 @@ package com.zutalor.view
 				
 				switch (gp.result.value)
 				{
-					case LEFT :
-						trace ("answer a");
-						playSound("A", "a.mp3");
-						break;
-					case MIDDLE :
-						playSound("B", "b.mp3");
-						trace ("answer b");
-						break;
-					case RIGHT :
-						playSound("C", "c.mp3");
-						trace ("answer c");
-						break;
-					default :
-						answered = false;
+					
 				}
 				
 				if (answered && String(tMeta.question.@next))
@@ -169,6 +152,7 @@ package com.zutalor.view
 				
 				switch (gp.result.value)
 				{
+					/*
 					case LEFT :
 						command = (String(tMeta.actions.@left));
 						break;
@@ -177,6 +161,7 @@ package com.zutalor.view
 						break;
 					case MIDDLE :
 						command = (String(tMeta.actions.@middle));
+						*/
 				}
 				
 				switch (command)

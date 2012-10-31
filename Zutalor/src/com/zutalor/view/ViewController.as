@@ -199,7 +199,7 @@
 				{
 
 					Plugins.callMethod(vp.uxControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
-					item = itemDictionary.getByName(itemName);
+					item = itemDictionary.getByKey(itemName);
 					vmg.copyViewItemToValueObject(vip, item);
 				}
 				else
@@ -229,7 +229,7 @@
 				vip = vpm.getItemPropsByName(viewId, itemName);
 				if (vip)
 				{
-					item = itemDictionary.getByName(itemName);
+					item = itemDictionary.getByKey(itemName);
 					vmg.copyValueObjectToViewItem(vip, item);
 				}
 				else
@@ -315,7 +315,7 @@
 		
 		public function getItemIndexByName(name:String):int
 		{
-			return itemDictionary.getIndexByName(name);
+			return itemDictionary.getIndexByKey(name);
 		}
 		
 		public function getItemByName(itemName:String):*
@@ -326,7 +326,7 @@
 			vip = vpm.getItemPropsByName(viewId, itemName);
 			if (vip)
 				if (itemDictionary)
-					item = itemDictionary.getByName(itemName);
+					item = itemDictionary.getByKey(itemName);
 
 			return item;
 		}
@@ -353,7 +353,7 @@
 			if (vip)
 				if (itemDictionary)
 				{
-					item = itemDictionary.getByName(itemName);
+					item = itemDictionary.getByKey(itemName);
 					if (item)
 						item.alpha = a;
 				}
@@ -374,7 +374,7 @@
 		
 		public function setItemVisibility(name:String, visible:Boolean = true, fade:int = 0, delay:int = 0):void
 		{
-			ItemFX.fade(vp.name, itemDictionary.getByName(name), visible, fade, delay);
+			ItemFX.fade(vp.name, itemDictionary.getByKey(name), visible, fade, delay);
 		}
 		
 		public function get numItems():int
@@ -386,10 +386,10 @@
 		{
 			var item:*;
 			
-			item = itemDictionary.getByName(itemName);
+			item = itemDictionary.getByKey(itemName);
 			if (item)
 			{
-				disabledList[ itemDictionary.getIndexByName(itemName) ] = d;
+				disabledList[ itemDictionary.getIndexByKey(itemName) ] = d;
 				if(item.hasOwnProperty("enabled"))
 					item.enabled = d;
 			}
@@ -403,7 +403,7 @@
 			if (item.alpha == 0 || item.visible == false)
 				return true;
 			
-			return disabledList[ itemDictionary.getIndexByName(itemName) ];
+			return disabledList[ itemDictionary.getIndexByKey(itemName) ];
 		}
 		
 		public function hide(useTransition:Boolean=true):void

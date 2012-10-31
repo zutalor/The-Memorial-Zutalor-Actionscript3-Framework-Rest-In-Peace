@@ -25,12 +25,12 @@ package com.zutalor.synthesizer
 		
 		public function getPresetByName(presetName:String):SynthPreset
 		{
-			return _presets.getByName(presetName);
+			return _presets.getByKey(presetName);
 		}
 		
 		public function addPreset(presetName:String, preset:SynthPreset):void
 		{
-			_presets.addOrReplace(presetName, preset);
+			_presets.insert(presetName, preset);
 		}
 		
 		public function parseXml(xml:XML):void
@@ -73,7 +73,7 @@ package com.zutalor.synthesizer
 				preset.tvIterations = props.@tvIterations;
 				preset.tvFalloff = props.@tvFalloff;
 				
-				_presets.addOrReplace(preset.name, preset);
+				_presets.insert(preset.name, preset);
 			}
 		}					
 	}

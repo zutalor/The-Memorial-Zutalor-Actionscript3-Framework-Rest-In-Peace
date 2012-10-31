@@ -148,7 +148,7 @@
 			if (!textFormats)
 				textFormats = new gDictionary();
 			else
-				tf = textFormats.getByName(id);
+				tf = textFormats.getByKey(id);
 			
 			if (tf)
 				return tf;

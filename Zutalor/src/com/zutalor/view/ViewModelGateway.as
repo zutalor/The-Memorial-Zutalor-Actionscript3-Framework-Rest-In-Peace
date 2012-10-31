@@ -43,7 +43,7 @@ package com.zutalor.view
 		{
 			var item:*;
 			
-			item = vc.itemDictionary.getByName(vip.name); 
+			item = vc.itemDictionary.getByKey(vip.name); 
 			switch (vip.type)
 			{
 				case ViewItemProperties.INPUT_TEXT :
@@ -249,7 +249,7 @@ package com.zutalor.view
 								break;
 							case ViewItemProperties.HTML :
 								var t:TextField = item;
-								vc.itemDictionary.addOrReplace(vip.name, t);
+								vc.itemDictionary.insert(vip.name, t);
 								TextUtil.applyStylesheet(t, _ap.defaultStyleSheetName, int(vip.width));
 								if (_valueObject[vip.name] != null)
 								{

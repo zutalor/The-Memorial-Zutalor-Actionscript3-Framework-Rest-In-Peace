@@ -215,8 +215,7 @@ package com.zutalor.utils
 			
 			if (vPad)
 				tY += vPad;
-				
-			trace(displayObject.scaleX);	
+			
 				
 			displayObject.x = tX;
 			displayObject.y = tY;

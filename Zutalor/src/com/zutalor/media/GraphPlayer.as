@@ -87,7 +87,7 @@ package com.zutalor.media
 					gs.pan = i;
 					gs.sound = 0;
 					gs.soundName = "1";
-					synthesizer.tracks.addOrReplace(String(i), new Track());
+					synthesizer.tracks.insert(String(i), new Track());
 					gs.plotter = new Plotter(width-2, height);
 					gs.plotter.x = x;
 					gs.plotter.y = y;

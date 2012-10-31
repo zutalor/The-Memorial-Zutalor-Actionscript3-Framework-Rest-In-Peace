@@ -3,65 +3,76 @@
 	/**
 	 * ...
 	 * @author Geoff Pepos
-	 * okay we could use objects or a dictionary, yet this works.
+	 * 
 	 */
 	public class gDictionary
 	{
-		private var _key:Array;
-		private var _gDictionary:Array;
+		private var _key:Vector.<Object>;
+		private var _value:Vector.<Object>;
+		private var _initialSize:int;
 		
-		public function gDictionary() 
+		public function gDictionary(initialSize:int = 10) 
 		{
-			_key = [];
-			_gDictionary = [];
+			_initialSize = initialSize;
+			clear();
 		}
 		
-		public function clear():void
+		private function clear():void
 		{
-			_key = [];
-			_gDictionary = [];
+			_key = new Vector.<Object>;
+			_value = new Vector.<Object>;
+			
+			//_key.length = _initialSize;
+			//_value.length = _initialSize;
 		}
-		
+				
 		public function dispose():void
 		{
 			_key = null;
-			_gDictionary = null;
+			_value = null;
 		}
 		
-		public function addOrReplace(name:String, obj:*, newName:String=null):void
+		public function insert(key:Object, obj:*, newkey:Object=null):void
 		{
 			var i:int;
 			
-			name = name.toLowerCase();
+			if (key is String)
+				key = key.toLowerCase();
 			
-			i = _key.indexOf(name);
+			i = _key.indexOf(key);
 			
 			if (i == -1)
 				i = _key.indexOf(null)
 					if (i == -1)
 						i = _key.length;
 				
-			_gDictionary[i] = obj;
+			_value[i] = obj;
 			
-			if (newName)
-				_key[i] = newName.toLowerCase();
+			if (newkey)
+			{
+				if (newkey is String)
+					newkey = newkey.toLowerCase();
+				
+				_key[i] = newkey;
+			}
 			else
-				_key[i] = name;
+				_key[i] = key;
 		}
 
-		public function deleteByName(name:String):void
+		public function deleteByKey(key:Object):void
 		{
 			var i:int;
 			
-			name = name.toLowerCase();
+			if (key is String)
+				key = key.toLowerCase();
 			
-			i = _key.indexOf(name);
+			i = _key.indexOf(key);
 			
 			if (i != -1)
 			{
-				_gDictionary[i] = null;
+				_value[i] = null;
 				_key[i] = null;
-				_gDictionary.splice(i, 1);
+				_value.splice(i, 1);
 				_key.splice(i, 1);
 			}
 		}
@@ -70,26 +81,27 @@
 		{			
 			if (index < _key.length)
 			{
-				_gDictionary[index] = null;
+				_value[index] = null;
 				_key[index] = null;
-				_gDictionary.splice(index, 1);
+				_value.splice(index, 1);
 				_key.splice(index, 1);
 			}
 		}
 
-		public function getByName(name:String):*
+		public function getByKey(key:Object):*
 		{
 			var i:int;
 			
-			if (!name)
+			if (!key)
 				return null;
-			else	
-				name = name.toLowerCase();			
+			else
+				if (key is String)
+					key = key.toLowerCase();
 				
-				i = _key.indexOf(name);
+				i = _key.indexOf(key);
 				
 				if (i != -1)
-					return _gDictionary[i];
+					return _value[i];
 				else
 					return null;
 		}
@@ -97,12 +109,12 @@
 		public function getByIndex(index:int):*
 		{
 			if (index < _key.length && index >= 0)
-				return _gDictionary[index];
+				return _value[index];
 			else
 				return null;
 		}
 		
-		public function getKeyByIndex(index:int):String
+		public function getKeyByIndex(index:int):*
 		{
 			if (index < _key.length && index > -1)
 				return _key[index];
@@ -110,10 +122,15 @@
 				return null;
 		}
 		
-		public function getIndexByName(name:String):int
+		public function getIndexByKey(key:Object):int
 		{
-			if (name)
-				return _key.indexOf(name.toLowerCase());
+			if (key)
+			{
+				if (key is String)
+					_key = key.toLowerCase();
+					
+				return _key.indexOf(key);
+			}
 			else
 				return( -1);
 		}		
@@ -123,12 +140,12 @@
 			return _key.length;
 		}
 		
-		public function count(name:String):int
+		public function count(key:Object):int
 		{
 			var c:int = 0;
 			
-			for (var i:int = 0; i < _gDictionary.length; i++)
-				if (_gDictionary[i] == name)
+			for (var i:int = 0; i < _value.length; i++)
+				if (_value[i] == key)
 					c++
 			
 			return c;
@@ -136,10 +153,10 @@
 		
 		public function deleteByObject(obj:*):void
 		{
-			for (var i:int = 0; i < _gDictionary.length; i++)
-				if (_gDictionary[i] == obj)
+			for (var i:int = 0; i < _value.length; i++)
+				if (_value[i] == obj)
 				{
-					_gDictionary[i] = null;
+					_value[i] = null;
 					_key[i] = null;
 				}
 		}

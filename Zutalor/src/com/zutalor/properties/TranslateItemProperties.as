@@ -30,7 +30,6 @@
 				soundUrl = Path.getPath(String(xml.@soundPath)) + xml.@soundUrl;
 			}
 			return true;	
-		
 		}
 	}
 }

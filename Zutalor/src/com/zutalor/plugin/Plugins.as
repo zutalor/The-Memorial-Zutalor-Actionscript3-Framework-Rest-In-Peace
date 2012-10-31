@@ -25,7 +25,7 @@ package com.zutalor.plugin
 			else
 				className = getClassName(Klass);		
 			
-			_classes.addOrReplace(className, Klass);
+			_classes.insert(className, Klass);
 			return className;
 		}
 
@@ -48,7 +48,7 @@ package com.zutalor.plugin
 		{
 			var Klass:Class;
 			
-			Klass = _classes.getByName(className);
+			Klass = _classes.getByKey(className);
 			if (!Klass)
 				throw new Error("Plugins: no class registered for: " + className);
 			else
@@ -59,7 +59,7 @@ package com.zutalor.plugin
 		{
 			var instance:*;
 			
-			instance = _instances.getByName(classInstanceName);
+			instance = _instances.getByKey(classInstanceName);
 			
 			if (instance)
 				return instance;
@@ -70,7 +70,7 @@ package com.zutalor.plugin
 		public static function getNewInstance(className:String):*
 		{
 			var Klass:Class;
-			Klass = _classes.getByName(className);
+			Klass = _classes.getByKey(className);
 
 			if (!Klass)
 				throw new Error("Plugins: no class registered for: " + className);
@@ -82,7 +82,7 @@ package com.zutalor.plugin
 		private static function createCachedInstance(instanceName:String, className:String):void
 		{
 			checkIfInitialized();
-			_instances.addOrReplace(instanceName, getNewInstance(className));			
+			_instances.insert(instanceName, getNewInstance(className));			
 		}
 		
 		public static function registerClassAndCreateCachedInstance(Klass:Class, instanceName:String = null, isStatic:Boolean = false):void
@@ -93,9 +93,9 @@ package com.zutalor.plugin
 			
 			
 			if (!isStatic)
-				_instances.addOrReplace(instanceName, getNewInstance(instanceName));
+				_instances.insert(instanceName, getNewInstance(instanceName));
 			else
-				_instances.addOrReplace(getClassName(Klass), Klass);
+				_instances.insert(getClassName(Klass), Klass);
 		}
 				
 		public static function callMethod(classInstanceName:String, methodName:String, params:Object = null):*
@@ -103,15 +103,15 @@ package com.zutalor.plugin
 			if (classInstanceName)
 			{
 				if (params != null)
-					return _instances.getByName(classInstanceName.toLowerCase())[methodName](params);
+					return _instances.getByKey(classInstanceName.toLowerCase())[methodName](params);
 				else
-					return _instances.getByName(classInstanceName)[methodName]();
+					return _instances.getByKey(classInstanceName)[methodName]();
 			}
 		}
 		
 		private static function getMethod(classInstanceName:String, methodName:String):*
 		{
-			return _instances.getByName(classInstanceName)[methodName];
+			return _instances.getByKey(classInstanceName)[methodName];
 		}
 				
 		private static function checkIfInitialized(): void

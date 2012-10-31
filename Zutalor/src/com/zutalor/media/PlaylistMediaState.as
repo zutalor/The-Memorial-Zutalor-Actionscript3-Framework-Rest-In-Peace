@@ -88,7 +88,7 @@
 				
 				if (!state)
 				{
-					if (_players.getByName(pip.name))
+					if (_players.getByKey(pip.name))
 						state = pip.hotkeyTriggerMode;
 					else
 						state = UIEvent.PLAY;
@@ -100,7 +100,7 @@
 				switch (state)
 				{
 					case UIEvent.CUE_UP :
-						if (!_players.getByName(pip.name))
+						if (!_players.getByKey(pip.name))
 						{
 							p = getPlayer(pip, true);
 						}
@@ -148,7 +148,7 @@
 			var i:int;
 			
 			fullUrl = _pp.path + pip.url;
-			p = _players.getByName(pip.name); // first see if it's already cued up.
+			p = _players.getByKey(pip.name); // first see if it's already cued up.
 
 			if (p && cueing)
 			{
@@ -159,7 +159,7 @@
 			{
 				if (p.isPlaying)
 				{
-					trace("already playing")
+					//trace("already playing")
 					//traceAction("Already playing", p);
 					return null;
 				}
@@ -184,7 +184,7 @@
 				}
 				
 				if (!p)
-					p = _players.getByName(RECYCLE); // otherwise see if there is a "used" one available.
+					p = _players.getByKey(RECYCLE); // otherwise see if there is a "used" one available.
 				
 				if (p) 
 				{
@@ -194,7 +194,7 @@
 					//else
 						//traceAction("Playing using a recycled player", p)
 					
-					_players.addOrReplace(RECYCLE, p, pip.name);
+					_players.insert(RECYCLE, p, pip.name);
 					p.name = pip.name;
 				}
 				else // otherwise make a new one...
@@ -205,7 +205,7 @@
 						p.name = pip.name;
 						//traceAction("Making a new player", p);
 						p.returnToZero = false;
-						_players.addOrReplace(pip.name, p);
+						_players.insert(pip.name, p);
 						
 						if (p.playerType == AUDIO)
 							p.visible = false;
@@ -220,7 +220,7 @@
 								if (!cued.isPlaying)
 								{
 									p = cued;
-									_players.addOrReplace(cued.name, p, pip.name);
+									_players.insert(cued.name, p, pip.name);
 									p.name = pip.name;
 									//traceAction("re-place an already cued up player", p);
 									break;
@@ -311,12 +311,12 @@
 		{
 			var pip:PlaylistItemProperties;
 			
-			if (_players.getByName(me.target.name))
+			if (_players.getByKey(me.target.name))
 			{
 				me.target.visible = false;
 				//traceAction("Recycled", p);
-				trace("Recycled", me.target.name, "isPlaying", me.target.isPlaying);
-				_players.addOrReplace(me.target.name, me.target, RECYCLE);
+				//trace("Recycled", me.target.name, "isPlaying", me.target.isPlaying);
+				_players.insert(me.target.name, me.target, RECYCLE);
 				pip = _ppm.getItemPropsByName(_sp.playlist.playlistName, me.target.name);
 			}			
 		}
@@ -326,7 +326,7 @@
 			var pip:PlaylistItemProperties;
 			var p:*;
 			
-			if (_players.getByName(p.name))
+			if (_players.getByKey(p.name))
 			{
 				pip = _ppm.getItemPropsByName(_sp.playlist.playlistName, p.name);
 				if (pip.playNext)

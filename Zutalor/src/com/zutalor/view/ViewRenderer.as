@@ -93,7 +93,7 @@ import flash.text.TextField;
 			c = vc.vp.container;
 				
 			c.visible = true;	
-			vc.containergDictionary.addOrReplace(c.name, c);
+			vc.containergDictionary.insert(c.name, c);
 		
 			if (vip.tText)
 				text = Translate.text(vip.tText);
@@ -310,7 +310,7 @@ import flash.text.TextField;
 					applyFilters();
 					push(viewItem);
 					viewItem.name = vip.name;	
-					vc.itemDictionary.addOrReplace(vip.name, viewItem);
+					vc.itemDictionary.insert(vip.name, viewItem);
 					_onItemRenderCallback();
 					break;
 				case ViewItemProperties.SLIDE_SHOW :
@@ -432,7 +432,7 @@ import flash.text.TextField;
 				{
 					_vu.updateContainerScrollPosition(vip.scrollPreset);
 				}
-				vc.itemDictionary.addOrReplace(vip.name, viewItem);
+				vc.itemDictionary.insert(vip.name, viewItem);
 				viewItem.name = vip.name;
 				
 				

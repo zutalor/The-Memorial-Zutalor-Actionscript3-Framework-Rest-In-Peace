@@ -14,7 +14,7 @@ package com.zutalor.view
 		{
 			var requestedController:ViewController;
 			
-			requestedController = _controllerDictionary.getByName(controllerId);
+			requestedController = _controllerDictionary.getByKey(controllerId);
 			if (requestedController)
 				return requestedController;
 			else
@@ -23,12 +23,12 @@ package com.zutalor.view
 		
 		public static function registerController(id:String, controller:ViewController):void
 		{
-			_controllerDictionary.addOrReplace(id, controller);
+			_controllerDictionary.insert(id, controller);
 		}	
 		
 		public static function unregisterController(id:String):void
 		{
-			_controllerDictionary.deleteByName(id);
+			_controllerDictionary.deleteByKey(id);
 		}				
 	}
 }

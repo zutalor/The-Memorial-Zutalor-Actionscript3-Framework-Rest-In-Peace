@@ -25,7 +25,7 @@ package com.zutalor.view
 			
 			if (!vip.hidden)
 			{
-				viewItem = viq.getByName(vip.name);
+				viewItem = viq.getByKey(vip.name);
 				if (vip.transitionPreset)
 				{		
 					tpp = Props.pr.transitionPresets.getPropsByName(vip.transitionPreset);

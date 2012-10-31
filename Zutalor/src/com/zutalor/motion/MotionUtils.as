@@ -116,7 +116,7 @@
 						{
 							stageInMotion = true;
 							ms.cacheAsBitmap = true;						
-						trace("motion sprite cache as bitmap");
+					//	trace("motion sprite cache as bitmap");
 							if (ms.dragType == "drag")
 							{
 								if (ms != _draggingNow)

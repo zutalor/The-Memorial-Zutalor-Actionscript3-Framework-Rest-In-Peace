@@ -165,9 +165,9 @@ package com.zutalor.media
 						{
 							name = _cueList.shift();		
 							if (!_sp.allowRepeats)
-								if (!_clipsAlreadyPlayed.getByName(name))
+								if (!_clipsAlreadyPlayed.getByKey(name))
 								{
-									_clipsAlreadyPlayed.addOrReplace(name, _currentContext);
+									_clipsAlreadyPlayed.insert(name, _currentContext);
 									break;	
 								}	
 								
@@ -235,7 +235,7 @@ package com.zutalor.media
 					if (pip)
 					{
 						if (!(!_volume && pip.url.indexOf(".mp3") != -1))
-							if (!_players.getByName(pip.name) && _cueList.indexOf(pip.name) == -1)
+							if (!_players.getByKey(pip.name) && _cueList.indexOf(pip.name) == -1)
 							{
 								p = _mediaState.change(null, UIEvent.CUE_UP, pip)
 								if (p)

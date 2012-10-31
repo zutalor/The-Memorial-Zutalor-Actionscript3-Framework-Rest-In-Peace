@@ -70,11 +70,11 @@ package com.zutalor.synthesizer
 			var panFilter:PanFilter;
 			var resamplingFilter:ResamplingFilter;
 			
-			sampleMap = _sampleMaps.getByName(preset.soundName);
+			sampleMap = _sampleMaps.getByKey(preset.soundName);
 			if (!sampleMap)
 				throw new Error("synthSounds: sampleMap not found: " + preset.soundName);
 			
-			freqs = _frequencies.getByName(preset.soundName);
+			freqs = _frequencies.getByKey(preset.soundName);
 			url = getSoundUrl(sampleMap, noteNumber);
 			indx = _urls.indexOf(url);
 			
@@ -240,8 +240,8 @@ package com.zutalor.synthesizer
 					freqs[curSample] = AudioUtils.noteNumberToFrequency((sampleMap.interval * i) + sampleMap.baseMidiNote);
 					curSample++;					
 				}
-				_frequencies.addOrReplace(sampleMap.name, freqs);
-				_sampleMaps.addOrReplace(sampleMap.name, sampleMap);
+				_frequencies.insert(sampleMap.name, freqs);
+				_sampleMaps.insert(sampleMap.name, sampleMap);
 			}
 			loadSamples();
 		}

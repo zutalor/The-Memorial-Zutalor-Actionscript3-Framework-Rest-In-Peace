@@ -1,5 +1,6 @@
 package com.zutalor.gesture
 {
+	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.KeyUtils;
 	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
@@ -25,6 +26,10 @@ package com.zutalor.gesture
 		
 		private var _activeGestures:Dictionary;
 		
+		public function GestureManager()
+		{
+		}
+				
 		public function addCallback(target:*, type:String, callback:Function):void 
 		{
 			// target could use an interface to force compile time errors for methods expected on target.
@@ -69,6 +74,7 @@ package com.zutalor.gesture
 					case GestureTypes.ZOOM: 
 						activateGesture(ZoomGesture);
 						break;
+						
 				}
 			}
 			
@@ -115,8 +121,10 @@ package com.zutalor.gesture
 					_activeGestures[target][gestureId] = null;
 				}
 				_activeGestures[target] = null;
+				delete _activeGestures[target];
 			}
 			_activeGestures = null; // could recyle yet not too hard on the garbage collector.
+			_gestures = null;
 		}
 		
 		// private methods	
@@ -151,9 +159,10 @@ package com.zutalor.gesture
 				gp.target = null;
 				gp.callback = null;
 				gp.result = null;
-				
 				gp.gesture = null;
 				_activeGestures[gp.target][gp.gestureId] = null;
+				gp.gestureId = null;
+				delete _activeGestures[gp.target][gp.gestureId];	
 				gp.gestureId = null;
 				gp = null;
 			}
@@ -228,39 +237,34 @@ package com.zutalor.gesture
 			gp.callback(gp);
 		}
 		
+		private var _gestures:gDictionary;	
+		
 		private function getGestureId(type:String):String
 		{
 			var gesture:Class;
+			
+			if (_gestures)
+				initGestureDictionary();
 			
 			if (type.indexOf(PAN) != NOT_FOUND)
 				gesture = PanGesture;
 			else if (type.indexOf(SWIPE) != NOT_FOUND)
 				gesture = SwipeGesture;
 			else
-			{
-				switch (type)
-				{
-					case GestureTypes.TAP: 
-						gesture = TapGesture;
-						break;
-					case GestureTypes.DOUBLE_TAP: 
-						gesture = DoubleTapGesture;
-						break;
-					case GestureTypes.LONG_PRESS: 
-						gesture = LongPressGesture;
-						break;
-					case GestureTypes.ROTATE: 
-						gesture = RotateGesture;
-						break;
-					case GestureTypes.TRANSFORM: 
-						gesture = TransformGesture;
-						break;
-					case GestureTypes.ZOOM: 
-						gesture = ZoomGesture;
-						break;
-				}
-			}
+				gesture = _gestures.getByKey(type);
+
 			return getQualifiedClassName(gesture);
+		}
+		
+		private function initGestureDictionary():void
+		{
+			_gestures = new gDictionary;
+			_gestures.insert(GestureTypes.DOUBLE_TAP, DoubleTapGesture);
+			_gestures.insert(GestureTypes.TAP, TapGesture);
+			_gestures.insert(GestureTypes.LONG_PRESS, LongPressGesture);
+			_gestures.insert(GestureTypes.ROTATE, RotateGesture);
+			_gestures.insert(GestureTypes.TRANSFORM, TransformGesture);
+			_gestures.insert(GestureTypes.ZOOM, ZoomGesture);
 		}
 	}
 }

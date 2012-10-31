@@ -248,7 +248,7 @@ package com.zutalor.view
 				if (vip.type == ViewItemProperties.INPUT_TEXT)
 				{
 					FullScreen.restoreIfNotDesktop();
-					item = vc.itemDictionary.getByName(vip.name);
+					item = vc.itemDictionary.getByKey(vip.name);
 					item.setSelection(0, 999);
 					vip.tText = Translate.text(vip.tText);
 						
@@ -271,7 +271,7 @@ package com.zutalor.view
 			if (vip)
 				if (vip.type == ViewItemProperties.INPUT_TEXT)
 				{
-					item = vc.itemDictionary.getByName(vip.name);
+					item = vc.itemDictionary.getByKey(vip.name);
 					if (item.text == "" && vip.tText)
 						item.text = Translate.text(vip.tText);
 				
@@ -339,7 +339,7 @@ package com.zutalor.view
 						{
 							vc.itemWithFocus.value = !vc.itemWithFocus.value;
 							vip = _vpm.getItemPropsByName(vc.viewId, vc.itemWithFocus.name);
-							vc.vmg.copyViewItemToValueObject(vip, vc.itemDictionary.getByName(vip.name));
+							vc.vmg.copyViewItemToValueObject(vip, vc.itemDictionary.getByKey(vip.name));
 						}
 						break;
 					default: 
@@ -377,7 +377,7 @@ package com.zutalor.view
 					if (vip.type == ViewItemProperties.COMPONENT_GROUP || vip.type == ViewItemProperties.RADIO_GROUP)
 					{
 						cgp = Props.pr.componentGroupPresets.getPropsByName(vip.componentId);
-						cg = vc.itemDictionary.getByName(uie.itemName);
+						cg = vc.itemDictionary.getByKey(uie.itemName);
 						contentContainer = cg.getChildAt(0);
 						for (var i:int = 0; i < cgp.numComponents; i++)
 							contentContainer.getChildAt(i).value = uie.value[i];
@@ -464,7 +464,7 @@ package com.zutalor.view
 						
 						vc.initStatusMessage(vip.action);
 						if (vip.voName)
-							vc.vmg.copyViewItemToValueObject(vip, vc.itemDictionary.getByName(vip.name));
+							vc.vmg.copyViewItemToValueObject(vip, vc.itemDictionary.getByKey(vip.name));
 						
 						if (vip.actionParams)
 							Plugins.callMethod(dest, vip.action, vip.actionParams);

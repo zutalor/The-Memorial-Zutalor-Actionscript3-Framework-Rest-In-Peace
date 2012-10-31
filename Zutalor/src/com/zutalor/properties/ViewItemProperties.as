@@ -116,7 +116,11 @@
 				url = xml.@url;
 
 			if (tToolTip)
-				tToolTip = tToolTip.split("\\n").join("\n");	
+				tToolTip = tToolTip.split("\\n").join("\n");
+				
+			if (tText)
+				tText = tText.split("\\n").join("\n");	
+							
 				
 			return true;	
 		}

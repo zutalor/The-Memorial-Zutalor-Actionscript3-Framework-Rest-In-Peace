@@ -54,12 +54,12 @@ package com.zutalor.synthesizer
 				
 		public function addTrack(track:Track):void
 		{			
-			_tracks.addOrReplace(track.trackName, track);
+			_tracks.insert(track.trackName, track);
 		}
 		
 		public function getTrackByName(trackName:String):Track
 		{
-			return _tracks.getByName(trackName);
+			return _tracks.getByKey(trackName);
 		}
 		
 		public function getTrackByIndex(index:int):Track
