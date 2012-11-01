@@ -7,88 +7,90 @@
 	 */
 	public class gDictionary
 	{
-		private var _key:Vector.<Object>;
-		private var _value:Vector.<Object>;
+		private var _keys:Vector.<Object>;
+		private var _values:Vector.<Object>;
 		private var _initialSize:int;
+		private var _fixed:Boolean;
 		
-		public function gDictionary(initialSize:int = 10) 
+		public function gDictionary(initialSize:int = 0, fixed:Boolean=false) 
 		{
 			_initialSize = initialSize;
+			_fixed = fixed;
 			clear();
 		}
 		
 		private function clear():void
 		{
-			_key = new Vector.<Object>;
-			_value = new Vector.<Object>;
+			_keys = new Vector.<Object>(_initialSize, _fixed);
+			_values = new Vector.<Object>(_initialSize, _fixed);
 			
-			//_key.length = _initialSize;
-			//_value.length = _initialSize;
+			//_keys.length = _initialSize;
+			//_values.length = _initialSize;
 		}
 				
 		public function dispose():void
 		{
-			_key = null;
-			_value = null;
+			_keys = null;
+			_values = null;
 		}
 		
-		public function insert(key:Object, obj:*, newkey:Object=null):void
+		public function insert(key:*, obj:*, newkey:*=null):void
 		{
 			var i:int;
 			
 			if (key is String)
 				key = key.toLowerCase();
 			
-			i = _key.indexOf(key);
+			i = _keys.indexOf(key);
 			
 			if (i == -1)
-				i = _key.indexOf(null)
+				i = _keys.indexOf(null)
 					if (i == -1)
-						i = _key.length;
+						i = _keys.length;
 				
-			_value[i] = obj;
+			_values[i] = obj;
 			
 			if (newkey)
 			{
 				if (newkey is String)
 					newkey = newkey.toLowerCase();
 				
-				_key[i] = newkey;
+				_keys[i] = newkey;
 			}
 			else
-				_key[i] = key;
+				_keys[i] = key;
 		}
 
-		public function deleteByKey(key:Object):void
+		public function deleteByKey(key:*):void
 		{
 			var i:int;
 			
 			if (key is String)
 				key = key.toLowerCase();
 			
-			i = _key.indexOf(key);
+			i = _keys.indexOf(key);
 			
 			if (i != -1)
 			{
-				_value[i] = null;
-				_key[i] = null;
-				_value.splice(i, 1);
-				_key.splice(i, 1);
+				_values[i] = null;
+				_keys[i] = null;
+				_values.splice(i, 1);
+				_keys.splice(i, 1);
 			}
 		}
 		
 		public function deleteByIndex(index:int):void
 		{			
-			if (index < _key.length)
+			if (index < _keys.length)
 			{
-				_value[index] = null;
-				_key[index] = null;
-				_value.splice(index, 1);
-				_key.splice(index, 1);
+				_values[index] = null;
+				_keys[index] = null;
+				_values.splice(index, 1);
+				_keys.splice(index, 1);
 			}
 		}
 
-		public function getByKey(key:Object):*
+		public function getByKey(key:*):*
 		{
 			var i:int;
 			
@@ -98,38 +100,38 @@
 				if (key is String)
 					key = key.toLowerCase();
 				
-				i = _key.indexOf(key);
+				i = _keys.indexOf(key);
 				
 				if (i != -1)
-					return _value[i];
+					return _values[i];
 				else
 					return null;
 		}
 		
 		public function getByIndex(index:int):*
 		{
-			if (index < _key.length && index >= 0)
-				return _value[index];
+			if (index < _keys.length && index >= 0)
+				return _values[index];
 			else
 				return null;
 		}
 		
 		public function getKeyByIndex(index:int):*
 		{
-			if (index < _key.length && index > -1)
-				return _key[index];
+			if (index < _keys.length && index > -1)
+				return _keys[index];
 			else
 				return null;
 		}
 		
-		public function getIndexByKey(key:Object):int
+		public function getIndexByKey(key:*):int
 		{
 			if (key)
 			{
 				if (key is String)
-					_key = key.toLowerCase();
+					key = key.toLowerCase();
 					
-				return _key.indexOf(key);
+				return _keys.indexOf(key);
 			}
 			else
 				return( -1);
@@ -137,15 +139,15 @@
 		
 		public function get length():int
 		{
-			return _key.length;
+			return _keys.length;
 		}
 		
-		public function count(key:Object):int
+		public function count(key:*):int
 		{
 			var c:int = 0;
 			
-			for (var i:int = 0; i < _value.length; i++)
-				if (_value[i] == key)
+			for (var i:int = 0; i < _values.length; i++)
+				if (_values[i] == key)
 					c++
 			
 			return c;
@@ -153,11 +155,11 @@
 		
 		public function deleteByObject(obj:*):void
 		{
-			for (var i:int = 0; i < _value.length; i++)
-				if (_value[i] == obj)
+			for (var i:int = 0; i < _values.length; i++)
+				if (_values[i] == obj)
 				{
-					_value[i] = null;
-					_key[i] = null;
+					_values[i] = null;
+					_keys[i] = null;
 				}
 		}
 	}

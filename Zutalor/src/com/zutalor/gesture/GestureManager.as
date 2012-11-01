@@ -178,16 +178,16 @@ package com.zutalor.gesture
 				char = String.fromCharCode(ke.charCode);
 			
 			if (ke.ctrlKey)
-				char += KeyUtils.CONTROL;
+				char += "+" + KeyUtils.CONTROL;
 			
 			if (ke.altKey)
-				char += KeyUtils.ALT;
+				char += "+" + KeyUtils.ALT;
 			
 			if (ke.shiftKey)
-				char += KeyUtils.SHIFT;
+				char += "+" + KeyUtils.SHIFT;
 			
 			if (ke.commandKey)
-				char += KeyUtils.COMMAND;
+				char += "+" + KeyUtils.COMMAND;
 			
 			gp = _activeGestures[ke.currentTarget][GestureTypes.KEY_PRESS];
 			gp.result.value = char;
