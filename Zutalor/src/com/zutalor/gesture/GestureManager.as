@@ -5,6 +5,7 @@ package com.zutalor.gesture
 	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
+	import flash.utils.getTimer;
 	import org.gestouch.events.GestureEvent;
 	import org.gestouch.gestures.LongPressGesture;
 	import org.gestouch.gestures.PanGesture;
@@ -24,10 +25,12 @@ package com.zutalor.gesture
 		public static const SWIPE:String = "swipe";
 		public static const PAN:String = "pan";
 		
-		private var _activeGestures:Dictionary;
+		private var _activeGestures:gDictionary;
+		private var _gestures:gDictionary;
 		
 		public function GestureManager()
 		{
+			initGestureDictionary();
 		}
 				
 		public function addCallback(target:*, type:String, callback:Function):void 
@@ -108,22 +111,30 @@ package com.zutalor.gesture
 		
 		public function removeCallback(target:*, type:String, callback:Function):void
 		{
-			removeListeners(_activeGestures[target][getGestureId(type)]);
+			removeListeners(_activeGestures.getByKey(target).getByKey(getGestureId(type)));
 		}
 		
 		public function dispose():void
 		{
-			for (var target:Object in _activeGestures)
+			var d:gDictionary;
+			var l:int;
+			var l2:int;
+			
+			l = _activeGestures.length;
+			for (var i:int = 0; i < l; i++)
 			{
-				for (var gestureId:Object in _activeGestures[target])
+				d = gDictionary(_activeGestures.getByIndex(i));
+				l2 = d.length;
+				for (var ii:int = 0; ii < l2; ii++)
 				{
-					removeListeners(_activeGestures[target][gestureId]);
-					_activeGestures[target][gestureId] = null;
+					removeListeners(GestureProperties(d.getByIndex(ii)));
+					d.deleteByIndex(ii);
 				}
-				_activeGestures[target] = null;
-				delete _activeGestures[target];
+				d.dispose();
 			}
-			_activeGestures = null; // could recyle yet not too hard on the garbage collector.
+			_activeGestures.dispose();
+			_activeGestures = null; 
+			_gestures.dispose();
 			_gestures = null;
 		}
 		
@@ -132,16 +143,17 @@ package com.zutalor.gesture
 		private function addToActiveGestures(gp:GestureProperties):void
 		{
 			if (!_activeGestures)
-				_activeGestures = new Dictionary;
+				_activeGestures = new gDictionary;
 			
-			if (!_activeGestures[gp.target])
-				_activeGestures[gp.target] = new Dictionary();
+			if (!_activeGestures.getByKey(gp.target))
+				_activeGestures.insert(gp.target, new gDictionary());
 			
-			_activeGestures[gp.target][gp.gestureId] = gp;
+			_activeGestures.getByKey(gp.target).insert(gp.gestureId, gp);
 		}
 		
 		private function removeListeners(gp:GestureProperties):void
 		{
+			
 			if (gp)
 			{
 				if (gp.gestureId == GestureTypes.KEY_PRESS)
@@ -150,20 +162,8 @@ package com.zutalor.gesture
 					for (var i:int = 0; i < gp.eventTypes.length; i++)
 						gp.gesture.removeEventListener(gp.eventTypes[i], onGesture);
 				
-				// next: we could recycle the gp object...but why?
-				// it's only a few bytes! Garbage collector won't work hard.
-				
-				gp.gesture.dispose();
-				gp.eventTypes = null;
-				gp.result.location = null;
-				gp.target = null;
-				gp.callback = null;
-				gp.result = null;
-				gp.gesture = null;
-				_activeGestures[gp.target][gp.gestureId] = null;
-				gp.gestureId = null;
-				delete _activeGestures[gp.target][gp.gestureId];	
-				gp.gestureId = null;
+				gDictionary(_activeGestures.getByIndex(gp.target)).deleteByKey(gp.gestureId);
+				gp.dispose();
 				gp = null;
 			}
 		}
@@ -172,6 +172,8 @@ package com.zutalor.gesture
 		{
 			var char:String;
 			var gp:GestureProperties;
+						var t:uint = getTimer();
+
 			
 			char = KeyUtils.shortCutForKeyCode(ke.keyCode);
 			if (char == null)
@@ -189,16 +191,18 @@ package com.zutalor.gesture
 			if (ke.commandKey)
 				char += "+" + KeyUtils.COMMAND;
 			
-			gp = _activeGestures[ke.currentTarget][GestureTypes.KEY_PRESS];
+			gp = gDictionary(_activeGestures.getByKey(ke.currentTarget)).getByKey(GestureTypes.KEY_PRESS);
 			gp.result.value = char;
 			gp.callback(gp);
+						trace(getTimer() -t);			
+
 		}
 		
 		private function onGesture(ge:GestureEvent):void
 		{
 			var gp:GestureProperties;
 			
-			gp = _activeGestures[ge.target.target][getQualifiedClassName(ge.target)];
+			gp = _activeGestures.getByKey(ge.target.target).getByKey(getQualifiedClassName(ge.target));
 			gp.result.value = gp.type;
 			
 			if (gp.type.indexOf(PAN) != NOT_FOUND || gp.type.indexOf(SWIPE) != NOT_FOUND) // a couple double negatives
@@ -235,16 +239,12 @@ package com.zutalor.gesture
 				}
 			}
 			gp.callback(gp);
+
 		}
-		
-		private var _gestures:gDictionary;	
 		
 		private function getGestureId(type:String):String
 		{
 			var gesture:Class;
-			
-			if (_gestures)
-				initGestureDictionary();
 			
 			if (type.indexOf(PAN) != NOT_FOUND)
 				gesture = PanGesture;

@@ -2,6 +2,7 @@ package com.zutalor.view
 {
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.controllers.AbstractUXController;
+	import com.zutalor.gesture.AppGesture;
 	import com.zutalor.gesture.GestureManager;
 	import com.zutalor.gesture.GestureProperties;
 	import com.zutalor.gesture.GestureTypes;
@@ -12,6 +13,7 @@ package com.zutalor.view
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.text.Translate;
+	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.utils.StageRef;
 	import flash.events.MediaEvent;
@@ -29,6 +31,7 @@ package com.zutalor.view
 		private var _hkm:HotKeyManager;
 		private var _uxController:AbstractUXController;
 		private var _gm:GestureManager;
+		private var _gestures:gDictionary;
 										
 		public function initialize(uxController:AbstractUXController):void
 		{
@@ -53,16 +56,43 @@ package com.zutalor.view
 				_textToSpeech.enabled = Props.ap.enableTextToSpeech;	
 				_textToSpeech.voice = "usenglishfemale";
 				
-				_gm.addCallback(StageRef.stage, GestureTypes.KEY_PRESS, stateChange);
-				//_gm.addCallback(StageRef.stage, GestureTypes.TAP, stateChange);
-				_gm.addCallback(StageRef.stage, GestureTypes.DOUBLE_TAP, stateChange);
-				_gm.addCallback(StageRef.stage, GestureTypes.LONG_PRESS, stateChange);
+				initGestures();
 				
+				_gm.addCallback(StageRef.stage, GestureTypes.KEY_PRESS, onGesture);
+				_gm.addCallback(StageRef.stage, GestureTypes.TAP, onGesture);
+				_gm.addCallback(StageRef.stage, GestureTypes.DOUBLE_TAP, onGesture);
+				_gm.addCallback(StageRef.stage, GestureTypes.LONG_PRESS, onGesture);
 				activateStateByIndex(0);				
 			}
-		}	
+		}
+		
+		private function onGesture(gp:GestureProperties):void
+		{
+			
+		}
+		
+		private function initGestures():void
+		{
+			var l:int;
+			var ll:int;
+			var tMeta:XML;
+			var appGesture:AppGesture;
+			
+			_gestures = new gDictionary();
+			
+			l = tMeta.gestures.gesture.length();
+			
+			for (var i:int = 0; i < l; i++)
+			{
+				appGesture = new AppGesture();
+				appGesture.type = tMeta.gestures.gesture[i].@id;
+				appGesture.action = tMeta.gestures.gesture[i].@action;
+				appGesture.mods = String(tMeta.gestures.gesture[i].@mods).split(",");
+				_gestures.insert(appGesture.id, appGesture);
+			}
+		}
 	
-		private function stateChange(gp:GestureProperties):void
+		private function stateChange(string:Action):void
 		{
 			var tMeta:XML;	
 				
@@ -190,12 +220,26 @@ package com.zutalor.view
 			}
 		}
 		
+		private function getMetaByName(name:String):XML
+		{
+			var tp:TranslateItemProperties;
+			
+			tp = Props.translations.getItemPropsByName(Translate.language, name);
+			if (tp)
+				return XML(Translate.getMeta(tp.name));
+			else
+				return null;
+		}
+		
 		private function getMetaByIndex(index:int):XML
 		{
 			var tp:TranslateItemProperties;
 			
 			tp = Props.translations.getItemPropsByIndex(Translate.language, index);
-			return XML(Translate.getMeta(tp.name));
+			if (tp)
+				return XML(Translate.getMeta(tp.name));
+			else
+				return null;
 		}
 
 		private function activateStateById(id:String, onComplete:Function = null):void

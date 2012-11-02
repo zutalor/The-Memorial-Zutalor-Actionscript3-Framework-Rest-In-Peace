@@ -1,6 +1,7 @@
 package com.zutalor.gesture 
 {
 	import flash.display.DisplayObject;
+	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
 	import org.gestouch.gestures.Gesture;
 	/**
@@ -22,6 +23,20 @@ package com.zutalor.gesture
 			eventTypes = [];
 			result = new GestureResult();
 			result.location = new Point();
+		}
+		
+		public function dispose():void
+		{
+			
+			if (gestureId != GestureTypes.KEY_PRESS)
+				gesture.dispose();
+
+			target = null;
+			gesture = null;
+			callback = null;
+			eventTypes = null;
+			result.location = null;
+			result = null;
 		}
 	}
 }

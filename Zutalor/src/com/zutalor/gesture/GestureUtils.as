@@ -62,22 +62,31 @@ package com.zutalor.gesture
 			}
 		}
 				
-		public static function translateTapRequest(location:Point):String
+		public static function translateTapRequest(location:Point, tapAreasHorz:int, tapAreasVert:int):String
 		{
-			var third:int;
+			var splitVert:Number;
+			var splitHorz:Number;
+			var h:int;
+			var v:int;
+			var i:int;
 			
-			third = StageRef.stage.stageWidth / 3;
+			splitHorz = StageRef.stage.stageWidth / tapAreasHorz;
+			splitVert = StageRef.stage.stageHeight / tapAreasVert;
 
-			if (location.x < third)
-			{
-				return "0";
-			}
-			else if (location.x > third * 2)
-			{
-				return "1";
-			}
-			else
-				return "2";
+			for (i = 1; i <= tapAreasHorz; i++)			
+				if (location.x < splitHorz * i)
+				{
+					h = i;
+					break;
+				}
+				
+				
+			for (i = 1; I <= tapAreasVert; i++)
+				if (location.y < splitHorz * i)
+				{
+					v = i
+					break;
+				}
 		}	
 	}
 }
