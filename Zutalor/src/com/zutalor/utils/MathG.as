@@ -1,6 +1,7 @@
 ﻿package com.zutalor.utils 
 {
 	import flash.geom.Point;
+	import flash.utils.getTimer;
 	/*
 	 * A collection of static methods for common math operations. Some methods by Lee Brimlow.
 	*/
@@ -95,5 +96,39 @@
 			dy = toY - fromY;
 			return Math.sqrt(dx * dx + dy * dy);
 		}
+		
+		/*
+			An idea of how this could be used: you have a chessboard graphic and want to know which
+			square was tapped, numbered 0 through number of squares - 1. Rather than creating an object
+			for each square and listening for a tap on each one, send this the tap x/y pixel position,
+			the number of squares in each row and column and the width and the nheight of your graphical
+			viewport in pixels.
+		*/
+		
+		public static function gridIndexQuantizer(x:int, y:int, cols:int, rows:int, width:int, height:int):GridValues
+		{
+			var pxPerRow:Number;
+			var pxPerCol:Number;
+			var r:int;
+			var c:int;
+			var value:GridValues;
+			
+			value = new GridValues();			
+			pxPerRow = height / rows;
+			pxPerCol = width / cols;
+
+			for (c = 1; c <= cols; c++)			
+				if (x < pxPerCol * c)
+					break;
+					
+			for (r = 1; r <= rows; r++)
+				if (y < pxPerRow * r)
+					break;
+					
+			value.col = --c;
+			value.row = --r;
+			value.index = r * cols + c;
+			return value;
+		}	
 	}
 }

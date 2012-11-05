@@ -16,7 +16,7 @@
 		
 		override public function parseXML(xml:XML):Boolean
 		{
-			MapXML.attributeToClass(xml , this); // map the properties
+			MapXML.attributesToClass(xml , this); // map the properties
 
 			if (String(xml.@path))
 				url = Path.getPath(String(xml.@path)) + xml.@url;

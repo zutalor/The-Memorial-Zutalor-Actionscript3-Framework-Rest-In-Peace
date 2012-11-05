@@ -8,7 +8,7 @@ package com.zutalor.utils
 	public class MapXML
 	{
 		
-		public static function attributeToClass(xml:XML, Klass:*):void 
+		public static function attributesToClass(xml:XML, Klass:*):void 
 		{
 			var e:Enumerator = Enumerator.create(Klass);
 			var key:Object;
@@ -16,7 +16,7 @@ package com.zutalor.utils
 			{
 				if (Klass[key] is Boolean)
 				{
-					if (!Klass[key]) // default wasn't set to true in constructor
+					if (!Klass[key]) 
 						if (String(xml.attribute(key)) == "true")
 							Klass[key] = true;	
 						else if (String(xml.attribute(key)) == "false")	
@@ -24,7 +24,7 @@ package com.zutalor.utils
 				}
 				else if (String(xml.attribute(key)) != "")
 				{
-					if (!Klass[key]) // default wasn't set in contructor
+					if (!Klass[key])
 						Klass[key] = xml.attribute(key);		
 				}
 			}

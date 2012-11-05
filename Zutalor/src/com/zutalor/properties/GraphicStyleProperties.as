@@ -36,7 +36,7 @@
 		
 		override public function parseXML(xml:XML):Boolean
 		{	
-			MapXML.attributeToClass(xml , this); // map the properties
+			MapXML.attributesToClass(xml , this); // map the properties
 			name = name.toLowerCase();
 			
 			if (colors)

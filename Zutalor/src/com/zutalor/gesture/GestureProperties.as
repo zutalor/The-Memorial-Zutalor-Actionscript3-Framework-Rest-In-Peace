@@ -1,5 +1,6 @@
 package com.zutalor.gesture 
 {
+	import com.zutalor.interfaces.IAcceptsGestureCallbacks;
 	import flash.display.DisplayObject;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
@@ -14,7 +15,7 @@ package com.zutalor.gesture
 		public var gestureId:String; // key
 		public var gesture:*;
 		public var type:String; 
-		public var callback:Function;
+		public var caller:IAcceptsGestureCallbacks;
 		public var eventTypes:Array;
 		public var result:GestureResult;
 
@@ -33,7 +34,7 @@ package com.zutalor.gesture
 
 			target = null;
 			gesture = null;
-			callback = null;
+			caller = null;
 			eventTypes = null;
 			result.location = null;
 			result = null;

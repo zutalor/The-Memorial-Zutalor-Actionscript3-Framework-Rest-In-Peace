@@ -11,16 +11,15 @@
 	{	
 		private var _propertygDictionary:gDictionary;
 		private var _PropertiesClass:Class;
-		private var _defaultProperties:*;
 				
 		public function PropertyManager(PropertiesClass:Class) 
 		{
 			_PropertiesClass = PropertiesClass;
 			_propertygDictionary = new gDictionary();
-			_defaultProperties = new _PropertiesClass();
 		}
 					
-		public function parseXML(xmlList:XMLList, nodeName:String = "props", childClass:Class = null, childXmlList:XMLList = null, childNodeName:String = null):void
+		public function parseXML(xmlList:XMLList, nodeName:String = "props", childClass:Class = null, 
+											childXmlList:XMLList = null, childNodeName:String = null):void
 		{	
 			var xll:XMLList;
 			if (!nodeName)

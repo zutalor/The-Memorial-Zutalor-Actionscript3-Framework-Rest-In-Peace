@@ -1,7 +1,9 @@
 package com.zutalor.gesture
 {
+	import com.zutalor.interfaces.IAcceptsGestureCallbacks;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.KeyUtils;
+	import flash.events.IEventDispatcher;
 	import flash.events.KeyboardEvent;
 	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
@@ -33,13 +35,10 @@ package com.zutalor.gesture
 			initGestureDictionary();
 		}
 				
-		public function addCallback(target:*, type:String, callback:Function):void 
+		public function addCallback(target:*, type:String, caller:IAcceptsGestureCallbacks):void 
 		{
-			// target could use an interface to force compile time errors for methods expected on target.
-			
 			var gp:GestureProperties;
-			
-			gp = new GestureProperties(); // could use an object pool for this...but, it's only a few bytes.
+			gp = new GestureProperties();
 			
 			if (type.indexOf(SWIPE) != NOT_FOUND)
 				activateGesture(SwipeGesture, false, { direction: GestureUtils.getSwipeDirection(type) } );
@@ -52,7 +51,7 @@ package com.zutalor.gesture
 					case GestureTypes.KEY_PRESS: 
 						gp.gestureId = GestureTypes.KEY_PRESS;
 						gp.gesture = onKey;
-						gp.callback = callback;
+						gp.caller = caller;
 						gp.type = type;
 						gp.target = target;
 						gp.target.addEventListener(KeyboardEvent.KEY_UP, onKey, false, 0, true);
@@ -85,7 +84,7 @@ package com.zutalor.gesture
 			{
 				gp.gestureId = getQualifiedClassName(gestureClass);
 				gp.gesture = new gestureClass(target);
-				gp.callback = callback;
+				gp.caller = caller;
 				gp.target = target;
 				gp.type = type;
 				
@@ -109,7 +108,7 @@ package com.zutalor.gesture
 			}
 		}
 		
-		public function removeCallback(target:*, type:String, callback:Function):void
+		public function removeCallback(target:*, type:String):void
 		{
 			removeListeners(_activeGestures.getByKey(target).getByKey(getGestureId(type)));
 		}
@@ -172,8 +171,6 @@ package com.zutalor.gesture
 		{
 			var char:String;
 			var gp:GestureProperties;
-						var t:uint = getTimer();
-
 			
 			char = KeyUtils.shortCutForKeyCode(ke.keyCode);
 			if (char == null)
@@ -193,8 +190,7 @@ package com.zutalor.gesture
 			
 			gp = gDictionary(_activeGestures.getByKey(ke.currentTarget)).getByKey(GestureTypes.KEY_PRESS);
 			gp.result.value = char;
-			gp.callback(gp);
-						trace(getTimer() -t);			
+			gp.caller.onGesture(gp);		
 
 		}
 		
@@ -238,7 +234,7 @@ package com.zutalor.gesture
 						break;
 				}
 			}
-			gp.callback(gp);
+			gp.caller.onGesture(gp);
 
 		}
 		

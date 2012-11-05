@@ -2,23 +2,29 @@ package com.zutalor.view
 {
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.controllers.AbstractUXController;
-	import com.zutalor.gesture.AppGesture;
+	import com.zutalor.gesture.AppGestureProperties;
 	import com.zutalor.gesture.GestureManager;
 	import com.zutalor.gesture.GestureProperties;
 	import com.zutalor.gesture.GestureTypes;
+	import com.zutalor.interfaces.IAcceptsGestureCallbacks;
 	import com.zutalor.media.AudioController;
 	import com.zutalor.media.MediaPlayer;
 	import com.zutalor.media.TextToSpeech;
 	import com.zutalor.properties.TranslateItemProperties;
+	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.text.Translate;
 	import com.zutalor.utils.gDictionary;
+	import com.zutalor.utils.GridValues;
 	import com.zutalor.utils.HotKeyManager;
+	import com.zutalor.utils.MapXML;
+	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.StageRef;
 	import flash.events.MediaEvent;
+	import flash.system.Capabilities;
 	
-	public class ViewStateManager
+	public class ViewStateManager implements IAcceptsGestureCallbacks
 	{
 			
 		private var _intitialized:Boolean;		
@@ -58,48 +64,42 @@ package com.zutalor.view
 				
 				initGestures();
 				
-				_gm.addCallback(StageRef.stage, GestureTypes.KEY_PRESS, onGesture);
-				_gm.addCallback(StageRef.stage, GestureTypes.TAP, onGesture);
-				_gm.addCallback(StageRef.stage, GestureTypes.DOUBLE_TAP, onGesture);
-				_gm.addCallback(StageRef.stage, GestureTypes.LONG_PRESS, onGesture);
+				_gm.addCallback(StageRef.stage, GestureTypes.KEY_PRESS, this);
+				_gm.addCallback(StageRef.stage, GestureTypes.TAP, this);
+				_gm.addCallback(StageRef.stage, GestureTypes.DOUBLE_TAP, this);
+				_gm.addCallback(StageRef.stage, GestureTypes.LONG_PRESS, this);
 				activateStateByIndex(0);				
 			}
 		}
 		
-		private function onGesture(gp:GestureProperties):void
+		public function onGesture(gp:GestureProperties):void
 		{
+			var width:int = 1024;
+			var height:int = 768;
+			var rows:int;
+			var cols:int;
+			var gridValue:GridValues;	
 			
+			//trace(rows, cols, rows * cols);
+			
+			gridValue =  MathG.gridIndexQuantizer(gp.result.location.x, gp.result.location.y, 4, 3, width, height);
+			trace(gp.result.value, gridValue.row, gridValue.col, gridValue.index);
 		}
 		
 		private function initGestures():void
 		{
-			var l:int;
-			var ll:int;
 			var tMeta:XML;
-			var appGesture:AppGesture;
+			var appGestures:PropertyManager;
 			
-			_gestures = new gDictionary();
-			
-			l = tMeta.gestures.gesture.length();
-			
-			for (var i:int = 0; i < l; i++)
-			{
-				appGesture = new AppGesture();
-				appGesture.type = tMeta.gestures.gesture[i].@id;
-				appGesture.action = tMeta.gestures.gesture[i].@action;
-				appGesture.mods = String(tMeta.gestures.gesture[i].@mods).split(",");
-				_gestures.insert(appGesture.id, appGesture);
-			}
+			tMeta = getMetaByName("gestures");			
+			appGestures = new PropertyManager(AppGestureProperties);
+			appGestures.parseXML(tMeta.gestures, "gesture");	
 		}
-	
-		private function stateChange(string:Action):void
+		
+		private function stateChange(action:String):void
 		{
-			var tMeta:XML;	
-				
-			tMeta = getMetaByIndex(_curState);
-			
-			trace(gp.result.value);
-			
+			var tMeta:XML;					
+
 			switch (String(tMeta.actions.@type))
 			{
 				case "request" :
@@ -122,11 +122,7 @@ package com.zutalor.view
 			function onQuestion():void
 			{
 				var answered:Boolean = true;
-				
-				switch (gp.result.value)
-				{
-					
-				}
+			
 				
 				if (answered && String(tMeta.question.@next))
 				{
@@ -180,8 +176,8 @@ package com.zutalor.view
 			{
 				var command:String;
 				
-				switch (gp.result.value)
-				{
+				//switch (gp.result.value)
+				//{
 					/*
 					case LEFT :
 						command = (String(tMeta.actions.@left));
@@ -192,7 +188,7 @@ package com.zutalor.view
 					case MIDDLE :
 						command = (String(tMeta.actions.@middle));
 						*/
-				}
+				//}
 				
 				switch (command)
 				{
