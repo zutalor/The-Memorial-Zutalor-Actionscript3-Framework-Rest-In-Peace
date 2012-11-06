@@ -31,6 +31,11 @@ package com.zutalor.text
 			return _language;
 		}
 		
+		public static function getNumItems(id:String):int
+		{
+			return Props.translations.getNumItems(id);
+		}
+		
 		public static function text(item:String):String
 		{
 			var text:String = "";
@@ -49,11 +54,11 @@ package com.zutalor.text
 			return text;
 		}
 		
-		public static function getSoundUrl(item:String):String
+		public static function getSoundName(item:String):String
 		{
 			_tip = Props.translations.getItemPropsByName(_language, item);
 			if (_tip)
-				return _tip.soundUrl;
+				return _tip.sound;
 			else
 				return "";
 		}

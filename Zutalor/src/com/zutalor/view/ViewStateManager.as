@@ -18,11 +18,9 @@ package com.zutalor.view
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.GridValues;
 	import com.zutalor.utils.HotKeyManager;
-	import com.zutalor.utils.MapXML;
 	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.StageRef;
 	import flash.events.MediaEvent;
-	import flash.system.Capabilities;
 	
 	public class ViewStateManager implements IAcceptsGestureCallbacks
 	{
@@ -31,6 +29,8 @@ package com.zutalor.view
 		private var _nextState:int;
 		private var _curStateId:String;
 		private var _curState:int;
+		private var _curStateText:String;
+		private var _curStateMeta:String;
 		
 		private var _soundPlayer:MediaPlayer;
 		private var _textToSpeech:TextToSpeech;
@@ -38,16 +38,21 @@ package com.zutalor.view
 		private var _uxController:AbstractUXController;
 		private var _gm:GestureManager;
 		private var _gestures:gDictionary;
+		private var _appGestures:PropertyManager;
+		
+		private static const soundExt:String = ".mp3";
 										
 		public function initialize(uxController:AbstractUXController):void
 		{
-			var params:Array;
-			var gs:GraphSettings;				
+			var l:int;
+			var gs:GraphSettings;
+			var tMeta:XML;
 
 			if (!_intitialized)
 			{
 				_intitialized = true;
 				_uxController = uxController;
+								
 				_gm = new GestureManager();
 				_soundPlayer = new MediaPlayer();
 				_soundPlayer.initialize("audio", new AudioController());				
@@ -64,158 +69,102 @@ package com.zutalor.view
 				
 				initGestures();
 				
-				_gm.addCallback(StageRef.stage, GestureTypes.KEY_PRESS, this);
-				_gm.addCallback(StageRef.stage, GestureTypes.TAP, this);
-				_gm.addCallback(StageRef.stage, GestureTypes.DOUBLE_TAP, this);
-				_gm.addCallback(StageRef.stage, GestureTypes.LONG_PRESS, this);
-				activateStateByIndex(0);				
+				tMeta = getMetaByName("settings");
+				
+				if (tMeta.setttings.@firstPage)
+					activateStateById(tMeta.settings.@firstPage);
+				else
+					activateStateByIndex(0);
+			}
+		}
+				
+		private function initGestures():void
+		{
+			var tMeta:XML;
+			var agp:AppGestureProperties;
+			var l:int;
+			
+			tMeta = getMetaByName("settings");
+			_appGestures = new PropertyManager(AppGestureProperties);
+			_appGestures.parseXML(tMeta.gestures, "gesture");
+			
+			l = _appGestures.length;
+			for (var i:int = 0; i < l; i++)
+			{
+				agp = _appGestures.getPropsByIndex(i);
+				_gm.addCallback(StageRef.stage, agp.name, agp.type, this);
 			}
 		}
 		
 		public function onGesture(gp:GestureProperties):void
 		{
-			var width:int = 1024;
-			var height:int = 768;
-			var rows:int;
-			var cols:int;
-			var gridValue:GridValues;	
+			var gridValue:GridValues;
+			var agp:AppGestureProperties;			
+			var tMeta:XML;		
 			
-			//trace(rows, cols, rows * cols);
+			agp = _appGestures.getPropsByName(gp.result.value);
 			
-			gridValue =  MathG.gridIndexQuantizer(gp.result.location.x, gp.result.location.y, 4, 3, width, height);
-			trace(gp.result.value, gridValue.row, gridValue.col, gridValue.index);
-		}
-		
-		private function initGestures():void
-		{
-			var tMeta:XML;
-			var appGestures:PropertyManager;
-			
-			tMeta = getMetaByName("gestures");			
-			appGestures = new PropertyManager(AppGestureProperties);
-			appGestures.parseXML(tMeta.gestures, "gesture");	
-		}
-		
-		private function stateChange(action:String):void
-		{
-			var tMeta:XML;					
+			if (agp)
+			{
+				gridValue = getGridValues(gp, agp);
+				tMeta = getMetaByIndex(_curState);
+				
 
-			switch (String(tMeta.actions.@type))
-			{
-				case "request" :
-					onUserRequest();
-					break;
-				case "question" :
-					onQuestion();
-					break;
-				case "uxControllerMethod" :
-					onUxControllerMethod();
-					break;
-				case "confirm" :
-					onConfirm();
-					break;
-			}
-			
-			if (_nextState != _curState)
-				activateStateByIndex(_nextState);
-				
-			function onQuestion():void
-			{
-				var answered:Boolean = true;
-			
-				
-				if (answered && String(tMeta.question.@next))
+				switch (String(tMeta.state.@type))
 				{
-					//_hkm.removeEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey);
-					//StageRef.stage.removeEventListener(MouseEvent.CLICK, onTap);
-					//_hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onConfirmHotKey);
-					//StageRef.stage.addEventListener(MouseEvent.CLICK, onConfirmTap);		
-				}
-				
-				/*
-				function onConfirmHotKey(hke:HotKeyEvent):void
-				{
-					resetListeners();
-					if (hke.message == RIGHT)
-						onConfirmed();
-					else
-						stateChange(REPEAT);
-				}
-				
-				function onConfirmTap(me:MouseEvent):void
-				{
-					resetListeners();
-					if (translateTapRequest(me) == RIGHT)
-						onConfirmed();
-					else
-						stateChange(REPEAT)
-				}
-				
-				*/
-				
-				function onConfirmed():void
-				{
-					activateStateById(String(tMeta.question.@next));
-				}
-					
-				function resetListeners():void
-				{
-					//_hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey);
-					//StageRef.stage.addEventListener(MouseEvent.CLICK, onTap);
-					//_hkm.removeEventListener(HotKeyEvent.HOTKEY_PRESS, onConfirmHotKey);
-					//StageRef.stage.removeEventListener(MouseEvent.CLICK, onConfirmTap);		
-				}
-			}
-			
-			function onUxControllerMethod():void
-			{
-				
-			}
-			
-			function onUserRequest():void
-			{
-				var command:String;
-				
-				//switch (gp.result.value)
-				//{
-					/*
-					case LEFT :
-						command = (String(tMeta.actions.@left));
+					case "page" :
+						onPageGesture();
 						break;
-					case RIGHT :
-						command = (String(tMeta.actions.@right));
+					case "uxControllerMethod" :
+						onUxControllerMethod();
 						break;
-					case MIDDLE :
-						command = (String(tMeta.actions.@middle));
-						*/
-				//}
+					case "question" :
+						onQuestionGesture();
+						break;
+					default :
+						break;
+				}
 				
-				switch (command)
+				if (_nextState != _curState)
+					activateStateByIndex(_nextState);
+			}
+				
+			function onPageGesture():void
+			{				
+				switch (agp.request)
 				{
-					case "repeat" :
+					case "back" :
 						activateStateByIndex(_curState);
 						break;
-					case "prev" :
-						_nextState--;
-						break;
+					case "next" :
+						activateStateById(tMeta.state.@next);
+						break;						
 					case "exit" :
 						activateStateById("goodbye", _uxController.exit);
-						break;
-					case "next" :
-						_nextState++;
 						break;
 					case "exit" :
 						activateStateById("finish", _uxController.exit);
 						break;
 				}
+			}				
+				
+			function onQuestionGesture():void
+			{
+				trace(XML(_curStateText).P.questions.Q[2]);
+					
 			}
+			
+			function onUxControllerMethod():void
+			{
+				
+			}			
 	
 			function onConfirm():void
 			{
 				
 			}
 		}
-		
+
 		private function getMetaByName(name:String):XML
 		{
 			var tp:TranslateItemProperties;
@@ -240,8 +189,13 @@ package com.zutalor.view
 
 		private function activateStateById(id:String, onComplete:Function = null):void
 		{
-			_nextState = Props.translations.getItemIndexByName(Translate.language, id), onComplete
+			_nextState = Props.translations.getItemIndexByName(Translate.language, id);
 			activateStateByIndex(_nextState, onComplete);
+		}
+		
+		private function tTextByPageId(id:String):String
+		{ 
+			return Props.translations.getItemPropsByName(Translate.language, id).tText;
 		}
 		
 		private function activateStateByIndex(index:int, onComplete:Function = null):void
@@ -257,6 +211,7 @@ package com.zutalor.view
 			_curState = _nextState;
 			
 			page = Translate.text(tp.name);
+			_curStateText = page;
 			
 			if (AirStatus.isMobile)
 				page = TextUtil.stripStringSurroundedByDelimiter(page, "<PC>", "</PC>");
@@ -265,19 +220,20 @@ package com.zutalor.view
 			
 			forTextToSpeach = TextUtil.stripStringSurroundedByDelimiter(page, "<DISPLAYTEXT>", "</DISPLAYTEXT>");
 			_uxController.message = TextUtil.stripStringSurroundedByDelimiter(page, "<PHONETIC>", "</PHONETIC>");
-			playSound(forTextToSpeach, Translate.getSoundUrl(tp.name), onComplete);
+			playSound(forTextToSpeach, Translate.getSoundName(tp.name), onComplete);
 		}
 		
-		private function playSound(page:String, url:String, onComplete:Function = null):void
+		private function playSound(page:String, soundName:String, onComplete:Function = null):void
 		{
 			if (page && _textToSpeech.apiUrl)
 				_textToSpeech.speak(TextUtil.stripStringSurroundedByDelimiter(page, "<", ">"), onComplete);
-			else if (url)
+			else if (soundName)
 			{
+				
 				if (onComplete != null)
 					_soundPlayer.addEventListener(MediaEvent.COMPLETE, completed);
 				
-				_soundPlayer.load(url);
+				_soundPlayer.load(soundName + soundExt);
 				_soundPlayer.play();
 				
 				function completed():void
@@ -287,6 +243,13 @@ package com.zutalor.view
 			}
 			else if (onComplete != null)
 				onComplete();
+		}
+		
+		
+		private function getGridValues(gp:GestureProperties, agp:AppGestureProperties):GridValues
+		{
+			return MathG.gridIndexQuantizer(gp.result.location.x, gp.result.location.y, 
+						agp.cols, agp.rows, StageRef.stage.stageWidth, StageRef.stage.stageHeight);					
 		}
 	}
 }

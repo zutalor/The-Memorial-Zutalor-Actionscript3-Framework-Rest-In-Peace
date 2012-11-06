@@ -10,5 +10,6 @@
 	public class TranslateProperties extends PropertiesBase implements IProperties
 	{	
 		public var language:String;
+		public var soundPath:String;
 	}
 }

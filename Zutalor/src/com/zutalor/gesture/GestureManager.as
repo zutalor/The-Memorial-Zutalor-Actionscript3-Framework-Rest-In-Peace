@@ -35,10 +35,16 @@ package com.zutalor.gesture
 			initGestureDictionary();
 		}
 				
-		public function addCallback(target:*, type:String, caller:IAcceptsGestureCallbacks):void 
+		public function addCallback(target:*, name:String, type:String, caller:IAcceptsGestureCallbacks):void 
 		{
 			var gp:GestureProperties;
 			gp = new GestureProperties();
+			
+			gp.target = target;
+			gp.type = type;
+			gp.name = name;
+			gp.type = type;
+			gp.caller = caller;
 			
 			if (type.indexOf(SWIPE) != NOT_FOUND)
 				activateGesture(SwipeGesture, false, { direction: GestureUtils.getSwipeDirection(type) } );
@@ -49,11 +55,8 @@ package com.zutalor.gesture
 				switch (type)
 				{
 					case GestureTypes.KEY_PRESS: 
-						gp.gestureId = GestureTypes.KEY_PRESS;
+						gp.gestureClassName = GestureTypes.KEY_PRESS;
 						gp.gesture = onKey;
-						gp.caller = caller;
-						gp.type = type;
-						gp.target = target;
 						gp.target.addEventListener(KeyboardEvent.KEY_UP, onKey, false, 0, true);
 						gp.eventTypes.push(KeyboardEvent.KEY_UP);
 						addToActiveGestures(gp);
@@ -82,11 +85,9 @@ package com.zutalor.gesture
 			
 			function activateGesture(gestureClass:Class, discrete:Boolean = false, vars:Object = null):void
 			{
-				gp.gestureId = getQualifiedClassName(gestureClass);
+				gp.gestureClassName = getQualifiedClassName(gestureClass);
 				gp.gesture = new gestureClass(target);
-				gp.caller = caller;
-				gp.target = target;
-				gp.type = type;
+
 				
 				if (vars)
 					for (var setting:* in vars)
@@ -110,7 +111,7 @@ package com.zutalor.gesture
 		
 		public function removeCallback(target:*, type:String):void
 		{
-			removeListeners(_activeGestures.getByKey(target).getByKey(getGestureId(type)));
+			removeListeners(_activeGestures.getByKey(target).getByKey(getgestureClassName(type)));
 		}
 		
 		public function dispose():void
@@ -147,7 +148,7 @@ package com.zutalor.gesture
 			if (!_activeGestures.getByKey(gp.target))
 				_activeGestures.insert(gp.target, new gDictionary());
 			
-			_activeGestures.getByKey(gp.target).insert(gp.gestureId, gp);
+			_activeGestures.getByKey(gp.target).insert(gp.gestureClassName, gp);
 		}
 		
 		private function removeListeners(gp:GestureProperties):void
@@ -155,13 +156,13 @@ package com.zutalor.gesture
 			
 			if (gp)
 			{
-				if (gp.gestureId == GestureTypes.KEY_PRESS)
+				if (gp.gestureClassName == GestureTypes.KEY_PRESS)
 					gp.target.removeEventListener(gp.eventTypes[0], onKey);
 				else
 					for (var i:int = 0; i < gp.eventTypes.length; i++)
 						gp.gesture.removeEventListener(gp.eventTypes[i], onGesture);
 				
-				gDictionary(_activeGestures.getByIndex(gp.target)).deleteByKey(gp.gestureId);
+				gDictionary(_activeGestures.getByIndex(gp.target)).deleteByKey(gp.gestureClassName);
 				gp.dispose();
 				gp = null;
 			}
@@ -199,7 +200,7 @@ package com.zutalor.gesture
 			var gp:GestureProperties;
 			
 			gp = _activeGestures.getByKey(ge.target.target).getByKey(getQualifiedClassName(ge.target));
-			gp.result.value = gp.type;
+			gp.result.value = gp.type.toLowerCase();
 			
 			if (gp.type.indexOf(PAN) != NOT_FOUND || gp.type.indexOf(SWIPE) != NOT_FOUND) // a couple double negatives
 			{
@@ -238,7 +239,7 @@ package com.zutalor.gesture
 
 		}
 		
-		private function getGestureId(type:String):String
+		private function getgestureClassName(type:String):String
 		{
 			var gesture:Class;
 			

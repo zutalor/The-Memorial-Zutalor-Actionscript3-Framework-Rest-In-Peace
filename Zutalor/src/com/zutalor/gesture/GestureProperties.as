@@ -12,7 +12,8 @@ package com.zutalor.gesture
 	public class GestureProperties
 	{
 		public var target:*; //Key
-		public var gestureId:String; // key
+		public var name:String;
+		public var gestureClassName:String; // key
 		public var gesture:*;
 		public var type:String; 
 		public var caller:IAcceptsGestureCallbacks;
@@ -29,7 +30,7 @@ package com.zutalor.gesture
 		public function dispose():void
 		{
 			
-			if (gestureId != GestureTypes.KEY_PRESS)
+			if (type != GestureTypes.KEY_PRESS)
 				gesture.dispose();
 
 			target = null;
