@@ -4,11 +4,13 @@ package com.zutalor.view
 	import com.zutalor.containers.StandardContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
+	import com.zutalor.media.SoundPlayer;
 	import com.zutalor.motion.MotionUtils;
 	import com.zutalor.plugin.constants.PluginClasses;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.ComponentGroupProperties;
+	import com.zutalor.properties.SoundFxProperties;
 	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Presets;
@@ -19,8 +21,10 @@ package com.zutalor.view
 	import com.zutalor.ui.ComponentGroup;
 	import com.zutalor.ui.Focus;
 	import com.zutalor.ui.RadioGroup;
+	import com.zutalor.ui.ToolTip;
 	import com.zutalor.utils.FullScreen;
 	import com.zutalor.utils.HotKeyManager;
+	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.ViewController;
 	import flash.events.Event;
 	import flash.events.FocusEvent;
@@ -114,6 +118,11 @@ package com.zutalor.view
 		private function listenerUtil(f:Function):void
 		{
 			f(MouseEvent.CLICK, onTap);
+			f(MouseEvent.MOUSE_OVER, onMouseOver);
+			f(MouseEvent.MOUSE_OVER, buttonSfx);
+			f(MouseEvent.MOUSE_OUT, buttonSfx);
+			f(MouseEvent.MOUSE_DOWN, buttonSfx);
+			f(MouseEvent.MOUSE_DOWN, onMouseDown);
 			f(UIEvent.VALUE_CHANGED, onValueChange);
 		}
 		
@@ -129,7 +138,7 @@ package com.zutalor.view
 				
 				if (item)
 				{
-					if (vip.onTap)
+					if (vip.onTap || vip.onTapDownUiEvent)
 						if (!(item is TextField))
 							item.buttonMode = true;
 					
@@ -521,6 +530,85 @@ package com.zutalor.view
 					}
 				}
 			}
-		}		
+		}
+		
+		private function onMouseOver(me:MouseEvent):void
+		{
+			var vip:ViewItemProperties;
+			
+			vip = _vpm.getItemPropsByName(vc.viewId, me.target.name);
+			
+			if (vip)
+			{
+				if (me.target.alpha > 0 && vip.tToolTip)
+				{
+					StageRef.stage.addEventListener(MouseEvent.MOUSE_OUT, onToolTipMouseOut, false, 0, true);
+					ToolTip.show(Translate.text(vip.tToolTip), vc.vp.toolTipPreset);
+				}
+			}
+		}
+		
+		private function onMouseDown(me:MouseEvent):void
+		{
+			var vip:ViewItemProperties;
+			
+			vip = _vpm.getItemPropsByName(vc.viewId, me.target.name);
+			
+			if (vip)
+			{
+				if (vip.onTapDownUiEvent)
+				{
+					switch (vip.onTapDownUiEvent)
+					{
+						case UIEvent.NATIVE_WINDOW_MOVE: 
+							if (AirStatus.isNativeApplication)
+								Plugins.callMethod(PluginClasses.AIR_PLUGIN, PluginMethods.NW_START_MOVE);
+							break;
+					}
+				}
+			}
+		}
+		
+		private function onToolTipMouseOut(me:MouseEvent):void
+		{
+			ToolTip.hide();
+			StageRef.stage.removeEventListener(MouseEvent.MOUSE_OUT, onToolTipMouseOut);
+		}
+		
+		private function buttonSfx(me:MouseEvent):void
+		{
+			var vip:ViewItemProperties;
+			var sfx:SoundFxProperties;
+			var url:String;
+			
+			vip = _vpm.getItemPropsByName(vc.viewId, me.target.name);
+			if (vip)
+			{
+				sfx = _pr.soundFxPresets.getPropsByName(vip.sFxPreset);
+				if (sfx)
+				{
+					switch (me.type)
+					{
+						case MouseEvent.MOUSE_DOWN: 
+							url = sfx.downUrl;
+							break;
+						case MouseEvent.MOUSE_OUT: 
+							url = sfx.outUrl;
+							break;
+						case MouseEvent.CLICK: 
+							url = sfx.tapUrl;
+							break;
+						case MouseEvent.MOUSE_OVER: 
+							url = sfx.overUrl;
+							break;
+						case MouseEvent.MOUSE_UP: 
+							url = sfx.upUrl
+							break;
+					}
+				}
+				if (url)
+					SoundPlayer.loadAndPlay(url);
+			}
+		}
 	}
 }

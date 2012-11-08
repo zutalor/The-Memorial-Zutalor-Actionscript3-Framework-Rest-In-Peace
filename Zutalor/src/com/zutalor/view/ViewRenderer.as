@@ -237,7 +237,7 @@ import flash.text.TextField;
 					}
 					mpp = _pr.mediaPresets.getPropsByName(vip.mediaPreset);
 					if (!mpp)
-						throw new Error("View Renderer: video item needs a media preset in model.xml: " + vip.url);
+						throw new Error("View Renderer: video item needs a media preset in xml: " + vip.url);
 						
 					
 					mediaPlayer.load(vip.url, mpp.volume, width, height, mpp.scaleToFit, 7);
@@ -419,15 +419,6 @@ import flash.text.TextField;
 			{
 				var scrollProperties:ScrollProperties;
 		
-				if (c != vc.vp.container) // c is a child container
-				{
-					if (vip.containerX)
-						c.x = vip.containerX;
-
-					if (vip.containerY)
-						c.y = vip.containerY;
-				}
-
 				if (vip.scrollPreset)
 				{
 					_vu.updateContainerScrollPosition(vip.scrollPreset);

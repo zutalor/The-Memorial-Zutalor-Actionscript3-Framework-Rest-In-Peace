@@ -245,6 +245,9 @@
 		{
 			var scope:* =ke.target.stage;
 
+			if (!scope)
+				return;
+				
 			if (!tmpDict[scope]) tmpDict[scope] = "";
 			tmpDict[scope] += String.fromCharCode(ke.charCode);
 			if(wordMappings[scope][tmpDict[scope]])

@@ -1,18 +1,5 @@
-package
+package com.zutalor.media
 {
-	import flash.display.Sprite;
-	import flash.display.StageAlign;
-	import flash.display.StageScaleMode;
-	import flash.events.Event;
-	import flash.events.IOErrorEvent;
-	import flash.events.MouseEvent;
-	import flash.events.SampleDataEvent;
-	import flash.media.Sound;
-	import flash.net.URLRequest;
-	import flash.text.TextField;
-	import flash.text.TextFieldAutoSize;
-	import flash.text.TextFormat;
-	import flash.utils.ByteArray;
 
 	/**
 	 * Playback MP3-Loop (gapless)
@@ -28,52 +15,46 @@ package
 	 *
 	 * @author andre.michelle@audiotool.com (04/2010)
 	 */
-	public final class MP3Loop
+
+	public final class MP3Player extends Sprite
 	{
 		private const MAGIC_DELAY:Number = 2257.0; // LAME 3.98.2 + flash.media.Sound Delay
-
 		private const bufferSize: int = 4096; // Stable playback
-		
 		private const samplesTotal: int = 124417; // original amount of sample before encoding (change it to your loop)
-
 		private const mp3: Sound = new Sound(); // Use for decoding
 		private const out: Sound = new Sound(); // Use for output stream
-
 		private var samplesPosition: int = 0;
-
-		public function play(url:String): void
-		{
-			mp3.addEventListener( Event.COMPLETE, mp3Complete );
-			mp3.addEventListener( IOErrorEvent.IO_ERROR, mp3Error );
-			mp3.load( new URLRequest( url) );
-		}
+		private var enabled: Boolean = false;
+		private var _onLoadComplete:Function;
+		private var _onPlayComplete:Function;
 		
-		public function stop():void
+		public var data:*;
+
+		private function play(url:String, onLoadComplete:Function = null, onPlayComplete:Function = null): void
 		{
-			out.close();
+			mp3.addEventListener( Event.COMPLETE, loadComplete );
+			mp3.addEventListener( IOErrorEvent.IO_ERROR, mp3Error );
+			mp3.load( new URLRequest( url ) );
 		}
 
-		private function mp3Complete( event:Event ):void
+		private function loadComplete( e:Event ):void
 		{
-			startPlayback();
-		}
-
-		private function startPlayback():void
-		{
+			if (_onLoadComplete != null)
+				_onLoadComplete();
+			
+			samplesTotal = mp3.bytesLoaded;
+			data = e.target.data;
 			out.addEventListener( SampleDataEvent.SAMPLE_DATA, sampleData );
+			enabled = true;
 			out.play();
 		}
-		
-		private function sampleData( event:SampleDataEvent ):void
+
+		private function sampleData( e:SampleDataEvent ):void
 		{
 			if( enabled )
-			{
-				extract( event.data, bufferSize );
-			}
+				extract( e.data, bufferSize );
 			else
-			{
-				silent( event.data, bufferSize );
-			}
+				silent( e.data, bufferSize );
 		}
 
 		/**
@@ -89,24 +70,23 @@ package
 				if( samplesPosition + length > samplesTotal )
 				{
 					var read: int = samplesTotal - samplesPosition;
-
 					mp3.extract( target, read, samplesPosition + MAGIC_DELAY );
-
 					samplesPosition += read;
-
 					length -= read;
 				}
 				else
 				{
 					mp3.extract( target, length, samplesPosition + MAGIC_DELAY );
-
 					samplesPosition += length;
-
 					length = 0;
 				}
 
 				if( samplesPosition == samplesTotal ) // END OF LOOP > WRAP
 				{
+					out.removeEventListener( SampleDataEvent.SAMPLE_DATA, sampleData );
+					if (_onPlayComplete != null)
+						_onPlayComplete();
+						
 					samplesPosition = 0;
 				}
 			}
@@ -123,9 +103,14 @@ package
 			}
 		}
 
-		private function mp3Error( event:IOErrorEvent ):void
+		private function mp3Error( e:IOErrorEvent ):void
 		{
-			trace( event );
+			trace( e );
+		}
+
+		public override function toString():String
+		{
+			return '[SandboxMP3Cycle]';
 		}
 	}
 }

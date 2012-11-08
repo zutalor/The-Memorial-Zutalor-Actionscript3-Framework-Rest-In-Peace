@@ -79,16 +79,12 @@
 		public var target:String;
 		public var action:String;
 		public var actionParams:String;		
-		public var onTapDownUiEvent:String;
 		public var onTapContainerNames:String;
-		
-		public var componentId:String;		
-		public var tToolTip:String;
+		public var componentId:String;	
 		public var hotkey:String;
 		public var url:String;
 		public var path:String;
 		public var mediaPreset:String;
-		public var sFxPreset:String;
 		public var playlistName:String;
 		public var graphicId:String;
 		public var textureName:String;
@@ -96,15 +92,12 @@
 		public var transitionPreset:String;
 		public var transitionDelay:Number;
 		public var scrollPreset:String;
-		public var containerX:Number;
-		public var containerY:Number;
 		public var filterPreset:String;
 		public var maskGid:String;
 		public var tMeta:String; // use for whatever. Runs through "translate" text.
 					
 		override public function parseXML(xml:XML):Boolean
 		{
-			
 			MapXML.attributesToClass(xml , this); // map the properties
 
 			if (!alpha)
@@ -114,9 +107,6 @@
 				url = Path.getPath(String(xml.@path)) + xml.@url;
 			else
 				url = xml.@url;
-
-			if (tToolTip)
-				tToolTip = tToolTip.split("\\n").join("\n");
 				
 			if (tText)
 				tText = tText.split("\\n").join("\n");	

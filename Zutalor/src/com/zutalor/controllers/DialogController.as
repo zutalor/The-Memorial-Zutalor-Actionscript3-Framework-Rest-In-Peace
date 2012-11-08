@@ -40,8 +40,8 @@ package com.zutalor.controllers
 		public function setMessage(message:String):void
 		{	
 			_vo.htmlText = Translate.text(message);
-			if (_vo.htmlText.toLowerCase().indexOf("<p>") == -1)
-				_vo.htmlText = "<P>" + _vo.htmlText + " </P>"
+			if (_vo.htmlText.toLowerCase().indexOf("<p2>") == -1)
+				_vo.htmlText = "<P2>" + _vo.htmlText + " </P2>"
 			onModelChange();
 		}
 		

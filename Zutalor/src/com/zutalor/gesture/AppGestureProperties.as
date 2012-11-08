@@ -7,10 +7,26 @@ package com.zutalor.gesture
 	 */
 	public class AppGestureProperties extends PropertiesBase
 	{
-		public var type:String;
-		public var request:String;
+		private var _actions:Array;
+		
+		public var gestureType:String;
+		public var action:String;
 		public var rows:int;
 		public var cols:int;
-		public var soundName:String;
+		public var sound:String;
+		
+		public function AppGestureProperties()
+		{
+			if (actions && action.indexOf(",") != -1)
+				_actions = action.split(",");
+		}
+		
+		public function get actions():Array
+		{
+			if (_actions)
+				return _actions;
+			else
+				return null;
+		}
 	}
 }

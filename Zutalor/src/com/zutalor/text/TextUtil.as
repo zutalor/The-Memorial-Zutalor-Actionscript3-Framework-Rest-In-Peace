@@ -288,7 +288,7 @@
 				return null;
 		}
 		
-		public static function stripStringSurroundedByDelimiter(str:String, delimiterBegin:String, delimiterEnd:String):String
+		public static function stripSurroundedBy(str:String, delimiterBegin:String, delimiterEnd:String):String
 		{
 			var result:String;
 						

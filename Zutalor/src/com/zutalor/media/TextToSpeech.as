@@ -8,6 +8,7 @@ package com.zutalor.media
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
+	import mx.utils.StringUtil;
 	
 	public class TextToSpeech 
 	{	
@@ -21,10 +22,18 @@ package com.zutalor.media
 		private var _callback:Function;
 		private var _stopped:Boolean;
 		private var _channel:SoundChannel;
+		private var _limitSentences:Boolean;
+		
+		private var _mp3Player:MP3Player;
+		
+		public function TextToSpeech()
+		{
+			_mp3Player = new MP3Player();
+		}
 		
 		protected function makeURL(text:String):String // this uses the iSpeech.org api, override for another service;
 		{
-			return apiUrl + "&voice=" + voice + "&speed=" + speed + "&pitch=" + pitch + "&text=" + unescape(text);
+			return apiUrl +  "&voice=" + voice + "&speed=" + speed + "&pitch=" + pitch + "&text=" + unescape(text);
 		}
 		
 		public function speak(text:String, callback:Function):void
@@ -49,8 +58,10 @@ package com.zutalor.media
 				
 				function sayNextSentence():void
 				{
-					if (i < l && !_stopped && sentences[i])
-						say(sentences[i++], sayNextSentence);
+					if (i < l && !_stopped)
+					{
+						say(sentences[i++] + ".", sayNextSentence);
+					}
 					else
 						if (_callback != null)
 						{
@@ -63,10 +74,8 @@ package com.zutalor.media
 		
 		public function stop():void
 		{
+			_mp3Player.stop();
 			_stopped = true;
-			if (_channel)
-				_channel.stop();
-
 			if (_callback != null)
 				_callback();
 		}
@@ -79,45 +88,26 @@ package com.zutalor.media
 		// private methods
 		
 		private function say(text:String, onComplete:Function):void 
-		{
-			var snd:Sound;
-			var urlRequest:URLRequest;
-			var urlLoader:URLLoader;
+		{	
 			var url:String;
 			
+			text = "potato";
+			
 			url = makeURL(text);
-			urlRequest = new URLRequest(url);
-				
-			if (_channel)
-			{
-				_channel.stop();
-				_channel.removeEventListener(Event.SOUND_COMPLETE, onPlaybackComplete);
-			}	
 			
-			snd = new Sound();
-			snd.addEventListener(IOErrorEvent.IO_ERROR, onIOError, false, 0, true);
-			snd.load(urlRequest);
-			_channel = snd.play();
-			_channel.addEventListener(Event.SOUND_COMPLETE, onPlaybackComplete, false, 0, true);
+			_mp3Player.play(url, checkforError, onPlaybackComplete);
 			
-			function onIOError(ie:IOErrorEvent):void
+			function onPlaybackComplete():void
 			{
-				urlLoader = new URLLoader();
-				urlLoader.addEventListener(Event.COMPLETE, getErrorMessage, false, 0, true);
-				urlLoader.load(urlRequest);
+				if (onComplete != null)
+					onComplete();
 			}
 			
-			function onPlaybackComplete(e:Event):void
-			{
-				_channel.removeEventListener(Event.SOUND_COMPLETE, onPlaybackComplete);
-				onComplete();
-			}
-			
-			function getErrorMessage(e:Event):void
+			function checkforError():void
 			{
 				var result:String = null;
 				try {
-					var vars:URLVariables = new URLVariables(e.target.data);
+					var vars:URLVariables = new URLVariables(_mp3Player.event.target.data);
 					result = "Error Code " + vars.code + ": " + vars.message;
 				}
 				catch (e:Error) {}
@@ -129,8 +119,8 @@ package com.zutalor.media
 					Dialog.show(Dialog.ALERT, result);
 			
 				}
-				
 				onComplete();
+				onComplete = null;
 			}
 		}		
 		
