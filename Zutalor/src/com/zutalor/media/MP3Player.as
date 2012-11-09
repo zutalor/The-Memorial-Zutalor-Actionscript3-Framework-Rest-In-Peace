@@ -1,116 +1,116 @@
 package com.zutalor.media
 {
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.HTTPStatusEvent;
+	import flash.events.IOErrorEvent;
+	import flash.events.SampleDataEvent;
+	import flash.media.Sound;
+	import flash.net.URLRequest;
+	import flash.utils.ByteArray;
 
-	/**
-	 * Playback MP3-Loop (gapless)
-	 *
-	 * This source code enable sample exact looping of MP3.
-	 * 
-	 * http://blog.andre-michelle.com/2010/playback-mp3-loop-gapless/
-	 *
-	 * Tested with samplingrate 44.1 KHz
-	 *
-	 * <code>MAGIC_DELAY</code> does not change on different bitrates.
-	 * Value was found by comparision of encoded and original audio file.
-	 *
-	 * @author andre.michelle@audiotool.com (04/2010)
-	 */
 
-	public final class MP3Player extends Sprite
+	public final class MP3Player
 	{
-		private const MAGIC_DELAY:Number = 2257.0; // LAME 3.98.2 + flash.media.Sound Delay
-		private const bufferSize: int = 4096; // Stable playback
-		private const samplesTotal: int = 124417; // original amount of sample before encoding (change it to your loop)
-		private const mp3: Sound = new Sound(); // Use for decoding
-		private const out: Sound = new Sound(); // Use for output stream
+		private const bufferSize: int = 4096; 
+		private const SAMPLE_RATE:Number = 44.1;	
+		
+		private var inputSound: Sound = new Sound(); 
+		private var outputSound: Sound = new Sound(); 
+
+		private var samplesTotal:int; 	
 		private var samplesPosition: int = 0;
 		private var enabled: Boolean = false;
 		private var _onLoadComplete:Function;
 		private var _onPlayComplete:Function;
+		private var _loop:Boolean;
 		
-		public var data:*;
-
-		private function play(url:String, onLoadComplete:Function = null, onPlayComplete:Function = null): void
+		public var event:*;
+		
+		/**
+			 Based upon Andre Michelle's MP3Loop
+			 * http://blog.andre-michelle.com/2010/playback-mp3-loop-gapless/
+		 */
+		
+		public function MP3Player():void
 		{
-			mp3.addEventListener( Event.COMPLETE, loadComplete );
-			mp3.addEventListener( IOErrorEvent.IO_ERROR, mp3Error );
-			mp3.load( new URLRequest( url ) );
+			outputSound = new Sound();
+		}
+
+		public function play(url:String, loop:Boolean = false,  onLoadComplete:Function = null, onPlayComplete:Function = null): void
+		{
+			_loop = loop;
+			inputSound = new Sound();
+			inputSound.addEventListener(Event.COMPLETE, loadComplete);
+			inputSound.addEventListener(IOErrorEvent.IO_ERROR, mp3Error);
+			inputSound.load( new URLRequest(url));
+		}
+		
+		public function stop():void
+		{
+			outputSound.removeEventListener( SampleDataEvent.SAMPLE_DATA, sampleData );
+			samplesPosition = 0;
+			if (_onPlayComplete != null)
+			{
+				_onPlayComplete();
+				_onPlayComplete = null;
+			}			
 		}
 
 		private function loadComplete( e:Event ):void
 		{
-			if (_onLoadComplete != null)
-				_onLoadComplete();
+			inputSound.removeEventListener(Event.COMPLETE, loadComplete);
 			
-			samplesTotal = mp3.bytesLoaded;
-			data = e.target.data;
-			out.addEventListener( SampleDataEvent.SAMPLE_DATA, sampleData );
-			enabled = true;
-			out.play();
+			event = e;			
+			samplesTotal = inputSound.length * SAMPLE_RATE;
+			if (samplesTotal)
+			{
+				outputSound.addEventListener( SampleDataEvent.SAMPLE_DATA, sampleData );
+				outputSound.play();
+			}
+			else
+				stop();
+				
+			if (_onLoadComplete != null)
+				_onLoadComplete();					
 		}
 
 		private function sampleData( e:SampleDataEvent ):void
 		{
-			if( enabled )
-				extract( e.data, bufferSize );
-			else
-				silent( e.data, bufferSize );
+			extract( e.data, bufferSize );
 		}
 
-		/**
-		 * This methods extracts audio data from the mp3 and wraps it automatically with respect to encoder delay
-		 *
-		 * @param target The ByteArray where to write the audio data
-		 * @param length The amount of samples to be read
-		 */
 		private function extract( target: ByteArray, length:int ):void
 		{
+			
 			while( 0 < length )
 			{
-				if( samplesPosition + length > samplesTotal )
+				if (samplesPosition + length > samplesTotal)
 				{
 					var read: int = samplesTotal - samplesPosition;
-					mp3.extract( target, read, samplesPosition + MAGIC_DELAY );
+					inputSound.extract( target, read, samplesPosition);
 					samplesPosition += read;
 					length -= read;
 				}
 				else
 				{
-					mp3.extract( target, length, samplesPosition + MAGIC_DELAY );
+					inputSound.extract( target, length, samplesPosition);
 					samplesPosition += length;
 					length = 0;
 				}
 
-				if( samplesPosition == samplesTotal ) // END OF LOOP > WRAP
+				if (samplesPosition == samplesTotal)
 				{
-					out.removeEventListener( SampleDataEvent.SAMPLE_DATA, sampleData );
-					if (_onPlayComplete != null)
-						_onPlayComplete();
-						
 					samplesPosition = 0;
+					if (!_loop)
+						stop();
 				}
-			}
-		}
-
-		private function silent( target:ByteArray, length:int ):void
-		{
-			target.position = 0;
-
-			while( length-- )
-			{
-				target.writeFloat( 0.0 );
-				target.writeFloat( 0.0 );
 			}
 		}
 
 		private function mp3Error( e:IOErrorEvent ):void
 		{
 			trace( e );
-		}
-
-		public override function toString():String
-		{
-			return '[SandboxMP3Cycle]';
 		}
 	}
 }

@@ -250,12 +250,13 @@
 				
 			if (!tmpDict[scope]) tmpDict[scope] = "";
 			tmpDict[scope] += String.fromCharCode(ke.charCode);
-			if(wordMappings[scope][tmpDict[scope]])
-			{
-				dispatchMessage(wordMappings[scope][tmpDict[scope]]);
-				tmpDict[scope]="";
-			}
-				
+			if (wordMappings[scope])			
+				if (wordMappings[scope][tmpDict[scope]])
+				{
+					dispatchMessage(wordMappings[scope][tmpDict[scope]]);
+					tmpDict[scope]="";
+				}
+					
 			clearTimeout(attemptedWordTimeout);
 			attemptedWordTimeout=setTimeout(clearAttemptedWord,500,scope);
 		}

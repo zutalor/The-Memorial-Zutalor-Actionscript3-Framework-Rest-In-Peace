@@ -1,6 +1,7 @@
 package com.zutalor.media 
 { 
 	import com.zutalor.ui.Dialog;
+	import com.zutalor.utils.MathG;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.media.Sound;
@@ -8,18 +9,26 @@ package com.zutalor.media
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
-	import mx.utils.StringUtil;
+	import mx.utils.StringUtil;	
 	
 	public class TextToSpeech 
 	{	
+		public const country:Array = ["usenglish", "ukenglish", "jpjapanese"];
+		public const gender:Array = ["female", "male"];
+		
 		public var voice:String = "usenglishfemale";
-		public var speed:int = 0;
-		public var pitch:int = 5;
+		public var speed:String = "0";
+		public var pitch:String = "100"; //0-200
+		public var format:String = "mp3";
+		public var frequency:String = "44100";
+		public var bitrate:String = "128";
+		public var bitdepth:String = "16";
+		
 		public var apiUrl:String;
 		public var enabled:Boolean = true;
 		public var wordcount:int;
 		
-		private var _callback:Function;
+		private var _afterSpeaking:Function;
 		private var _stopped:Boolean;
 		private var _channel:SoundChannel;
 		private var _limitSentences:Boolean;
@@ -33,25 +42,27 @@ package com.zutalor.media
 		
 		protected function makeURL(text:String):String // this uses the iSpeech.org api, override for another service;
 		{
-			return apiUrl +  "&voice=" + voice + "&speed=" + speed + "&pitch=" + pitch + "&text=" + unescape(text);
+			return apiUrl + "&format=" + format + "&frequency=" + frequency + "&bitrate" + bitrate + "&bitdepth" + bitdepth + 
+								"&voice=" + voice + "&speed=" + speed + "&pitch=" + pitch + "&text=" + unescape(text);
 		}
 		
-		public function speak(text:String, callback:Function):void
+		public function speak(text:String, afterSpeaking:Function):void
 		{
 			var sentences:Array;
 			var l:int;
 			var i:int;
-			
+		
+			voice = country[MathG.rand(0, 2)] + gender[MathG.rand(0, 1)];
+			_afterSpeaking = afterSpeaking;
 			if (!enabled)
 			{
-				if (callback != null)
-					callback();
+				if (_afterSpeaking != null)
+					_afterSpeaking();
 			}
 			else if (!apiUrl)
 				trace("TextToSpeach: No ApiUrl");
 			else
 			{
-				_callback = callback;
 				sentences = cleanString(text).split(".");
 				l = sentences.length;
 				sayNextSentence();
@@ -59,15 +70,9 @@ package com.zutalor.media
 				function sayNextSentence():void
 				{
 					if (i < l && !_stopped)
-					{
 						say(sentences[i++] + ".", sayNextSentence);
-					}
 					else
-						if (_callback != null)
-						{
-							_callback();
-							_callback = null;
-						}
+						stop();
 				}
 			}
 		}
@@ -76,8 +81,11 @@ package com.zutalor.media
 		{
 			_mp3Player.stop();
 			_stopped = true;
-			if (_callback != null)
-				_callback();
+			if (_afterSpeaking != null)
+			{
+				_afterSpeaking();
+				_afterSpeaking = null;
+			}
 		}
 		
 		public function dispose():void
@@ -91,11 +99,11 @@ package com.zutalor.media
 		{	
 			var url:String;
 			
-			text = "potato";
+			//text = "CakeIsLie.";
 			
 			url = makeURL(text);
 			
-			_mp3Player.play(url, checkforError, onPlaybackComplete);
+			_mp3Player.play(url, false, checkforError, onPlaybackComplete);
 			
 			function onPlaybackComplete():void
 			{
@@ -114,13 +122,14 @@ package com.zutalor.media
 				if (result != null)
 				{
 					if (onComplete != null)
+					{
 						onComplete();
+						onComplete = null;
+					}
 					trace(result);
 					Dialog.show(Dialog.ALERT, result);
 			
 				}
-				onComplete();
-				onComplete = null;
 			}
 		}		
 		

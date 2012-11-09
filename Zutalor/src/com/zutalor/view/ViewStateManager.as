@@ -20,12 +20,9 @@ package com.zutalor.view
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.GridValues;
 	import com.zutalor.utils.HotKeyManager;
-	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.StageRef;
-	import com.zutalor.utils.StringUtils;
 	import flash.events.MediaEvent;
-	import flash.utils.getTimer;
 	
 	public class ViewStateManager implements IAcceptsGestureCallbacks
 	{
@@ -73,11 +70,9 @@ package com.zutalor.view
 				else
 					_textToSpeech.apiUrl = Props.ap.textToSpeechApiUrlPC;
 					
-				_textToSpeech.enabled = Props.ap.enableTextToSpeech;	
-				_textToSpeech.voice = "usenglishfemale";
+				_textToSpeech.enabled = Props.ap.enableTextToSpeech;
 				
 				initGestures();
-				
 				tMeta = getMetaByName("settings");
 				
 				if (tMeta.setttings.@firstPage)
@@ -210,7 +205,7 @@ package com.zutalor.view
 		{
 			var tp:TranslateItemProperties;	
 			var page:String;
-			var forTextToSpeach:String;
+			var fortextToSpeech:String;
 			var next:String;
 			
 			_uxController.stop();
@@ -230,7 +225,7 @@ package com.zutalor.view
 				
 			page = TextUtil.stripSurroundedBy(page, "<hide>", "</hide>");
 			
-			forTextToSpeach = TextUtil.stripSurroundedBy(page, "<DISPLAYTEXT>", "</DISPLAYTEXT>");
+			fortextToSpeech = TextUtil.stripSurroundedBy(page, "<DISPLAYTEXT>", "</DISPLAYTEXT>");
 			_uxController.message = TextUtil.stripSurroundedBy(page, "<PHONETIC>", "</PHONETIC>");
 				
 			if (XML(tp.tMeta).state.@type == "prompt")
@@ -242,7 +237,7 @@ package com.zutalor.view
 			else if (XML(tp.tMeta).state.@type == "UXControllerMethod")
 				_uxController[XML(tp.tMeta).state.@method](activateStateById, XML(tp.tMeta).state);	
 	
-			playSound(forTextToSpeach, Translate.getSoundName(tp.name), onComplete, next);
+			playSound(fortextToSpeech, Translate.getSoundName(tp.name), onComplete, next);
 		}
 		
 		private function playSound(page:String, soundName:String, onComplete:Function = null, onCompleteParams:*=null):void
