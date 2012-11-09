@@ -1,8 +1,6 @@
 package com.zutalor.media
 {
-	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.events.HTTPStatusEvent;
 	import flash.events.IOErrorEvent;
 	import flash.events.SampleDataEvent;
 	import flash.media.Sound;
@@ -21,14 +19,14 @@ package com.zutalor.media
 		private var samplesTotal:int; 	
 		private var samplesPosition: int = 0;
 		private var enabled: Boolean = false;
-		private var _onLoadComplete:Function;
-		private var _onPlayComplete:Function;
+		private var _onComplete:Function;
 		private var _loop:Boolean;
+		private var _playing:Boolean;
 		
-		public var event:*;
+		public var event:Event;
 		
 		/**
-			 Based upon Andre Michelle's MP3Loop
+			 Based upon Andre Michelle's MP3Loop, Modified by Geoff Pepos
 			 * http://blog.andre-michelle.com/2010/playback-mp3-loop-gapless/
 		 */
 		
@@ -37,52 +35,52 @@ package com.zutalor.media
 			outputSound = new Sound();
 		}
 
-		public function play(url:String, loop:Boolean = false,  onLoadComplete:Function = null, onPlayComplete:Function = null): void
+		public function play(url:String, loop:Boolean = false, onComplete:Function = null): void
 		{
 			_loop = loop;
+			_onComplete = onComplete;
 			inputSound = new Sound();
-			inputSound.addEventListener(Event.COMPLETE, loadComplete);
-			inputSound.addEventListener(IOErrorEvent.IO_ERROR, mp3Error);
-			inputSound.load( new URLRequest(url));
+			inputSound.addEventListener(Event.COMPLETE, onLoaded);
+			inputSound.addEventListener(IOErrorEvent.IO_ERROR, onError);
+			inputSound.load(new URLRequest(url));
 		}
 		
 		public function stop():void
 		{
-			outputSound.removeEventListener( SampleDataEvent.SAMPLE_DATA, sampleData );
-			samplesPosition = 0;
-			if (_onPlayComplete != null)
+			if (_playing)
 			{
-				_onPlayComplete();
-				_onPlayComplete = null;
-			}			
+				_playing = false;
+				if (_onComplete != null)
+					_onComplete();
+					
+				outputSound.removeEventListener(SampleDataEvent.SAMPLE_DATA, sampleData);
+				samplesPosition = 0;
+			}		
 		}
 
-		private function loadComplete( e:Event ):void
+		private function onLoaded( e:Event ):void
 		{
-			inputSound.removeEventListener(Event.COMPLETE, loadComplete);
-			
+			_playing = true;
+			inputSound.removeEventListener(Event.COMPLETE, onLoaded);
 			event = e;			
 			samplesTotal = inputSound.length * SAMPLE_RATE;
+			
 			if (samplesTotal)
 			{
-				outputSound.addEventListener( SampleDataEvent.SAMPLE_DATA, sampleData );
+				outputSound.addEventListener(SampleDataEvent.SAMPLE_DATA, sampleData);
 				outputSound.play();
 			}
 			else
-				stop();
-				
-			if (_onLoadComplete != null)
-				_onLoadComplete();					
+				stop();	
 		}
 
-		private function sampleData( e:SampleDataEvent ):void
+		private function sampleData(e:SampleDataEvent):void
 		{
-			extract( e.data, bufferSize );
+			extract(e.data, bufferSize);
 		}
 
-		private function extract( target: ByteArray, length:int ):void
+		private function extract(target: ByteArray, length:int):void
 		{
-			
 			while( 0 < length )
 			{
 				if (samplesPosition + length > samplesTotal)
@@ -101,16 +99,19 @@ package com.zutalor.media
 
 				if (samplesPosition == samplesTotal)
 				{
-					samplesPosition = 0;
 					if (!_loop)
 						stop();
+					else
+						samplesPosition = 0;
 				}
 			}
 		}
 
-		private function mp3Error( e:IOErrorEvent ):void
+		private function onError( e:IOErrorEvent ):void
 		{
+			event = e;
 			trace( e );
+			stop();
 		}
 	}
 }

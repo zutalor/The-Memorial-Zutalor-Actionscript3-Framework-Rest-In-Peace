@@ -2,18 +2,12 @@ package com.zutalor.media
 { 
 	import com.zutalor.ui.Dialog;
 	import com.zutalor.utils.MathG;
-	import flash.events.Event;
-	import flash.events.IOErrorEvent;
-	import flash.media.Sound;
 	import flash.media.SoundChannel;
-	import flash.net.URLLoader;
-	import flash.net.URLRequest;
 	import flash.net.URLVariables;
-	import mx.utils.StringUtil;	
 	
 	public class TextToSpeech 
 	{	
-		public const country:Array = ["usenglish", "ukenglish", "jpjapanese"];
+		public const country:Array = ["usenglish", "ukenglish"];
 		public const gender:Array = ["female", "male"];
 		
 		public var voice:String = "usenglishfemale";
@@ -40,10 +34,11 @@ package com.zutalor.media
 			_mp3Player = new MP3Player();
 		}
 		
-		protected function makeURL(text:String):String // this uses the iSpeech.org api, override for another service;
+		protected function makeURL(text:String):String
 		{
-			return apiUrl + "&format=" + format + "&frequency=" + frequency + "&bitrate" + bitrate + "&bitdepth" + bitdepth + 
-								"&voice=" + voice + "&speed=" + speed + "&pitch=" + pitch + "&text=" + unescape(text);
+			return apiUrl 	+ "&format=" + format + "&frequency=" + frequency + "&bitrate"
+							+ bitrate + "&bitdepth" + bitdepth
+							+ "&voice=" + voice + "&speed=" + speed + "&pitch=" + pitch + "&text=" + unescape(text);
 		}
 		
 		public function speak(text:String, afterSpeaking:Function):void
@@ -52,13 +47,11 @@ package com.zutalor.media
 			var l:int;
 			var i:int;
 		
-			voice = country[MathG.rand(0, 2)] + gender[MathG.rand(0, 1)];
+			_stopped = false;
+			voice = country[MathG.rand(0, 1)] + gender[MathG.rand(0, 1)];
 			_afterSpeaking = afterSpeaking;
-			if (!enabled)
-			{
-				if (_afterSpeaking != null)
+			if (!enabled && _afterSpeaking != null)
 					_afterSpeaking();
-			}
 			else if (!apiUrl)
 				trace("TextToSpeach: No ApiUrl");
 			else
@@ -103,7 +96,7 @@ package com.zutalor.media
 			
 			url = makeURL(text);
 			
-			_mp3Player.play(url, false, checkforError, onPlaybackComplete);
+			_mp3Player.play(url, false, onComplete);
 			
 			function onPlaybackComplete():void
 			{
