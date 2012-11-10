@@ -55,7 +55,7 @@ package com.zutalor.view
 				case ViewItemProperties.PROPERTY :
 					if (vip.voName)
 					{
-						_valueObject = Plugins.callMethod(vc.vp.uxControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
+						_valueObject = Plugins.callMethod(vc.vp.appControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
 						_valueObject[vip.name] = vip.data;
 					}
 					break;
@@ -65,7 +65,7 @@ package com.zutalor.view
 				case ViewItemProperties.RADIO_GROUP : 
 					if (vip.voName)
 					{
-						_valueObject = Plugins.callMethod(vc.vp.uxControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
+						_valueObject = Plugins.callMethod(vc.vp.appControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
 						item.value = _valueObject[vip.name];
 					}
 					break;
@@ -172,7 +172,7 @@ package com.zutalor.view
  		{
 			if (vip.voName)
 			{
-				_valueObject = Plugins.callMethod(vc.vp.uxControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
+				_valueObject = Plugins.callMethod(vc.vp.appControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
 				if (_valueObject)
 				{
 					switch (vip.type)
@@ -218,7 +218,7 @@ package com.zutalor.view
 			
 			if (vip.voName)
 			{
-				_valueObject = Plugins.callMethod(vc.vp.uxControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
+				_valueObject = Plugins.callMethod(vc.vp.appControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
 				if (_valueObject)
 				{
 						switch (vip.type)

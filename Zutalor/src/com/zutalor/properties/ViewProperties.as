@@ -17,7 +17,7 @@
 		public static const CONTAINER_MASKED:String = "masked";
 		public static const CONTAINER_PARALLAX:String = "parallax";
 		
-		public var uxControllerInstanceName:String;
+		public var appControllerInstanceName:String;
 		public var initialMethod:String;
 		public var initialMethodParams:String;
 		public var toolTipPreset:String;
@@ -54,7 +54,6 @@
 		public var hScrollBarSliderId:String;
 		public var vScrollBarSliderId:String;
 		public var autoAdjustThumbSize:Boolean;
-		public var dimWhenNotActive:Boolean;
 		public var container:StandardContainer;
 		
 		override public function parseXML(xml:XML):Boolean

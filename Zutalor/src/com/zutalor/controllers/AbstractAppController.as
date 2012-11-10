@@ -2,7 +2,7 @@ package com.zutalor.controllers
 {
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.interfaces.IUXController;
+	import com.zutalor.interfaces.IAppController;
 	import com.zutalor.plugin.constants.PluginClasses;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
@@ -20,7 +20,7 @@ package com.zutalor.controllers
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class AbstractUXController implements IUXController
+	public class AbstractAppController implements IAppController
 	{
 		private var _vController:ViewController;
 		protected var _currentView:String;		

@@ -3,7 +3,6 @@ package com.zutalor.view
 import com.zutalor.containers.StandardContainer;
 import com.zutalor.containers.WebContainer;
 import com.zutalor.events.MediaEvent;
-import com.zutalor.fx.Filters;
 import com.zutalor.media.FlipBook;
 import com.zutalor.media.Playlist;
 import com.zutalor.media.SlideShow;
@@ -12,53 +11,46 @@ import com.zutalor.plugin.constants.PluginClassNames;
 import com.zutalor.plugin.Plugins;
 import com.zutalor.properties.ApplicationProperties;
 import com.zutalor.properties.MediaProperties;
-import com.zutalor.properties.ScrollProperties;
 import com.zutalor.properties.TextAttributeProperties;
 import com.zutalor.properties.ViewItemProperties;
 import com.zutalor.properties.ViewProperties;
-import com.zutalor.propertyManagers.NestedPropsManager;
 import com.zutalor.propertyManagers.Presets;
-import com.zutalor.propertyManagers.PropertyManager;
 import com.zutalor.propertyManagers.Props;
 import com.zutalor.text.TextUtil;
 import com.zutalor.text.Translate;
 import com.zutalor.ui.Components;
 import com.zutalor.ui.Graphic;
-import com.zutalor.utils.DisplayObjectUtils;
-import com.zutalor.utils.DisplayUtils;
 import com.zutalor.utils.Logger;
-import com.zutalor.utils.MasterClock;
 import com.zutalor.utils.Resources;
 import com.zutalor.view.ViewController;
 import flash.display.Bitmap;
 import flash.display.Sprite;
-import flash.events.Event;
 import flash.media.Camera;
 import flash.media.Video;
 import flash.text.TextField;
 
 	public class ViewRenderer
 	{
-		private var _vpm:NestedPropsManager;
 		private var _pr:Presets;
 		private var _ap:ApplicationProperties;
-		private var _vu:ViewUtils;
+
 		
 		private var _tabIndex:int;
 		private var _onItemRenderCallback:Function;
 		
 		public var vc:ViewController;
 		public var vp:ViewProperties;
-	
+		public var vu:ViewUtils;
+		
+		private var _viewItemFilterApplier:ViewItemFilterApplier;
 								
 		public function ViewRenderer(viewController:ViewController, onItemRenderCallback:Function) 
 		{	
 			_onItemRenderCallback = onItemRenderCallback;
 			vc = viewController;
-			_vpm = Props.views;
 			_pr = Props.pr;
 			_ap = ApplicationProperties.gi();
-			_vu = ViewUtils.gi();
+			_viewItemFilterApplier = new ViewItemFilterApplier(vc);
 		}
 		
 		public function renderItem(itemIndex:int):void
@@ -77,7 +69,7 @@ import flash.text.TextField;
 			var viewItem:*;
 			var vip:ViewItemProperties;
 			var scaleAdjust:Number;
-			var mask:Graphic;
+	
 			var bm:Bitmap;
 			var text:String = "";
 			vip = Props.views.getItemPropsByIndex(vc.viewId, itemIndex);
@@ -203,6 +195,7 @@ import flash.text.TextField;
 					viewItem = txt;
 					txt.cacheAsBitmap = true;
 					push(txt);
+					
 					if (vip.url)
 					{
 						TextUtil.load(vip.url, onHTMLLoadComplete, txt, width, vp.styleSheetName);
@@ -307,7 +300,7 @@ import flash.text.TextField;
 					viewItem = playlist;
 					//if (vip.onClickUiEvent)
 					//	viewItem.buttonMode = true;
-					applyFilters();
+					_viewItemFilterApplier.applyFilters(vip, viewItem);
 					push(viewItem);
 					viewItem.name = vip.name;	
 					vc.itemDictionary.insert(vip.name, viewItem);
@@ -402,7 +395,10 @@ import flash.text.TextField;
 			{	
 				if (viewItem)
 				{
-					positionItem();
+					viewItem.name = vip.name;
+					vc.itemDictionary.insert(vip.name, viewItem);
+					_viewItemFilterApplier.applyFilters(vip, viewItem);
+					vc.viewItemPositioner.positionItem(vip);
 					if (vip.tabIndex)
 					{
 						viewItem.tabEnabled = true;
@@ -412,95 +408,6 @@ import flash.text.TextField;
 				}
 				_onItemRenderCallback();
 			}
-			
-			// POSITION, CALL STUFF, MOVE THINGS AROUND
-			
-			function positionItem():void
-			{
-				var scrollProperties:ScrollProperties;
-		
-				if (vip.scrollPreset)
-				{
-					_vu.updateContainerScrollPosition(vip.scrollPreset);
-				}
-				vc.itemDictionary.insert(vip.name, viewItem);
-				viewItem.name = vip.name;
-				
-				
-				if (vip.align)
-					DisplayUtils.alignInRect(viewItem, vc.vp.width, vc.vp.height, vip.align, vip.hPad, vip.vPad);
-				else
-				{
-					viewItem.x = x + hPad;
-					viewItem.y = y + vPad;
-				}
-				
-				if (vip.width) // this must happen before other properties are set.
-					if (vip.width == "auto")
-						viewItem.width = c.width;
-					else if (viewItem.width)
-						viewItem.width = width;
-							
-				if (vip.height)
-					if (vip.height == "auto")
-						viewItem.height = c.height;
-					else if (viewItem.height)
-						viewItem.height = height;							
-				
-				if (vip.rotation)
-					viewItem.rotation = vip.rotation;
-				
-				if (vip.rotationX)
-					viewItem.rotationX = vip.rotationX;
-
-				if (vip.rotationY)
-					viewItem.rotationY = vip.rotationY;
-
-				if (vip.rotationX)
-					viewItem.rotationZ = vip.rotationZ;
-				
-				applyFilters();
-				
-				if (vip.alpha)
-					viewItem.alpha = vip.alpha;
-				else
-					viewItem.alpha = 1;
-	
-				if (vip.hidden)
-					viewItem.visible = false;
-			}
-			
-			// FILTERS
-			
-			function applyFilters():void
-			{
-				if (vip.filterPreset || vip.maskGid)
-				{
-					if (vip.transitionDelay)
-						MasterClock.callOnce(_applyFilters, vip.transitionDelay);
-					else
-						_applyFilters();						
-				}				
-			}
-			
-			function _applyFilters():void
-			{
-				if (vc.filters)
-				{
-					var filters:Filters = new Filters();
-					vc.filters.push(filters);
-					filters.add(viewItem, vip.filterPreset);
-				}
-				
-				if (vip.maskGid)
-				{
-					mask = new Graphic();
-					mask.render(vip.maskGid);
-					viewItem.mask = mask;
-					viewItem.addChild(mask);
-				}		
-			}	
-			
 			// VIDEO PLAY COMPLETE
 			
 			function hideMediaPlayerOnPlayComplete(me:MediaEvent):void

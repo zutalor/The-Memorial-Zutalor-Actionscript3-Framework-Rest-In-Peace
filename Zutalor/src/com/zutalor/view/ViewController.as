@@ -45,8 +45,10 @@
 		public var updatingMessage:String;
 		
 		public var viewId:String;	
+		public var viewItemPositioner:ViewItemPositioner;
 		public var viewRenderer:ViewRenderer;
-		public var vmg:ViewModelGateway;		
+		public var vmg:ViewModelGateway;
+		public var vu:ViewUtils = ViewUtils.gi();
 		public var numViewItems:int;
 
 		public var viewItemTransition:ViewItemTransition;
@@ -71,6 +73,7 @@
 		{
 			viewRenderer = new ViewRenderer(this, processNextViewItem);
 			vmg = new ViewModelGateway(this);
+			viewItemPositioner = new ViewItemPositioner(this);
 			_viewEvents = new ViewEvents(this);
 			
 			vpm = Props.views;
@@ -101,8 +104,8 @@
 			_itemIndex = 0;
 			initMessages();			
 			
-			Plugins.callMethod(vp.uxControllerInstanceName, PluginMethods.INIT, { controller:this, id:viewId } );
-			_defaultVO = Plugins.callMethod(vp.uxControllerInstanceName, PluginMethods.GET_VALUE_OBJECT);
+			Plugins.callMethod(vp.appControllerInstanceName, PluginMethods.INIT, { controller:this, id:viewId } );
+			_defaultVO = Plugins.callMethod(vp.appControllerInstanceName, PluginMethods.GET_VALUE_OBJECT);
 			numViewItems = vpm.getNumItems(viewId);
 			processNextViewItem();
 		}
@@ -115,9 +118,9 @@
 			return _container;
 		}
 		
-		public function callUXControllerMethod(method:String, arg:*):void
+		public function callAppControllerMethod(method:String, arg:*):void
 		{
-			Plugins.callMethod(vp.uxControllerInstanceName, method, arg);
+			Plugins.callMethod(vp.appControllerInstanceName, method, arg);
 		}
 		
 		public function setModelValue(itemName:String, val:*):void
@@ -198,7 +201,7 @@
 				if (vip)
 				{
 
-					Plugins.callMethod(vp.uxControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
+					Plugins.callMethod(vp.appControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
 					item = itemDictionary.getByKey(itemName);
 					vmg.copyViewItemToValueObject(vip, item);
 				}
@@ -210,7 +213,7 @@
 				{
 					vip = vpm.getItemPropsByIndex(viewId, i);
 						
-					Plugins.callMethod(vp.uxControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
+					Plugins.callMethod(vp.appControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
 					if (vip.voName)
 					{
 						item = itemDictionary.getByIndex(i);
@@ -303,7 +306,7 @@
 			viewRenderer = null;
 			vmg = null;
 			_viewEvents = null;		
-			Plugins.callMethod(vp.uxControllerInstanceName, PluginMethods.DISPOSE)			
+			Plugins.callMethod(vp.appControllerInstanceName, PluginMethods.DISPOSE)			
 		}
 		
 		// GET THE UI ITEM's OBJECT OR PROPERTIES
@@ -477,9 +480,9 @@
 			vp.container.dispatchEvent(new UIEvent(eventType, vp.container.name));
 		}				
 		
-		// ITERATION THROUGH ITEMS AND RENDER
-		
-		public function processNextViewItem(e:Event = null):void
+		// PRIVATE METHODS
+
+		private function processNextViewItem(e:Event = null):void
 		{	
 			if (_itemIndex < numViewItems)
 				viewRenderer.renderItem(_itemIndex++);
@@ -487,8 +490,6 @@
 				viewPopulateComplete();
 		}
 		
-		// PRIVATE METHODS
-						
 		private function initMessages():void
 		{
 			var messages:Array = [ READING, CREATING, DELETING, UPDATING, SUCCESS, ERROR ];
@@ -539,9 +540,9 @@
 			{
 				initStatusMessage(vp.initialMethod);
 				if (vp.initialMethodParams)
-					Plugins.callMethod(vp.uxControllerInstanceName, vp.initialMethod,vp.initialMethodParams);
+					Plugins.callMethod(vp.appControllerInstanceName, vp.initialMethod,vp.initialMethodParams);
 				else
-					Plugins.callMethod(vp.uxControllerInstanceName, vp.initialMethod);
+					Plugins.callMethod(vp.appControllerInstanceName, vp.initialMethod);
 			}
 			vmg.setAllInitialValues();
 		}

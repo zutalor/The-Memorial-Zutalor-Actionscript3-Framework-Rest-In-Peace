@@ -9,7 +9,7 @@
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public interface IUXController
+	public interface IAppController
 	{
 		function init(params:Object):void
 		function getValueObject(params:Object = null):*

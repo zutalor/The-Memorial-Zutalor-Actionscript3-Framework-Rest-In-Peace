@@ -9,7 +9,7 @@ package com.zutalor.controllers
 	import flash.desktop.NativeApplication;
 
 	
-	public class DialogController extends AbstractUXController
+	public class DialogController extends AbstractAppController
 	{	
 		private var _vo:Object;
 		private var _callBack:Function;

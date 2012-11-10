@@ -474,14 +474,14 @@ package com.zutalor.media
 				}
 			}
 			if (_currentPlaylistIndex > 1)
-				_toolsLoader.container.viewController.callUXControllerMethod(PluginMethods.SET_PREV_BUTTON_VISIBILITY, true);
+				_toolsLoader.container.viewController.callAppControllerMethod(PluginMethods.SET_PREV_BUTTON_VISIBILITY, true);
 			else	
-				_toolsLoader.container.viewController.callUXControllerMethod(PluginMethods.SET_PREV_BUTTON_VISIBILITY, false);
+				_toolsLoader.container.viewController.callAppControllerMethod(PluginMethods.SET_PREV_BUTTON_VISIBILITY, false);
 				
 			if (_currentPlaylistIndex < _endIndex)	
-				_toolsLoader.container.viewController.callUXControllerMethod(PluginMethods.SET_NEXT_BUTTON_VISIBILITY, true);
+				_toolsLoader.container.viewController.callAppControllerMethod(PluginMethods.SET_NEXT_BUTTON_VISIBILITY, true);
 			else	
-				_toolsLoader.container.viewController.callUXControllerMethod(PluginMethods.SET_NEXT_BUTTON_VISIBILITY, false);
+				_toolsLoader.container.viewController.callAppControllerMethod(PluginMethods.SET_NEXT_BUTTON_VISIBILITY, false);
 		}
 		
 		public function onHotKey(hke:HotKeyEvent):void

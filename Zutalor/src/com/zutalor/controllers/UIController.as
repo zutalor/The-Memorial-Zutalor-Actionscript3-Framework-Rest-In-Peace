@@ -105,7 +105,7 @@
 				
 			MasterClock.initialize();
 			MasterClock.defaultInterval = 1000 / StageRef.stage.frameRate;
-			Props.init(_bootXmlUrl, initializeApplication);
+			Props.init(_bootXmlUrl, initialize);
 		}
 				
 		public function closeView(containerName:String, onComplete:Function = null):void
@@ -189,22 +189,7 @@
 		private function onMenuSelection(uie:UIEvent):void
 		{
 			menuCallSWFAddress(uie.menuSelection);
-		}	
-		
-		private function onAppMenuClick(e:MouseEvent):void
-		{
-			menuCallSWFAddress(e.target.name);
 		}		
-		
-		private function onHotKey(hke:HotKeyEvent):void
-		{
-			menuCallSWFAddress(hke.message);
-		}
-		
-		private function onFullscreenClick(me:MouseEvent):void
-		{		
-			FullScreen.toggle();
-		}
 		
 		private function onSWFAddressFirstBroadcast(e:SWFAddressEvent):void	
 		{
@@ -235,7 +220,7 @@
 		{	
 			if (menuSelection)
 			{
-				Mouse.show(); // in case it got turned off somewhere
+				Mouse.show();
 				if (!curContainerLoading)
 				{
 					menuSelection = menuSelection.toLowerCase();										
@@ -258,6 +243,7 @@
 		
 		private function checkOrientation():void
 		{
+			return;
 			var orientation:String;
 			if (AirStatus.isMobile)
 			{
@@ -357,7 +343,7 @@
 		
 		// INITIALIZATION
 		 	
-		private function initializeApplication():void
+		private function initialize():void
 		{
 			ap = ApplicationProperties.gi();
 			vu = ViewUtils.gi();
@@ -375,8 +361,6 @@
 			ap.contentLayer = new StandardContainer("contentLayer", ap.designWidth, ap.designHeight);
 			
 			StageRef.stage.addChild(ap.contentLayer);			
-			
-			ToolTip.init(StageRef.stage);
 			Translate.language = Props.ap.language;
 
 			if (ap.spinningGraphicId)
@@ -401,10 +385,8 @@
 	
 			StageRef.stage.addEventListener(UIEvent.MENU_SELECTION, onMenuSelection);	
 			StageRef.stage.addEventListener(Event.RESIZE, onStageResize);
-			StageRef.stage.addEventListener(MouseEvent.MOUSE_OVER, vu.onContainerMouseOver);
-			StageRef.stage.addEventListener(MouseEvent.MOUSE_OUT, vu.onContainerMouseOut);
 			MasterClock.registerCallback(checkOrientation, true, 500);	
-			arrangeUI();	
+			arrangeUI();
 			if (ap.loadingSequenceName)
 			{
 				_loadingSequence = new Sequence();

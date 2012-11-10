@@ -3,11 +3,8 @@ package com.zutalor.gesture
 	import com.zutalor.interfaces.IAcceptsGestureCallbacks;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.KeyUtils;
-	import flash.events.IEventDispatcher;
 	import flash.events.KeyboardEvent;
-	import flash.utils.Dictionary;
 	import flash.utils.getQualifiedClassName;
-	import flash.utils.getTimer;
 	import org.gestouch.events.GestureEvent;
 	import org.gestouch.gestures.LongPressGesture;
 	import org.gestouch.gestures.PanGesture;
@@ -87,14 +84,13 @@ package com.zutalor.gesture
 			{
 				gp.gestureClassName = getQualifiedClassName(gestureClass);
 				gp.gesture = new gestureClass(target);
-
 				
 				if (vars)
 					for (var setting:* in vars)
 						gp.gesture[setting] = vars[setting];
-								//this could cause errors, except it's controlled inside this class.
+								
 				
-				if (!discrete) // meaning the default; it's a continuous gesture like most of them.
+				if (!discrete)
 				{
 					gp.eventTypes.push(GestureEvent.GESTURE_BEGAN);
 					gp.eventTypes.push(GestureEvent.GESTURE_CHANGED);
@@ -202,7 +198,7 @@ package com.zutalor.gesture
 			gp = _activeGestures.getByKey(ge.target.target).getByKey(getQualifiedClassName(ge.target));
 			gp.result.value = gp.type.toLowerCase();
 			
-			if (gp.type.indexOf(PAN) != NOT_FOUND || gp.type.indexOf(SWIPE) != NOT_FOUND) // a couple double negatives
+			if (gp.type.indexOf(PAN) != NOT_FOUND || gp.type.indexOf(SWIPE) != NOT_FOUND) 
 			{
 				gp.result.offsetX = gp.target.offsetX = ge.currentTarget.offsetX;
 				gp.result.offsetY = gp.target.offsetY = ge.currentTarget.offsetY;

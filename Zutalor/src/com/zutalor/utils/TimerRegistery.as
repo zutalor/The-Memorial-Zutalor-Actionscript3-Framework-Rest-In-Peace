@@ -52,7 +52,6 @@
 		}
 				
 		public function registerCallback(callback:Function, autostart:Boolean, interval:uint, fireOnce:Boolean = false, args:String = null):void
-		//need to make sure that the callback is unRegistered if no longer needed to avoid...stuff!
 		{
 			var i:int;
 			
@@ -61,7 +60,7 @@
 			
 			i = _callbacks.indexOf(callback);
 
-			if (i == -1) // not there
+			if (i == -1)
 			{
 				i = _callbacks.indexOf(null);
 				if (i == -1)
@@ -184,19 +183,18 @@
 				t = getTimer();
 				for (var i:int = 0; i < _callbacks.length; i++)
 				{
-					if (_callbacks[i] != null && _running[i])
-						if (t > _lastTime[i] + _intervals[i])
-						{
-							if (!_args[i])
-								_callbacks[i]();
-							else
-								_callbacks[i](_args[i]);
-							
-							if (_fireOnce[i])
-								_callbacks[i] = null;
-							else	
-								_lastTime[i] = t;
-						}
+					if (_callbacks[i] != null && _running[i] && (t > _lastTime[i] + _intervals[i]))
+					{
+						if (!_args[i])
+							_callbacks[i]();
+						else
+							_callbacks[i](_args[i]);
+						
+						if (_fireOnce[i])
+							_callbacks[i] = null;
+						else	
+							_lastTime[i] = t;
+					}
 				}
 			}
 		}

@@ -6,6 +6,7 @@
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.utils.Scale;
+	import com.zutalor.utils.StageRef;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.MouseEvent;
@@ -22,14 +23,13 @@
 		private static var _textSprite:Sprite;
 		private static var _pr:Presets;
 		private static var _tp:ToolTipProperties;
-		private static var _stageRef:Stage;
-		private static var _initialized:Boolean;
 		private static var _toolTip:Sprite;
+		private static var _initialized:Boolean;
 		private static var _ap:ApplicationProperties;
 		
-		public static function init(stageRef:Stage):void
+		
+		private static function init():void
 		{
-			_stageRef = stageRef;
 			_pr = Presets.gi();
 			_ap = ApplicationProperties.gi();
 			_background = new Sprite();
@@ -46,18 +46,16 @@
 			if (toolTipText)
 			{
 				if (!_initialized)
-					throw new Error("ToolTip must be initialized before use.");
+					init();
 					
 				_tp = _pr.toolTipPresets.getPropsByName(toolTipPreset);
 				
 				if (!xPos)
-					_stageRef.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove, false, 0, true);
+				 StageRef.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove, false, 0, true);
 			
 			
 				_txt.htmlText = toolTipText;
-				
 				TextUtil.applyTextAttributes(_txt, _tp.textAttributes, _tp.width, _tp.height);  
-			
 				_textSprite.addChild(_txt);				
 				
 				_toolTip.visible = true;
@@ -66,8 +64,8 @@
 				
 				if (!xPos)
 				{
-					_toolTip.x = _stageRef.mouseX + _tp.hPadBackground;
-					_toolTip.y = _stageRef.mouseY - _toolTip.height + _tp.vPadBackground;
+					_toolTip.x = StageRef.stage.mouseX + _tp.hPadBackground;
+					_toolTip.y = StageRef.stage.mouseY - _toolTip.height + _tp.vPadBackground;
 				}
 				else
 				{
@@ -77,21 +75,21 @@
 				
 				_toolTip.scaleX = _toolTip.scaleY = Scale.curAppScale;
 				
-				_stageRef.addChild(_toolTip); // ensure it's always on top.
+				StageRef.stage.addChild(_toolTip);
 			}
 		}
 		
 		public static function hide():void
 		{
-			_stageRef.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);		
+			StageRef.stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);		
 			_txt.text = "";				
 			_toolTip.visible = false;
 		}			
 		
 		private static function onMouseMove(me:MouseEvent):void
 		{
-			_toolTip.x = _stageRef.mouseX + _tp.hPadBackground;
-			_toolTip.y = _stageRef.mouseY - _toolTip.height + _tp.vPadBackground;
+			_toolTip.x = StageRef.stage.mouseX + _tp.hPadBackground;
+			_toolTip.y = StageRef.stage.mouseY - _toolTip.height + _tp.vPadBackground;
 			me.updateAfterEvent();
 		}
 	}

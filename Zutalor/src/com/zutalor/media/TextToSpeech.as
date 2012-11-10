@@ -27,11 +27,11 @@ package com.zutalor.media
 		private var _channel:SoundChannel;
 		private var _limitSentences:Boolean;
 		
-		private var _mp3Player:MP3Player;
+		private var _samplePlayer:SamplePlayer;
 		
 		public function TextToSpeech()
 		{
-			_mp3Player = new MP3Player();
+			_samplePlayer = new SamplePlayer();
 		}
 		
 		protected function makeURL(text:String):String
@@ -50,6 +50,7 @@ package com.zutalor.media
 			_stopped = false;
 			voice = country[MathG.rand(0, 1)] + gender[MathG.rand(0, 1)];
 			_afterSpeaking = afterSpeaking;
+			
 			if (!enabled && _afterSpeaking != null)
 					_afterSpeaking();
 			else if (!apiUrl)
@@ -72,7 +73,7 @@ package com.zutalor.media
 		
 		public function stop():void
 		{
-			_mp3Player.stop();
+			_samplePlayer.stop();
 			_stopped = true;
 			if (_afterSpeaking != null)
 			{
@@ -96,7 +97,7 @@ package com.zutalor.media
 			
 			url = makeURL(text);
 			
-			_mp3Player.play(url, false, onComplete);
+			_samplePlayer.play(url, false, onComplete);
 			
 			function onPlaybackComplete():void
 			{
@@ -108,7 +109,7 @@ package com.zutalor.media
 			{
 				var result:String = null;
 				try {
-					var vars:URLVariables = new URLVariables(_mp3Player.event.target.data);
+					var vars:URLVariables = new URLVariables(_samplePlayer.event.target.data);
 					result = "Error Code " + vars.code + ": " + vars.message;
 				}
 				catch (e:Error) {}

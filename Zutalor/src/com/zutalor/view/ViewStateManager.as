@@ -1,7 +1,7 @@
 package com.zutalor.view
 {
 	import com.zutalor.air.AirStatus;
-	import com.zutalor.controllers.AbstractUXController;
+	import com.zutalor.controllers.AbstractAppController;
 	import com.zutalor.gesture.AppGestureProperties;
 	import com.zutalor.gesture.GestureManager;
 	import com.zutalor.gesture.GestureProperties;
@@ -37,7 +37,7 @@ package com.zutalor.view
 		private var _soundPlayer:MediaPlayer;
 		private var _textToSpeech:TextToSpeech;
 		private var _hkm:HotKeyManager;
-		private var _uxController:AbstractUXController;
+		private var _AppController:AbstractAppController;
 		private var _gm:GestureManager;
 		private var _gestures:gDictionary;
 		private var _answers:gDictionary;
@@ -48,7 +48,7 @@ package com.zutalor.view
 		private static const letterAnswers:String = "abcdefgh";
 		
 										
-		public function initialize(uxController:AbstractUXController):void
+		public function initialize(AppController:AbstractAppController):void
 		{
 			var l:int;
 			var gs:GraphSettings;
@@ -57,7 +57,7 @@ package com.zutalor.view
 			if (!_intitialized)
 			{
 				_intitialized = true;
-				_uxController = uxController;
+				_AppController = AppController;
 				_answers = new gDictionary();
 				_history = [];
 				_gm = new GestureManager();
@@ -183,7 +183,7 @@ package com.zutalor.view
 							activateStateById(tMeta.state.@next);
 						break;						
 					case "exit" :
-						activateStateById("goodbye", _uxController.exit);
+						activateStateById("goodbye", _AppController.exit);
 						break;
 				}
 			}	
@@ -208,7 +208,7 @@ package com.zutalor.view
 			var fortextToSpeech:String;
 			var next:String;
 			
-			_uxController.stop();
+			_AppController.stop();
 			_soundPlayer.stop();		
 			tp = Props.translations.getItemPropsByIndex(Translate.language, index);
 			_curStateId = tp.name;
@@ -226,7 +226,7 @@ package com.zutalor.view
 			page = TextUtil.stripSurroundedBy(page, "<hide>", "</hide>");
 			
 			fortextToSpeech = TextUtil.stripSurroundedBy(page, "<DISPLAYTEXT>", "</DISPLAYTEXT>");
-			_uxController.message = TextUtil.stripSurroundedBy(page, "<PHONETIC>", "</PHONETIC>");
+			_AppController.message = TextUtil.stripSurroundedBy(page, "<PHONETIC>", "</PHONETIC>");
 				
 			if (XML(tp.tMeta).state.@type == "prompt")
 			{
@@ -234,8 +234,8 @@ package com.zutalor.view
 				if (next)
 					onComplete = activateStateById;
 			}
-			else if (XML(tp.tMeta).state.@type == "UXControllerMethod")
-				_uxController[XML(tp.tMeta).state.@method](activateStateById, XML(tp.tMeta).state);	
+			else if (XML(tp.tMeta).state.@type == "AppControllerMethod")
+				_AppController[XML(tp.tMeta).state.@method](activateStateById, XML(tp.tMeta).state);	
 	
 			playSound(fortextToSpeech, Translate.getSoundName(tp.name), onComplete, next);
 		}

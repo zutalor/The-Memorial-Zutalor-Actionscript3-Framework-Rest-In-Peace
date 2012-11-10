@@ -54,20 +54,6 @@
 			return _viewUtils;
 		}
 		
-		public function onContainerMouseOver(me:MouseEvent):void
-		{
-			var vp:ViewProperties;
-			var target:DisplayObject;
-			
-			vp = getParentContainerProps(me.target as DisplayObject);
-			
-			if (vp)
-			{
-				if (vp.dimWhenNotActive)
-					TweenMax.to(vp.container, .5, { alpha:vp.alpha } );					
-			}
-		}
-		
 		private function getParentContainerProps(target:DisplayObject):ViewProperties
 		{
 			var vp:ViewProperties;
@@ -86,18 +72,6 @@
 					return getParentContainerProps(target.parent);
 				}
 		}
-		
-		public function onContainerMouseOut(me:MouseEvent):void
-		{
-			var vp:ViewProperties;
-			
-			vp = vpm.getPropsById(me.target.name);
-			if (vp)
-			{
-				if (vp.dimWhenNotActive)
-					TweenMax.to(vp.container, .5, { alpha:.5 } );
-			}
-		}		
 				
 		public function arrangeAppContainers():void
 		{

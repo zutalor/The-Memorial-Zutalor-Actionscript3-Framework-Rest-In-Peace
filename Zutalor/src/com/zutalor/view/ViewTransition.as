@@ -1,7 +1,6 @@
 ﻿package com.zutalor.view 
 {
 	import com.zutalor.fx.Transition;
-	import com.zutalor.fx.TransitionTypes;
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.properties.TransitionProperties;
 	import com.zutalor.properties.ViewProperties;
