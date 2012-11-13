@@ -1,4 +1,4 @@
-package com.zutalor.ui
+package com.zutalor.components
 {
 	import com.greensock.TweenMax;
 	import com.zutalor.fx.Easing;

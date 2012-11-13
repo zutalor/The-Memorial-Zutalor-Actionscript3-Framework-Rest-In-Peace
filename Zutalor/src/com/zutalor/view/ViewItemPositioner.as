@@ -1,6 +1,6 @@
 package com.zutalor.view 
 {
-	import com.zutalor.containers.StandardContainer;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.properties.ScrollProperties;
 	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.utils.DisplayUtils;
@@ -27,7 +27,7 @@ package com.zutalor.view
 		{
 			var scrollProperties:ScrollProperties;
 			var viewItem:*;
-			var c:StandardContainer = _vc.container;
+			var c:ViewContainer = _vc.container;
 			var width:int;
 			var height:int;
 			var x:int;

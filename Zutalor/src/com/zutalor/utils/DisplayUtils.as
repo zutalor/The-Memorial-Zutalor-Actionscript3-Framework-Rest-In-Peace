@@ -14,7 +14,7 @@ package com.zutalor.utils
 	 * http://creativecommons.org/licenses/by/3.0/
 	 */
 	 
-	import com.zutalor.containers.StandardContainer;
+	import com.zutalor.containers.ViewContainer;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;

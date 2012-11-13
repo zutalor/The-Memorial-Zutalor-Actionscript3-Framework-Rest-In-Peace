@@ -134,7 +134,7 @@
 			_tweenObjectForWipe = null;		
 						
 			if (_transType.indexOf(TransitionTypes.SCALE) != -1)
-				_tweenObject = ScaleIt.tweenParams(StandardContainer(_dc), _inOut, _xValue, _yValue);
+				_tweenObject = ScaleIt.tweenParams(ViewContainer(_dc), _inOut, _xValue, _yValue);
 
 			if (_transType.indexOf(TransitionTypes.WIPE) != -1)
 				_tweenObjectForWipe = Wipe.tweenParams(_dc, _mask, _transType, _inOut);

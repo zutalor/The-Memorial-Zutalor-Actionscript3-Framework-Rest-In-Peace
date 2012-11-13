@@ -161,7 +161,7 @@ package com.zutalor.view
 					}
 					else
 						_answers.insert(_curStateId, answer);
-						
+					
 					playSound(answerText, XML(_curStateText)..Q[index].@sound);
 					trace(XML(_curStateText)..Q[index].@sound, answerText);
 				}
@@ -207,9 +207,9 @@ package com.zutalor.view
 			var page:String;
 			var fortextToSpeech:String;
 			var next:String;
+
+			stop();
 			
-			_AppController.stop();
-			_soundPlayer.stop();		
 			tp = Props.translations.getItemPropsByIndex(Translate.language, index);
 			_curStateId = tp.name;
 			_curState = index;
@@ -242,6 +242,7 @@ package com.zutalor.view
 		
 		private function playSound(page:String, soundName:String, onComplete:Function = null, onCompleteParams:*=null):void
 		{
+			
 			if (page && _textToSpeech.apiUrl)
 				_textToSpeech.speak(TextUtil.stripSurroundedBy(page, "<", ">"), checkOnComplete);
 			else if (soundName)
@@ -263,7 +264,14 @@ package com.zutalor.view
 					else
 						onComplete();
 			}
-		}		
+		}
+		
+		private function stop():void
+		{
+			_textToSpeech.stop();			
+			_AppController.stop();
+			_soundPlayer.stop();
+		}
 		
 		// UTILITY
 		

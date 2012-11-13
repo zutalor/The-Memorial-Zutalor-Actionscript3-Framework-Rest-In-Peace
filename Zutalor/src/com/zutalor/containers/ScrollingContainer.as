@@ -2,10 +2,10 @@
 {
 	import com.greensock.easing.Quad;
 	import com.greensock.TweenMax;
+	import com.zutalor.components.Components;
+	import com.zutalor.components.Slider;
 	import com.zutalor.events.ContainerEvent;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.ui.Components;
-	import com.zutalor.ui.Slider;
 	import flash.events.Event;
 	
 	/**

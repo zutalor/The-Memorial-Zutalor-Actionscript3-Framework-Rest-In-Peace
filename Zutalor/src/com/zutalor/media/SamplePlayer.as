@@ -41,7 +41,7 @@ package com.zutalor.media
 			_onComplete = onComplete;
 			inputSound = new Sound();
 			inputSound.addEventListener(Event.COMPLETE, onLoaded);
-			inputSound.addEventListener(IOErrorEvent.IO_ERROR, onError);
+			inputSound.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
 			inputSound.load(new URLRequest(url));
 		}
 		
@@ -49,11 +49,13 @@ package com.zutalor.media
 		{
 			if (_playing)
 			{
+				removeInputListeners();
+				inputSound = null;
+				outputSound.removeEventListener(SampleDataEvent.SAMPLE_DATA, sampleData);
 				_playing = false;
 				if (_onComplete != null)
 					_onComplete();
-					
-				outputSound.removeEventListener(SampleDataEvent.SAMPLE_DATA, sampleData);
+				
 				samplesPosition = 0;
 			}		
 		}
@@ -61,7 +63,8 @@ package com.zutalor.media
 		private function onLoaded( e:Event ):void
 		{
 			_playing = true;
-			inputSound.removeEventListener(Event.COMPLETE, onLoaded);
+			
+			removeInputListeners();
 			event = e;			
 			samplesTotal = inputSound.length * SAMPLE_RATE;
 			
@@ -73,6 +76,12 @@ package com.zutalor.media
 			else
 				stop();	
 		}
+		
+		private function removeInputListeners():void
+		{
+			inputSound.removeEventListener(Event.COMPLETE, onLoaded);
+			inputSound.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
+		}
 
 		private function sampleData(e:SampleDataEvent):void
 		{
@@ -81,7 +90,7 @@ package com.zutalor.media
 
 		private function extract(target: ByteArray, length:int):void
 		{
-			while( 0 < length )
+			while( 0 < length && _playing )
 			{
 				if (samplesPosition + length > samplesTotal)
 				{
@@ -107,7 +116,7 @@ package com.zutalor.media
 			}
 		}
 
-		private function onError( e:IOErrorEvent ):void
+		private function onIOError( e:IOErrorEvent ):void
 		{
 			event = e;
 			trace( e );

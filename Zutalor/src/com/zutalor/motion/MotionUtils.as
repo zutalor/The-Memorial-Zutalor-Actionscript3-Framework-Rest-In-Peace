@@ -1,12 +1,12 @@
 ﻿package com.zutalor.motion
 {
+	import com.zutalor.containers.AbstractContainer;
 	import com.zutalor.containers.ScrollingContainer;
-	import com.zutalor.containers.StandardContainer;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.properties.ApplicationProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.propertyManagers.Props;
-	import com.zutalor.sprites.MotionSprite;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.Motion;
 	import com.zutalor.utils.Scale;
@@ -46,7 +46,7 @@
 		private var _mouseDownY:Number;
 		private var _mouseUpY:Number;
 		
-		private var _draggingNow:MotionSprite;
+		private var _draggingNow:AbstractContainer;
 		private	var _sc:ScrollingContainer;
 		
 		private var ap:ApplicationProperties;
@@ -90,7 +90,7 @@
 						
 		private function onMotionTimer(DraggingNow:DisplayObject=null):void
 		{	
-			var ms:MotionSprite;
+			var ms:AbstractContainer;
 			var stageInMotion:Boolean;
 			var left:Number;
 			var right:Number;
@@ -104,9 +104,9 @@
 			if (_checkMotion)
 				for (var i:int = 0; i < StageRef.stage.numChildren; ++i)
 				{
-					if (StageRef.stage.getChildAt(i) is MotionSprite)
+					if (StageRef.stage.getChildAt(i) is AbstractContainer)
 					{
-						ms = StageRef.stage.getChildAt(i) as MotionSprite;
+						ms = StageRef.stage.getChildAt(i) as AbstractContainer;
 						
 						if (!ms.vx && !ms.vy)
 						{
@@ -180,8 +180,8 @@
 									//if (ms.rotvy)
 									//	ms.rotationY += ms.rotvy;
 									
-									ms.xOffset += ms.vx;
-									ms.yOffset += ms.vy;										
+									ms.posOffsetX += ms.vx;
+									ms.posOffsetY += ms.vy;										
 								}
 							}
 						}
@@ -218,12 +218,12 @@
 						TweenMax.to(ms, .5, { scaleX:1, scaleY:1 } );
 					}
 					else
-						lostFocus(getChildFromContainerByIndex(i) as MotionSprite);
+						lostFocus(getChildFromContainerByIndex(i) as AbstractContainer);
 				}
 				*/
 		}
 		
-		public function lostFocus(ms:MotionSprite):void
+		public function lostFocus(ms:AbstractContainer):void
 		{
 			//weenMax.to(ms, .5, { scaleX:.5, scaleY:.5 } );
 		}
@@ -231,12 +231,12 @@
 		
 		public function onMouseDown(event:MouseEvent):void
 		{
-			var ms:MotionSprite;
+			var ms:AbstractContainer;
 			
 			ms = vpm.getPropsById(event.target.name).container;
 			
 			if (!ms)
-				ms = event.target as MotionSprite;
+				ms = event.target as AbstractContainer;
 
 			if (ms)
 			{	
@@ -274,8 +274,8 @@
 				
 				if (_draggingNow.dragType == "drag")
 				{
-					_draggingNow.xOffset += (_draggingNow.x - _draggingNow.savedX) ;
-					_draggingNow.yOffset += (_draggingNow.y - _draggingNow.savedY) ;			
+					_draggingNow.posOffsetX += (_draggingNow.x - _draggingNow.savedX) ;
+					_draggingNow.posOffsetY += (_draggingNow.y - _draggingNow.savedY) ;			
 					_draggingNow.stopDrag();
 					_draggingNow.alpha = _oldAlpha;
 					Motion.checkBounds(_draggingNow.stage.stageWidth, _draggingNow.stage.stageHeight, _draggingNow);					
@@ -299,14 +299,14 @@
 		
 		private function trackMouseVelocity(event:Event):void
 		{
-			var ms:StandardContainer;
+			var ms:ViewContainer;
 			var xDistance:Number;
 			var yDistance:Number;		
 
 			_checkMotion = true;
 			MasterClock.start(onMotionTimer);
 			
-			ms = event.target as StandardContainer;
+			ms = event.target as ViewContainer;
 			if (ms.dragType != "drag")
 			{	
 				xDistance = ((StageRef.stage.mouseX - _mouseDownX) / StageRef.stage.stageWidth) *  Scale.curAppScale * .17 * (1 / ms.scaleX);

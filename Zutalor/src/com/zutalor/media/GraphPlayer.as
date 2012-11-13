@@ -1,13 +1,13 @@
 package com.zutalor.media
 {
 	import com.noteflight.standingwave3.elements.AudioDescriptor;
+	import com.zutalor.components.Plotter;
 	import com.zutalor.loaders.URLLoaderG;
 	import com.zutalor.synthesizer.Note;
 	import com.zutalor.synthesizer.Synthesizer;
 	import com.zutalor.synthesizer.SynthPreset;
 	import com.zutalor.synthesizer.Track;
 	import com.zutalor.text.TextUtil;
-	import com.zutalor.ui.Plotter;
 	import com.zutalor.ui.Spinner;
 	import com.zutalor.utils.ArrayUtils;
 	import com.zutalor.utils.MathG;

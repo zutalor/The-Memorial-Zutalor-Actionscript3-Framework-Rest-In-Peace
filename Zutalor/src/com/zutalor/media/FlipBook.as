@@ -3,7 +3,7 @@ package com.zutalor.media
 	import com.greensock.easing.Sine;
 	import com.greensock.TweenMax;
 	import com.gskinner.utils.IDisposable;
-	import com.zutalor.containers.StandardContainer;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.sprites.CenterSprite;
 	import com.zutalor.utils.ArrayUtils;
@@ -47,7 +47,7 @@ package com.zutalor.media
 		private var _buttonsContainer:String;
 		private var _buttonsLoader:ViewLoader;
 		private var _backgroundColor:uint;
-		private var _buttons:StandardContainer;
+		private var _buttons:ViewContainer;
 		
 		private var _slides:Array;
 		private var _slidesLoaded:int;

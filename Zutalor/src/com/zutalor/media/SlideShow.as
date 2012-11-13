@@ -2,7 +2,7 @@ package com.zutalor.media
 {
 	import com.greensock.TweenMax;
 	import com.gskinner.utils.IDisposable;
-	import com.zutalor.containers.StandardContainer;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.utils.DisplayUtils;
@@ -36,7 +36,7 @@ package com.zutalor.media
 		private var rect:Rectangle;
 		private var _fadeTimeSecs:int;
 		private var _playing:Boolean;
-		private var _buttons:StandardContainer;
+		private var _buttons:ViewContainer;
 		private var _buttonsLoader:ViewLoader;
 		private var _path:String;
 		private var _buttonsInitialized:Boolean;

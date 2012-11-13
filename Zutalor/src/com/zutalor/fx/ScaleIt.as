@@ -1,7 +1,7 @@
 ﻿package com.zutalor.fx
 {
 
-	import com.zutalor.containers.StandardContainer;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.sprites.CenterSprite;
 	import flash.display.DisplayObject;
 	/**
@@ -11,7 +11,7 @@
 	public class ScaleIt
 	{
 		
-		public static function tweenParams(dc:StandardContainer, inOut:String, xVal:Number, yVal:Number):Object 
+		public static function tweenParams(dc:ViewContainer, inOut:String, xVal:Number, yVal:Number):Object 
 		{
 			var OrigScaleX:Number;
 			var OrigScaleY:Number;

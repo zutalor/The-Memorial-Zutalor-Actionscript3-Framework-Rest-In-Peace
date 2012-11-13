@@ -1,7 +1,10 @@
 package com.zutalor.view
 {
 	import com.zutalor.air.AirStatus;
-	import com.zutalor.containers.StandardContainer;
+	import com.zutalor.components.Button;
+	import com.zutalor.components.ComponentGroup;
+	import com.zutalor.components.RadioGroup;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.motion.MotionUtils;
@@ -15,10 +18,7 @@ package com.zutalor.view
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.text.Translate;
-	import com.zutalor.ui.Button;
-	import com.zutalor.ui.ComponentGroup;
 	import com.zutalor.ui.Focus;
-	import com.zutalor.ui.RadioGroup;
 	import com.zutalor.utils.FullScreen;
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.view.ViewController;
@@ -60,7 +60,7 @@ package com.zutalor.view
 			_hkm = new HotKeyManager();
 		}
 		
-		public function addListenersToContainer(c:StandardContainer):void
+		public function addListenersToContainer(c:ViewContainer):void
 		{
 			var vip:ViewItemProperties;
 			var keys:Array;
@@ -86,7 +86,7 @@ package com.zutalor.view
 			}
 		}
 		
-		public function removeListenersFromContainer(c:StandardContainer):void
+		public function removeListenersFromContainer(c:ViewContainer):void
 		{
 			var vip:ViewItemProperties;
 			var numKeys:int;
@@ -514,7 +514,7 @@ package com.zutalor.view
 								FullScreen.toggle();
 								break;
 							default: 
-								var c:StandardContainer = vc.vpm.getPropsById(containerNames[i]).container;
+								var c:ViewContainer = vc.vpm.getPropsById(containerNames[i]).container;
 								for (i = 0; i < containerNames.length; i++)
 									c.dispatchEvent(new UIEvent(vip.action, containerNames[i], vc.vp.menuName));
 						}						

@@ -1,6 +1,6 @@
 ﻿package com.zutalor.properties
 {
-	import com.zutalor.containers.StandardContainer;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.ui.Focus;
 	import com.zutalor.utils.Singleton;
@@ -46,7 +46,7 @@
 		public var ignoreStageResize:Boolean;
 		public var portrait:Boolean;
 		public var targetPortable:Boolean;		
-		public var contentLayer:StandardContainer;
+		public var contentLayer:ViewContainer;
 		
 		private static var _applicationProperties:ApplicationProperties;
 					

@@ -1,12 +1,12 @@
 ﻿package com.zutalor.objectPool 
 {
+	import com.zutalor.components.Graphic;
 	import com.zutalor.containers.MaskedContainer;
 	import com.zutalor.containers.ParallaxContainer;
 	import com.zutalor.containers.ScrollingContainer;
-	import com.zutalor.containers.StandardContainer;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.fx.Transition;
 	import com.zutalor.properties.ViewProperties;
-	import com.zutalor.ui.Graphic;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.ViewCloser;
 	import com.zutalor.view.ViewLoader;
@@ -85,10 +85,10 @@
 																vp.vScrollBarSliderId, vp.autoAdjustThumbSize);
 					break;		
 				case ViewProperties.CONTAINER_BASIC :
-					vp.container = new StandardContainer(vp.name, vp.width, vp.height);
+					vp.container = new ViewContainer(vp.name, vp.width, vp.height);
 					break;
 				default :
-					vp.container = new StandardContainer(vp.name, vp.width, vp.height);
+					vp.container = new ViewContainer(vp.name, vp.width, vp.height);
 					break;
 			}
 		}				

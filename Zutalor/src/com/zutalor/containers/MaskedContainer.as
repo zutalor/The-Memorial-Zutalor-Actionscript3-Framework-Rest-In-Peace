@@ -6,7 +6,7 @@
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class MaskedContainer extends StandardContainer
+	public class MaskedContainer extends ViewContainer
 	{	
 		private var _scrollRect:Rectangle;
 		private var _scrollPercentX:Number;

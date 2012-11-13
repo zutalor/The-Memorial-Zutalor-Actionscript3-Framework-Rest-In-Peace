@@ -1,8 +1,8 @@
 package com.zutalor.view 
 {
+	import com.zutalor.components.Graphic;
 	import com.zutalor.fx.Filters;
 	import com.zutalor.properties.ViewItemProperties;
-	import com.zutalor.ui.Graphic;
 	import com.zutalor.utils.MasterClock;
 	/**
 	 * ...

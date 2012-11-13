@@ -65,16 +65,15 @@ package com.zutalor.media
 				{
 					if (i < l && !_stopped)
 						say(sentences[i++] + ".", sayNextSentence);
-					else
-						stop();
 				}
 			}
 		}
 		
 		public function stop():void
 		{
-			_samplePlayer.stop();
 			_stopped = true;
+			_samplePlayer.stop();
+
 			if (_afterSpeaking != null)
 			{
 				_afterSpeaking();

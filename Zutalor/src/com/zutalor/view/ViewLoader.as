@@ -1,6 +1,6 @@
 ﻿package com.zutalor.view
 {
-	import com.zutalor.containers.StandardContainer;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.fx.Filters;
 	import com.zutalor.fx.TransitionTypes;
 	import com.zutalor.objectPool.ObjectPool;
@@ -35,7 +35,7 @@
 			pr = Props.pr;
 		}
 		
-		public function get container():StandardContainer
+		public function get container():ViewContainer
 		{
 			return vp.container;
 		}
@@ -87,8 +87,8 @@
 			if (vp.vz)
 				c.vz = vp.vz;
 			
-			vp.container.xOffset = vp.hPad;
-			vp.container.yOffset = vp.vPad;
+			vp.container.posOffsetX = vp.hPad;
+			vp.container.posOffsetY = vp.vPad;
 			
 			if (vp.alpha)
 				vp.container.alpha = vp.alpha;

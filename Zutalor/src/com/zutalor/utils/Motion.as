@@ -3,9 +3,9 @@
 	import adobe.utils.CustomActions;
 	import com.greensock.easing.Quint;
 	import com.greensock.TweenMax;
-	import com.zutalor.containers.StandardContainer;
+	import com.zutalor.containers.AbstractContainer;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.properties.ApplicationProperties;
-	import com.zutalor.sprites.MotionSprite;
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -18,13 +18,13 @@
 	 */
 	public class Motion
 	{	
-		public static function isContainerInMotion(c:StandardContainer):Boolean
+		public static function isContainerInMotion(c:ViewContainer):Boolean
 		{
-			var ms:MotionSprite;
+			var ms:AbstractContainer;
 			
 			for (var i:int = 0;  i < c.numChildren; i++)
 			{
-				ms = c.getChildAt(i) as MotionSprite;
+				ms = c.getChildAt(i) as AbstractContainer;
 				if (ms.inMotion)
 				{
 					return true;
@@ -33,7 +33,7 @@
 			return false;
 		}
 		
-		public static function checkMotion(ms:MotionSprite, velocityTolerance:Number, maxVelocity:Number):void
+		public static function checkMotion(ms:AbstractContainer, velocityTolerance:Number, maxVelocity:Number):void
 		{	
 			if (ms.vx > maxVelocity)
 				ms.vx = maxVelocity;
@@ -53,7 +53,7 @@
 			}
 		}
 		
-		public static function checkBounds(width:Number, height:Number, ms:MotionSprite, overlap:Number = 75):void
+		public static function checkBounds(width:Number, height:Number, ms:AbstractContainer, overlap:Number = 75):void
 		{
 			var left:Number;
 			var right:Number;
@@ -96,12 +96,12 @@
 			}
 		}
 		
-		public static function squashAndStretch(ms:MotionSprite):void
+		public static function squashAndStretch(ms:AbstractContainer):void
 		{
 			//TweenMax.from(ms, .5, { scaleY:ms.scaleY * .75, scaleX:ms.scaleX * .75, ease: Quint.easeOut } );
 		}		
 
-		public static function chainContainerChildren(c:StandardContainer, springLength:Number = 50):void 
+		public static function chainContainerChildren(c:ViewContainer, springLength:Number = 50):void 
 		{		
 			var gravity:Number = 0
 			var spring:Number = .05;
@@ -109,17 +109,17 @@
 			
 			if (Motion.isContainerInMotion(c))
 			{
-				var ms:MotionSprite;
+				var ms:AbstractContainer;
 				
 				for (var i:int = 0;  i < c.numChildren - 1; i++)
 				{
-					ms = c.getChildAt(i) as MotionSprite;
+					ms = c.getChildAt(i) as AbstractContainer;
 					if (!ms.dragging) 
 					{
 						Motion.springTo(c.getChildAt(i), c.getChildAt(i + 1), gravity, spring, friction, springLength); 
 					}
 					
-					ms = c.getChildAt(i + 1) as MotionSprite;
+					ms = c.getChildAt(i + 1) as AbstractContainer;
 					if (!ms.dragging)
 					{
 						Motion.springTo(c.getChildAt(i + 1), c.getChildAt(i), gravity, spring, friction, springLength);
@@ -132,16 +132,16 @@
 			}
 		}
 		
-		public static function checkForCollision(container:StandardContainer, spring:Number = .05):void
+		public static function checkForCollision(container:ViewContainer, spring:Number = .05):void
 		{		
 			if (Motion.isContainerInMotion(container))
 			{
 				for (var i:uint = 0; i < container.numChildren - 1; i++)
 				{
-					var ms0:MotionSprite = container.getChildAt(i) as MotionSprite;
+					var ms0:AbstractContainer = container.getChildAt(i) as AbstractContainer;
 					for (var j:uint = i + 1; j < container.numChildren; j++)
 					{
-						var ms1:MotionSprite = container.getChildAt(j) as MotionSprite;
+						var ms1:AbstractContainer = container.getChildAt(j) as AbstractContainer;
 						var dx:Number = ms1.x - ms0.x;
 						var dy:Number = ms1.y - ms0.y;
 						var dist:Number = Math.sqrt(dx * dx + dy * dy);

@@ -5,7 +5,7 @@
 	import com.greensock.TweenMax;
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.amfphp.Remoting;
-	import com.zutalor.containers.StandardContainer;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.AppEvent;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
@@ -358,7 +358,7 @@
 			MasterClock.initialize();
 			Remoting.gateway = ap.gateway;
 			_menuCallStack = new gDictionary();	
-			ap.contentLayer = new StandardContainer("contentLayer", ap.designWidth, ap.designHeight);
+			ap.contentLayer = new ViewContainer("contentLayer", ap.designWidth, ap.designHeight);
 			
 			StageRef.stage.addChild(ap.contentLayer);			
 			Translate.language = Props.ap.language;

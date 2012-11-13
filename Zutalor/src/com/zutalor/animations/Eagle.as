@@ -5,7 +5,7 @@
 	import com.greensock.TweenMax;
 	import com.zutalor.media.VideoController;
 	import com.zutalor.media.VideoPlayer;
-	import com.zutalor.sprites.MotionSprite;
+	import com.zutalor.sprites.AbstractContainer;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.TimerRegistery;

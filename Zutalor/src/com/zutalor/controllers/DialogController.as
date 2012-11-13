@@ -1,10 +1,10 @@
 package com.zutalor.controllers
 {
 	import com.zutalor.air.AirStatus;
+	import com.zutalor.components.Button;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.text.Translate;
-	import com.zutalor.ui.Button;
 	import com.zutalor.ui.Dialog;
 	import flash.desktop.NativeApplication;
 

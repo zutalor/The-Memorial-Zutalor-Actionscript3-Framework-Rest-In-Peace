@@ -1,7 +1,7 @@
 package com.zutalor.view
 {
 	import com.zutalor.air.AirStatus;
-	import com.zutalor.containers.StandardContainer;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.media.SoundPlayer;
@@ -64,7 +64,7 @@ package com.zutalor.view
 			_hkm = new HotKeyManager();
 		}
 		
-		public function addListenersToContainer(c:StandardContainer):void
+		public function addListenersToContainer(c:ViewContainer):void
 		{
 			var vip:ViewItemProperties;
 			var keys:Array;
@@ -90,7 +90,7 @@ package com.zutalor.view
 			}
 		}
 		
-		public function removeListenersFromContainer(c:StandardContainer):void
+		public function removeListenersFromContainer(c:ViewContainer):void
 		{
 			var vip:ViewItemProperties;
 			var numKeys:int;
@@ -523,7 +523,7 @@ package com.zutalor.view
 								FullScreen.toggle();
 								break;
 							default: 
-								var c:StandardContainer = vc.vpm.getPropsById(containerNames[i]).container;
+								var c:ViewContainer = vc.vpm.getPropsById(containerNames[i]).container;
 								for (i = 0; i < containerNames.length; i++)
 									c.dispatchEvent(new UIEvent(vip.action, containerNames[i], vc.vp.menuName));
 						}						

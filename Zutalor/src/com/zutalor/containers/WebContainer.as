@@ -9,7 +9,7 @@ package com.zutalor.containers
 	 * ...
 	 * @author G Pepos
 	 */
-	public class WebContainer extends StandardContainer
+	public class WebContainer extends ViewContainer
 	{
 		public var webView:StageWebViewBridge;
 		

@@ -2,7 +2,7 @@
 {
 	import com.greensock.TweenMax;
 	import com.gskinner.utils.IDisposable;
-	import com.zutalor.containers.StandardContainer;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.fx.TransitionTypes;
@@ -34,7 +34,7 @@
 		private var _onComplete:Function;
 		private var _itemIndex:int;
 		private var _viewEvents:ViewEvents;
-		private var _container:StandardContainer;
+		private var _container:ViewContainer;
 		private var _defaultVO:*;
 		
 		public var successMessage:String;
@@ -113,7 +113,7 @@
 		
 		// PUBLIC METHODS
 		
-		public function get container():StandardContainer
+		public function get container():ViewContainer
 		{
 			return _container;
 		}
@@ -276,7 +276,7 @@
 			var i:int;
 			var numFilters:int;
 			var l:int;
-			var c:StandardContainer;
+			var c:ViewContainer;
 		
 			ViewControllerRegistry.unregisterController(viewId);
 			

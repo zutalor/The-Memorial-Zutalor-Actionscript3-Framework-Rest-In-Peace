@@ -1,6 +1,7 @@
 package com.zutalor.ui
 {
 	import com.greensock.TweenMax;
+	import com.zutalor.components.Graphic;
 	import com.zutalor.utils.StageRef;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;

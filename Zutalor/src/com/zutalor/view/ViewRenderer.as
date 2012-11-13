@@ -1,6 +1,7 @@
 package com.zutalor.view
 {
-import com.zutalor.containers.StandardContainer;
+import com.zutalor.components.Components;
+import com.zutalor.containers.ViewContainer;
 import com.zutalor.containers.WebContainer;
 import com.zutalor.events.MediaEvent;
 import com.zutalor.media.FlipBook;
@@ -18,8 +19,6 @@ import com.zutalor.propertyManagers.Presets;
 import com.zutalor.propertyManagers.Props;
 import com.zutalor.text.TextUtil;
 import com.zutalor.text.Translate;
-import com.zutalor.ui.Components;
-import com.zutalor.ui.Graphic;
 import com.zutalor.utils.Logger;
 import com.zutalor.utils.Resources;
 import com.zutalor.view.ViewController;
@@ -64,7 +63,7 @@ import flash.text.TextField;
 			var hPad:Number;
 			var vPad:Number;
 			var s:String;
-			var c:StandardContainer;
+			var c:ViewContainer;
 			var txt:TextField;
 			var viewItem:*;
 			var vip:ViewItemProperties;

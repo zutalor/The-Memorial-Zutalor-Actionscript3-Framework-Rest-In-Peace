@@ -1,6 +1,6 @@
 ﻿package com.zutalor.properties 
 {
-	import com.zutalor.containers.StandardContainer;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.interfaces.IProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.propertyManagers.Props;
@@ -54,7 +54,7 @@
 		public var hScrollBarSliderId:String;
 		public var vScrollBarSliderId:String;
 		public var autoAdjustThumbSize:Boolean;
-		public var container:StandardContainer;
+		public var container:ViewContainer;
 		
 		override public function parseXML(xml:XML):Boolean
 		{	

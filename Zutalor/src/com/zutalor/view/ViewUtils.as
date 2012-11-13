@@ -2,7 +2,7 @@
 {
 	import com.greensock.easing.Quart;
 	import com.greensock.TweenMax;
-	import com.zutalor.containers.StandardContainer;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.motion.MotionUtils;
 	import com.zutalor.properties.ApplicationProperties;
@@ -207,7 +207,7 @@
 		public function updateContainerScrollPosition(scrollPreset:String):void
 		{	
 			var spp:ScrollProperties;
-			var c:StandardContainer;
+			var c:ViewContainer;
 			spp = pr.scrollPresets.getPropsByName(scrollPreset);
 			if (spp)
 			{

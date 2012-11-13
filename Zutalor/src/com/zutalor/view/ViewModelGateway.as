@@ -1,7 +1,7 @@
 package com.zutalor.view  
 {
 	import com.zutalor.containers.ScrollingContainer;
-	import com.zutalor.containers.StandardContainer;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.media.VideoPlayer;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
