@@ -1,36 +1,29 @@
 package com.zutalor.utils 
 {
+	import com.zutalor.properties.PathProperties;
+	import com.zutalor.propertyManagers.Props;
 	/**
 	 * ...
-	 * @author G Pepos
+	 * @author Geoff Pepos
 	 */
 	public class Path 
 	{
-		private static var paths:Array = [];
 		
-		public static function addPath(pathId:String, path:String):void
+		public function Path() 
 		{
-			paths[pathId]=path;
+			
 		}
 		
-		/**
-		 * Get a path concatenated from the given pathIds - if ExternalInterface is
-		 * available, it uses the guttershark javascript api. Otherwise it's stored in a local
-		 * dictionary.
-		 * 
-		 * @param ...pathIds An array of pathIds whose values will be concatenated together.
-		 */
-		public static function getPath(...pathIds:Array):String
+		public static function getPath(p:String):String
 		{
-			var fp:String="";
-			var i:int=0;
-			var l:int=pathIds.length;
-			for(i;i<l;i++)
-			{
-				if(paths[pathIds[i]])
-					fp += paths[pathIds[i]];
-			}
-			return fp;
+			var pp:PathProperties;
+			
+			pp = Props.paths.getPropsByName(p);
+			if (pp)
+				return(pp.path);
+			else
+				return "";
 		}
 	}
+
 }

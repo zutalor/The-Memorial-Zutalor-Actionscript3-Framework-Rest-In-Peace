@@ -47,7 +47,7 @@ package com.zutalor.events
 		
 		private var _type:String;
 		private var _viewName:String;
-		private var _menuSelection:String;
+		private var _state:String;
 		private var _itemName:String;
 		private var _value:*;
 		private var _bubbles:Boolean;
@@ -61,20 +61,20 @@ package com.zutalor.events
 		* @param  pCancelable  Whether the event can be canceled as it bubbles.
 		* 
 		*/
-		public function UIEvent(pType:String, pViewName:String=null, pMenuSelection:String=null, pItemName:String=null, pValue:*=null, pBubbles:Boolean=true, pCancelable:Boolean=false) {
+		public function UIEvent(pType:String, pViewName:String=null, pState:String=null, pItemName:String=null, pValue:*=null, pBubbles:Boolean=true, pCancelable:Boolean=false) {
 			super(pType, pBubbles, pCancelable);
 			_type = pType;
 			_bubbles = pBubbles;
 			_cancelable = pCancelable;
 			_viewName = pViewName;
-			_menuSelection = pMenuSelection;
+			_state = pState;
 			_itemName = pItemName;
 			_value = pValue;
 		}
 		
 		override public function clone():Event
 		{
-			return new UIEvent(_type, _viewName, _menuSelection, _itemName, _value, _bubbles, _cancelable );
+			return new UIEvent(_type, _viewName, _state, _itemName, _value, _bubbles, _cancelable );
 		}
 		
 		public function get viewName():String
@@ -87,9 +87,9 @@ package com.zutalor.events
 			return _itemName
 		}
 		
-		public function get menuSelection():String
+		public function get state():String
 		{
-			return _menuSelection;
+			return _state;
 		}
 		
 		public function get value():*

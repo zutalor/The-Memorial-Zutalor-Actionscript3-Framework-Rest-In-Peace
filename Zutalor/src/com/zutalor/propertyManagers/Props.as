@@ -1,6 +1,6 @@
 package com.zutalor.propertyManagers 
 {
-	import com.zutalor.controllers.AppController;
+	import com.zutalor.application.AppController;
 	import com.zutalor.loaders.URLLoaderG;
 	import com.zutalor.properties.ApplicationProperties;
 	import com.zutalor.properties.BitmapGroupItemProperties;
@@ -10,6 +10,7 @@ package com.zutalor.propertyManagers
 	import com.zutalor.properties.FiltersProperties;
 	import com.zutalor.properties.GraphicItemProperties;
 	import com.zutalor.properties.GraphicProperties;
+	import com.zutalor.properties.PathProperties;
 	import com.zutalor.properties.PlaylistItemProperties;
 	import com.zutalor.properties.PlaylistProperties;
 	import com.zutalor.properties.SequenceItemProperties;
@@ -39,6 +40,7 @@ package com.zutalor.propertyManagers
 		public static var views:NestedPropsManager;
 		public static var graphics:NestedPropsManager;
 		public static var filters:NestedPropsManager;
+		public static var paths:PropertyManager;
 		public static var translations:NestedPropsManager;
 		public static var bitmaps:PropertyManager;
 		public static var bitmapGroups:NestedPropsManager;
@@ -71,6 +73,7 @@ package com.zutalor.propertyManagers
 			playlists = new NestedPropsManager();
 			translations = new NestedPropsManager();
 			bitmaps = new PropertyManager(BitmapProperties);
+			paths = new PropertyManager(PathProperties);
 			bitmapGroups = new NestedPropsManager();
 			loadBootXml(bootXmlUrl);
 		}
@@ -84,7 +87,7 @@ package com.zutalor.propertyManagers
 		{
 			var xml:XML = XML(lg.data);
 			ap.parseXML(xml.appSettings);
-			parseProps(xml); // in case other settings are included, afterall, the whole xml package could be inside of boot xml rather than separate files.
+			parseProps(xml);
 			lg.dispose();
 			loadXml();
 		}
@@ -97,15 +100,16 @@ package com.zutalor.propertyManagers
 			if (ap.systemXmlUrls)
 			{
 				urls = ap.systemXmlUrls.split(",");
-				path = Path.getPath("systemXml")
+				path = ap.systemXmlPath;
 				addPath(path, urls);
 			}	
 			
 			if (ap.appXmlUrls)
 			{
-				path = Path.getPath("appXml");
+				path = ap.appXmlPath;
 				urls = urls.concat(addPath(path, ap.appXmlUrls.split(",")));
 			}
+			
 			_xmlFiles = urls.length;
 			_xmlFilesProcessed = 0;
 			
@@ -128,6 +132,8 @@ package com.zutalor.propertyManagers
 		{
 			_xmlFilesProcessed++;
 			parseProps(XML(lg.data));
+			if (lg.error)
+				throw new Error("Props: could not load " + lg.url);
 			
 			if (_xmlFilesProcessed == _xmlFiles)
 			{
@@ -148,6 +154,7 @@ package com.zutalor.propertyManagers
 		
 		private static function parseProps(xml:XML):void
 		{	
+			paths.parseXML(xml.paths, "props");
 			sequences.parseXML(SequenceProperties, SequenceItemProperties, xml.sequences, "sequence", xml.sequence, "props");
 			views.parseXML(ViewProperties, ViewItemProperties, xml.views, "view", xml.view, "props");
 			playlists.parseXML(PlaylistProperties, PlaylistItemProperties, xml.playlists, "playlist", xml.playlist, "props");						

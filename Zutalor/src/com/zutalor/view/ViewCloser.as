@@ -6,7 +6,6 @@ package com.zutalor.view
     import com.zutalor.objectPool.ObjectPool;
     import com.zutalor.properties.ApplicationProperties;
     import com.zutalor.properties.MediaProperties;
-    import com.zutalor.properties.MenuProperties;
 	import com.zutalor.properties.ViewProperties;
     import com.zutalor.propertyManagers.Presets
     import com.zutalor.properties.TransitionProperties;

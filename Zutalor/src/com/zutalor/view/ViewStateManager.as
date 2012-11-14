@@ -10,11 +10,11 @@ package com.zutalor.view
 	import com.zutalor.media.AudioController;
 	import com.zutalor.media.MediaPlayer;
 	import com.zutalor.media.TextToSpeech;
+	import com.zutalor.misc.AnswerProperties;
+	import com.zutalor.misc.GenericData;
 	import com.zutalor.properties.TranslateItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.propertyManagers.Props;
-	import com.zutalor.Quiz.AnswerProperties;
-	import com.zutalor.Quiz.GenericData;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.text.Translate;
 	import com.zutalor.utils.gDictionary;

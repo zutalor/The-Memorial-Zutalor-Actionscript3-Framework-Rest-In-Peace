@@ -516,7 +516,7 @@ package com.zutalor.view
 							default: 
 								var c:ViewContainer = vc.vpm.getPropsById(containerNames[i]).container;
 								for (i = 0; i < containerNames.length; i++)
-									c.dispatchEvent(new UIEvent(vip.action, containerNames[i], vc.vp.menuName));
+									c.dispatchEvent(new UIEvent(vip.action, containerNames[i], vc.vp.appState));
 						}						
 					}
 				}

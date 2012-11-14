@@ -49,7 +49,7 @@
 		public var blendMode:String;	
 		public var transitionPreset:String;
 		public var mediaPreset:String;
-		public var menuName:String;
+		public var appState:String;
 		public var filterPreset:String;		
 		public var hScrollBarSliderId:String;
 		public var vScrollBarSliderId:String;

@@ -1,5 +1,6 @@
 ﻿package com.zutalor.propertyManagers
 {
+	import com.zutalor.properties.AppStateProperties;
 	import com.zutalor.properties.ButtonProperties;
 	import com.zutalor.properties.ColorProperties;
 	import com.zutalor.properties.CssProperties;
@@ -8,7 +9,6 @@
 	import com.zutalor.properties.GraphicStyleProperties;
 	import com.zutalor.properties.MediaProperties;
 	import com.zutalor.properties.ComponentGroupProperties;
-	import com.zutalor.properties.MenuProperties;
 	import com.zutalor.properties.RippleProperties;
 	import com.zutalor.properties.ScrollProperties;
 	import com.zutalor.properties.SliderProperties;
@@ -52,7 +52,7 @@
 		public var stepperPresets:PropertyManager;
 		public var textListPresets:PropertyManager;
 		public var textFormatPresets:PropertyManager;
-		public var menu:PropertyManager;
+		public var appStates:PropertyManager;
 		public var colorPresets:PropertyManager;
 		
 		private static var _presets:Presets;
@@ -84,7 +84,7 @@
 			textListPresets = new PropertyManager(TextListProperties);
 			textFormatPresets = new PropertyManager(TextFormatProperties);
 			cssPresets = new PropertyManager(CssProperties);
-			menu = new PropertyManager(MenuProperties);
+			appStates = new PropertyManager(AppStateProperties);
 			colorPresets = new PropertyManager(ColorProperties);
 		}
 				
@@ -118,7 +118,7 @@
 			textFormatPresets.parseXML(xml.textFormatPresets);
 			cssPresets.parseXML(xml.cssPresets);
 			colorPresets.parseXML(xml.colorPresets);			
-			menu.parseXML(xml.menu);
+			appStates.parseXML(xml.appStates);
 		}
 	}
 }

@@ -2,7 +2,6 @@
 {
 	import com.zutalor.interfaces.IProperties;
 	import com.zutalor.utils.MapXML;
-	import com.zutalor.utils.Path;
 	/**
 	 * ...
 	 * @author Geoff Pepos

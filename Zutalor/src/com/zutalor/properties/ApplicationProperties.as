@@ -31,6 +31,8 @@
 		public var gateway:String;
 		public var spinningGraphicId:String;
 		public var spinningGraphicCyclesPerSecond:Number;
+		public var appXmlPath:String;
+		public var systemXmlPath:String;
 		public var appXmlUrls:String;
 		public var systemXmlUrls:String;
 		public var textToSpeechApiUrlMobile:String;
@@ -100,7 +102,9 @@
 			spinningGraphicCyclesPerSecond = appSettings.spinningGraphicCyclesPerSecond.@value;
 			
 			appXmlUrls = appSettings.appXmlUrls.@value;
+			appXmlPath = appSettings.appXmlPath.@value;
 			systemXmlUrls = appSettings.systemXmlUrls.@value;
+			systemXmlPath = appSettings.systemXmlPath.@value;
 			
 			ignoreStageResize = StringUtils.toBoolean(appSettings.ignoreStageResize.@value);
 			portrait = StringUtils.toBoolean(appSettings.portrait.@value);

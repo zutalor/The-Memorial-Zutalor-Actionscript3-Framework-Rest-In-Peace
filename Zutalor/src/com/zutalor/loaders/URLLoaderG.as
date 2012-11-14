@@ -85,6 +85,7 @@ package com.zutalor.loaders
 		{
 			if(e.status != 0 && e.status != 200)
 			{
+				_error = true;
 				errorExit(e);
 				trace("WARNING:  file was not loaded, there was status error: "+e.toString());
 			}

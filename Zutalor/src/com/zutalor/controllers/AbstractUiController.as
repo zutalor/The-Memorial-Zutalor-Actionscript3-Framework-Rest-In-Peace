@@ -7,13 +7,11 @@ package com.zutalor.controllers
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.Props;
-	import com.zutalor.utils.StageRef;
-	import com.zutalor.view.ViewControllerRegistry;
-	import com.zutalor.view.ViewController;
 	import com.zutalor.utils.Logger;
+	import com.zutalor.view.ViewController;
+	import com.zutalor.view.ViewControllerRegistry;
 	import flash.desktop.NativeApplication;
 	import flash.events.Event;
-	import flash.events.EventDispatcher;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 	/**

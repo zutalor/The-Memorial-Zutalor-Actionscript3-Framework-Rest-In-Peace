@@ -7,7 +7,7 @@ package com.zutalor.events
 	
 	public class AppEvent extends Event {
 		
-		public static const MENU_CALL:String = "menucall";
+		public static const STATE_CHANGE:String = "stateChange";
 		public static const INITIALIZED:String = "initialized";
 		
 			

@@ -80,7 +80,7 @@
 			_ap = ApplicationProperties.gi();
 		}
 	
-		public function load(viewId:String, menuName:String, onComplete:Function):void
+		public function load(viewId:String, appState:String, onComplete:Function):void
 		{			
 			
 			_onComplete = onComplete;
@@ -89,7 +89,7 @@
 			if (!vp)
 				throw new Error("No view properties for viewId: " + viewId);
 			
-			vp.menuName = menuName;
+			vp.appState = appState;
 			this.viewId = viewId;
 			ViewControllerRegistry.registerController(viewId, this);
 			ObjectPool.getContainer(vp);
