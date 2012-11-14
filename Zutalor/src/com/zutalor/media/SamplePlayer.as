@@ -13,7 +13,7 @@ package com.zutalor.media
 		private const bufferSize: int = 4096; 
 		private const SAMPLE_RATE:Number = 44.1;	
 		
-		public var inputSound: Sound; 
+		private var inputSound: Sound; 
 		private var outputSound: Sound = new Sound(); 
 
 		private var samplesTotal:int; 	
@@ -23,12 +23,12 @@ package com.zutalor.media
 		private var _loop:Boolean;
 		private var _playing:Boolean;
 		
-		public var event:Event;
+		public var soundLoaded:Boolean;
 		
-		/**
-			 Based upon Andre Michelle's MP3Loop, Modified by Geoff Pepos
-			 * http://blog.andre-michelle.com/2010/playback-mp3-loop-gapless/
-		 */
+		/*
+			* ...
+			* @author Geoff Pepos
+		*/
 		
 		public function SamplePlayer():void
 		{
@@ -70,17 +70,20 @@ package com.zutalor.media
 		{
 			_playing = true;
 			
-			removeInputListeners();
-			event = e;			
+			removeInputListeners();		
 			samplesTotal = inputSound.length * SAMPLE_RATE;
 			
 			if (samplesTotal)
 			{
+				soundLoaded = true;
 				outputSound.addEventListener(SampleDataEvent.SAMPLE_DATA, sampleData);
 				outputSound.play();
 			}
 			else
+			{
+				soundLoaded = false;
 				stop();	
+			}
 		}
 		
 		private function removeInputListeners():void
@@ -127,7 +130,6 @@ package com.zutalor.media
 
 		private function onIOError( e:IOErrorEvent ):void
 		{
-			event = e;
 			trace( e );
 			stop();
 		}

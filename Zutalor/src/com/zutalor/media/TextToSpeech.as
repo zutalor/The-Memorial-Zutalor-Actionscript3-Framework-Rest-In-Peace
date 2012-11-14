@@ -1,7 +1,9 @@
 package com.zutalor.media 
 { 
+	import com.zutalor.loaders.URLLoaderG;
 	import com.zutalor.ui.Dialog;
 	import com.zutalor.utils.MathG;
+	import com.zutalor.utils.StringUtils;
 	import flash.events.Event;
 	import flash.media.SoundChannel;
 	import flash.net.URLLoader;
@@ -68,7 +70,7 @@ package com.zutalor.media
 				function sayNextSentence():void
 				{
 					if (i < l && !_stopped)
-						say(sentences[i++] + ".", sayNextSentence);
+						say(sentences[i++], sayNextSentence);
 				}
 			}
 		}
@@ -96,37 +98,48 @@ package com.zutalor.media
 		{	
 			var url:String;
 			
-			//text = "CakeIsLie.";
+			text = StringUtils.stripLeadingSpaces(text);
+			
+			if (!text)
+			{
+			  onComplete();
+			  return;
+			} 
 			
 			url = makeURL(text);
 			
-			_samplePlayer.play(url, false, onComplete);
-			checkforError();
-			//var urlLoader:URLLoader = new URLLoader();
-			//urlLoader.addEventListener(Event.COMPLETE, checkforError);
-			//urlLoader.load(new URLRequest(url));
+			_samplePlayer.play(url, false, checkforError);
 			
 			function checkforError():void
 			{
-				var b:ByteArray = new ByteArray();
+				var urlLoader:URLLoader;
 				
-				var result:String = null;
-				try {
-					_samplePlayer.inputSound.extract(b, 1024); // experiment!!!!
-					var vars:URLVariables = new URLVariables(String(b));
-					result = "Error Code " + vars.code + ": " + vars.message;
-				}
-				catch (e:Error) {}
-				if (result != null)
+				if (onComplete != null)
 				{
-					if (onComplete != null)
-					{
-						onComplete();
-						onComplete = null;
+					onComplete();
+					onComplete = null;
+				}
+				if (!_samplePlayer.soundLoaded)
+				{
+					urlLoader = new URLLoader();
+					urlLoader.addEventListener(Event.COMPLETE, getError);
+					urlLoader.load(new URLRequest(url));
+				}
+				
+				function getError(e:Event):void
+				{
+					urlLoader.removeEventListener(Event.COMPLETE, getError);
+					var result:String = null;
+
+					try {
+						var vars:URLVariables = new URLVariables(e.target.data);
+						result = "Error Code " + vars.code + ": " + vars.message;
 					}
-					trace(result);
-					Dialog.show(Dialog.ALERT, result);
-			
+					catch (e:Error) {}
+					if (result != null)
+					{
+						trace(result);
+					}
 				}
 			}
 		}		

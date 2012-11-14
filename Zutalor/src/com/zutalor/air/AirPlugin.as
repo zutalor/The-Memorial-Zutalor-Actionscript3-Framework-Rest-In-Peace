@@ -39,11 +39,11 @@ package com.zutalor.air
 				_nativeApplication = true;
 			}
 			
-			if (Capabilities.cpuArchitecture=="ARM" || Capabilities.screenDPI > 96)
+			else if (Capabilities.cpuArchitecture=="ARM")
 			{
 				_nativeApplication = true;
 				_isPortable = true;
-			}			
+			}	
 			
 			if (_nativeApplication)
 			{
