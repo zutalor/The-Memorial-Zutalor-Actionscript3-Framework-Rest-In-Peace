@@ -1,5 +1,6 @@
 package com.zutalor.components
 {
+	import com.zutalor.containers.AbstractContainer;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.scroll.HScrollBarController;
 	import com.zutalor.scroll.ScrollBarController;
@@ -12,7 +13,7 @@ package com.zutalor.components
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class Slider extends Sprite
+	public class Slider extends AbstractContainer
 	{
 		private var _sliderController:ScrollBarController;
 		private var _thumb:Button;
@@ -23,6 +24,7 @@ package com.zutalor.components
 		public function Slider()
 		{
 		}
+		
 		
 		public function create(thumb:Button, track:Button, reveal:DisplayObjectContainer = null, 
 								vertical:Boolean = false, tweenTime:Number=0, numSteps:int=0, onlyShowTrackOnMouseDown:Boolean=false):void

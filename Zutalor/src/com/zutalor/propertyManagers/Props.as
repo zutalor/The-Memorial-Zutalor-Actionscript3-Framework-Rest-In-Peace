@@ -1,6 +1,6 @@
 package com.zutalor.propertyManagers 
 {
-	import com.zutalor.controllers.UIController;
+	import com.zutalor.controllers.AppController;
 	import com.zutalor.loaders.URLLoaderG;
 	import com.zutalor.properties.ApplicationProperties;
 	import com.zutalor.properties.BitmapGroupItemProperties;
@@ -43,7 +43,7 @@ package com.zutalor.propertyManagers
 		public static var bitmaps:PropertyManager;
 		public static var bitmapGroups:NestedPropsManager;
 		
-		public static var uiController:UIController;		
+		public static var appController:AppController;		
 		
 		private static var _xmlFiles:int;
 		private static var _xmlFilesProcessed:int;

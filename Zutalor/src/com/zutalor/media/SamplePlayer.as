@@ -13,7 +13,7 @@ package com.zutalor.media
 		private const bufferSize: int = 4096; 
 		private const SAMPLE_RATE:Number = 44.1;	
 		
-		private var inputSound: Sound = new Sound(); 
+		public var inputSound: Sound; 
 		private var outputSound: Sound = new Sound(); 
 
 		private var samplesTotal:int; 	
@@ -37,6 +37,7 @@ package com.zutalor.media
 
 		public function play(url:String, loop:Boolean = false, onComplete:Function = null): void
 		{
+			stopSound();
 			_loop = loop;
 			_onComplete = onComplete;
 			inputSound = new Sound();
@@ -47,15 +48,20 @@ package com.zutalor.media
 		
 		public function stop():void
 		{
+			stopSound();
+			if (_onComplete != null)
+				_onComplete();
+				
+		}
+		
+		private function stopSound():void
+		{
 			if (_playing)
 			{
+				_playing = false;
 				removeInputListeners();
 				inputSound = null;
-				outputSound.removeEventListener(SampleDataEvent.SAMPLE_DATA, sampleData);
-				_playing = false;
-				if (_onComplete != null)
-					_onComplete();
-				
+				outputSound.removeEventListener(SampleDataEvent.SAMPLE_DATA, sampleData);								
 				samplesPosition = 0;
 			}		
 		}
@@ -79,8 +85,11 @@ package com.zutalor.media
 		
 		private function removeInputListeners():void
 		{
-			inputSound.removeEventListener(Event.COMPLETE, onLoaded);
-			inputSound.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
+			if (inputSound)
+			{
+				inputSound.removeEventListener(Event.COMPLETE, onLoaded);
+				inputSound.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
+			}
 		}
 
 		private function sampleData(e:SampleDataEvent):void

@@ -1,7 +1,7 @@
 package com.zutalor.view
 {
 	import com.zutalor.air.AirStatus;
-	import com.zutalor.controllers.AbstractAppController;
+	import com.zutalor.controllers.AbstractUiController;
 	import com.zutalor.gesture.AppGestureProperties;
 	import com.zutalor.gesture.GestureManager;
 	import com.zutalor.gesture.GestureProperties;
@@ -37,18 +37,18 @@ package com.zutalor.view
 		private var _soundPlayer:MediaPlayer;
 		private var _textToSpeech:TextToSpeech;
 		private var _hkm:HotKeyManager;
-		private var _AppController:AbstractAppController;
+		private var _uiController:AbstractUiController;
 		private var _gm:GestureManager;
 		private var _gestures:gDictionary;
 		private var _answers:gDictionary;
 		private var _appGestures:PropertyManager;
-		private var _uxMethodData:GenericData;
+		private var _dataFromUiController:GenericData;
 		
 		private static const soundExt:String = ".mp3";
 		private static const letterAnswers:String = "abcdefgh";
 		
 										
-		public function initialize(AppController:AbstractAppController):void
+		public function initialize(uiController:AbstractUiController):void
 		{
 			var l:int;
 			var gs:GraphSettings;
@@ -57,7 +57,7 @@ package com.zutalor.view
 			if (!_intitialized)
 			{
 				_intitialized = true;
-				_AppController = AppController;
+				_uiController = uiController;
 				_answers = new gDictionary();
 				_history = [];
 				_gm = new GestureManager();
@@ -154,10 +154,10 @@ package com.zutalor.view
 					answer.correctAnswer = XML(_curStateText)..answers.@correctAnswer;
 					answer.timestamp = date.toString();
 					
-					if (_uxMethodData)
+					if (_dataFromUiController)
 					{
-						answer.data = _uxMethodData.data;
-						_answers.insert(_uxMethodData.name, answer);	
+						answer.data = _dataFromUiController.data;
+						_answers.insert(_dataFromUiController.name, answer);	
 					}
 					else
 						_answers.insert(_curStateId, answer);
@@ -183,7 +183,7 @@ package com.zutalor.view
 							activateStateById(tMeta.state.@next);
 						break;						
 					case "exit" :
-						activateStateById("goodbye", _AppController.exit);
+						activateStateById("goodbye", _uiController.exit);
 						break;
 				}
 			}	
@@ -197,7 +197,7 @@ package com.zutalor.view
 			if (index == -1)
 				throw new Error("ViewStateManager: state not found> " + id);
 			
-			_uxMethodData = data;
+			_dataFromUiController = data;
 			activateStateByIndex(index, onComplete);
 		}
 		
@@ -226,7 +226,7 @@ package com.zutalor.view
 			page = TextUtil.stripSurroundedBy(page, "<hide>", "</hide>");
 			
 			fortextToSpeech = TextUtil.stripSurroundedBy(page, "<DISPLAYTEXT>", "</DISPLAYTEXT>");
-			_AppController.message = TextUtil.stripSurroundedBy(page, "<PHONETIC>", "</PHONETIC>");
+			_uiController.message = TextUtil.stripSurroundedBy(page, "<PHONETIC>", "</PHONETIC>");
 				
 			if (XML(tp.tMeta).state.@type == "prompt")
 			{
@@ -234,8 +234,8 @@ package com.zutalor.view
 				if (next)
 					onComplete = activateStateById;
 			}
-			else if (XML(tp.tMeta).state.@type == "AppControllerMethod")
-				_AppController[XML(tp.tMeta).state.@method](activateStateById, XML(tp.tMeta).state);	
+			else if (XML(tp.tMeta).state.@type == "uiControllerMethod")
+				_uiController[XML(tp.tMeta).state.@method](activateStateById, XML(tp.tMeta).state);	
 	
 			playSound(fortextToSpeech, Translate.getSoundName(tp.name), onComplete, next);
 		}
@@ -269,7 +269,7 @@ package com.zutalor.view
 		private function stop():void
 		{
 			_textToSpeech.stop();			
-			_AppController.stop();
+			_uiController.stop();
 			_soundPlayer.stop();
 		}
 		

@@ -17,7 +17,7 @@
 		public static const CONTAINER_MASKED:String = "masked";
 		public static const CONTAINER_PARALLAX:String = "parallax";
 		
-		public var appControllerInstanceName:String;
+		public var uiControllerInstanceName:String;
 		public var initialMethod:String;
 		public var initialMethodParams:String;
 		public var toolTipPreset:String;

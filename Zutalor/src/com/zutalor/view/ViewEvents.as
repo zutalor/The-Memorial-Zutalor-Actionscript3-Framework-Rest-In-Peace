@@ -223,8 +223,8 @@ package com.zutalor.view
 				{
 					Focus.show(item, vc.container);
 					vip = vc.getItemPropsByName(item.name);
-					if (vc.vp.appControllerInstanceName)
-						Plugins.callMethod(vc.vp.appControllerInstanceName, PluginMethods.ON_FOCUS_IN, {itemWithFocus: item, focusEvent: fe});
+					if (vc.vp.uiControllerInstanceName)
+						Plugins.callMethod(vc.vp.uiControllerInstanceName, PluginMethods.ON_FOCUS_IN, {itemWithFocus: item, focusEvent: fe});
 				}
 			}
 		}
@@ -451,7 +451,7 @@ package com.zutalor.view
 					{
 						var dest:String;
 						
-						dest = vc.vp.appControllerInstanceName;
+						dest = vc.vp.uiControllerInstanceName;
 						
 						vc.initStatusMessage(vip.action);
 						if (vip.voName)
@@ -472,12 +472,12 @@ package com.zutalor.view
 					function uiEvent():void
 					{
 						var dest:String;
-						dest = vc.vp.appControllerInstanceName;
+						dest = vc.vp.uiControllerInstanceName;
 						
 						switch (vip.action)
 						{
 							case UIEvent.CLOSE :
-								Props.uiController.closeView(vip.onTapContainerNames);
+								Props.appController.closeView(vip.onTapContainerNames);
 								break;
 							case UIEvent.CREATE: 
 							case UIEvent.UPDATE: 

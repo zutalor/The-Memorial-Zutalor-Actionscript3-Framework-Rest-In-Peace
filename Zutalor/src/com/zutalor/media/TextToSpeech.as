@@ -2,8 +2,12 @@ package com.zutalor.media
 { 
 	import com.zutalor.ui.Dialog;
 	import com.zutalor.utils.MathG;
+	import flash.events.Event;
 	import flash.media.SoundChannel;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	import flash.net.URLVariables;
+	import flash.utils.ByteArray;
 	
 	public class TextToSpeech 
 	{	
@@ -97,18 +101,19 @@ package com.zutalor.media
 			url = makeURL(text);
 			
 			_samplePlayer.play(url, false, onComplete);
-			
-			function onPlaybackComplete():void
-			{
-				if (onComplete != null)
-					onComplete();
-			}
+			checkforError();
+			//var urlLoader:URLLoader = new URLLoader();
+			//urlLoader.addEventListener(Event.COMPLETE, checkforError);
+			//urlLoader.load(new URLRequest(url));
 			
 			function checkforError():void
 			{
+				var b:ByteArray = new ByteArray();
+				
 				var result:String = null;
 				try {
-					var vars:URLVariables = new URLVariables(_samplePlayer.event.target.data);
+					_samplePlayer.inputSound.extract(b, 1024); // experiment!!!!
+					var vars:URLVariables = new URLVariables(String(b));
 					result = "Error Code " + vars.code + ": " + vars.message;
 				}
 				catch (e:Error) {}

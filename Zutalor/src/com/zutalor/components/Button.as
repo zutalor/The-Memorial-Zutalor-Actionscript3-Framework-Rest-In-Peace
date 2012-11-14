@@ -53,7 +53,11 @@
 			_down.render(bp.downGid);
 
 			_disabled = new Graphic();
-			_disabled.render(bp.disabledGid);
+			
+			if (bp.disabledGid)
+				_disabled.render(bp.disabledGid);
+			else
+				_disabled.render(bp.upGid);
 			
 			_sb = new SimpleButton(_up, _over, _down, _up);
 			this.addChild(_sb);

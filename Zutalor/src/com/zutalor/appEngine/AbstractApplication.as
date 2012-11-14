@@ -1,8 +1,8 @@
 package com.zutalor.appEngine 
 {
 	import com.zutalor.air.AirStatus;
+	import com.zutalor.controllers.AppController;
 	import com.zutalor.controllers.DialogController;
-	import com.zutalor.controllers.UIController;
 	import com.zutalor.events.AppEvent;
 	import com.zutalor.loaders.URL;
 	import com.zutalor.plugin.Plugins;
@@ -24,7 +24,7 @@ package com.zutalor.appEngine
 	public class AbstractApplication extends Sprite
 	{		
 		private var _ip:String;
-		private var _uiController:UIController;
+		private var _appController:AppController;
 		private var _hasInitiated:Boolean;
 		
 		public function start(bootXmlUrl:String, splashEmbedClassName:String=null):void
@@ -44,8 +44,8 @@ package com.zutalor.appEngine
 			else
 			{
 				AirStatus.initialize();
-				_uiController = new UIController(bootXmlUrl, splashEmbedClassName);
-				Props.uiController = _uiController;
+				_appController = new AppController(bootXmlUrl, splashEmbedClassName);
+				Props.appController = _appController;
 				addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			}
 		}
@@ -62,13 +62,13 @@ package com.zutalor.appEngine
 				
 			parent.root.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, 
 																							onUncaughtError); 
-			_uiController.addEventListener(AppEvent.INITIALIZED, onInitialized);
-			_uiController.init(stage, _ip);	
+			_appController.addEventListener(AppEvent.INITIALIZED, onInitialized);
+			_appController.init(stage, _ip);	
 		}
 	
 		private function onInitialized(e:Event):void
 		{
-			_uiController.removeEventListener(AppEvent.INITIALIZED, onInitialized);
+			_appController.removeEventListener(AppEvent.INITIALIZED, onInitialized);
 			dispatchEvent(new AppEvent(AppEvent.INITIALIZED));
 		}
 			

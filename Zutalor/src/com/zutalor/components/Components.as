@@ -61,6 +61,7 @@
 			slider.create(thumb, track, reveal, sp.vertical, sp.tweenTime, 
 											sp.numSteps, sp.onlyShowTrackOnMouseDown);
 			return slider;
+		
 		}
 		
 		public static function getToggle(toggleId:String, text:String):Toggle

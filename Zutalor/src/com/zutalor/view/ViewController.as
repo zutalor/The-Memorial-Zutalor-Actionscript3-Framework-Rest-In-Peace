@@ -104,8 +104,8 @@
 			_itemIndex = 0;
 			initMessages();			
 			
-			Plugins.callMethod(vp.appControllerInstanceName, PluginMethods.INIT, { controller:this, id:viewId } );
-			_defaultVO = Plugins.callMethod(vp.appControllerInstanceName, PluginMethods.GET_VALUE_OBJECT);
+			Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.INIT, { controller:this, id:viewId } );
+			_defaultVO = Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT);
 			numViewItems = vpm.getNumItems(viewId);
 			processNextViewItem();
 		}
@@ -120,7 +120,7 @@
 		
 		public function callAppControllerMethod(method:String, arg:*):void
 		{
-			Plugins.callMethod(vp.appControllerInstanceName, method, arg);
+			Plugins.callMethod(vp.uiControllerInstanceName, method, arg);
 		}
 		
 		public function setModelValue(itemName:String, val:*):void
@@ -200,8 +200,7 @@
 			
 				if (vip)
 				{
-
-					Plugins.callMethod(vp.appControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
+					Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
 					item = itemDictionary.getByKey(itemName);
 					vmg.copyViewItemToValueObject(vip, item);
 				}
@@ -213,7 +212,7 @@
 				{
 					vip = vpm.getItemPropsByIndex(viewId, i);
 						
-					Plugins.callMethod(vp.appControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
+					Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
 					if (vip.voName)
 					{
 						item = itemDictionary.getByIndex(i);
@@ -306,7 +305,7 @@
 			viewRenderer = null;
 			vmg = null;
 			_viewEvents = null;		
-			Plugins.callMethod(vp.appControllerInstanceName, PluginMethods.DISPOSE)			
+			Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.DISPOSE)			
 		}
 		
 		// GET THE UI ITEM's OBJECT OR PROPERTIES
@@ -540,9 +539,9 @@
 			{
 				initStatusMessage(vp.initialMethod);
 				if (vp.initialMethodParams)
-					Plugins.callMethod(vp.appControllerInstanceName, vp.initialMethod,vp.initialMethodParams);
+					Plugins.callMethod(vp.uiControllerInstanceName, vp.initialMethod,vp.initialMethodParams);
 				else
-					Plugins.callMethod(vp.appControllerInstanceName, vp.initialMethod);
+					Plugins.callMethod(vp.uiControllerInstanceName, vp.initialMethod);
 			}
 			vmg.setAllInitialValues();
 		}

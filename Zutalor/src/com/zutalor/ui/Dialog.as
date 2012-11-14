@@ -75,7 +75,7 @@ package com.zutalor.ui
 		
 		public static function close():void
 		{
-			Props.uiController.hideSheild();
+			Props.appController.hideSheild();
 			_progressBar.visible = false;
 			_lastMessage = null;
 			_lastType = CLOSED;

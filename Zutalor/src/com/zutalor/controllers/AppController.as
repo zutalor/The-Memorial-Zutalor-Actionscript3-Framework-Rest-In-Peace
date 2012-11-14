@@ -51,7 +51,7 @@
 	 * @author Geoff Pepos
 	 */
 
-	public class UIController extends EventDispatcher
+	public class AppController extends EventDispatcher
 	{	
 		private const DEBUG:Boolean =  false;
 		
@@ -85,7 +85,7 @@
 
 		// CONSTRUCTOR
 		
-		public function UIController(bootXmlUrl:String,splashClassName:String=null)
+		public function AppController(bootXmlUrl:String,splashClassName:String=null)
 		{
 			_splashEmbedClassName = splashClassName;
 			_bootXmlUrl = bootXmlUrl;
