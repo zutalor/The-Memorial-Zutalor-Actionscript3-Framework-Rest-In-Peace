@@ -1,5 +1,6 @@
 package com.zutalor.view
 {
+
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.controllers.AbstractUiController;
 	import com.zutalor.gesture.AppGestureProperties;
@@ -19,7 +20,6 @@ package com.zutalor.view
 	import com.zutalor.text.Translate;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.GridValues;
-	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
@@ -37,7 +37,6 @@ package com.zutalor.view
 		
 		private var _soundPlayer:MediaPlayer;
 		private var _textToSpeech:TextToSpeech;
-		private var _hkm:HotKeyManager;
 		private var _uiController:AbstractUiController;
 		private var _gm:GestureManager;
 		private var _gestures:gDictionary;
@@ -129,7 +128,7 @@ package com.zutalor.view
 				
 			function onAnswer():void
 			{
-				var answer:AnswerProperties;;
+				var answer:AnswerProperties;
 				var answerText:String;
 				var index:int;
 				var qMark:int
@@ -196,7 +195,7 @@ package com.zutalor.view
 			
 			index = Props.translations.getItemIndexByName(Translate.language, id)
 			if (index == -1)
-				ShowError.fail(ViewStateManager,"ViewStateManager: state not found: " + id);
+				ShowError.fail(ViewStateManager,"State not found: " + id);
 			
 			_dataFromUiController = data;
 			activateStateByIndex(index, onComplete);
