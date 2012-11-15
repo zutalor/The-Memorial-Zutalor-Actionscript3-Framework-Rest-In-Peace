@@ -1,6 +1,6 @@
 ﻿package com.zutalor.components
 {
-	import com.zutalor.containers.AbstractContainer;
+	import com.zutalor.containers.Container;
 	import com.zutalor.interfaces.IViewItem;
 	import com.zutalor.properties.ButtonProperties;
 	import com.zutalor.propertyManagers.Props;
@@ -14,7 +14,7 @@
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class Button extends AbstractContainer implements IViewItem
+	public class Button extends Container implements IViewItem
 	{
 		private var _sb:SimpleButton;
 		private var _up:Graphic;

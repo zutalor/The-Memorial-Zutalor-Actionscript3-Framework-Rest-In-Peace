@@ -1,6 +1,7 @@
 ﻿package com.zutalor.motion
 {
-	import com.zutalor.containers.AbstractContainer;
+	import com.zutalor.containers.Container;
+	import com.zutalor.containers.Container;
 	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.properties.ApplicationProperties;
@@ -46,7 +47,7 @@
 		private var _mouseDownY:Number;
 		private var _mouseUpY:Number;
 		
-		private var _draggingNow:AbstractContainer;
+		private var _draggingNow:Container;
 		private	var _sc:ScrollingContainer;
 		
 		private var ap:ApplicationProperties;
@@ -90,7 +91,7 @@
 						
 		private function onMotionTimer(DraggingNow:DisplayObject=null):void
 		{	
-			var ms:AbstractContainer;
+			var ms:Container;
 			var stageInMotion:Boolean;
 			var left:Number;
 			var right:Number;
@@ -104,9 +105,9 @@
 			if (_checkMotion)
 				for (var i:int = 0; i < StageRef.stage.numChildren; ++i)
 				{
-					if (StageRef.stage.getChildAt(i) is AbstractContainer)
+					if (StageRef.stage.getChildAt(i) is Container)
 					{
-						ms = StageRef.stage.getChildAt(i) as AbstractContainer;
+						ms = StageRef.stage.getChildAt(i) as Container;
 						
 						if (!ms.vx && !ms.vy)
 						{
@@ -218,12 +219,12 @@
 						TweenMax.to(ms, .5, { scaleX:1, scaleY:1 } );
 					}
 					else
-						lostFocus(getChildFromContainerByIndex(i) as AbstractContainer);
+						lostFocus(getChildFromContainerByIndex(i) as Container);
 				}
 				*/
 		}
 		
-		public function lostFocus(ms:AbstractContainer):void
+		public function lostFocus(ms:Container):void
 		{
 			//weenMax.to(ms, .5, { scaleX:.5, scaleY:.5 } );
 		}
@@ -231,12 +232,12 @@
 		
 		public function onMouseDown(event:MouseEvent):void
 		{
-			var ms:AbstractContainer;
+			var ms:Container;
 			
 			ms = vpm.getPropsById(event.target.name).container;
 			
 			if (!ms)
-				ms = event.target as AbstractContainer;
+				ms = event.target as Container;
 
 			if (ms)
 			{	

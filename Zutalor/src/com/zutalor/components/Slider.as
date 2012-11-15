@@ -1,6 +1,6 @@
 package com.zutalor.components
 {
-	import com.zutalor.containers.AbstractContainer;
+	import com.zutalor.containers.Container;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.scroll.HScrollBarController;
 	import com.zutalor.scroll.ScrollBarController;
@@ -13,7 +13,7 @@ package com.zutalor.components
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class Slider extends AbstractContainer
+	public class Slider extends Container
 	{
 		private var _sliderController:ScrollBarController;
 		private var _thumb:Button;
