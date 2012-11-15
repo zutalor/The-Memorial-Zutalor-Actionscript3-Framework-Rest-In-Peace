@@ -405,7 +405,7 @@ LoaderMax.contentDisplayClass = FlexContentDisplay;
 			if (_loader == null) {
 				return;
 			} else if (!_loader.hasOwnProperty("setContentDisplay")) {
-				throw new Error("Incompatible loader used for a ContentDisplay");
+				ShowError.fail(this,"Incompatible loader used for a ContentDisplay");
 			}
 			this.name = _loader.name;
 			var type:String;

@@ -7,6 +7,7 @@
 	import com.zutalor.utils.DisplayUtils;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.Resources;
+	import com.zutalor.utils.ShowError;
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -112,7 +113,7 @@
 			{
 				tap = pr.textAttributePresets.getPropsByName(attributesPreset);
 				if (!tap)
-					throw new Error("Text: Text attribute not found:" + attributesPreset, tap);
+					ShowError.fail(TextUtil,"Text attribute not found:" + attributesPreset);
 				
 				if (height)
 					t.height = height;
@@ -136,7 +137,7 @@
 				else if (tap.textformat)
 					t.setTextFormat(getTextFormatById(tap.textformat), beginIndex, endIndex);
 				else
-					throw new Error("Missing textformat for textAttributes: " + tap.name);
+					ShowError.fail(TextUtil,"Missing textformat for textAttributes: " + tap.name);
 			}
 		}
 		
@@ -158,7 +159,7 @@
 				fp = Props.pr.textFormatPresets.getPropsByName(id);
 				
 				if (!fp)
-					throw new Error("TextUtil: no text format for " + id);
+					ShowError.fail(TextUtil,"No text format for " + id);
 					
 				tf.align = fp.align;
 				tf.blockIndent = fp.blockIndent;

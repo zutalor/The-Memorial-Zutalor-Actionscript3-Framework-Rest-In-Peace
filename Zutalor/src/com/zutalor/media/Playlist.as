@@ -14,6 +14,7 @@ package com.zutalor.media
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.Scale;
+	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.ViewLoader;
 	import flash.display.Sprite;
@@ -297,7 +298,7 @@ package com.zutalor.media
 			var numPlayers:int;
 			var p:MediaPlayer;
 		
-			throw new Error("Playlist pause is buggy.");
+			ShowError.fail(Playlist,"Playlist pause is buggy.");
 			
 			_isPaused = true;
 			MasterClock.stop(onTimer);

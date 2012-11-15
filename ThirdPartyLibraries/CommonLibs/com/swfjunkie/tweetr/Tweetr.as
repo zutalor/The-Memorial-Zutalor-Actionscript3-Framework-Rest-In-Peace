@@ -869,7 +869,7 @@ package com.swfjunkie.tweetr
                 vars.page= page;
             
             if (!listUser && !_username)
-                throw new Error("No authenticated user or user parameter has been given .. method can't be called!"); 
+                ShowError.fail(this,"No authenticated user or user parameter has been given .. method can't be called!"); 
             
             setGETRequest(vars);
             request = "/"+((listUser) ? listUser : _username)+"/lists/"+slug+"/statuses."+DATA_FORMAT;
@@ -1954,7 +1954,7 @@ package com.swfjunkie.tweetr
         private function checkCredentials():void
         {
             if (!_username && !_password && !_oAuth)
-                throw new Error("Username and Password or OAuth authentication required for this method call!");
+                ShowError.fail(this,"Username and Password or OAuth authentication required for this method call!");
         }
         
         /** @private */

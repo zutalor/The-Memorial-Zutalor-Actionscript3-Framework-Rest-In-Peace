@@ -5,6 +5,7 @@ package com.zutalor.text
 	import com.zutalor.properties.TranslateItemProperties;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.Logger;
+	import com.zutalor.utils.ShowError;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
@@ -23,7 +24,7 @@ package com.zutalor.text
 			if (Props.translations.getPropsById(l))
 				_language = l;
 			else
-				throw new Error("Language " + l + " not defined.");
+				ShowError.fail(Translate,"Language " + l + " not defined.");
 		}
 		
 		public static function get language():String

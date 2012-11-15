@@ -13,6 +13,7 @@ package com.zutalor.view
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.text.Translate;
+	import com.zutalor.utils.ShowError;
 	import com.zutalor.view.ViewController;
 	/**
 	 * ...
@@ -207,7 +208,7 @@ package com.zutalor.view
 					}
 				}
 				else
-					throw new Error("View Model Gateway: valueObject not found: " + vip.voName);
+					ShowError.fail(ViewModelGateway,"View Model Gateway: valueObject not found: " + vip.voName);
 			}
 		}
 		

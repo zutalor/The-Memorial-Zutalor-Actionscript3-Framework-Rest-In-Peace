@@ -50,7 +50,7 @@ package com.noteflight.standingwave3.formats
             var groupId:String = wav.readUTFBytes(4);
             if (groupId != RIFF_GROUP_ID)
             {
-                throw new Error("Invalid WAV group id: " + groupId);
+                ShowError.fail(this,"Invalid WAV group id: " + groupId);
             }
 
             var fileLen:uint = wav.readUnsignedInt();
@@ -59,7 +59,7 @@ package com.noteflight.standingwave3.formats
             var riffType:String = wav.readUTFBytes(4);
             if (riffType != WAVE_TYPE)
             {
-                throw new Error("Invalid RIFF type; expected WAVE but found: " + riffType);
+                ShowError.fail(this,"Invalid RIFF type; expected WAVE but found: " + riffType);
             }
             
             var sample:Sample;
@@ -85,7 +85,7 @@ package com.noteflight.standingwave3.formats
                         var wFormatTag:uint = wav.readUnsignedShort();
                         if (wFormatTag != UNCOMPRESSED_FORMAT)
                         {
-                            throw new Error("Cannot handle compressed WAV data");
+                            ShowError.fail(this,"Cannot handle compressed WAV data");
                         }
                         channels = wav.readUnsignedShort();
                         rate = wav.readUnsignedInt();

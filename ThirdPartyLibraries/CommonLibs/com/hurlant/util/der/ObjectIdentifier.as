@@ -25,7 +25,7 @@ package com.hurlant.util.der
 			} else if (b is String) {
 				generate(b as String);
 			} else {
-				throw new Error("Invalid call to new ObjectIdentifier");
+				ShowError.fail(this,"Invalid call to new ObjectIdentifier");
 			}
 		}
 		
@@ -84,7 +84,7 @@ package com.hurlant.util.der
 					tmp.push( (v>>7) & 0x7f | 0x80 );
 					tmp.push( v & 0x7f );
 				} else {
-					throw new Error("OID element bigger than we thought. :(");
+					ShowError.fail(this,"OID element bigger than we thought. :(");
 				}
 			}
 			len = tmp.length;

@@ -48,7 +48,7 @@ package com.hurlant.crypto.cert {
 				_obj = DER.parse(b, Type.TLS_CERT);
 				_loaded = true;
 			} else {
-				throw new Error("Invalid x509 Certificate parameter: "+p);
+				ShowError.fail(this,"Invalid x509 Certificate parameter: "+p);
 			}
 		}
 		public function isSigned(store:X509CertificateCollection, CAs:X509CertificateCollection, time:Date=null):Boolean {

@@ -17,6 +17,7 @@
 package com.noteflight.standingwave3.filters
 {
  	import com.noteflight.standingwave3.elements.*;
+	import com.zutalor.utils.ShowError;
  
     
     /**
@@ -146,7 +147,7 @@ package com.noteflight.standingwave3.filters
            		return _cache.getSampleRange(fromOffset, toOffset);
             } else {
             	// We're outside the cache range. Throw an error
-            	throw new Error("CacheFilter.getSampleRange() called beyond cache bounds.");
+            	ShowError.fail(CacheFilter,"CacheFilter.getSampleRange() called beyond cache bounds.");
             }
             return null;
         }
@@ -183,7 +184,7 @@ package com.noteflight.standingwave3.filters
             
             if (toOffset > _cache.frameCount) { 
             	if (!resizable) {
-            		throw new Error("Fill called beyond the bounds of an unresizable CacheFilter");
+            		ShowError.fail(CacheFilter,"Fill called beyond the bounds of an unresizable CacheFilter");
             		return;
             	}
             	// We need to grow the cache sample to accommodate this source	

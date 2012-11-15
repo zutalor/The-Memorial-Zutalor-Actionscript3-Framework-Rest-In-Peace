@@ -508,7 +508,7 @@ package deng.fzip
 				var headerId:uint = data.readUnsignedShort();
 				var dataSize:uint = data.readUnsignedShort();
 				if(dataSize > bytesLeft) {
-					throw new Error("Parse error in file " + _filename + ": Extra field data size too big.");
+					ShowError.fail(this,"Parse error in file " + _filename + ": Extra field data size too big.");
 				}
 				if(headerId === 0xdada && dataSize === 4) {
 					_adler32 = data.readUnsignedInt();
@@ -550,14 +550,14 @@ package deng.fzip
 					_content.position = _content.length;
 					_content.writeUnsignedInt(_adler32);
 				} else {
-					throw new Error("Adler32 checksum not found.");
+					ShowError.fail(this,"Adler32 checksum not found.");
 				}
 				isCompressed = true;
 			} else if(_compressionMethod == COMPRESSION_NONE) {
 				data.readBytes(_content, 0, _sizeCompressed);
 				isCompressed = false;
 			} else {
-				throw new Error("Compression method " + _compressionMethod + " is not supported.");
+				ShowError.fail(this,"Compression method " + _compressionMethod + " is not supported.");
 			}
 			_content.position = 0;
 		}

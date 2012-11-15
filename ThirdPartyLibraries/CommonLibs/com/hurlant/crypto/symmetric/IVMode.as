@@ -102,7 +102,7 @@ package com.hurlant.crypto.symmetric
 			if (iv) {
 				vec.writeBytes(iv);
 			} else {
-				throw new Error("an IV must be set before calling decrypt()");
+				ShowError.fail(this,"an IV must be set before calling decrypt()");
 			}
 			return vec;
 		}

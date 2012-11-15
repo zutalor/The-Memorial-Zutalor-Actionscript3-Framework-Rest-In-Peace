@@ -700,7 +700,7 @@ package com.hurlant.crypto.tls {
 		}
 		
 		private function parseAlert(p:ByteArray):void {
-			//throw new Error("Alert not implemented.");
+			//ShowError.fail(this,"Alert not implemented.");
 			// 7.2
 			trace("GOT ALERT! type="+p[1]);
 			close();

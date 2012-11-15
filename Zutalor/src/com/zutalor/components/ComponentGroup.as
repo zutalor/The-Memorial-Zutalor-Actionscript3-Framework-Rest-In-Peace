@@ -5,6 +5,7 @@ package com.zutalor.components
 	import com.zutalor.properties.ComponentGroupProperties;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.ArrayUtils;
+	import com.zutalor.utils.ShowError;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	/**
@@ -47,10 +48,10 @@ package com.zutalor.components
 				inits = dataProvider.split(",");
 
 			if (!gp.componentIds)
-				throw new Error("Component Group: no component Ids to render.");
+				ShowError.fail(ComponentGroup,"Component Group: no component Ids to render.");
 			
 			if (!gp.componentTypes)
-				throw new Error("Component Group: need at least one component type."); 
+				ShowError.fail(ComponentGroup,"Component Group: need at least one component type."); 
 
 			componentIds = gp.componentIds.split(",");
 			componentTypes = gp.componentTypes.split(",");		

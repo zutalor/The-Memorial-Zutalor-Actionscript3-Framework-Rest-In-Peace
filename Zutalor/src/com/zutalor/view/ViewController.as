@@ -19,6 +19,7 @@
 	import com.zutalor.text.Translate;
 	import com.zutalor.ui.Focus;
 	import com.zutalor.utils.gDictionary;
+	import com.zutalor.utils.ShowError;
 	import flash.events.Event;
 
 	public class ViewController implements IDisposable
@@ -87,7 +88,7 @@
 			vp = vpm.getPropsById(viewId);
 
 			if (!vp)
-				throw new Error("No view properties for viewId: " + viewId);
+				ShowError.fail(ViewController,"No view properties for viewId: " + viewId);
 			
 			vp.appState = appState;
 			this.viewId = viewId;
@@ -205,7 +206,7 @@
 					vmg.copyViewItemToValueObject(vip, item);
 				}
 				else
-					throw new Error("ModelGateway: invalid item name " + itemName + " for view: " + viewId);
+					ShowError.fail(ViewController,"invalid item name " + itemName + " for view: " + viewId);
 			}
 			else
 				for (var i:int = 0; i < numViewItems; i++) 
@@ -235,7 +236,7 @@
 					vmg.copyValueObjectToViewItem(vip, item);
 				}
 				else
-					throw new Error("ModelGateway: invalid item name " + itemName + " for view: " + viewId);
+					ShowError.fail(ViewController,"ModelGateway: invalid item name " + itemName + " for view: " + viewId);
 			}
 			else
 				for (var i:int = 0; i < numViewItems; i++) 

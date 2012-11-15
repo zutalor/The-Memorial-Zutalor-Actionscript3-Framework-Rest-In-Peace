@@ -2,6 +2,7 @@ package com.zutalor.synthesizer
 {
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.MathG;
+	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StringUtils;
 	import com.noteflight.standingwave3.elements.AudioDescriptor;
 	import com.noteflight.standingwave3.elements.IAudioSource;
@@ -72,7 +73,7 @@ package com.zutalor.synthesizer
 			
 			sampleMap = _sampleMaps.getByKey(preset.soundName);
 			if (!sampleMap)
-				throw new Error("synthSounds: sampleMap not found: " + preset.soundName);
+				ShowError.fail(Voices,"synthSounds: sampleMap not found: " + preset.soundName);
 			
 			freqs = _frequencies.getByKey(preset.soundName);
 			url = getSoundUrl(sampleMap, noteNumber);
@@ -251,7 +252,7 @@ package com.zutalor.synthesizer
 		private function loadSamples():void
 		{
 			if (!_urls.length)
-				throw new Error("Synth Sounds: cannot load samples.");
+				ShowError.fail(Voices,"Synth Sounds: cannot load samples.");
 			_numSamples = _urls.length;
 			_numLoaded = 0;
 			for (var i:int = 0; i < NUM_SAMPLES_TO_LOAD_CONCURRENTLY; i++)
@@ -273,7 +274,7 @@ package com.zutalor.synthesizer
 		private function onIOError(e:Event):void
 		{
 			trace("IoError");
-			throw new Error("IoError");
+			ShowError.fail(Voices,"IoError");
 		}	
 		
 		private function onSampleLoadComplete(e:Event):void

@@ -14,7 +14,7 @@ package com.zutalor.utils
 		public static function register(resourceClass:*):void
 		{
 			if (_resourceClass)
-				throw new Error("Resources: current implementation only supports one registration.");
+				ShowError.fail(Resources,"Current implementation only supports one registration.");
 			else	
 				_resourceClass = new resourceClass();
 		}
@@ -36,7 +36,7 @@ package com.zutalor.utils
 			} catch (e:*) { }
 			
 			if (!obj)
-				throw new Error("Resources: could not create class: " + className);
+				ShowError.fail(SoundScienceResources,"Could not create class: " + className);
 			else if (obj is Bitmap)
 				obj.smoothing = true;
 			

@@ -1,6 +1,7 @@
 package com.zutalor.plugin
 {
 	import com.zutalor.utils.gDictionary;
+	import com.zutalor.utils.ShowError;
 	import flash.utils.describeType;
 	import flash.utils.getQualifiedClassName;
 	/**
@@ -50,9 +51,9 @@ package com.zutalor.plugin
 			
 			Klass = _classes.getByKey(className);
 			if (!Klass)
-				throw new Error("Plugins: no class registered for: " + className);
-			else
-				return Klass;			
+				ShowError.fail(Plugins, "no class registered for: " + className);
+			
+			return Klass;	
 		}
 		
 		public function getInstance(classInstanceName:String):*
@@ -64,7 +65,7 @@ package com.zutalor.plugin
 			if (instance)
 				return instance;
 			else
-				throw new Error("Plugins, no instance registered: " + classInstanceName);
+				ShowError.fail(Plugins,"Plugins, no instance registered: " + classInstanceName);
 		}
 		
 		public static function getNewInstance(className:String):*
@@ -73,7 +74,7 @@ package com.zutalor.plugin
 			Klass = _classes.getByKey(className);
 
 			if (!Klass)
-				throw new Error("Plugins: no class registered for: " + className);
+				ShowError.fail(Plugins,"No class registered for: " + className);
 			else
 				return new Klass;
 				

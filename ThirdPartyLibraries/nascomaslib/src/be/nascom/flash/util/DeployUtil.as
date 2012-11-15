@@ -148,7 +148,7 @@ package be.nascom.flash.util
 				if(swf.loaderInfo.parameters.hasOwnProperty(flashvarName) && swf.loaderInfo.parameters[flashvarName]!="" && swf.loaderInfo.parameters[flashvarName]!="undefined" && swf.loaderInfo.parameters[flashvarName]!=null && swf.loaderInfo.parameters[flashvarName]!=undefined)
 					result = true;
 			}else{
-				throw new Error(swf+" does not contain any flashvars.");
+				ShowError.fail(this,swf+" does not contain any flashvars.");
 			}
 			return result;
 		}
@@ -178,7 +178,7 @@ package be.nascom.flash.util
 				contextMenu.customItems.push(contextMenuItemVersion,contextMenuItemCopyright);
 				root.contextMenu = contextMenu;
 			}else{
-				throw new Error("The root parameter you passed to the setNascomContextMenu function has no contextMenu property.");
+				ShowError.fail(this,"The root parameter you passed to the setNascomContextMenu function has no contextMenu property.");
 			}
 		}
 		

@@ -12,7 +12,7 @@ package com.zutalor.controllers.wordpress
 		public function getPageByTitle(title:String=null):void
 		{					
 			if (title == null)
-				throw new Error("PageModel.getPageByTitle: title is empty");
+				ShowError.fail(this,"PageModel.getPageByTitle: title is empty");
 			
 			var remoting:Remoting = new Remoting();
 			controller.setStatusMessage(controller.readingMessage);

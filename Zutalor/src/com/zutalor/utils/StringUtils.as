@@ -967,7 +967,8 @@ package com.zutalor.utils
 			var b:String=String(s).toLowerCase();
 			if(b == "true" || b == "1" || b == "yes" || b == "on") return true;
 			else if (b=="" || b == "false" || b == "0" || b == "no" || b == "off") return false; 
-			else throw new Error("BoolConversion.toBoolean() could not convert input to a proper Boolean value");
+			else ShowError.fail(StringUtils, "BoolConversion.toBoolean() could not convert input to a proper Boolean value");
+			return false;
 		}
 				
 		public static function getFileName(fullPath: String) : String

@@ -137,7 +137,7 @@ package com.hurlant.crypto.tls {
 		
 		public function startTLS(socket:Socket, host:String, config:TLSConfig = null):void {
 			if (!socket.connected) {
-				throw new Error("Cannot STARTTLS on a socket that isn't connected.");
+				ShowError.fail(this,"Cannot STARTTLS on a socket that isn't connected.");
 			}
 			init(socket, config, host);
 			_engine.start();

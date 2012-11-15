@@ -204,8 +204,8 @@ package be.nascom.flash.display
 		
 		private function loadImage(url:String):void
 		{
-			if(!url && !_useUpload)throw new Error( "You have to call the preloadImage() function first." );
-			if(!url && _useUpload)throw new Error( "You have to upload an image first." );
+			if(!url && !_useUpload)ShowError.fail(this, "You have to call the preloadImage() function first." );
+			if(!url && _useUpload)ShowError.fail(this, "You have to upload an image first." );
 			if(inited)destroyAllPrevious();
 			
 			createAll();
@@ -397,9 +397,9 @@ package be.nascom.flash.display
 				
 		private function cropImage(event:MouseEvent):void 
 		{	
-			if(_useUpload && !upload_script)throw new Error( "You have to call the setUpload() function first." );
-			if(is_amf && (gateway_amf=="") && (service_amf=="") )throw new Error( "You have to call the initAMF() function first." );
-			if(!is_amf && (save_script=="") )throw new Error( "You have to call the init() function first." );
+			if(_useUpload && !upload_script)ShowError.fail(this, "You have to call the setUpload() function first." );
+			if(is_amf && (gateway_amf=="") && (service_amf=="") )ShowError.fail(this, "You have to call the initAMF() function first." );
+			if(!is_amf && (save_script=="") )ShowError.fail(this, "You have to call the init() function first." );
 			
 			workspace.getChildByName("cropperBorder").visible = false;
 			image.alpha = 1;

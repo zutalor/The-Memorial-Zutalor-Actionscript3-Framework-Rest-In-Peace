@@ -11,6 +11,7 @@ package com.zutalor.view
     import com.zutalor.properties.TransitionProperties;
     import com.zutalor.propertyManagers.Props;
     import com.zutalor.utils.Logger;
+	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
     import flash.events.EventDispatcher;
     /**
@@ -37,7 +38,7 @@ package com.zutalor.view
             _onComplete = onComplete;
 
             if (!_vp)
-                throw new Error("View Closer: '" + viewId + "' is not a valid view name.");
+                ShowError.fail(ViewCloser,"View Closer: '" + viewId + "' is not a valid view name.");
             else
             {
                 if (_vp.container.visible)

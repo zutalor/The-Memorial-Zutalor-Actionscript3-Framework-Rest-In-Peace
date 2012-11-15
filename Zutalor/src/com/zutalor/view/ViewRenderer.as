@@ -21,6 +21,7 @@ import com.zutalor.text.TextUtil;
 import com.zutalor.text.Translate;
 import com.zutalor.utils.Logger;
 import com.zutalor.utils.Resources;
+import com.zutalor.utils.ShowError;
 import com.zutalor.view.ViewController;
 import flash.display.Bitmap;
 import flash.display.Sprite;
@@ -229,7 +230,7 @@ import flash.text.TextField;
 					}
 					mpp = _pr.mediaPresets.getPropsByName(vip.mediaPreset);
 					if (!mpp)
-						throw new Error("View Renderer: video item needs a media preset in xml: " + vip.url);
+						ShowError.fail(ViewRenderer,"View Renderer: video item needs a media preset in xml: " + vip.url);
 						
 					
 					mediaPlayer.load(vip.url, mpp.volume, width, height, mpp.scaleToFit, 7);
@@ -290,7 +291,7 @@ import flash.text.TextField;
 					break;
 				case ViewItemProperties.PLAYLIST :
 					if (!vip.playlistName)
-						throw new Error("ViewRenderer: Playlist name cannot be null.");
+						ShowError.fail(ViewRenderer,"ViewRenderer: Playlist name cannot be null.");
 						
 					var playlist:Playlist = new Playlist();
 					playlist.create(vip.playlistName, vip.name, width, height); 
@@ -313,7 +314,7 @@ import flash.text.TextField;
 							if (mpp)
 								slideShow.initialize(mpp.controlsViewId, mpp.controlsContainerName);
 							else
-								throw new Error(vip.name + " no media preset properties.");
+								ShowError.fail(ViewRenderer,vip.name + " no media preset properties.");
 					}
 					viewItem = slideShow;
 					slideShow.load(vip.url, vip.path, width, height, mpp.backgroundColor, mpp.slideDelay, mpp.crossFade, mpp.autoPlay);
@@ -329,7 +330,7 @@ import flash.text.TextField;
 							if (mpp)
 								flipBook.initialize(mpp.controlsViewId);
 							else
-								throw new Error(vip.name + " no media preset properties.");
+								ShowError.fail(ViewRenderer,vip.name + " no media preset properties.");
 					}
 					
 					viewItem = flipBook;
@@ -347,7 +348,7 @@ import flash.text.TextField;
 					onItemLoadComplete();
 					break;
 				default : 
-					throw new Error("View Renderer: view item has unknown type: " + vip.name + ":" + vip.type);
+					ShowError.fail(ViewRenderer,"View Renderer: view item has unknown type: " + vip.name + ":" + vip.type);
 					break;
 			}
 		

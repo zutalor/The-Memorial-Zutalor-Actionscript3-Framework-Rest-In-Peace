@@ -463,7 +463,7 @@ package com.greensock {
 		protected function parseTimeOrLabel(timeOrLabel:*):Number {
 			if (typeof(timeOrLabel) == "string") {
 				if (!(timeOrLabel in _labels)) {
-					throw new Error("TimelineLite error: the " + timeOrLabel + " label was not found.");
+					ShowError.fail(this,"TimelineLite error: the " + timeOrLabel + " label was not found.");
 					return 0;
 				}
 				return getLabelTime(String(timeOrLabel));

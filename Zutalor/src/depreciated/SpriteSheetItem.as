@@ -65,7 +65,7 @@ package depreciated
 					}
 				}
 				else
-					throw new Error("SpriteSheetItem: no className or LibraryName");
+					ShowError.fail(this,"SpriteSheetItem: no className or LibraryName");
 					
 				bm = new Bitmap(new BitmapData(width, height));
 				bm.bitmapData.copyPixels(a.bitmapData, rect, _p);
@@ -77,7 +77,7 @@ package depreciated
 			}
 			catch (errObject:Error)
 			{
-				throw new Error(errObject.message);
+				ShowError.fail(this,errObject.message);
 			}
 			
 			return bm;

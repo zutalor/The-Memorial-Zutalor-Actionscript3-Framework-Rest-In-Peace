@@ -3226,10 +3226,10 @@ package com.hurlant.crypto.cert {
 				"-----END CERTIFICATE-----");
 		}
 		override public function addPEMCertificate(name:String,subject:String,pem:String):void {
-			throw new Error("Cannot add certificates to the Root CA store.");
+			ShowError.fail(this,"Cannot add certificates to the Root CA store.");
 		}
 		override public function addCertificate(cert:X509Certificate):void {
-			throw new Error("Cannot add certificates to the Root CA store.");
+			ShowError.fail(this,"Cannot add certificates to the Root CA store.");
 		}
 	}
 }

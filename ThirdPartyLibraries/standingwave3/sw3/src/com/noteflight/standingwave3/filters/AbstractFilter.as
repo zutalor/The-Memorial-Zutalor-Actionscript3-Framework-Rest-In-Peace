@@ -18,6 +18,7 @@ package com.noteflight.standingwave3.filters
 {
     import com.noteflight.standingwave3.elements.*
  	import __AS3__.vec.Vector;
+	import com.zutalor.utils.ShowError;
  	   
     /**
      * An abstract implementation of the IAudioFilter interface that can be
@@ -52,7 +53,7 @@ package com.noteflight.standingwave3.filters
          */
         protected function transformChannel(data:Vector.<Number>, channel:Number, start:Number, numFrames:Number):void
         {
-            throw new Error("generateChannel() not overridden");
+            ShowError.fail(AbstractFilter,"generateChannel() not overridden");
         }
 
         ////////////////////////////////////////////        
@@ -132,7 +133,8 @@ package com.noteflight.standingwave3.filters
          */
         public function clone():IAudioSource
         {
-            throw new Error("clone() not overridden");
+            ShowError.fail(AbstractFilter, "clone() not overridden");
+			return null;
         }
     }
 }

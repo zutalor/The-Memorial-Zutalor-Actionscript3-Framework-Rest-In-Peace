@@ -173,7 +173,7 @@ package be.nascom.flash.display
 		{
 			if (checkPieces() == false) 
 			{
-				throw new Error("SCROLLBAR: CANNOT INITIALIZE"); 
+				ShowError.fail(this,"SCROLLBAR: CANNOT INITIALIZE"); 
 			} else 
 			{ 	
 				if (_initialized == true)reset();
@@ -207,23 +207,23 @@ package be.nascom.flash.display
 		{
 			var ok:Boolean = true; 
 			if (_content == null) {
-				throw new Error("SCROLLBAR: DRAGGED not set"); 
+				ShowError.fail(this,"SCROLLBAR: DRAGGED not set"); 
 				ok = false; 	
 			}
 			if (_contentMask == null) {
-				throw new Error("SCROLLBAR: MASK not set"); 
+				ShowError.fail(this,"SCROLLBAR: MASK not set"); 
 				ok = false; 	
 			}
 			if (_scrollbarDragger == null) {
-				throw new Error("SCROLLBAR: RULER not set"); 	
+				ShowError.fail(this,"SCROLLBAR: RULER not set"); 	
 				ok = false; 
 			}
 			if (_scrollBarBackground == null) {
-				throw new Error("SCROLLBAR: BACKGROUND not set"); 	
+				ShowError.fail(this,"SCROLLBAR: BACKGROUND not set"); 	
 				ok = false; 
 			}
 			if (_hitarea == null) {
-				throw new Error("SCROLLBAR: HITAREA not set"); 	
+				ShowError.fail(this,"SCROLLBAR: HITAREA not set"); 	
 				ok = false; 
 			}
 			return ok; 

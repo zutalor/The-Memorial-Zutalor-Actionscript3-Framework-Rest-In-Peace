@@ -7,6 +7,7 @@
 package com.greensock {
 	import com.greensock.core.*;
 	import com.greensock.plugins.*;
+	import com.zutalor.utils.ShowError;
 	
 	import flash.display.*;
 	import flash.events.*;
@@ -293,7 +294,7 @@ package com.greensock {
 		public function TweenLite(target:Object, duration:Number, vars:Object) {
 			super(duration, vars);
 			if (target == null) {
-				throw new Error("Cannot tween a null object.");
+				ShowError.fail(TweenLite,"Cannot tween a null object.");
 			}
 			this.target = target;
 			if (this.target is TweenCore && this.vars.timeScale) { //if timeScale is in the vars object and the target is a TweenCore, this tween's timeScale must be adjusted (in TweenCore's constructor, it was set to whatever the vars.timeScale was)

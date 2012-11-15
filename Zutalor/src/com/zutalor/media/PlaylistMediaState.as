@@ -11,6 +11,7 @@
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.MathG;
+	import com.zutalor.utils.ShowError;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.EventDispatcher;
 	import flash.utils.getTimer;
@@ -47,7 +48,7 @@
 			if (_pp.playerClassName)
 				PlayerClass = Plugins.getClass(_pp.playerClassName);
 			else
-				throw new Error("PlaylistMediaState: no playerClassName defined");
+				ShowError.fail(PlaylistMediaState,"PlaylistMediaState: no playerClassName defined");
 			
 			_players = players;
 		}

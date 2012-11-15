@@ -8,6 +8,7 @@ package com.greensock {
 	import com.greensock.core.*;
 	import com.greensock.events.TweenEvent;
 	import com.greensock.plugins.*;
+	import com.zutalor.utils.ShowError;
 	
 	import flash.display.*;
 	import flash.events.*;
@@ -388,7 +389,7 @@ package com.greensock {
 		public function TweenMax(target:Object, duration:Number, vars:Object) {
 			super(target, duration, vars);
 			if (TweenLite.version < 11.2) {
-				throw new Error("TweenMax error! Please update your TweenLite class or try deleting your ASO files. TweenMax requires a more recent version. Download updates at http://www.TweenMax.com.");
+				ShowError.fail(TweenMax,"TweenMax error! Please update your TweenLite class or try deleting your ASO files. TweenMax requires a more recent version. Download updates at http://www.TweenMax.com.");
 			}
 			this.yoyo = Boolean(this.vars.yoyo);
 			_repeat = uint(this.vars.repeat);

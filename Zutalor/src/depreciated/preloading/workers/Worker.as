@@ -152,7 +152,7 @@ package depreciated.preloading.workers
 		 */
 		public function load(asset:Asset):void
 		{
-			throw new Error("You must extend Worker#load and implement your own logic");
+			ShowError.fail(this,"You must extend Worker#load and implement your own logic");
 		}
 		
 		/**
@@ -163,8 +163,8 @@ package depreciated.preloading.workers
 		 */
 		public function start():void
 		{
-			if(!request) throw new Error("The internal request object was null, you need to prepate the request object in your subclass.");
-			if(!loader) throw new Error("The internal loader object was null, you need to prepate the loader object in your subclass");
+			if(!request) ShowError.fail(this,"The internal request object was null, you need to prepate the request object in your subclass.");
+			if(!loader) ShowError.fail(this,"The internal loader object was null, you need to prepate the loader object in your subclass");
 			if((loader is Loader)&&loaderContext)loader.load(request,loaderContext);
 			else loader.load(request);
 		}

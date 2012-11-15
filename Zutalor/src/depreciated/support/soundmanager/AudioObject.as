@@ -213,7 +213,7 @@ package com.zutalor.support.soundmanager
 			if(group)audibleGroup=group;
 			if(obj is Sound)type="s";
 			else if("soundTransform" in obj)type="o";
-			else throw new Error("The volume for the object added cannot be controled, it must be a Sound or contain a {soundTransform} property.");
+			else ShowError.fail(this,"The volume for the object added cannot be controled, it must be a Sound or contain a {soundTransform} property.");
 			progressTimer=new Timer(300);
 			transform=new SoundTransform();
 			pausePosition=0;

@@ -65,7 +65,7 @@ package depreciated.preloading
 			if(!forceFileType)
 			{
 				var fileType:String = StringUtils.findFileType(source);
-				if(!fileType) throw new Error("The filetype could not be found for this item: " + source);
+				if(!fileType) ShowError.fail(this,"The filetype could not be found for this item: " + source);
 				this.fileType = fileType;
 			}
 			else this.fileType = forceFileType;

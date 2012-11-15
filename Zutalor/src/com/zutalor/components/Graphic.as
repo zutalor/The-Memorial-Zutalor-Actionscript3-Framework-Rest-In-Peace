@@ -19,6 +19,7 @@ package com.zutalor.components
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.Resources;
+	import com.zutalor.utils.ShowError;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Graphics;
@@ -112,7 +113,7 @@ package com.zutalor.components
 			numGraphics = _grm.getNumItems(_graphicId);
 			
 			if (numGraphics == 0)
-				throw new Error("Graphic Render, no items for: " + _graphicId);
+				ShowError.fail(Graphic,"Graphic Render, no items for: " + _graphicId);
 				
 			renderNextItem();
 			
@@ -127,7 +128,7 @@ package com.zutalor.components
 				{
 					_gri = _grm.getItemPropsByIndex(_graphicId, i);
 					if (!_gri)
-						throw new Error("Graphic: no properties for graphic id " + _graphicId);
+						ShowError.fail(this,"Graphic: no properties for graphic id " + _graphicId);
 					else
 					{	
 						if (_gri.data)
@@ -176,7 +177,7 @@ package com.zutalor.components
 									//do nothing
 									break;
 								default :
-									throw new Error("Graphics, no graphic style for: ID: " + _graphicId + " Type: " + _gri.type + "  Style: " + _gri.graphicStyle + " : " + _gri.name);
+									ShowError.fail(this,"Graphics, no graphic style for: ID: " + _graphicId + " Type: " + _gri.type + "  Style: " + _gri.graphicStyle + " : " + _gri.name);
 							}
 						}
 						switch (_gri.type)
@@ -240,7 +241,7 @@ package com.zutalor.components
 							case Graphic.GRAPHIC : // nested graphic!
 								var gr:Graphic = new Graphic();
 								if (!_gri.data)
-									throw new Error("Graphic: data null for " + _graphicId);
+									ShowError.fail(this,"Graphic: data null for " + _graphicId);
 								gr.render(_gri.data, 0, onNestedItemRenderComplete);
 								break;
 						}

@@ -146,7 +146,7 @@ package deng.fzip {
 		 */
 		public function getBitmapData(filename:String):BitmapData {
 			if (!bitmapDataList[filename] is BitmapData) {
-				throw new Error("File \""+filename+"\" was not found as a BitmapData");
+				ShowError.fail(this,"File \""+filename+"\" was not found as a BitmapData");
 			}
 			return bitmapDataList[filename] as BitmapData;
 		}

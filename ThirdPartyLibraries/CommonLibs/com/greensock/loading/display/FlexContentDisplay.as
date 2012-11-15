@@ -423,7 +423,7 @@ package com.greensock.loading.display {
 			if (value == null) {
 				return;
 			} else if (!_loader.hasOwnProperty("setContentDisplay")) {
-				throw new Error("Incompatible loader used for a FlexContentDisplay");
+				ShowError.fail(this,"Incompatible loader used for a FlexContentDisplay");
 			}
 			this.name = _loader.name;
 			var type:String;

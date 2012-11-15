@@ -78,7 +78,7 @@ package com.hurlant.crypto.tls {
 		private static function getProp(cipher:uint):CipherSuites {
 			var p:CipherSuites = _props[cipher];
 			if (p==null) {
-				throw new Error("Unknown cipher "+cipher.toString(16));
+				ShowError.fail(this,"Unknown cipher "+cipher.toString(16));
 			}
 			return p;
 		}

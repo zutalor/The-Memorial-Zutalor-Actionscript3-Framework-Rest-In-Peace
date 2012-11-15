@@ -90,7 +90,7 @@ package com.zutalor.preloading.workers
 		 */
 		public static function GetWorkerInstance(fileType:String):Worker
 		{
-			if(!workerKlasses[fileType]) throw new Error("No worker for filetype " + fileType + " was registered.");
+			if(!workerKlasses[fileType]) ShowError.fail(this,"No worker for filetype " + fileType + " was registered.");
 			var klass:Class = workerKlasses[fileType];
 			var worker:Worker = new klass();
 			return worker;

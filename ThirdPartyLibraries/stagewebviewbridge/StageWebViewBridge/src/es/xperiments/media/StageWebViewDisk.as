@@ -15,6 +15,7 @@ limitations under the License.
  */
 package es.xperiments.media
 {
+	import com.zutalor.utils.ShowError;
 	import flash.ui.Keyboard;
 	import flash.events.KeyboardEvent;
 	import flash.desktop.NativeApplication;
@@ -86,7 +87,7 @@ package es.xperiments.media
 			initJSCODE();
 			if ( stage == null )
 			{
-				throw new Error( "StageWebViewDisk.initialize( stage ) :: You mus provide a valid stage instance" );
+				ShowError.fail(StageWebViewDisk, "StageWebViewDisk.initialize( stage ) :: You mus provide a valid stage instance" );
 			}
 			_stage = stage;
 			setExtensionsToProcess( _cached_extensions );
@@ -281,7 +282,8 @@ package es.xperiments.media
 					return File.documentsDirectory.resolvePath( fileName ).nativePath;
 					break;
 				default:
-					throw new Error( "StageWebViewDisk.getFilePath( url ) :: You mus provide a valid protocol applink:/ or doclink:/" );
+					ShowError.fail(StageWebViewDisk, "StageWebViewDisk.getFilePath( url ) :: You mus provide a valid protocol applink:/ or doclink:/" );
+					return null;
 					break;
 			}
 		}

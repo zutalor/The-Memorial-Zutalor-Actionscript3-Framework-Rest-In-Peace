@@ -9,6 +9,7 @@
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.propertyManagers.Props;
+	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.ViewController;
 	import flash.events.EventDispatcher;
@@ -100,7 +101,7 @@
 			}
 			
 			if (!viewId)
-				throw new Error("View Id cannot be null: " + viewId);
+				ShowError.fail(ViewLoader,"View Id cannot be null: " + viewId);
 					
 			if (!c.viewController)
 				c.viewController = new ViewController();

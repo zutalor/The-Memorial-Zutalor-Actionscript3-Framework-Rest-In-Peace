@@ -17,6 +17,7 @@
 package com.noteflight.standingwave3.sources
 {
     import __AS3__.vec.Vector;
+	import com.zutalor.utils.ShowError;
     
     import com.noteflight.standingwave3.elements.*;
     
@@ -57,7 +58,7 @@ package com.noteflight.standingwave3.sources
         
         protected function generateChannel(data:Vector.<Number>, channel:Number, numFrames:Number):void
         {
-            throw new Error("generateChannel() not overridden");
+            ShowError.fail(AbstractSource,"generateChannel() not overridden");
         }
 
         ////////////////////////////////////////////        
@@ -102,7 +103,8 @@ package com.noteflight.standingwave3.sources
         
         public function clone():IAudioSource
         {
-            throw new Error("clone() not overridden");
+            ShowError.fail(AbstractSource, "clone() not overridden");
+			return null;
         }
     }
 }

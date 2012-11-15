@@ -6,6 +6,7 @@
  **/
 package com.greensock {
 	import com.greensock.core.*;
+	import com.zutalor.utils.ShowError;
 	
 /**
  * OverwriteManager resolves conflicts between tweens and controls if (and how) existing tweens of the same
@@ -266,7 +267,7 @@ package com.greensock {
 		 **/
 		public static function init(defaultMode:int=2):int {
 			if (TweenLite.version < 11.6) {
-				throw new Error("Warning: Your TweenLite class needs to be updated to work with OverwriteManager (or you may need to clear your ASO files). Please download and install the latest version from http://www.tweenlite.com.");
+				ShowError.fail(OverwriteManager,"Warning: Your TweenLite class needs to be updated to work with OverwriteManager (or you may need to clear your ASO files). Please download and install the latest version from http://www.tweenlite.com.");
 			}
 			TweenLite.overwriteManager = OverwriteManager;
 			mode = defaultMode;

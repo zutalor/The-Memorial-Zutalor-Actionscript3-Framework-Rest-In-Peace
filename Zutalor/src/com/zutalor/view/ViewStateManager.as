@@ -21,6 +21,7 @@ package com.zutalor.view
 	import com.zutalor.utils.GridValues;
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.utils.MathG;
+	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
 	import flash.events.MediaEvent;
 	
@@ -195,7 +196,7 @@ package com.zutalor.view
 			
 			index = Props.translations.getItemIndexByName(Translate.language, id)
 			if (index == -1)
-				throw new Error("ViewStateManager: state not found> " + id);
+				ShowError.fail(ViewStateManager,"ViewStateManager: state not found: " + id);
 			
 			_dataFromUiController = data;
 			activateStateByIndex(index, onComplete);

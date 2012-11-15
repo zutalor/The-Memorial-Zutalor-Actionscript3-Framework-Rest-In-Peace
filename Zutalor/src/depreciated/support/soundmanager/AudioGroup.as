@@ -168,7 +168,7 @@ package com.zutalor.support.soundmanager
 		 */
 		public function addObject(id:String, obj:*, options:Object=null):void
 		{
-			if(!(obj is Sound)&&!("soundTransform" in obj)) throw new Error("The volume for the object added cannot be controled, it must be a Sound or contain a {soundTransform} property.");
+			if(!(obj is Sound)&&!("soundTransform" in obj)) ShowError.fail(this,"The volume for the object added cannot be controled, it must be a Sound or contain a {soundTransform} property.");
 			if(!(obj is Sound))
 			{
 				var ao:AudioObject=new AudioObject(id,obj);
@@ -358,7 +358,7 @@ package com.zutalor.support.soundmanager
 		public function setLevels(ids:Array,levels:Array,persistent:Boolean=true):void
 		{
 			if(!ids||!levels)return;
-			if(ids.length!=levels.length) throw new Error("There must be equal parts in the two arrays passed, for the audible ids, and the levels");
+			if(ids.length!=levels.length) ShowError.fail(this,"There must be equal parts in the two arrays passed, for the audible ids, and the levels");
 			var i:int=0;
 			var l:int=ids.length;
 			var j:int=0;
@@ -607,7 +607,7 @@ package com.zutalor.support.soundmanager
 		 */
 		flash_proxy override function callProperty(methodName:*, ...args):*
 		{
-			throw new Error("Method {"+methodName+"}not found: ");
+			ShowError.fail(this,"Method {"+methodName+"}not found: ");
 			return null;
 		}
 		

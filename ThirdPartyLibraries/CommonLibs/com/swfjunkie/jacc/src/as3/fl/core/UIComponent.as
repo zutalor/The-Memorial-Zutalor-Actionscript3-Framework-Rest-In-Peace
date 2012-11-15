@@ -1280,7 +1280,7 @@ package fl.core {
 						errorCaught = false;
 					} catch(e:Error) {
 						errorCaught = true;				
-						throw new Error("IME mode not supported: " + _imeMode);
+						ShowError.fail(this,"IME mode not supported: " + _imeMode);
 					}
 				} else {
 					if (IME.conversionMode != IMEConversionMode.UNKNOWN && _oldIMEMode != IMEConversionMode.UNKNOWN) {

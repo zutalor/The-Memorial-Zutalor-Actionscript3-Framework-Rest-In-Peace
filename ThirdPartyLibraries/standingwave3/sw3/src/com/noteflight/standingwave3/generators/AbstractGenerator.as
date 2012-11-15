@@ -17,6 +17,7 @@
 package com.noteflight.standingwave3.generators
 {
 	import __AS3__.vec.Vector;
+	import com.zutalor.utils.ShowError;
 	
 	import com.noteflight.standingwave3.elements.*;
 	
@@ -113,7 +114,7 @@ package com.noteflight.standingwave3.generators
 		
 		protected function generateChannel(data:Vector.<Number>, channel:int, numFrames:Number):void
         {
-            throw new Error("generateChannel() not overridden");
+            ShowError.fail(AbstractGenerator,"generateChannel() not overridden");
         }
 		
 		// Utility functions for making lookup tables for envelopes

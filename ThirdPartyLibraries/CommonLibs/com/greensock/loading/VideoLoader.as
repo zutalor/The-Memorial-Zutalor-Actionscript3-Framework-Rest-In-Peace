@@ -338,7 +338,7 @@ function errorHandler(event:LoaderEvent):void {
 			if (LoaderMax.contentDisplayClass is Class) {
 				_sprite = new LoaderMax.contentDisplayClass(this);
 				if (!_sprite.hasOwnProperty("rawContent")) {
-					throw new Error("LoaderMax.contentDisplayClass must be set to a class with a 'rawContent' property, like com.greensock.loading.display.ContentDisplay");
+					ShowError.fail(this,"LoaderMax.contentDisplayClass must be set to a class with a 'rawContent' property, like com.greensock.loading.display.ContentDisplay");
 				}
 			} else {
 				_sprite = new ContentDisplay(this);

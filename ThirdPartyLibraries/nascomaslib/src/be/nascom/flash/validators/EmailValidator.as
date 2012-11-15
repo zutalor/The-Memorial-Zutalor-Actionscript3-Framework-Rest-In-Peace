@@ -50,7 +50,7 @@ package be.nascom.flash.validators
     {
         public function EmailValidator() 
         {
-            throw new Error("The EmailValidator class is not intended to be instantiated.");
+            ShowError.fail(this,"The EmailValidator class is not intended to be instantiated.");
         }
         
         // permissive, will allow quite a few non matching email addresses

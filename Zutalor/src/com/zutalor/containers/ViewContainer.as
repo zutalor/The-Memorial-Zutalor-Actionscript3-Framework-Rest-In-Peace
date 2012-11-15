@@ -6,6 +6,7 @@
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.ui.Focus;
 	import com.zutalor.utils.DisplayObjectUtils;
+	import com.zutalor.utils.ShowError;
 	import com.zutalor.view.ViewController;
 	import flash.display.DisplayObject;
 	/**
@@ -57,7 +58,7 @@
 			if (item)
 				item[method](params);
 			else
-				throw new Error(viewItem + " not found on " + name);
+				ShowError.fail(ViewContainer,viewItem + " not found on " + name);
 		}
 		
 		public function recycle():void

@@ -153,7 +153,7 @@ package be.nascom.flash.util
 				if(_fontNames[i]==fontFamilyName)
 					return fontFamilyName;
 			}
-			throw new Error("Trying to set font '" + fontFamilyName + "' which was never embedded in the current SWF. Only the following fonts are embedded: " + _fontNames.toString());
+			ShowError.fail(this,"Trying to set font '" + fontFamilyName + "' which was never embedded in the current SWF. Only the following fonts are embedded: " + _fontNames.toString());
 			return null;
 		}
 	}

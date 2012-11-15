@@ -17,6 +17,7 @@
 package com.noteflight.standingwave3.performance
 {
     import __AS3__.vec.Vector;
+	import com.zutalor.utils.ShowError;
     
     import com.noteflight.standingwave3.elements.*;
     import com.noteflight.standingwave3.utils.AudioUtils;
@@ -199,7 +200,7 @@ package com.noteflight.standingwave3.performance
 	                	elementSample.destroy();
 	                }	
 	          	} else {
-	          		throw new Error("Cannot mix sources with incompatible AudioDescriptors.");
+	          		ShowError.fail(AudioPerformer,"Cannot mix sources with incompatible AudioDescriptors.");
 	          	}
          	} else {
          		// Mix congruent descriptors straight through
@@ -217,7 +218,7 @@ package com.noteflight.standingwave3.performance
 	                	elementSample.destroy();
 	                }	
 	      		} else {
-	      			throw new Error("Cannot mix sources with incompatible AudioDescriptors.");
+	      			ShowError.fail(AudioPerformer,"Cannot mix sources with incompatible AudioDescriptors.");
 	      		}
          	}
         }

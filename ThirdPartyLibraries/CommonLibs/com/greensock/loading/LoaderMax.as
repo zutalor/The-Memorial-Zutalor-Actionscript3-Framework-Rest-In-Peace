@@ -283,7 +283,7 @@ function completeHandler(event:LoaderEvent):void {
 			} else if (data is LoaderCore) {
 				return data as LoaderCore;
 			}
-			throw new Error("LoaderMax could not parse " + data + ". Don't forget to use LoaderMax.activate() to activate the necessary types of loaders.");
+			ShowError.fail(this,"LoaderMax could not parse " + data + ". Don't forget to use LoaderMax.activate() to activate the necessary types of loaders.");
 			return null;
 		}
 		

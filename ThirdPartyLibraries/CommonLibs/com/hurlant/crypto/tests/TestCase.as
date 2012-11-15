@@ -23,7 +23,7 @@ package com.hurlant.crypto.tests
 //				TestHarness.print("+ ",msg);
 				return;
 			}
-			throw new Error("Test Failure:"+msg);
+			ShowError.fail(this,"Test Failure:"+msg);
 		}
 		
 		public function runTest(f:Function, title:String):void {

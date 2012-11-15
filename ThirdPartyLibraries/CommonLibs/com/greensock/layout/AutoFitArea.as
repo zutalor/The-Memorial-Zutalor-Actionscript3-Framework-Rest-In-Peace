@@ -115,7 +115,7 @@ var area:AutoFitArea = AutoFitArea.createAround(myImage);
 			super.x = x;
 			super.y = y;
 			if (parent == null) {
-				throw new Error("AutoFitArea parent cannot be null");
+				ShowError.fail(this,"AutoFitArea parent cannot be null");
 			}
 			_parent = parent;
 			_width = width;
@@ -168,7 +168,7 @@ var area:AutoFitArea = AutoFitArea.createAround(myImage);
 		 */
 		public function attach(target:DisplayObject, scaleMode:String="proportionalInside", hAlign:String="center", vAlign:String="center", crop:Boolean=false, minWidth:Number=0, maxWidth:Number=999999999, minHeight:Number=0, maxHeight:Number=999999999, calculateVisible:Boolean=false, customAspectRatio:Number=NaN, roundPosition:Boolean=false):void {
 			if (target.parent != _parent) {
-				throw new Error("The parent of the DisplayObject " + target.name + " added to AutoFitArea " + this.name + " doesn't share the same parent.");
+				ShowError.fail(this,"The parent of the DisplayObject " + target.name + " added to AutoFitArea " + this.name + " doesn't share the same parent.");
 			}
 			release(target);
 			_rootItem = new AutoFitItem(target, scaleMode, hAlign, vAlign, minWidth, maxWidth, minHeight, maxHeight, calculateVisible, customAspectRatio, roundPosition, _rootItem);

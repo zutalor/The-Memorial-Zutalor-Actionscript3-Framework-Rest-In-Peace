@@ -4,6 +4,7 @@ package com.zutalor.text
 	import com.zutalor.properties.CssProperties;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.Resources;
+	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StringUtils;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -52,7 +53,7 @@ package com.zutalor.text
 				
 				function onError(e:Event):void
 				{
-					throw new Error("StyleSheetUtils, could not read: " + e.target.url);
+					ShowError.fail(this,"StyleSheetUtils, could not read: " + e.target.url);
 				}
 			}
 		}
@@ -78,7 +79,7 @@ package com.zutalor.text
 			cssProps = Props.pr.cssPresets.getPropsByName(id);
 		
 			if (!cssProps)
-				throw new Error("StyleSheet not found: " + id);
+				ShowError.fail(StyleSheetUtils,"StyleSheet not found: " + id);
 			
 			s = cssProps.styleSheet;	
 				
@@ -122,7 +123,7 @@ package com.zutalor.text
 		{
 			if(!selector)return "0x";
 			var s:StyleSheet=getStyleSheetById("colors");
-			if(!s)throw new Error("A styleshee in the model name 'colors' must be defined.");
+			if(!s)ShowError.fail(StyleSheetUtils,"A stylesheet in the model name 'colors' must be defined.");
 			var c:String=s.getStyle(selector).color;
 			if(!c)trace("WARNING: The selector {"+selector+"} in the colors stylesheet wasn't found.");
 			return StringUtils.styleSheetNumberTo0xHexString(c);
@@ -138,7 +139,7 @@ package com.zutalor.text
 		public static function getColorAsPoundHexString(selector:String):String
 		{
 			var s:StyleSheet=getStyleSheetById("colors");
-			if(!s)throw new Error("A styleshee in the model name 'colors' must be defined.");
+			if(!s)ShowError.fail(StyleSheetUtils,"A styleshee in the model name 'colors' must be defined.");
 			var c:String=s.getStyle(selector).color;
 			if(!c)
 			{

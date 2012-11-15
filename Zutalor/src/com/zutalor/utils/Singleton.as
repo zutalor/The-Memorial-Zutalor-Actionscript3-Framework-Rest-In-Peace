@@ -121,7 +121,7 @@ package com.zutalor.utils
 		public static function assertSingle(clazz:Class):void
 		{
 			if(!insts) insts=new Dictionary();
-			if(insts[clazz]) throw new Error("Error creating class, {"+clazz+"}. It's a singleton and cannot be instantiated more than once.");
+			if(insts[clazz]) ShowError.fail(Singleton,"Error creating class, {"+clazz+"}. It's a singleton and cannot be instantiated more than once.");
 		}
 	}
 }

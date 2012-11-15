@@ -22,6 +22,7 @@ package com.zutalor.propertyManagers
 	import com.zutalor.text.StyleSheetUtils;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.utils.Path;
+	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StringUtils;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -86,6 +87,10 @@ package com.zutalor.propertyManagers
 		private static function onBootLoaded(lg:URLLoaderG):void
 		{
 			var xml:XML = XML(lg.data);
+			
+			if (lg.error)
+				ShowError.fail(Props, "Could not load: " + lg.url);
+			
 			ap.parseXML(xml.appSettings);
 			parseProps(xml);
 			lg.dispose();
@@ -133,7 +138,7 @@ package com.zutalor.propertyManagers
 			_xmlFilesProcessed++;
 			parseProps(XML(lg.data));
 			if (lg.error)
-				throw new Error("Props: could not load " + lg.url);
+				ShowError.fail(Props,"Could not load " + lg.url);
 			
 			if (_xmlFilesProcessed == _xmlFiles)
 			{

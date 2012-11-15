@@ -16,6 +16,7 @@
 package com.noteflight.standingwave3.output
 {
     import com.noteflight.standingwave3.elements.IAudioSource;
+	import com.zutalor.utils.ShowError;
     
     import flash.events.Event;
     import flash.events.EventDispatcher;
@@ -78,7 +79,7 @@ package com.noteflight.standingwave3.output
             	_sampleHandler.sourceStarted = false;
             	startSound();
             } else {
-            	throw new Error("AudioPlayer no longer supports lower audio descriptors. Please pass the source through the StandardizeFilter() before output.");
+            	ShowError.fail(AudioPlayer,"AudioPlayer no longer supports lower audio descriptors. Please pass the source through the StandardizeFilter() before output.");
             }
         }
         

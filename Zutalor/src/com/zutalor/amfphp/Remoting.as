@@ -1,5 +1,6 @@
 package com.zutalor.amfphp 
 {
+	import com.zutalor.utils.ShowError;
 	import flash.events.NetStatusEvent;
 	import flash.net.NetConnection;
 	import flash.net.registerClassAlias;
@@ -35,7 +36,7 @@ package com.zutalor.amfphp
 			var res:Responder;
 			
 			if (!_gateway)
-				throw new Error("No Gateway defined in Remoting.");			
+				ShowError.fail(Remoting, "No Gateway defined in Remoting.");			
 			
  			_onFailure = onFailure;
 			_onSuccess = onSuccess;

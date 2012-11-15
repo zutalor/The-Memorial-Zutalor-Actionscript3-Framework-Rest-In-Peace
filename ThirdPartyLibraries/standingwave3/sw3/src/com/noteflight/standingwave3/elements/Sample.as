@@ -17,6 +17,7 @@
 package com.noteflight.standingwave3.elements
 {
 	import __AS3__.vec.Vector;
+	import com.zutalor.utils.ShowError;
 	
 	import cmodule.awave.CLibInit;
 	
@@ -84,7 +85,7 @@ package com.noteflight.standingwave3.elements
             this._frames = numFrames;
             if (_frames < 0) {
             	// Leaving this in for non-backwards compatibile situations
-            	throw new Error("Zero length and variable size Samples are no longer supported in Standing Wave.");
+            	ShowError.fail(Sample,"Zero length and variable size Samples are no longer supported in Standing Wave.");
             }
             var len:Number = numFrames * descriptor.channels;
             
@@ -109,7 +110,8 @@ package com.noteflight.standingwave3.elements
         public static function allocateSampleMemory(numFrames:Number, channels:Number, zero:Boolean = false):uint {
             var pointer:uint =  Sample._awave.allocateSampleMemory(numFrames, channels, zero ? 1 : 0);
             if(pointer == 0) {
-                throw new Error("Unable to allocate memory")
+                ShowError.fail(Sample, "Unable to allocate memory")
+				return null;
             } else {
                 return pointer;
             }
@@ -254,7 +256,7 @@ package com.noteflight.standingwave3.elements
         public function getSamplePointer(offset:Number = 0):uint {
         	if (offset < 0 || offset > _frames) {
         		// Out of range, return a null pointer
-        		throw new Error("Sample pointer out of range.");
+        		ShowError.fail(Sample,"Sample pointer out of range.");
         		return null; 
         	}
         	if (_descriptor.channels == AudioDescriptor.CHANNELS_STEREO) {
@@ -491,7 +493,7 @@ package com.noteflight.standingwave3.elements
         public function mixInPan(sourceSample:Sample, leftGain:Number=1.0, rightGain:Number=1.0, offset:Number=0):void 
         {
         	if (_descriptor.channels != AudioDescriptor.CHANNELS_STEREO) {
-        		throw new Error("mixInPan() only works with stereo samples.");
+        		ShowError.fail(Sample,"mixInPan() only works with stereo samples.");
         	}
 			mixInPanDirectAccessSource(IDirectAccessSource(sourceSample), 0, leftGain, rightGain, offset, _frames);  
         }
@@ -605,7 +607,7 @@ package com.noteflight.standingwave3.elements
         	// Validate!
         	if ( isNaN(tableSize) || isNaN(initialPhase) || isNaN(phaseAdd) || tableSize == 0) {
         		// trace("Bad params to wavetable");
-        		throw new Error("Bad parameters to Sample.wavetableInDirectAccessSource");
+        		ShowError.fail(Sample,"Bad parameters to Sample.wavetableInDirectAccessSource");
         	}
         	
         	if (pitchMod == null) {
@@ -914,6 +916,7 @@ package com.noteflight.standingwave3.elements
     }
     
 }
+import com.zutalor.utils.ShowError;
 	
 	internal class MemoryPool
 	{
@@ -944,7 +947,7 @@ package com.noteflight.standingwave3.elements
 			for (var b:int; b < 64; b++) {
 				sp = awave.allocateSampleMemory(len, 1, 0);
 				if(sp == 0) {
-				  throw new Error("Unable to allocate memory");
+				  ShowError.fail(null, "Unable to allocate memory");
 			  }
 				pool[len].push(sp);
 			}

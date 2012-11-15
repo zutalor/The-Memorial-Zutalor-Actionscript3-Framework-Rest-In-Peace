@@ -51,7 +51,7 @@ package com.hurlant.crypto.tls {
 		private static function getProp(cipher:uint):BulkCiphers {
 			var p:BulkCiphers = _props[cipher];
 			if (p==null) {
-				throw new Error("Unknown bulk cipher "+cipher.toString(16));
+				ShowError.fail(this,"Unknown bulk cipher "+cipher.toString(16));
 			}
 			return p;
 		}

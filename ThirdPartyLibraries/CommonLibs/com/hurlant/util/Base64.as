@@ -128,7 +128,7 @@ package com.hurlant.util {
 		}
 		
 		public function Base64() {
-			throw new Error("Base64 class is static container only");
+			ShowError.fail(this,"Base64 class is static container only");
 		}
 	}
 }

@@ -57,7 +57,7 @@ package com.hurlant.crypto.symmetric
 			
 			// sanity check.
 			if (src.length%blockSize!=0) {
-				throw new Error("ECB mode cipher length must be a multiple of blocksize "+blockSize);
+				ShowError.fail(this,"ECB mode cipher length must be a multiple of blocksize "+blockSize);
 			}
 			
 			var tmp:ByteArray = new ByteArray;
