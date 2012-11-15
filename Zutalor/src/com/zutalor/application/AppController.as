@@ -50,13 +50,6 @@
 
 	public class AppController extends EventDispatcher
 	{	
-		private const DEBUG:Boolean =  false;
-		
-		private const SYSTEM_FONTS:String = "system-fonts";
-		private const APP_FONTS:String = "app-fonts";
-		private const APP_PRELOAD:String = "app-preload";
-		private const SYSTEM_PRELOAD:String = "system-preload";
-		
 		private var vu:ViewUtils;
 		private var mu:MotionUtils;
 		
@@ -68,25 +61,23 @@
 			
 		private var _loadingSequence:Sequence;
 		private var _curViewProps:ViewProperties;
-		private var _firstPage:String;
+		private var _firstState:String;
 		private var _appStateCallStack:gDictionary;
 		private var _curAppState:String;
 		private var _splashEmbedClassName:String;
 		private var _bootXmlUrl:String;
-		private var _sheild:Sprite;
 		private var _initialized:Boolean;
 		private var _currentOrientation:String;
 		private var _ip:String;
 
-		// CONSTRUCTOR
+		private const DEBUG_ANALYTICS:Boolean =  false;
+		
 		
 		public function AppController(bootXmlUrl:String,splashClassName:String=null)
 		{
 			_splashEmbedClassName = splashClassName;
 			_bootXmlUrl = bootXmlUrl;
 		}
-						
-		// PUBLIC METHODS
 		
 		public function init(stage:Stage, ip:String):void
 		{	
@@ -102,15 +93,17 @@
 			MasterClock.defaultInterval = 1000 / StageRef.stage.frameRate;
 			Props.init(_bootXmlUrl, initialize);
 		}
+		
+		// PRIVATE METHODS		
 				
-		public function closeView(containerName:String, onComplete:Function = null):void
+		private function closeView(viewName:String, onComplete:Function = null):void
 		{
 			var appState:String;
 			var cc:ViewCloser;
 			
 			cc = new ViewCloser();
-			cc.close(containerName, onComplete);
-			appState = vpm.getPropsById(containerName).menuName;
+			cc.close(viewName, onComplete);
+			appState = vpm.getPropsById(viewName).menuName;
 			if (appState)
 			{
 				_appStateCallStack.deleteByKey(appState);
@@ -121,7 +114,17 @@
 			}
 		}	
 		
-		public function changeAppState(state:String):void 
+		private function arrangeUI():void
+		{	
+			Mouse.show();
+			Scale.calcAppScale(StageRef.stage, ap.designWidth, ap.designHeight);
+			Scale.constrainAppScaleRatio();
+			ap.contentLayer.width = StageRef.stage.stageWidth;
+			ap.contentLayer.height = StageRef.stage.stageHeight;
+			vu.arrangeAppContainers();
+		}						
+		
+		private function changeAppState(state:String):void 
 		{	
 			_curAppState = state;
 			if (_curViewProps && !_curViewProps.contentPersists)
@@ -137,33 +140,6 @@
 			else
 				processStateChange();
 		}
-		
-		public function arrangeUI():void
-		{	
-			Mouse.show();
-			Scale.calcAppScale(StageRef.stage, ap.designWidth, ap.designHeight);
-			Scale.constrainAppScaleRatio();
-			_sheild.graphics.clear();
-			_sheild.graphics.beginFill(0x000000, .2)
-			_sheild.graphics.drawRect(0, 0, StageRef.stage.stageWidth, StageRef.stage.stageHeight)
-			_sheild.graphics.endFill();
-			ap.contentLayer.width = StageRef.stage.stageWidth;
-			ap.contentLayer.height = StageRef.stage.stageHeight;
-			vu.arrangeAppContainers();
-		}						
-		
-		public function showSheild():void
-		{
-			ap.contentLayer.addChildAt(_sheild, 0);
-		}
-		
-		public function hideSheild():void
-		{
-			if (ap.contentLayer.getChildByName("__Sheild"))
-				ap.contentLayer.removeChild(_sheild);
-		}	
-		
-		// PRIVATE METHODS
 
 		private function showSplash():void
 		{
@@ -189,14 +165,14 @@
 		private function onSWFAddressFirstBroadcast(e:SWFAddressEvent):void	
 		{
 			SWFAddress.removeEventListener(SWFAddressEvent.CHANGE, onSWFAddressFirstBroadcast);	
-			_firstPage = e.value.toLowerCase();
+			_firstState = e.value.toLowerCase();
 			
-			if (_firstPage != "/") 
-				_firstPage = _firstPage.substring(1); 
+			if (_firstState != "/") 
+				_firstState = _firstState.substring(1); 
 			else
-				_firstPage = ap.homePage.toLowerCase();
+				_firstState = ap.firstState.toLowerCase();
 				
-			SWFAddress.setTitle(ap.appName + " - " + _firstPage);
+			SWFAddress.setTitle(ap.appName + " - " + _firstState);
 		}
 		
 		private function onSWFAddressChange(e:SWFAddressEvent = null):void	
@@ -221,7 +197,7 @@
 					state = state.toLowerCase();										
 					SWFAddress.setTitle(ap.appName + " - " + state);
 					SWFAddress.setValue(state);	
-					if (ap.googleAnalyticsAccount && AirStatus.isNativeApplication || DEBUG)
+					if (ap.googleAnalyticsAccount && AirStatus.isNativeApplication || DEBUG_ANALYTICS)
 						Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.TRACK_PAGE_VIEW, 
 																				{ page:state } );
 				}	
@@ -265,9 +241,9 @@
 		
 		private function loadFirstPage():void
 		{
-			if (_firstPage)
+			if (_firstState)
 			{
-				changeAppState(_firstPage);
+				changeAppState(_firstState);
 			}
 			else
 			{
@@ -338,8 +314,7 @@
 			vu = ViewUtils.gi();
 			mu = MotionUtils.gi();
 			vpm = Props.views;
-			_sheild = new Sprite;
-			_sheild.name = "__Sheild";
+			
 			setIpAddress();			
 			StageRef.stage.addEventListener(StageVideoAvailabilityEvent.STAGE_VIDEO_AVAILABILITY, 
 																					onStageVideoAbility);	
@@ -361,10 +336,10 @@
 			if (ap.enableMotionChecking)
 				mu.enableMotionChecking();
 			
-			if (ap.googleAnalyticsAccount && AirStatus.isNativeApplication || DEBUG)
+			if (ap.googleAnalyticsAccount && AirStatus.isNativeApplication || DEBUG_ANALYTICS)
 			{
 				Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.INITIALIZE, 
-									{ display:ap.contentLayer, accountId:ap.googleAnalyticsAccount, debug:DEBUG } );
+									{ display:ap.contentLayer, accountId:ap.googleAnalyticsAccount, debug:DEBUG_ANALYTICS } );
 				Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.TRACK_PAGE_VIEW, 
 									{ page:ap.appName + " " + ap.version + " started." } );
 				

@@ -26,7 +26,7 @@
 		public var enableMotionChecking:Boolean;
 		public var enableWind:Boolean;
 		public var loadingSequenceName:String;
-		public var homePage:String;
+		public var firstState:String;
 		public var language:String;
 		public var gateway:String;
 		public var spinningGraphicId:String;
@@ -77,7 +77,7 @@
 			
 			proxyLocationUrl = appSettings.proxyLocation.@url;
 						
-			homePage = appSettings.homePage.@value;
+			firstState = appSettings.firstState.@value;
 			loadingSequenceName = appSettings.loadingSequenceName.@value;
 			
 			enableWind = StringUtils.toBoolean(appSettings.enableWind.@value);

@@ -5,7 +5,6 @@ package com.zutalor.application
 	import com.zutalor.events.AppEvent;
 	import com.zutalor.loaders.URL;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.ui.Dialog;
 	import flash.desktop.NativeApplication;
 	import flash.display.LoaderInfo;
@@ -27,12 +26,13 @@ package com.zutalor.application
 		
 		public function start(bootXmlUrl:String, splashEmbedClassName:String=null):void
 		{
+			var paramObj:Object
 			var url:String;
 			
-			Plugins.registerClassAndCreateCachedInstance(DialogController);
-			
+			parent.root.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, 
+																							onUncaughtError);
 			try {
-				var paramObj:Object = LoaderInfo(this.root.loaderInfo).parameters;
+				paramObj = LoaderInfo(this.root.loaderInfo).parameters;
 				url = String(paramObj["url"]);
 				_ip = String(paramObj["ip"]);
 			} catch (e:*) { }
@@ -42,23 +42,23 @@ package com.zutalor.application
 			else
 			{
 				AirStatus.initialize();
-				_appController = new AppController(bootXmlUrl, splashEmbedClassName);
-				Props.appController = _appController;
+				AppRegistry.initialize();
 				addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+				Plugins.registerClassAndCreateCachedInstance(DialogController);
+				_appController = new AppController(bootXmlUrl, splashEmbedClassName);
 			}
 		}
 		
 		private function onAddedToStage(e:Event):void
 		{
-			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			
 			stage.stageFocusRect = false;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			for (var i:int = 0; i < stage.numChildren; i++)
-				stage.getChildAt(i).visible = false;
-				
-			parent.root.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, 
-																							onUncaughtError); 
+				stage.getChildAt(i).visible = false;	
+			
+			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			_appController.addEventListener(AppEvent.INITIALIZED, onInitialized);
 			_appController.init(stage, _ip);	
 		}
@@ -72,7 +72,7 @@ package com.zutalor.application
 		private function onUncaughtError(e:UncaughtErrorEvent):void
 		{
 			e.preventDefault();
-			trace(e.error);
+			trace("uncaught error", e.error);
 			Dialog.show(Dialog.ALERT, e.error, onConfirm);
 			
 			function onConfirm():void

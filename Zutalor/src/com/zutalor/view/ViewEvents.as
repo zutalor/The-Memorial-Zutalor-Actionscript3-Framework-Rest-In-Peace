@@ -476,9 +476,6 @@ package com.zutalor.view
 						
 						switch (vip.action)
 						{
-							case UIEvent.CLOSE :
-								Props.appController.closeView(vip.onTapContainerNames);
-								break;
 							case UIEvent.CREATE: 
 							case UIEvent.UPDATE: 
 								vc.setStatusMessage(vc.creatingMessage);

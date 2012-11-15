@@ -1,10 +1,7 @@
 package com.zutalor.propertyManagers 
 {
-	import com.zutalor.application.AppController;
 	import com.zutalor.loaders.URLLoaderG;
 	import com.zutalor.properties.ApplicationProperties;
-	import com.zutalor.properties.BitmapGroupItemProperties;
-	import com.zutalor.properties.BitmapGroupProperties;
 	import com.zutalor.properties.BitmapProperties;
 	import com.zutalor.properties.FiltersItemProperties;
 	import com.zutalor.properties.FiltersProperties;
@@ -20,12 +17,8 @@ package com.zutalor.propertyManagers
 	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.properties.ViewProperties;
 	import com.zutalor.text.StyleSheetUtils;
-	import com.zutalor.text.TextUtil;
-	import com.zutalor.utils.Path;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StringUtils;
-	import flash.events.Event;
-	import flash.events.IOErrorEvent;
 
 	/**
 	 * ...
@@ -44,10 +37,7 @@ package com.zutalor.propertyManagers
 		public static var paths:PropertyManager;
 		public static var translations:NestedPropsManager;
 		public static var bitmaps:PropertyManager;
-		public static var bitmapGroups:NestedPropsManager;
-		
-		public static var appController:AppController;		
-		
+
 		private static var _xmlFiles:int;
 		private static var _xmlFilesProcessed:int;
 		private static var _loaders:Array;
@@ -75,7 +65,6 @@ package com.zutalor.propertyManagers
 			translations = new NestedPropsManager();
 			bitmaps = new PropertyManager(BitmapProperties);
 			paths = new PropertyManager(PathProperties);
-			bitmapGroups = new NestedPropsManager();
 			loadBootXml(bootXmlUrl);
 		}
 		private static function loadBootXml(url:String):void
@@ -168,7 +157,6 @@ package com.zutalor.propertyManagers
 			graphics.parseXML(GraphicProperties, GraphicItemProperties, xml.graphics, "graphic", xml.graphic, "props");
 			filters.parseXML(FiltersProperties, FiltersItemProperties, xml.filters, "filter", xml.filter, "props");
 			bitmaps.parseXML(xml.bitmaps, "props");
-			bitmapGroups.parseXML(BitmapGroupProperties, BitmapGroupItemProperties, xml.bitmapGroups, "bitmapGroup", xml.bitmapGroup, "props"); 
 		}
 	}
 }

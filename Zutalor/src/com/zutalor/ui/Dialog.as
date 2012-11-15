@@ -7,6 +7,7 @@ package com.zutalor.ui
 	import com.zutalor.view.ViewController;
 	import com.zutalor.view.ViewControllerRegistry;
 	import com.zutalor.view.ViewLoader;
+	import flash.display.Sprite;
 	/**
 	 * ...
 	 * @author Geoff Pepos
@@ -29,6 +30,8 @@ package com.zutalor.ui
 		public static const DISK_ERROR:String = "diskerror";
 		private static const OK:String = "ok";
 		private static const CANCEL:String = "cancel";
+		
+		public static var sheild:Sprite = new Sprite();
 			
 		public static function show(type:String, tMessage:String, callBack:Function = null, percentage:Number = 0):void
 		{	
@@ -54,7 +57,7 @@ package com.zutalor.ui
 				else
 					StageRef.stage.addChild(_vc.container);
 
-				//Props.uiController.showSheild();
+				showSheild();
 				Plugins.callMethod("dialogController", "open", type);
 				_lastType = type;
 			}
@@ -75,7 +78,7 @@ package com.zutalor.ui
 		
 		public static function close():void
 		{
-			Props.appController.hideSheild();
+			hideSheild();
 			_progressBar.visible = false;
 			_lastMessage = null;
 			_lastType = CLOSED;
@@ -88,7 +91,24 @@ package com.zutalor.ui
 		}
 		
 		// PRIVATE METHODS
-				
+		
+		private static function showSheild():void
+		{
+			sheild.graphics.clear();
+			sheild.graphics.beginFill(0x000000, .2)
+			sheild.graphics.drawRect(0, 0, StageRef.stage.stageWidth, StageRef.stage.stageHeight)
+			sheild.graphics.endFill();
+			sheild.name = "__Sheild";
+			Props.ap.contentLayer.addChildAt(sheild, 0);
+		}
+		
+		private static function hideSheild():void
+		{
+			if (Props.ap.contentLayer.getChildByName("__Sheild"))
+				Props.ap.contentLayer.removeChild(sheild);
+		}	
+		
+		
 		private static function onSelection(choice:String = null):void
 		{
 			close();
