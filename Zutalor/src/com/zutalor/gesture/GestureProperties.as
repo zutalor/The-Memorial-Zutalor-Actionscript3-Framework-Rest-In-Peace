@@ -19,19 +19,16 @@ package com.zutalor.gesture
 		public var type:String; 
 		public var caller:IAcceptsGestureCallbacks;
 		public var eventTypes:Array;
-		public var result:GestureResult;
+		public var keyPressed:String;
 		public var gestureEvent:GestureEvent;
 
 		public function GestureProperties()
 		{
 			eventTypes = [];
-			result = new GestureResult();
-			result.location = new Point();
 		}
 		
 		public function dispose():void
-		{
-			
+		{	
 			if (type != GestureTypes.KEY_PRESS)
 				gesture.dispose();
 
@@ -39,8 +36,7 @@ package com.zutalor.gesture
 			gesture = null;
 			caller = null;
 			eventTypes = null;
-			result.location = null;
-			result = null;
+			gestureEvent = null;
 		}
 	}
 }

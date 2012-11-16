@@ -41,7 +41,7 @@ package com.zutalor.view
 		private var _gm:GestureManager;
 		private var _gestures:gDictionary;
 		private var _answers:gDictionary;
-		private var _appGestures:PropertyManager;
+		private var _viewGestures:PropertyManager;
 		private var _dataFromUiController:GenericData;
 		
 		private static const soundExt:String = ".mp3";
@@ -89,13 +89,13 @@ package com.zutalor.view
 			var l:int;
 			
 			tMeta = getMetaByName("settings");
-			_appGestures = new PropertyManager(AppGestureProperties);
-			_appGestures.parseXML(tMeta.gestures, "gesture");
+			_viewGestures = new PropertyManager(AppGestureProperties);
+			_viewGestures.parseXML(tMeta.gestures, "gesture");
 			
-			l = _appGestures.length;
+			l = _viewGestures.length;
 			for (var i:int = 0; i < l; i++)
 			{
-				agp = _appGestures.getPropsByIndex(i);
+				agp = _viewGestures.getPropsByIndex(i);
 				_gm.addCallback(StageRef.stage, agp.name, agp.gestureType, this);
 			}
 		}
@@ -106,11 +106,13 @@ package com.zutalor.view
 			var agp:AppGestureProperties;			
 			var tMeta:XML;		
 			
-			agp = _appGestures.getPropsByName(gp.result.value);
+			agp = _viewGestures.getPropsByName(gp.name);
 			
 			if (agp)
 			{
-				gridValues = getGridValues(gp, agp);
+				if (gp.gestureEvent)
+					gridValues = getGridValues(gp, agp);
+				
 				tMeta = getMetaByIndex(_curState);
 				
 				switch (String(tMeta.state.@type))
@@ -141,7 +143,7 @@ package com.zutalor.view
 					if (agp.gestureType == GestureTypes.TAP)
 						index = gridValues.index;
 					else if (agp.gestureType == GestureTypes.KEY_PRESS)
-						index = letterAnswers.indexOf(gp.result.value.toLowerCase().toLowerCase());
+						index = letterAnswers.indexOf(gp.keyPressed.toLowerCase());
 
 					answerText = XML(_curStateText)..Q[index];
 					qMark = answerText.indexOf("?");
@@ -299,7 +301,7 @@ package com.zutalor.view
 		
 		private function getGridValues(gp:GestureProperties, agp:AppGestureProperties):GridValues
 		{
-			return MathG.gridIndexQuantizer(gp.result.location.x, gp.result.location.y, 
+			return MathG.gridIndexQuantizer(gp.gestureEvent.target.location.x, gp.gestureEvent.target.location.y, 
 						agp.cols, agp.rows, StageRef.stage.stageWidth, StageRef.stage.stageHeight);					
 		}
 	}

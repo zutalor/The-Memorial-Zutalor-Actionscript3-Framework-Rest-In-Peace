@@ -141,7 +141,7 @@ package com.zutalor.gesture
 				char += "+" + KeyUtils.COMMAND;
 			
 			gp = gDictionary(_activeGestures.getByKey(ke.currentTarget)).getByKey(GestureTypes.KEY_PRESS);
-			gp.result.value = char;
+			gp.keyPressed = char;
 			gp.caller.onGesture(gp);
 		}
 		
@@ -171,10 +171,7 @@ package com.zutalor.gesture
 				gp.target.scaleY = gp.result.scaleY;
 				
 			*/
-				trace("");
 				gp = gDictionary(_activeGestures.getByKey(ge.target.target)).getByKey(getQualifiedClassName(ge.target));
-				gp.result.value = gp.type.toLowerCase();
-
 				gp.gestureEvent = ge;
 				gp.caller.onGesture(gp);
 		}
