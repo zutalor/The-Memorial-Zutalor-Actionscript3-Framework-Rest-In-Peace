@@ -1,10 +1,6 @@
 package com.zutalor.gesture 
 {
 	import com.zutalor.interfaces.IAcceptsGestureCallbacks;
-	import flash.display.DisplayObject;
-	import flash.events.KeyboardEvent;
-	import flash.geom.Point;
-	import org.gestouch.events.GestureEvent;
 	import org.gestouch.gestures.Gesture;
 	/**
 	 * ...
@@ -12,15 +8,10 @@ package com.zutalor.gesture
 	 */
 	public class GestureProperties
 	{
-		public var target:*; //Key
-		public var name:String;
-		public var gestureQualifiedClassName:String; // key
-		public var gesture:*;
-		public var type:String; 
-		public var caller:IAcceptsGestureCallbacks;
+		public var type:String;
+		public var target:*; 
+		public var gesture:Gesture;
 		public var eventTypes:Array;
-		public var keyPressed:String;
-		public var gestureEvent:GestureEvent;
 
 		public function GestureProperties()
 		{
@@ -29,14 +20,9 @@ package com.zutalor.gesture
 		
 		public function dispose():void
 		{	
-			if (type != GestureTypes.KEY_PRESS)
-				gesture.dispose();
-
+			gesture.dispose();
 			target = null;
-			gesture = null;
-			caller = null;
 			eventTypes = null;
-			gestureEvent = null;
 		}
 	}
 }

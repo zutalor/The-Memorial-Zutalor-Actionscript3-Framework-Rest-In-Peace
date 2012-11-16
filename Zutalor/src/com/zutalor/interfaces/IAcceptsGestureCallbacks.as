@@ -1,12 +1,12 @@
 package com.zutalor.interfaces 
 {
-	import com.zutalor.gesture.GestureProperties;
+	import org.gestouch.events.GestureEvent;
 	/**
 	 * ...
 	 * @author Geoff Pepos
 	 */
 	public interface IAcceptsGestureCallbacks
 	{
-		function onGesture(gp:GestureProperties):void
+		function onGesture(ge:GestureEvent):void
 	}
 }

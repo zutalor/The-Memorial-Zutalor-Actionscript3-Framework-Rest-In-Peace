@@ -3,10 +3,9 @@ package com.zutalor.view
 
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.controllers.AbstractUiController;
-	import com.zutalor.gesture.AppGestureProperties;
 	import com.zutalor.gesture.GestureManager;
-	import com.zutalor.gesture.GestureProperties;
 	import com.zutalor.gesture.GestureTypes;
+	import com.zutalor.gesture.ViewGestureProperties;
 	import com.zutalor.interfaces.IAcceptsGestureCallbacks;
 	import com.zutalor.media.AudioController;
 	import com.zutalor.media.MediaPlayer;
@@ -24,6 +23,7 @@ package com.zutalor.view
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
 	import flash.events.MediaEvent;
+	import org.gestouch.events.GestureEvent;
 	
 	public class ViewStateManager implements IAcceptsGestureCallbacks
 	{
@@ -61,6 +61,7 @@ package com.zutalor.view
 				_answers = new gDictionary();
 				_history = [];
 				_gm = new GestureManager();
+				_gm.addEventListener(GestureEvent.GESTURE_RECOGNIZED, onGesture);
 				_soundPlayer = new MediaPlayer();
 				_soundPlayer.initialize("audio", new AudioController());				
 				_textToSpeech = new TextToSpeech();
@@ -85,33 +86,32 @@ package com.zutalor.view
 		private function initGestures():void
 		{
 			var tMeta:XML;
-			var agp:AppGestureProperties;
+			var vgp:ViewGestureProperties;
 			var l:int;
 			
 			tMeta = getMetaByName("settings");
-			_viewGestures = new PropertyManager(AppGestureProperties);
+			_viewGestures = new PropertyManager(ViewGestureProperties);
 			_viewGestures.parseXML(tMeta.gestures, "gesture");
 			
 			l = _viewGestures.length;
 			for (var i:int = 0; i < l; i++)
 			{
-				agp = _viewGestures.getPropsByIndex(i);
-				_gm.addCallback(StageRef.stage, agp.name, agp.gestureType, this);
+				vgp = _viewGestures.getPropsByIndex(i);
+				_gm.activateGesture(vgp.gestureType, StageRef.stage);
 			}
 		}
 		
-		public function onGesture(gp:GestureProperties):void
+		public function onGesture(ge:GestureEvent):void
 		{
 			var gridValues:GridValues;
-			var agp:AppGestureProperties;			
+			var vgp:ViewGestureProperties;			
 			var tMeta:XML;		
 			
-			agp = _viewGestures.getPropsByName(gp.name);
+			vgp = _viewGestures.getPropsByName(ge.type);
 			
-			if (agp)
+			if (vgp)
 			{
-				if (gp.gestureEvent)
-					gridValues = getGridValues(gp, agp);
+				gridValues = getGridValues(ge, vgp);
 				
 				tMeta = getMetaByIndex(_curState);
 				
@@ -136,14 +136,14 @@ package com.zutalor.view
 				var qMark:int
 				var date:Date = new Date();
 			
-				if (agp.action == "exit")
+				if (vgp.action == "exit")
 					activateNextState();
-				else if (agp.action == "answer")
+				else if (vgp.action == "answer")
 				{
-					if (agp.gestureType == GestureTypes.TAP)
+					if (vgp.gestureType == GestureTypes.TAP)
 						index = gridValues.index;
-					else if (agp.gestureType == GestureTypes.KEY_PRESS)
-						index = letterAnswers.indexOf(gp.keyPressed.toLowerCase());
+					else if (vgp.gestureType == GestureTypes.KEY_PRESS)
+						index = letterAnswers.indexOf(ge.target.char.toLowerCase());
 
 					answerText = XML(_curStateText)..Q[index];
 					qMark = answerText.indexOf("?");
@@ -175,7 +175,7 @@ package com.zutalor.view
 			
 			function activateNextState():void
 			{				
-				switch (agp.action)
+				switch (vgp.action)
 				{
 					case "back" :
 						activateStateByIndex(_curState);
@@ -299,10 +299,10 @@ package com.zutalor.view
 				return null;
 		}
 		
-		private function getGridValues(gp:GestureProperties, agp:AppGestureProperties):GridValues
+		private function getGridValues(ge:GestureEvent, vgp:ViewGestureProperties):GridValues
 		{
-			return MathG.gridIndexQuantizer(gp.gestureEvent.target.location.x, gp.gestureEvent.target.location.y, 
-						agp.cols, agp.rows, StageRef.stage.stageWidth, StageRef.stage.stageHeight);					
+			return MathG.gridIndexQuantizer(ge.target.location.x, ge.target.location.y, 
+						vgp.cols, vgp.rows, StageRef.stage.stageWidth, StageRef.stage.stageHeight);					
 		}
 	}
 }
