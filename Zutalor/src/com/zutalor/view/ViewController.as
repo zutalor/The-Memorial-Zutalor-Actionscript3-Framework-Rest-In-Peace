@@ -470,9 +470,9 @@
 		
 		//EVENT DISPATCH
 		
-		public function dispatchMenuSelection(ms:String):void
+		public function dispatchStateSelection(ms:String):void
 		{
-			vp.container.dispatchEvent(new UIEvent(UIEvent.MENU_SELECTION, vp.container.name, ms));
+			vp.container.dispatchEvent(new UIEvent(UIEvent.APP_STATE_SELECTED, vp.container.name, ms));
 		}
 		
 		public function dispatchUiEvent(eventType:String):void

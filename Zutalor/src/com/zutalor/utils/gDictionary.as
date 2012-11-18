@@ -34,7 +34,7 @@
 			_values = null;
 		}
 		
-		public function insert(key:*, obj:*, newkey:*=null):void
+		public function insert(key:*, obj:*, newkey:*=null):*
 		{
 			var i:int;
 			
@@ -59,6 +59,8 @@
 			}
 			else
 				_keys[i] = key;
+				
+			return obj;	
 		}
 
 		public function deleteByKey(key:*):void

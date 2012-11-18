@@ -2,11 +2,13 @@ package com.zutalor.view
 {
 
 	import com.zutalor.air.AirStatus;
+	import com.zutalor.application.AppRegistry;
 	import com.zutalor.controllers.AbstractUiController;
-	import com.zutalor.gesture.GestureManager;
+	import com.zutalor.events.HotKeyEvent;
+	import com.zutalor.gesture.AppGestureEvent;
+	import com.zutalor.gesture.GestureMediator;
 	import com.zutalor.gesture.GestureTypes;
-	import com.zutalor.gesture.ViewGestureProperties;
-	import com.zutalor.interfaces.IAcceptsGestureCallbacks;
+	import com.zutalor.gesture.UserInputProperties;
 	import com.zutalor.media.AudioController;
 	import com.zutalor.media.MediaPlayer;
 	import com.zutalor.media.TextToSpeech;
@@ -19,15 +21,15 @@ package com.zutalor.view
 	import com.zutalor.text.Translate;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.GridValues;
+	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
 	import flash.events.MediaEvent;
-	import org.gestouch.events.GestureEvent;
+	import org.gestouch.gestures.Gesture;
 	
-	public class ViewStateManager implements IAcceptsGestureCallbacks
-	{
-			
+	public class ViewStateManager
+	{	
 		private var _intitialized:Boolean;		
 		private var _curStateId:String;
 		private var _curState:int;
@@ -38,10 +40,12 @@ package com.zutalor.view
 		private var _soundPlayer:MediaPlayer;
 		private var _textToSpeech:TextToSpeech;
 		private var _uiController:AbstractUiController;
-		private var _gm:GestureManager;
+		private var _gm:GestureMediator;
+		private var _hkm:HotKeyManager;
 		private var _gestures:gDictionary;
 		private var _answers:gDictionary;
 		private var _viewGestures:PropertyManager;
+		private var _viewKeyboardInput:PropertyManager;
 		private var _dataFromUiController:GenericData;
 		
 		private static const soundExt:String = ".mp3";
@@ -60,8 +64,9 @@ package com.zutalor.view
 				_uiController = uiController;
 				_answers = new gDictionary();
 				_history = [];
-				_gm = new GestureManager();
-				_gm.addEventListener(GestureEvent.GESTURE_RECOGNIZED, onGesture);
+				_gm = new GestureMediator(AppRegistry.gestures);
+				_hkm = new HotKeyManager();
+				_gm.addEventListener(AppGestureEvent.RECOGNIZED, onGesture);
 				_soundPlayer = new MediaPlayer();
 				_soundPlayer.initialize("audio", new AudioController());				
 				_textToSpeech = new TextToSpeech();
@@ -73,7 +78,7 @@ package com.zutalor.view
 					
 				_textToSpeech.enabled = Props.ap.enableTextToSpeech;
 				
-				initGestures();
+				initUserInput();
 				tMeta = getMetaByName("settings");
 				
 				if (tMeta.setttings.@firstPage)
@@ -83,49 +88,60 @@ package com.zutalor.view
 			}
 		}
 				
-		private function initGestures():void
+		private function initUserInput():void
 		{
 			var tMeta:XML;
-			var vgp:ViewGestureProperties;
+			var gp:UserInputProperties;
+			var kp:UserInputProperties;
 			var l:int;
 			
 			tMeta = getMetaByName("settings");
-			_viewGestures = new PropertyManager(ViewGestureProperties);
+			_viewGestures = new PropertyManager(UserInputProperties);
 			_viewGestures.parseXML(tMeta.gestures, "gesture");
 			
 			l = _viewGestures.length;
 			for (var i:int = 0; i < l; i++)
 			{
-				vgp = _viewGestures.getPropsByIndex(i);
-				_gm.activateGesture(vgp.gestureType, StageRef.stage);
+				gp = _viewGestures.getPropsByIndex(i);
+				_gm.activateGesture(gp.type, StageRef.stage, gp.name);
+			}
+			
+			_hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey, false, 0, true);
+			_viewKeyboardInput = new PropertyManager(UserInputProperties);
+			_viewKeyboardInput.parseXML(tMeta.keystrokes, "keystroke");
+			l = _viewKeyboardInput.length;
+			for (i = 0; i < l; i++)
+			{
+				kp = _viewKeyboardInput.getPropsByIndex(i);
+				_hkm.addMapping(StageRef.stage, kp.name, kp.name);
 			}
 		}
 		
-		public function onGesture(ge:GestureEvent):void
+		private function onHotKey(hke:HotKeyEvent):void
 		{
-			var gridValues:GridValues;
-			var vgp:ViewGestureProperties;			
+			onUserInput(_viewKeyboardInput.getPropsByName(hke.message));
+		}
+		
+		private function onGesture(age:AppGestureEvent):void
+		{
+			onUserInput(_viewGestures.getPropsByName(age.name), age.gesture);
+		}
+		
+		private function onUserInput(uip:UserInputProperties, gesture:Gesture = null):void	
+		{			
 			var tMeta:XML;		
-			
-			vgp = _viewGestures.getPropsByName(ge.type);
-			
-			if (vgp)
+
+			tMeta = getMetaByIndex(_curState);
+			switch (String(tMeta.state.@type))
 			{
-				gridValues = getGridValues(ge, vgp);
-				
-				tMeta = getMetaByIndex(_curState);
-				
-				switch (String(tMeta.state.@type))
-				{
-					case "page" :
-						activateNextState();
-						break;
-					case "question" :
-						onAnswer();
-						break;
-					default :
-						break;
-				}
+				case "page" :
+					activateNextState();
+					break;
+				case "question" :
+					onAnswer();
+					break;
+				default :
+					break;
 			}
 				
 			function onAnswer():void
@@ -136,14 +152,14 @@ package com.zutalor.view
 				var qMark:int
 				var date:Date = new Date();
 			
-				if (vgp.action == "exit")
+				if (uip.action == "exit")
 					activateNextState();
-				else if (vgp.action == "answer")
+				else if (uip.action == "answer")
 				{
-					if (vgp.gestureType == GestureTypes.TAP)
-						index = gridValues.index;
-					else if (vgp.gestureType == GestureTypes.KEY_PRESS)
-						index = letterAnswers.indexOf(ge.target.char.toLowerCase());
+					if (uip.type == GestureTypes.TAP)
+						index = getGridValues(gesture, uip).index;
+					else if (uip.type == GestureTypes.KEY_PRESS)
+						index = letterAnswers.indexOf(uip.name.toLowerCase());
 
 					answerText = XML(_curStateText)..Q[index];
 					qMark = answerText.indexOf("?");
@@ -175,7 +191,7 @@ package com.zutalor.view
 			
 			function activateNextState():void
 			{				
-				switch (vgp.action)
+				switch (uip.action)
 				{
 					case "back" :
 						activateStateByIndex(_curState);
@@ -299,10 +315,10 @@ package com.zutalor.view
 				return null;
 		}
 		
-		private function getGridValues(ge:GestureEvent, vgp:ViewGestureProperties):GridValues
+		private function getGridValues(gesture:Gesture, uip:UserInputProperties):GridValues
 		{
-			return MathG.gridIndexQuantizer(ge.target.location.x, ge.target.location.y, 
-						vgp.cols, vgp.rows, StageRef.stage.stageWidth, StageRef.stage.stageHeight);					
+			return MathG.gridIndexQuantizer(gesture.location.x, gesture.location.y, 
+						uip.cols, uip.rows, StageRef.stage.stageWidth, StageRef.stage.stageHeight);					
 		}
 	}
 }

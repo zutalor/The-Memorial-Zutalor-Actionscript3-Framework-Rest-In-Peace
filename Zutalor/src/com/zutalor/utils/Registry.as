@@ -10,9 +10,9 @@ package com.zutalor.utils
 	 */
 	public class Registry implements IDisposable
 	{
-		private var _dictionary:gDictionary;
 		private var _Klass:Class;
 		private var _superClassName:String;
+		private var _dictionary:gDictionary;
 		
 		public function Registry(Klass:Class)
 		{

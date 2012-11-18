@@ -177,15 +177,6 @@ package com.zutalor.controllers
 		{
 			
 		}
-		
-		public function trackAnalytics(page:String):void
-		{
-			var tracking:String;
-			
-			tracking = Props.ap.version + ": " + page;
-			if (AirStatus.isNativeApplication)
-				Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.TRACK_PAGE_VIEW, { page:tracking } );	
-		}
 				
 		public function valueUpdated(params:*):void
 		{
@@ -196,14 +187,5 @@ package com.zutalor.controllers
 		{
 			
 		}
-		
-		// PROTECTED METHODS
-		
-		
-		protected function logError(responds:*):void
-		{
-			for each (var value:String in responds)
-				Logger.add(value);
-		}		
 	}
 }

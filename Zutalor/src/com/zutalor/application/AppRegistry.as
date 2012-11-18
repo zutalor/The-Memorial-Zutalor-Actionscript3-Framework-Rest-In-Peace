@@ -9,7 +9,7 @@ package com.zutalor.application
 	public class AppRegistry
 	{
 		public static var gestures:Registry;
-		public var components:Registry;
+		public static var components:Registry;
 		
 		public static function initialize():void
 		{

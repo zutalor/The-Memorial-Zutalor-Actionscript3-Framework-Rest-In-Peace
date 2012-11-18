@@ -9,7 +9,7 @@ package com.zutalor.events
 	public class UIEvent extends Event {
 		
 		public static const CLOSE:String = "close";
-		public static const MENU_SELECTION:String = "menuselection";
+		public static const APP_STATE_SELECTED:String = "appstateselected";
 		public static const FULLSCREEN:String = "fullscreen";
 		public static const MINIMIZE:String = "minimize";
 		public static const MAXIMIZE:String = "maximize";

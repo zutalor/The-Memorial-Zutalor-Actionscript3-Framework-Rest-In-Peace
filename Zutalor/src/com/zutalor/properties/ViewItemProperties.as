@@ -41,7 +41,7 @@
 		public static const PROPERTY:String = "property";
 		
 		// tap types
-		public static const MENU_CALL:String = "menuCall";
+		public static const APP_STATE_CHANGE:String = "appStateChange";
 		public static const UI_EVENT:String = "uiEvent";
 		public static const PLUGIN_METHOD:String = "pluginMethodCall";
 		public static const CONTAINER_METHOD:String = "containerMethodCall";

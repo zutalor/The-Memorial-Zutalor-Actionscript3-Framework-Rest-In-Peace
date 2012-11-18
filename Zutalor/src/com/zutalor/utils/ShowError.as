@@ -9,7 +9,10 @@ package com.zutalor.utils
 	{	
 		public static function fail(caller:Class = null, message:String = null):void
 		{
-			throw new Error(getQualifiedClassName(caller) + ": " + message);
+			var mess:String = getQualifiedClassName(caller) + ": " + message;
+			SimpleMessage.show(mess);
+			//throw new Error(mess);
+
 		}
 	}
 }

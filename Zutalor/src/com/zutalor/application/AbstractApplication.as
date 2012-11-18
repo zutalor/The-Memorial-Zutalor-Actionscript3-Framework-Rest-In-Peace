@@ -6,6 +6,7 @@ package com.zutalor.application
 	import com.zutalor.loaders.URL;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.ui.Dialog;
+	import com.zutalor.utils.StageRef;
 	import flash.desktop.NativeApplication;
 	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
@@ -22,36 +23,43 @@ package com.zutalor.application
 	public class AbstractApplication extends Sprite
 	{		
 		private var _appController:AppController;
-		private var _ip:String;
+		
+		public function AbstractApplication()
+		{
+			init();
+		}
+		
+		private function init():void
+		{
+			AppRegistry.initialize();
+			AirStatus.initialize();
+			Plugins.registerClassAndCreateCachedInstance(DialogController);
+		}
 		
 		public function start(bootXmlUrl:String, splashEmbedClassName:String=null):void
 		{
 			var paramObj:Object
 			var url:String;
+			var ip:String;
 			
 			parent.root.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, 
 																							onUncaughtError);
 			try {
 				paramObj = LoaderInfo(this.root.loaderInfo).parameters;
 				url = String(paramObj["url"]);
-				_ip = String(paramObj["ip"]);
+				ip = String(paramObj["ip"]);
 			} catch (e:*) { }
 		
 			if (url != "undefined" && url != "/" && url != null) 
 				URL.open("/#/" + url.substring(1), "_self");
-			else
-			{
-				AirStatus.initialize();
-				AppRegistry.initialize();
-				addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-				Plugins.registerClassAndCreateCachedInstance(DialogController);
-				_appController = new AppController(bootXmlUrl, splashEmbedClassName);
-			}
+				
+			_appController = new AppController(bootXmlUrl, ip, splashEmbedClassName);	
+			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
 		private function onAddedToStage(e:Event):void
 		{
-			
+			StageRef.stage = stage;
 			stage.stageFocusRect = false;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
@@ -60,7 +68,7 @@ package com.zutalor.application
 			
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			_appController.addEventListener(AppEvent.INITIALIZED, onInitialized);
-			_appController.init(stage, _ip);	
+			_appController.init();
 		}
 	
 		private function onInitialized(e:Event):void

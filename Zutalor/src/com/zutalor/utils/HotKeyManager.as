@@ -49,7 +49,7 @@
 		 * 
 		 * @example Adding mappings of different types.
 		 * <listing>	
-		 * km=HotKeyManager.gi();
+		 * 
 		 * km.addMapping(stage,"f", "message");
 		 * km.addMapping(stage,"Whatup","message");
 		 * km.addMapping(stage,"CONTROL+SHIFT+M", "message");

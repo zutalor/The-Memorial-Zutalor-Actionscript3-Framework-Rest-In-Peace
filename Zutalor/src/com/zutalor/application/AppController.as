@@ -30,8 +30,6 @@
 	import com.zutalor.view.ViewLoader;
 	import com.zutalor.view.ViewUtils;
 	import flash.display.Bitmap;
-	import flash.display.Sprite;
-	import flash.display.Stage;
 	import flash.display.StageOrientation;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -73,19 +71,18 @@
 		private const DEBUG_ANALYTICS:Boolean =  false;
 		
 		
-		public function AppController(bootXmlUrl:String,splashClassName:String=null)
+		public function AppController(bootXmlUrl:String, ip:String, splashClassName:String=null)
 		{
 			_splashEmbedClassName = splashClassName;
+			_ip = ip;
 			_bootXmlUrl = bootXmlUrl;
 		}
 		
-		public function init(stage:Stage, ip:String):void
+		public function init():void
 		{	
 			if (_initialized)
 				return;
-				
-			_ip = ip;
-			StageRef.stage = stage;		
+			
 			if (_splashEmbedClassName)
 				showSplash();
 				
@@ -112,17 +109,7 @@
 				SWFAddress.setValue(appState);	
 				_curViewProps = null;
 			}
-		}	
-		
-		private function arrangeUI():void
-		{	
-			Mouse.show();
-			Scale.calcAppScale(StageRef.stage, ap.designWidth, ap.designHeight);
-			Scale.constrainAppScaleRatio();
-			ap.contentLayer.width = StageRef.stage.stageWidth;
-			ap.contentLayer.height = StageRef.stage.stageHeight;
-			vu.arrangeAppContainers();
-		}						
+		}			
 		
 		private function changeAppState(state:String):void 
 		{	
@@ -157,7 +144,7 @@
 			ap.stageVideoAvailable = (e.availability == StageVideoAvailability.AVAILABLE);
 		}
 		
-		private function onMenuSelection(uie:UIEvent):void
+		private function onStateSelected(uie:UIEvent):void
 		{
 			stateChangeSWFAddress(uie.state);
 		}		
@@ -207,9 +194,7 @@
 		private function onStageResize(e:Event):void
 		{
 			if (!ap.ignoreStageResize)
-			{
-				arrangeUI();
-			}
+				vu.onStageChange();
 		}
 		
 		private function checkOrientation():void
@@ -252,6 +237,8 @@
 			}
 			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, onSWFAddressChange);
 			dispatchEvent(new AppEvent(AppEvent.INITIALIZED));	
+			if (_splashEmbedClassName)
+				StageRef.stage.removeChild((StageRef.stage.getChildByName("splash")));
 		}	
 		
 		private function processStateChange():void
@@ -344,13 +331,11 @@
 									{ page:ap.appName + " " + ap.version + " started." } );
 				
 			}
-			if (_splashEmbedClassName)
-				StageRef.stage.removeChild((StageRef.stage.getChildByName("splash")));
-	
-			StageRef.stage.addEventListener(UIEvent.MENU_SELECTION, onMenuSelection);	
+			
+			StageRef.stage.addEventListener(UIEvent.APP_STATE_SELECTED, onStateSelected);	
 			StageRef.stage.addEventListener(Event.RESIZE, onStageResize);
 			MasterClock.registerCallback(checkOrientation, true, 500);	
-			arrangeUI();
+			vu.onStageChange();
 			if (ap.loadingSequenceName)
 			{
 				_loadingSequence = new Sequence();

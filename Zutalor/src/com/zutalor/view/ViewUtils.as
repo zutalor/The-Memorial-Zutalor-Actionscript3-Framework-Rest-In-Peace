@@ -18,6 +18,7 @@
 	import flash.display.DisplayObject;
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
+	import flash.ui.Mouse;
 
 	/**
 	 * ...
@@ -79,10 +80,10 @@
 			var vp:ViewProperties;
 			var n:int;			
 			
-			n = Props.ap.contentLayer.numChildren;
+			n = ap.contentLayer.numChildren;
 			for (var i:int = 0; i < n; i++)
 			{
-				c = Props.ap.contentLayer.getChildAt(i);
+				c = ap.contentLayer.getChildAt(i);
 				
 				try
 				{
@@ -93,6 +94,16 @@
 				} catch (e:Error) {}
 			}	
 		}
+		
+		public function onStageChange():void
+		{	
+			Mouse.show();
+			Scale.calcAppScale(StageRef.stage, ap.designWidth, ap.designHeight);
+			Scale.constrainAppScaleRatio();
+			ap.contentLayer.width = StageRef.stage.stageWidth;
+			ap.contentLayer.height = StageRef.stage.stageHeight;
+			arrangeAppContainers();
+		}			
 		
 		public function positionAppContainer(vp:ViewProperties):void
 		{				

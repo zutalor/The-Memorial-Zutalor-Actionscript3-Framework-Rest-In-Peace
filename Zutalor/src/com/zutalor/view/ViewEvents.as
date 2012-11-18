@@ -419,8 +419,8 @@ package com.zutalor.view
 						case ViewItemProperties.UI_EVENT :
 							uiEvent();
 							break;
-						case ViewItemProperties.MENU_CALL :
-							menuCall();
+						case ViewItemProperties.APP_STATE_CHANGE :
+							appStateChange();
 							break;
 						case ViewItemProperties.PLUGIN_METHOD :
 							PluginMethodCall();
@@ -435,9 +435,9 @@ package com.zutalor.view
 							break;
 					}
 					
-					function menuCall():void
+					function appStateChange():void
 					{
-						vc.container.dispatchEvent(new UIEvent(UIEvent.MENU_SELECTION, 
+						vc.container.dispatchEvent(new UIEvent(UIEvent.APP_STATE_SELECTED, 
 																vc.container.name, vip.action));
 					}
 					
