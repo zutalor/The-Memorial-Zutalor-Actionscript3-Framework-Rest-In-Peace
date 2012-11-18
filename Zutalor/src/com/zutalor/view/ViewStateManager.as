@@ -24,6 +24,7 @@ package com.zutalor.view
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.ShowError;
+	import com.zutalor.utils.SimpleMessage;
 	import com.zutalor.utils.StageRef;
 	import flash.events.MediaEvent;
 	import org.gestouch.gestures.Gesture;
@@ -124,6 +125,7 @@ package com.zutalor.view
 		
 		private function onGesture(age:AppGestureEvent):void
 		{
+			SimpleMessage.show(String(age.gesture));
 			onUserInput(_viewGestures.getPropsByName(age.name), age.gesture);
 		}
 		

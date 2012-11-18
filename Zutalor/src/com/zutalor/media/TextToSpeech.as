@@ -3,6 +3,7 @@ package com.zutalor.media
 	import com.zutalor.loaders.URLLoaderG;
 	import com.zutalor.ui.Dialog;
 	import com.zutalor.utils.MathG;
+	import com.zutalor.utils.SimpleMessage;
 	import com.zutalor.utils.StringUtils;
 	import flash.events.Event;
 	import flash.media.SoundChannel;
@@ -17,11 +18,11 @@ package com.zutalor.media
 		public const gender:Array = ["female", "male"];
 		
 		public var voice:String = "usenglishfemale";
-		public var speed:String = "0";
+		public var speed:String = "2"; //-10 to 10
 		public var pitch:String = "100"; //0-200
 		public var format:String = "mp3";
 		public var frequency:String = "44100";
-		public var bitrate:String = "128";
+		public var bitrate:String = "64";
 		public var bitdepth:String = "16";
 		
 		public var apiUrl:String;
@@ -138,6 +139,7 @@ package com.zutalor.media
 					catch (e:Error) {}
 					if (result != null)
 					{
+						SimpleMessage.show(result);
 						trace(result);
 					}
 				}

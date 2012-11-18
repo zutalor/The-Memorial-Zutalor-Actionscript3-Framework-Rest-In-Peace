@@ -68,7 +68,7 @@ package com.zutalor.application
 			
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			_appController.addEventListener(AppEvent.INITIALIZED, onInitialized);
-			_appController.init();
+			_appController.initialize();
 		}
 	
 		private function onInitialized(e:Event):void

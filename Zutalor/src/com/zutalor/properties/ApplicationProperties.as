@@ -45,7 +45,6 @@
 		//air & phone related
 		
 		public var googleAnalyticsAccount:String;
-		public var ignoreStageResize:Boolean;
 		public var portrait:Boolean;
 		public var targetPortable:Boolean;		
 		public var contentLayer:ViewContainer;
@@ -106,7 +105,6 @@
 			systemXmlUrls = appSettings.systemXmlUrls.@value;
 			systemXmlPath = appSettings.systemXmlPath.@value;
 			
-			ignoreStageResize = StringUtils.toBoolean(appSettings.ignoreStageResize.@value);
 			portrait = StringUtils.toBoolean(appSettings.portrait.@value);
 			
 			Focus.enabled = StringUtils.toBoolean(appSettings.showFocus.@value);

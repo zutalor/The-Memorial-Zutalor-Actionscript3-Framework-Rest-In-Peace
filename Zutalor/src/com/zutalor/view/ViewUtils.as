@@ -16,6 +16,8 @@
 	import com.zutalor.utils.Singleton;
 	import com.zutalor.utils.StageRef;
 	import flash.display.DisplayObject;
+	import flash.display.Stage;
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
 	import flash.ui.Mouse;
@@ -95,7 +97,7 @@
 			}	
 		}
 		
-		public function onStageChange():void
+		public function onStageResize(e:Event = null):void
 		{	
 			Mouse.show();
 			Scale.calcAppScale(StageRef.stage, ap.designWidth, ap.designHeight);
@@ -119,7 +121,8 @@
 				switch (vp.resizeMode)
 				{
 					case SCALE :
-						vp.container.scaleX = vp.container.scaleY = Scale.curAppScale;							
+						vp.container.width *= Scale.curAppScale;
+						vp.container.height *= Scale.curAppScale;						
 						break;
 					case RESIZE_TO_STAGE :
 						vp.container.width = StageRef.stage.stageWidth;				

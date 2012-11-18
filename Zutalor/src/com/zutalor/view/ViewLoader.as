@@ -41,7 +41,7 @@
 			return vp.container;
 		}
 				
-		public function load(viewId:String, menuName:String = null, onComplete:Function=null):void
+		public function load(viewId:String, appState:String = null, onComplete:Function=null):void
 		{			
 			_onComplete = onComplete;
 
@@ -106,7 +106,7 @@
 			if (!c.viewController)
 				c.viewController = new ViewController();
 						
-			c.viewController.load(viewId, menuName, viewLoadComplete);					
+			c.viewController.load(viewId, appState, viewLoadComplete);					
 		}	
 		
 		private function viewLoadComplete():void

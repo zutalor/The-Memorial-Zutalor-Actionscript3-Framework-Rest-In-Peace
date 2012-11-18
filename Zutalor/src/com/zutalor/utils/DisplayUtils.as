@@ -158,6 +158,10 @@ package com.zutalor.utils
 		
 		public static function alignInRect(displayObject : DisplayObject, width:Number, height:Number, align : String = "center", hPad:int = 0, vPad:int = 0):void
 		{
+			var scaleX:Number;
+			var scaleY:Number;
+			var scale:Number;
+			
 			var wD : Number = displayObject.width;
 			var hD : Number = displayObject.height;
 			
@@ -166,6 +170,22 @@ package com.zutalor.utils
 									
 			var tX : Number = 0.0;
 			var tY : Number = 0.0;
+			
+			if (wD + hPad > width)
+				scaleX = width / (wD + hPad);
+			
+			if (hD + vPad > height)
+				scaleY = height / (hD + vPad);
+				
+			if (scaleY < scaleX)
+				scale = scaleY;
+			else
+				scale = scaleX;
+			
+			if (scale)
+				displayObject.scaleX = displayObject.scaleY = scale;
+			else
+				scale = 1;
 			
 			switch(align)
 			{
@@ -211,10 +231,10 @@ package com.zutalor.utils
 					break;
 			}
 			if (hPad)
-				tX += hPad;
+				tX += (hPad * scale);
 			
 			if (vPad)
-				tY += vPad;
+				tY += (vPad * scale);
 			
 				
 			displayObject.x = tX;

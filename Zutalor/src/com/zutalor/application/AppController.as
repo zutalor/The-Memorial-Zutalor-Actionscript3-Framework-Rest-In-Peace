@@ -21,10 +21,12 @@
 	import com.zutalor.sequence.Sequence;
 	import com.zutalor.text.Translate;
 	import com.zutalor.ui.Spinner;
+	import com.zutalor.utils.DisplayUtils;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.Resources;
 	import com.zutalor.utils.Scale;
+	import com.zutalor.utils.SimpleMessage;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.ViewCloser;
 	import com.zutalor.view.ViewLoader;
@@ -64,7 +66,6 @@
 		private var _curAppState:String;
 		private var _splashEmbedClassName:String;
 		private var _bootXmlUrl:String;
-		private var _initialized:Boolean;
 		private var _currentOrientation:String;
 		private var _ip:String;
 
@@ -78,17 +79,14 @@
 			_bootXmlUrl = bootXmlUrl;
 		}
 		
-		public function init():void
+		public function initialize():void
 		{	
-			if (_initialized)
-				return;
-			
 			if (_splashEmbedClassName)
 				showSplash();
 				
 			MasterClock.initialize();
 			MasterClock.defaultInterval = 1000 / StageRef.stage.frameRate;
-			Props.init(_bootXmlUrl, initialize);
+			Props.init(_bootXmlUrl, init);
 		}
 		
 		// PRIVATE METHODS		
@@ -100,7 +98,7 @@
 			
 			cc = new ViewCloser();
 			cc.close(viewName, onComplete);
-			appState = vpm.getPropsById(viewName).menuName;
+			appState = ViewProperties(vpm.getPropsById(viewName)).appState;
 			if (appState)
 			{
 				_appStateCallStack.deleteByKey(appState);
@@ -111,7 +109,7 @@
 			}
 		}			
 		
-		private function changeAppState(state:String):void 
+		private function enableAppState(state:String):void 
 		{	
 			_curAppState = state;
 			if (_curViewProps && !_curViewProps.contentPersists)
@@ -132,10 +130,9 @@
 		{
 			var splash:Bitmap;
 			splash = Resources.createInstance(_splashEmbedClassName);
-			splash.name = "splash";
+			splash.name = "__splash";
 			StageRef.stage.addChild(splash);
-			splash.x = (StageRef.stage.stageWidth - splash.width) * .5;
-			splash.y = (StageRef.stage.stageHeight - splash.height) * .5;
+			DisplayUtils.alignInRect(splash, StageRef.stage.fullScreenWidth, StageRef.stage.fullScreenHeight, "center");
 			TweenMax.from(splash, 1, { alpha:0 } );
 		}
 	
@@ -171,31 +168,21 @@
 				page = page.substring(1);
 			
 			if (page || int(page) < Props.pr.appStates.length)
-				changeAppState(page);
+				enableAppState(page);
 		}
 		
 		private function stateChangeSWFAddress(state:String):void 
 		{	
-			if (state)
+			if (state && !curContainerLoading)
 			{
-				Mouse.show();
-				if (!curContainerLoading)
-				{
-					state = state.toLowerCase();										
-					SWFAddress.setTitle(ap.appName + " - " + state);
-					SWFAddress.setValue(state);	
-					if (ap.googleAnalyticsAccount && AirStatus.isNativeApplication || DEBUG_ANALYTICS)
-						Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.TRACK_PAGE_VIEW, 
-																				{ page:state } );
-				}	
+				state = state.toLowerCase();										
+				SWFAddress.setTitle(ap.appName + " - " + state);
+				SWFAddress.setValue(state);	
+				if (ap.googleAnalyticsAccount && AirStatus.isNativeApplication || DEBUG_ANALYTICS)
+					Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.TRACK_PAGE_VIEW, 
+																			{ page:state } );
 			}
 		}	
-				
-		private function onStageResize(e:Event):void
-		{
-			if (!ap.ignoreStageResize)
-				vu.onStageChange();
-		}
 		
 		private function checkOrientation():void
 		{
@@ -227,9 +214,7 @@
 		private function loadFirstPage():void
 		{
 			if (_firstState)
-			{
-				changeAppState(_firstState);
-			}
+				enableAppState(_firstState);
 			else
 			{
 				SWFAddress.setTitle(ap.appName);
@@ -238,7 +223,7 @@
 			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, onSWFAddressChange);
 			dispatchEvent(new AppEvent(AppEvent.INITIALIZED));	
 			if (_splashEmbedClassName)
-				StageRef.stage.removeChild((StageRef.stage.getChildByName("splash")));
+				StageRef.stage.removeChild((StageRef.stage.getChildByName("__splash")));
 		}	
 		
 		private function processStateChange():void
@@ -258,7 +243,7 @@
 				if (appStateProps.type == AppStateProperties.SEQUENCE)
 				{
 						_loadingSequence = new Sequence();
-						_loadingSequence.play(appStateProps.sequenceName, this, changeAppState, stateChangeComplete);
+						_loadingSequence.play(appStateProps.sequenceName, this, enableAppState, stateChangeComplete);
 				}
 				else if (appStateProps.viewId && !_appStateCallStack.getByKey(_curAppState)) 
 				{
@@ -292,17 +277,15 @@
 				dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}
-		
-		// INITIALIZATION
 		 	
-		private function initialize():void
+		private function init():void
 		{
 			ap = ApplicationProperties.gi();
 			vu = ViewUtils.gi();
 			mu = MotionUtils.gi();
 			vpm = Props.views;
 			
-			setIpAddress();			
+			ap.ip = _ip;
 			StageRef.stage.addEventListener(StageVideoAvailabilityEvent.STAGE_VIDEO_AVAILABILITY, 
 																					onStageVideoAbility);	
 			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, onSWFAddressFirstBroadcast);			
@@ -329,32 +312,20 @@
 									{ display:ap.contentLayer, accountId:ap.googleAnalyticsAccount, debug:DEBUG_ANALYTICS } );
 				Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.TRACK_PAGE_VIEW, 
 									{ page:ap.appName + " " + ap.version + " started." } );
-				
 			}
 			
 			StageRef.stage.addEventListener(UIEvent.APP_STATE_SELECTED, onStateSelected);	
-			StageRef.stage.addEventListener(Event.RESIZE, onStageResize);
+			StageRef.stage.addEventListener(Event.RESIZE, vu.onStageResize);
 			MasterClock.registerCallback(checkOrientation, true, 500);	
-			vu.onStageChange();
+			vu.onStageResize();
+						
 			if (ap.loadingSequenceName)
 			{
 				_loadingSequence = new Sequence();
-				_loadingSequence.play(ap.loadingSequenceName, this, changeAppState, loadFirstPage);
+				_loadingSequence.play(ap.loadingSequenceName, this, enableAppState, loadFirstPage);
 			}
 			else
 				loadFirstPage();
-				
-			function setIpAddress():void
-			{
-				if (!AirStatus.isNativeApplication)
-					ap.ip = _ip; // can be passed into the app through flash vars & php.
-				else
-				{
-					var netInterfaces:Vector.<NetworkInterface> = NetworkInfo.networkInfo.findInterfaces();
-					var addresses:Vector.<InterfaceAddress> = netInterfaces[0].addresses;
-					ap.ip = addresses[0].address;
-				}
-			}
 		}		
 	}
 }

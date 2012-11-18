@@ -1,4 +1,4 @@
-package com.zutalor.view
+package depreciated
 {
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.containers.ViewContainer;

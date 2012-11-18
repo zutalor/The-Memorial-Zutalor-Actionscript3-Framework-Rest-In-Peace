@@ -20,14 +20,11 @@
 		public static const KEEP:String = "keep";
 		public static const GRID:String = "grid";
 		
-		private var _containerName:String;				
-		public var viewController:ViewController;
-			
+		private var _containerName:String;		
 		private var _width:Number;
 		private var _height:Number;
 		
-		protected var pr:Presets;
-		protected var ap:ApplicationProperties;
+		public var viewController:ViewController;
 				
 		public function ViewContainer(containerName:String, width:Number=0, height:Number=0) 
 		{
@@ -37,11 +34,8 @@
 		
 		private function init(width:Number = 0, height:Number = 0):void
 		{
-			pr = Presets.gi();
-			ap = ApplicationProperties.gi();			
-
-			_width = width;
-			_height = height
+			this.width = width;
+			this.height = height;
 			cacheAsBitmap = true;
 		}
 		
@@ -82,7 +76,7 @@
 		
 		override public function set width(n:Number):void
 		{
-			_width = n;
+			super.width = _width = n;
 		}
 		
 		override public function get width():Number
@@ -91,13 +85,13 @@
 		}
 		
 		override public function get height():Number
-		{						
+		{
 			return _height;				
 		}		
 
 		override public function set height(n:Number):void
 		{
-			_height = n;
+			super.height = _height = n;
 		}
 		
 		public function tweenScrollPercentY(percent:Number, tweenTime:Number = 0.5, ease:Function = null):void
@@ -141,7 +135,7 @@
 			dispatchEvent(new ContainerEvent(ContainerEvent.CONTENT_CHANGED));
 		}	
 		
-		public function autoArrangeContainerChildren(properties:Object):void
+		public function autoArrangeContainerChildren(options:Object):void
 		{
 			var i:int = 0;
 			var width:int = 0;
@@ -149,13 +143,13 @@
 			var padding:int = 0;
 			var arrange:String = HORIZONTAL;
 			
-			if ("padding" in properties)
-				padding = properties["padding"];
+			if ("padding" in options)
+				padding = options["padding"];
 				
-			if ("arrange" in properties)	
-				arrange = properties["arrange"];
+			if ("arrange" in options)	
+				arrange = options["arrange"];
 				
-			for (i = 0; i < numContainerChildren; i++)
+			for (i = 0; i < numChildren; i++)
 			{
 				if (arrange == HORIZONTAL)
 				{
@@ -176,13 +170,8 @@
 					height += getChildAt(i).height;
 				}
 			}
-			if (numContainerChildren)
+			if (numChildren)
 				dispatchEvent(new ContainerEvent(ContainerEvent.CONTENT_CHANGED));
-		}
-		
-		public function get numContainerChildren():int
-		{
-			return numChildren;
 		}
 	}
 }

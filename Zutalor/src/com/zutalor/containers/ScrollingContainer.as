@@ -160,7 +160,7 @@
 		
 		override public function contentChanged(ev:ContainerEvent = null):void
 		{
-			if (numContainerChildren == 0)
+			if (numChildren == 0)
 			{
 				tweenScrollPercentX(0);
 				tweenScrollPercentY(0);
