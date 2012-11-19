@@ -64,17 +64,7 @@ package com.zutalor.controllers
 				NativeApplication.nativeApplication.exit();
 			}
 		}
-		
-		public function get message():String
-		{
-			return null;
-		}
-		
-		public function set message(message:String):void
-		{
-
-		}
-		
+				
 		public function onSearchKey():void
 		{
 			
@@ -119,9 +109,9 @@ package com.zutalor.controllers
 			return null;
 		}
 		
-		public function onModelChange(args:*=null):void
+		public function onModelChange(args:*=null, transition:String = null):void
 		{
-			_vController.onModelChange(args);
+			_vController.onModelChange(args, transition);
 		}
 		
 		public function onModelError(responds:*=null):void

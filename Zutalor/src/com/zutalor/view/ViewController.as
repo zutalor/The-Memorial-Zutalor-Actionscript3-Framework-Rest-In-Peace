@@ -1,10 +1,13 @@
 ﻿package com.zutalor.view
 {
+	import com.greensock.easing.Expo;
 	import com.greensock.TweenMax;
 	import com.gskinner.utils.IDisposable;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
+	import com.zutalor.fx.Easing;
+	import com.zutalor.fx.Transition;
 	import com.zutalor.fx.TransitionTypes;
 	import com.zutalor.interfaces.IMediaPlayer;
 	import com.zutalor.objectPool.ObjectPool;
@@ -156,20 +159,33 @@
 			_viewEvents.onItemFocusIn();
 		}
 		
-		public function onModelChange(itemNames:String=null):void
+		public function onModelChange(itemNames:String = null, transition:String = null):void
 		{
 			var items:Array
+			var t:Transition;
 			
-			if (itemNames)
+			if (transition)
 			{
-				items = itemNames.split(",");
-				for (var i:int = 0; i < items.length; i++)
-					copyModelToView(items[i]);
+				t = new Transition();
+				t.simpleRender(container, transition, "out", copyData);
 			}
-			else
+			
+			function copyData():void
 			{
-				setStatusMessage(successMessage);
-				copyModelToView();
+				if (itemNames)
+				{
+					items = itemNames.split(",");
+					for (var i:int = 0; i < items.length; i++)
+						copyModelToView(items[i]);
+				}
+				else
+				{
+					setStatusMessage(successMessage);
+					copyModelToView();
+				}
+				
+				t = new Transition();
+				t.simpleRender(container, transition, "in");
 			}
 		}
 		

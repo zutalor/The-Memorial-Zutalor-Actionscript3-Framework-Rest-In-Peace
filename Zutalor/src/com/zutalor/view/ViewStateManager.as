@@ -1,6 +1,5 @@
 package com.zutalor.view
 {
-
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.application.AppRegistry;
 	import com.zutalor.controllers.AbstractUiController;
@@ -28,6 +27,7 @@ package com.zutalor.view
 	import com.zutalor.utils.StageRef;
 	import flash.events.MediaEvent;
 	import org.gestouch.gestures.Gesture;
+	import org.gestouch.gestures.SwipeGesture;
 	
 	public class ViewStateManager
 	{	
@@ -93,7 +93,7 @@ package com.zutalor.view
 		{
 			var tMeta:XML;
 			var gp:UserInputProperties;
-			var kp:UserInputProperties;
+			var up:UserInputProperties;
 			var l:int;
 			
 			tMeta = getMetaByName("settings");
@@ -113,8 +113,8 @@ package com.zutalor.view
 			l = _viewKeyboardInput.length;
 			for (i = 0; i < l; i++)
 			{
-				kp = _viewKeyboardInput.getPropsByIndex(i);
-				_hkm.addMapping(StageRef.stage, kp.name, kp.name);
+				up = _viewKeyboardInput.getPropsByIndex(i);
+				_hkm.addMapping(StageRef.stage, up.name, up.name);
 			}
 		}
 		
@@ -125,8 +125,20 @@ package com.zutalor.view
 		
 		private function onGesture(age:AppGestureEvent):void
 		{
+			var uip:UserInputProperties;
+			
+			uip = _viewGestures.getPropsByName(age.name);
+			
 			SimpleMessage.show(String(age.gesture));
-			onUserInput(_viewGestures.getPropsByName(age.name), age.gesture);
+			if (age.gesture is SwipeGesture)
+			{
+				if (SwipeGesture(age.gesture).offsetX > 1)
+					uip.action = uip.actionRight;
+				else if (SwipeGesture(age.gesture).offsetY < 1)
+					uip.action = uip.actionLeft;
+			}
+			
+			onUserInput(uip, age.gesture);
 		}
 		
 		private function onUserInput(uip:UserInputProperties, gesture:Gesture = null):void	
@@ -155,7 +167,7 @@ package com.zutalor.view
 				var date:Date = new Date();
 			
 				if (uip.action == "exit")
-					activateNextState();
+					_uiController.exit();
 				else if (uip.action == "answer")
 				{
 					if (uip.type == GestureTypes.TAP)
@@ -246,8 +258,9 @@ package com.zutalor.view
 			page = TextUtil.stripSurroundedBy(page, "<hide>", "</hide>");
 			
 			fortextToSpeech = TextUtil.stripSurroundedBy(page, "<DISPLAYTEXT>", "</DISPLAYTEXT>");
-			_uiController.message = TextUtil.stripSurroundedBy(page, "<PHONETIC>", "</PHONETIC>");
-				
+			_uiController.getValueObject().text = TextUtil.stripSurroundedBy(page, "<PHONETIC>", "</PHONETIC>");
+			_uiController.onModelChange(null, "slideLeft");
+			
 			if (XML(tp.tMeta).state.@type == "prompt")
 			{
 				next = XML(tp.tMeta).state.@next;

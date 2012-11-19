@@ -17,11 +17,13 @@
 		private var _dc:DisplayObject;
 		private var _name:String;
 		private var _transType:String;
+		
 		private var _xValue:Number;
 		private var _yValue:Number;
 		private var _ease:Function;
 		private var _seconds:Number;
 		private var _delay:Number;
+		
 		private var _inOut:String;
 		private var _tweenObject:Object;
 		private var _tweenObjectForWipe:Object;
@@ -68,10 +70,10 @@
 				
 				}
 				
-				if (seconds != -1)
+				if (_seconds != -1)
 					_seconds = seconds;
 					
-				if (delay != -1)
+				if (_delay != -1)
 					_delay = delay;
 				
 				_inOut = inOut;
@@ -80,16 +82,6 @@
 				_savedAlpha = dc.alpha;
 				doTransition();
 			}
-		}
-		
-		public function set seconds(s:Number):void
-		{
-			_seconds = s;
-		}
-		
-		public function set delay(s:Number):void
-		{
-			_delay = s;
 		}
 		
 		public function render(dc:DisplayObject, transType:String, ease:Function, seconds:Number, delay:Number,
@@ -106,12 +98,12 @@
 			{	
 				_dc = dc;
 				_transType = transType;
-				_xValue = xValue;
-				_yValue = yValue;
-				_ease = ease;
+				this._xValue = xValue;
+				this._yValue = yValue;
+				this._ease = ease;
 				_inOut = inOut;
-				_delay = delay;
-				_seconds = seconds;
+				this._delay = delay;
+				this._seconds = seconds;
 				_savedX = dc.x;
 				_savedY = dc.y;			
 				_savedAlpha = dc.alpha;
@@ -131,7 +123,8 @@
 		private function doTransition():void
 		{			
 			_tweenObject = null;
-			_tweenObjectForWipe = null;		
+			_tweenObjectForWipe = null;	
+			_dc.visible = true;
 						
 			if (_transType.indexOf(TransitionTypes.SCALE) != -1)
 				_tweenObject = ScaleIt.tweenParams(ViewContainer(_dc), _inOut, _xValue, _yValue);

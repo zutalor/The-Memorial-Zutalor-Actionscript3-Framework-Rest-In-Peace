@@ -16,7 +16,7 @@
 		function exit():void
 		function dispose():void
 		function onModelError(args:* = null):void
-		function onModelChange(responds:* = null):void
+		function onModelChange(args:* = null, transition:String = null):void
 		function valueUpdated(params:*):void
 		function onSearchKey():void
 		function onMenuKey():void
