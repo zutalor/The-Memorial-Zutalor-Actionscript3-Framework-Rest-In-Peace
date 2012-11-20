@@ -70,10 +70,10 @@
 				
 				}
 				
-				if (_seconds != -1)
+				if (seconds != -1)
 					_seconds = seconds;
 					
-				if (_delay != -1)
+				if (delay != -1)
 					_delay = delay;
 				
 				_inOut = inOut;
@@ -98,12 +98,12 @@
 			{	
 				_dc = dc;
 				_transType = transType;
-				this._xValue = xValue;
-				this._yValue = yValue;
-				this._ease = ease;
+				_xValue = xValue;
+				_yValue = yValue;
+				_ease = ease;
 				_inOut = inOut;
-				this._delay = delay;
-				this._seconds = seconds;
+				_delay = delay;
+				_seconds = seconds;
 				_savedX = dc.x;
 				_savedY = dc.y;			
 				_savedAlpha = dc.alpha;

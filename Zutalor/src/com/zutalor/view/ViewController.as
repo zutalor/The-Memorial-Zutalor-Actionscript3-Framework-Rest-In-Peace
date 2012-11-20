@@ -23,6 +23,9 @@
 	import com.zutalor.ui.Focus;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.ShowError;
+	import com.zutalor.utils.StageRef;
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.events.Event;
 
 	public class ViewController implements IDisposable
@@ -163,27 +166,38 @@
 		{
 			var items:Array
 			var t:Transition;
+			var bmd:BitmapData;
+			var bm:Bitmap;
 			
 			if (transition)
 			{
+				bmd = new BitmapData(StageRef.stage.stageWidth, StageRef.stage.stageHeight);
+				bmd.draw(container);
+				bm = new Bitmap(bmd);
+				bm.visible = true;
+				StageRef.stage.addChild(bm);				
 				t = new Transition();
-				t.simpleRender(container, transition, "out", copyData);
+				t.simpleRender(bm, transition, "out", hideBm);
+				
+				function hideBm():void
+				{
+					bm.visible = false;
+				}
+			}
+			if (itemNames)
+			{
+				items = itemNames.split(",");
+				for (var i:int = 0; i < items.length; i++)
+					copyModelToView(items[i]);
+			}
+			else
+			{
+				setStatusMessage(successMessage);
+				copyModelToView();
 			}
 			
-			function copyData():void
+			if (transition)
 			{
-				if (itemNames)
-				{
-					items = itemNames.split(",");
-					for (var i:int = 0; i < items.length; i++)
-						copyModelToView(items[i]);
-				}
-				else
-				{
-					setStatusMessage(successMessage);
-					copyModelToView();
-				}
-				
 				t = new Transition();
 				t.simpleRender(container, transition, "in");
 			}

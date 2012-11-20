@@ -31,7 +31,8 @@ package com.zutalor.view
 	
 	public class ViewStateManager
 	{	
-		private var _intitialized:Boolean;		
+		private var _intitialized:Boolean;
+		private var _prevState:int;
 		private var _curStateId:String;
 		private var _curState:int;
 		private var _history:Array;
@@ -48,6 +49,8 @@ package com.zutalor.view
 		private var _viewGestures:PropertyManager;
 		private var _viewKeyboardInput:PropertyManager;
 		private var _dataFromUiController:GenericData;
+		private var _transitionNext:String;
+		private var _transitionPrevious:String;
 		
 		private static const soundExt:String = ".mp3";
 		private static const letterAnswers:String = "abcdefgh";
@@ -81,6 +84,9 @@ package com.zutalor.view
 				
 				initUserInput();
 				tMeta = getMetaByName("settings");
+				
+				_transitionNext = tMeta.settings.@transitionNext;
+				_transitionPrevious = tMeta.settings.@transitionPrevious;
 				
 				if (tMeta.setttings.@firstPage)
 					activateStateById(tMeta.settings.@firstPage);
@@ -259,7 +265,15 @@ package com.zutalor.view
 			
 			fortextToSpeech = TextUtil.stripSurroundedBy(page, "<DISPLAYTEXT>", "</DISPLAYTEXT>");
 			_uiController.getValueObject().text = TextUtil.stripSurroundedBy(page, "<PHONETIC>", "</PHONETIC>");
-			_uiController.onModelChange(null, "slideLeft");
+			
+			if (_curState > _prevState)
+				_uiController.onModelChange(null, _transitionNext);
+			else if (_curState < _prevState)
+				_uiController.onModelChange(null, _transitionPrevious);
+			else
+				_uiController.onModelChange();
+			
+			_prevState = _curState;
 			
 			if (XML(tp.tMeta).state.@type == "prompt")
 			{
