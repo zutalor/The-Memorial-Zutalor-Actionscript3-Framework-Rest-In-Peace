@@ -64,9 +64,9 @@ package com.zutalor.text
 				return "";
 		}
 		
-		public static function getMeta(item:String):String
+		public static function getMetaByName(name:String):String
 		{
-			_tip = Props.translations.getItemPropsByName(_language, item);
+			_tip = Props.translations.getItemPropsByName(_language, name);
 			if (_tip)
 				if (_tip.tMeta)
 					return _tip.tMeta;
@@ -74,6 +74,17 @@ package com.zutalor.text
 					return "";
 			else
 				return "";
+		}
+		
+		public static function getMetaByIndex(index:int):String
+		{
+			var tp:TranslateItemProperties;
+			
+			tp = Props.translations.getItemPropsByIndex(_language, index);
+			if (tp)
+				return getMetaByName(tp.name);
+			else
+				return null;
 		}
 	}
 }

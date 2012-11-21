@@ -59,7 +59,7 @@ package com.zutalor.media
 			_afterSpeaking = afterSpeaking;
 			
 			if (!enabled && _afterSpeaking != null)
-					_afterSpeaking();
+				_afterSpeaking();
 			else if (!apiUrl)
 				trace("TextToSpeach: No ApiUrl");
 			else

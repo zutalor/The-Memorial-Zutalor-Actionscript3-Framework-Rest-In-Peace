@@ -50,11 +50,12 @@ package com.zutalor.view
 		private var _viewKeyboardInput:PropertyManager;
 		private var _dataFromUiController:GenericData;
 		private var _transitionNext:String;
-		private var _transitionPrevious:String;
+		private var _transitionBack:String;
+		private var _curTransitionType:String;
+		private var _inTransition:Boolean;
 		
 		private static const soundExt:String = ".mp3";
 		private static const letterAnswers:String = "abcdefgh";
-		
 										
 		public function initialize(uiController:AbstractUiController):void
 		{
@@ -83,10 +84,10 @@ package com.zutalor.view
 				_textToSpeech.enabled = Props.ap.enableTextToSpeech;
 				
 				initUserInput();
-				tMeta = getMetaByName("settings");
+				tMeta = XML(Translate.getMetaByName("settings"));
 				
 				_transitionNext = tMeta.settings.@transitionNext;
-				_transitionPrevious = tMeta.settings.@transitionPrevious;
+				_transitionBack = tMeta.settings.@transitionBack;
 				
 				if (tMeta.setttings.@firstPage)
 					activateStateById(tMeta.settings.@firstPage);
@@ -102,7 +103,7 @@ package com.zutalor.view
 			var up:UserInputProperties;
 			var l:int;
 			
-			tMeta = getMetaByName("settings");
+			tMeta = XML(Translate.getMetaByName("settings"));
 			_viewGestures = new PropertyManager(UserInputProperties);
 			_viewGestures.parseXML(tMeta.gestures, "gesture");
 			
@@ -143,19 +144,17 @@ package com.zutalor.view
 				else if (SwipeGesture(age.gesture).offsetY < 1)
 					uip.action = uip.actionLeft;
 			}
-			
 			onUserInput(uip, age.gesture);
 		}
 		
 		private function onUserInput(uip:UserInputProperties, gesture:Gesture = null):void	
-		{			
-			var tMeta:XML;		
-
-			tMeta = getMetaByIndex(_curState);
+		{
+			var tMeta:XML;
+			tMeta = XML(Translate.getMetaByIndex(_curState));
 			switch (String(tMeta.state.@type))
 			{
 				case "page" :
-					activateNextState();
+					checkStateInput();
 					break;
 				case "question" :
 					onAnswer();
@@ -168,7 +167,7 @@ package com.zutalor.view
 			{
 				var answer:AnswerProperties;
 				var answerText:String;
-				var index:int;
+				var answerIndex:int;
 				var qMark:int
 				var date:Date = new Date();
 			
@@ -177,11 +176,11 @@ package com.zutalor.view
 				else if (uip.action == "answer")
 				{
 					if (uip.type == GestureTypes.TAP)
-						index = getGridValues(gesture, uip).index;
+						answerIndex = getGridValues(gesture, uip).index;
 					else if (uip.type == GestureTypes.KEY_PRESS)
-						index = letterAnswers.indexOf(uip.name.toLowerCase());
+						answerIndex = letterAnswers.indexOf(uip.name.toLowerCase());
 
-					answerText = XML(_curStateText)..Q[index];
+					answerText = XML(_curStateText)..Q[answerIndex];
 					qMark = answerText.indexOf("?");
 					if (qMark != -1)
 						answerText = answerText.substring(0, qMark);
@@ -200,32 +199,41 @@ package com.zutalor.view
 					else
 						_answers.insert(_curStateId, answer);
 					
-					playSound(answerText, XML(_curStateText)..Q[index].@sound);
-					trace(XML(_curStateText)..Q[index].@sound, answerText);
+					playSound(answerText, XML(_curStateText)..Q[answerIndex].@sound);
+					trace(XML(_curStateText)..Q[answerIndex].@sound, answerText);
 				}
 				else
-				{
-					activateNextState();
-				}
+					checkStateInput(uip);
 			}
 			
-			function activateNextState():void
+			function checkStateInput():void
 			{				
+				_curTransitionType = _transitionNext;
 				switch (uip.action)
 				{
 					case "back" :
-						activateStateByIndex(_curState);
+						if (String(tMeta.state.@back))
+						{
+							_curTransitionType = _transitionBack;
+							activateStateById(tMeta.state.@back);
+						}
+						else
+						{
+							_curTransitionType = null;
+							activateStateByIndex(_curState);
+						}
 						break;
 					case "next" :
 						if (String(tMeta.state.@next))
 							activateStateById(tMeta.state.@next);
-						break;						
+						break;		
 					case "exit" :
-						activateStateById("goodbye", _uiController.exit);
+						activateStateById("exit", _uiController.exit);
 						break;
+					break;
 				}
-			}	
-		}
+			}
+		}	
 
 		private function activateStateById(id:String, onComplete:Function = null, data:GenericData = null):void
 		{
@@ -233,58 +241,61 @@ package com.zutalor.view
 			
 			index = Props.translations.getItemIndexByName(Translate.language, id)
 			if (index == -1)
-				ShowError.fail(ViewStateManager,"State not found: " + id);
-			
-			_dataFromUiController = data;
-			activateStateByIndex(index, onComplete);
+				trace("State not found: " + id);
+			else
+			{
+				_dataFromUiController = data;
+				activateStateByIndex(index, onComplete);
+			}
 		}
 		
 		private function activateStateByIndex(index:int, onComplete:Function = null):void
 		{
 			var tp:TranslateItemProperties;	
 			var page:String;
-			var fortextToSpeech:String;
+			var forTextToSpeech:String;
 			var next:String;
 
-			stop();
-			
-			tp = Props.translations.getItemPropsByIndex(Translate.language, index);
-			_curStateId = tp.name;
-			_curState = index;
-			_history.push(_curState);
-			
-			page = Translate.text(tp.name);
-			_curStateText = page;
-			
-			if (AirStatus.isMobile)
-				page = TextUtil.stripSurroundedBy(page, "<PC>", "</PC>");
-			else
-				page = TextUtil.stripSurroundedBy(page, "<MOBILE>", "</MOBILE>");
-				
-			page = TextUtil.stripSurroundedBy(page, "<hide>", "</hide>");
-			
-			fortextToSpeech = TextUtil.stripSurroundedBy(page, "<DISPLAYTEXT>", "</DISPLAYTEXT>");
-			_uiController.getValueObject().text = TextUtil.stripSurroundedBy(page, "<PHONETIC>", "</PHONETIC>");
-			
-			if (_curState > _prevState)
-				_uiController.onModelChange(null, _transitionNext);
-			else if (_curState < _prevState)
-				_uiController.onModelChange(null, _transitionPrevious);
-			else
-				_uiController.onModelChange();
-			
-			_prevState = _curState;
-			
-			if (XML(tp.tMeta).state.@type == "prompt")
+			if (!_inTransition)
 			{
-				next = XML(tp.tMeta).state.@next;
-				if (next)
-					onComplete = activateStateById;
+				_inTransition = true;
+				stop();
+				tp = Props.translations.getItemPropsByIndex(Translate.language, index);
+				_curStateId = tp.name;
+				_curState = index;
+				_history.push(_curState);
+				
+				page = Translate.text(tp.name);
+				_curStateText = page;
+				
+				if (AirStatus.isMobile)
+					page = TextUtil.stripSurroundedBy(page, "<PC>", "</PC>");
+				else
+					page = TextUtil.stripSurroundedBy(page, "<MOBILE>", "</MOBILE>");
+					
+				page = TextUtil.stripSurroundedBy(page, "<hide>", "</hide>");
+				
+				forTextToSpeech = TextUtil.stripSurroundedBy(page, "<DISPLAYTEXT>", "</DISPLAYTEXT>");
+
+				_uiController.getValueObject().text = TextUtil.stripSurroundedBy(page, "<PHONETIC>", "</PHONETIC>");
+							_uiController.onModelChange(null, _curTransitionType, onTransitionComplete );
 			}
-			else if (XML(tp.tMeta).state.@type == "uiControllerMethod")
-				_uiController[XML(tp.tMeta).state.@method](activateStateById, XML(tp.tMeta).state);	
-	
-			playSound(fortextToSpeech, Translate.getSoundName(tp.name), onComplete, next);
+		
+			function onTransitionComplete():void
+			{
+				_inTransition = false;
+				_prevState = _curState;				
+				if (XML(tp.tMeta).state.@type == "prompt")
+				{
+					next = XML(tp.tMeta).state.@next;
+					if (next)
+						onComplete = activateStateById;
+				}
+				else if (XML(tp.tMeta).state.@type == "uiControllerMethod")
+					_uiController[XML(tp.tMeta).state.@method](activateStateById, XML(tp.tMeta).state);	
+		
+				playSound(forTextToSpeech, Translate.getSoundName(tp.name), onComplete, next);
+			}
 		}
 		
 		private function playSound(page:String, soundName:String, onComplete:Function = null, onCompleteParams:*=null):void
@@ -322,27 +333,6 @@ package com.zutalor.view
 		
 		// UTILITY
 		
-		private function getMetaByName(name:String):XML
-		{
-			var tp:TranslateItemProperties;
-			
-			tp = Props.translations.getItemPropsByName(Translate.language, name);
-			if (tp)
-				return XML(Translate.getMeta(tp.name));
-			else
-				return null;
-		}
-		
-		private function getMetaByIndex(index:int):XML
-		{
-			var tp:TranslateItemProperties;
-			
-			tp = Props.translations.getItemPropsByIndex(Translate.language, index);
-			if (tp)
-				return XML(Translate.getMeta(tp.name));
-			else
-				return null;
-		}
 		
 		private function getGridValues(gesture:Gesture, uip:UserInputProperties):GridValues
 		{

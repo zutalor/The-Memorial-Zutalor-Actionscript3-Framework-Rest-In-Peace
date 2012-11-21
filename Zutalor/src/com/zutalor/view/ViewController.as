@@ -162,7 +162,7 @@
 			_viewEvents.onItemFocusIn();
 		}
 		
-		public function onModelChange(itemNames:String = null, transition:String = null):void
+		public function onModelChange(itemNames:String = null, transition:String = null, onTransitionComplete:Function = null):void
 		{
 			var items:Array
 			var t:Transition;
@@ -199,8 +199,11 @@
 			if (transition)
 			{
 				t = new Transition();
-				t.simpleRender(container, transition, "in");
+				t.simpleRender(container, transition, "in", onTransitionComplete);
 			}
+			else
+				if (onTransitionComplete != null)
+					onTransitionComplete();
 		}
 		
 		public function onViewChange(itemNames:String = null):void
