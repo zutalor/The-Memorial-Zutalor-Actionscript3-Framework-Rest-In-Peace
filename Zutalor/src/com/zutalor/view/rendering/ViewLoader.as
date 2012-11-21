@@ -1,4 +1,4 @@
-﻿package com.zutalor.view
+﻿package com.zutalor.view.rendering
 {
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.fx.Filters;
@@ -11,7 +11,9 @@
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
-	import com.zutalor.view.ViewController;
+	import com.zutalor.view.controller.ViewController;
+	import com.zutalor.view.transition.ViewTransition;
+	import com.zutalor.view.utils.ViewUtils;
 	import flash.events.EventDispatcher;
 
 	/**
@@ -25,7 +27,7 @@
 		private var vpm:NestedPropsManager;
 		private var pr:Presets;
 		private var vp:ViewProperties;
-		private var c:*; //change this to type Container for error checking...making compatible with flash player 9, for backward compatibility	
+		private var c:ViewContainer; 
 		private var _onComplete:Function;
 		
 		public function ViewLoader() 
@@ -127,7 +129,6 @@
 			
 			StageRef.stage.addChild(vp.container);
 			ViewUtils.gi().positionAppContainer(vp);
-
 			
 			vt = new ViewTransition();
 			vt.render(vp, TransitionTypes.IN);		

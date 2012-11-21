@@ -7,7 +7,7 @@
 	import com.zutalor.ui.Focus;
 	import com.zutalor.utils.DisplayObjectUtils;
 	import com.zutalor.utils.ShowError;
-	import com.zutalor.view.ViewController;
+	import com.zutalor.view.controller.ViewController;
 	import flash.display.DisplayObject;
 	/**
 	 * ...

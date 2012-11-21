@@ -1,9 +1,10 @@
-package com.zutalor.view 
+package com.zutalor.view.rendering 
 {
 	import com.zutalor.components.Graphic;
 	import com.zutalor.fx.Filters;
 	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.utils.MasterClock;
+	import com.zutalor.view.controller.ViewController;
 	/**
 	 * ...
 	 * @author Geoff Pepos

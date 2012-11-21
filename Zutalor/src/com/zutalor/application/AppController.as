@@ -28,9 +28,9 @@
 	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.SimpleMessage;
 	import com.zutalor.utils.StageRef;
-	import com.zutalor.view.ViewCloser;
-	import com.zutalor.view.ViewLoader;
-	import com.zutalor.view.ViewUtils;
+	import com.zutalor.view.utils.ViewCloser;
+	import com.zutalor.view.rendering.ViewLoader;
+	import com.zutalor.view.utils.ViewUtils;
 	import flash.display.Bitmap;
 	import flash.display.StageOrientation;
 	import flash.events.Event;

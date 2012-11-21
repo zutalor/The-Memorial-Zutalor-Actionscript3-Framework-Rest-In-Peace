@@ -10,7 +10,7 @@ package com.zutalor.media
 	import com.zutalor.utils.DisplayUtils;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.MathG;
-	import com.zutalor.view.ViewLoader;
+	import com.zutalor.view.rendering.ViewLoader;
 	import flash.display.Bitmap;
 	import flash.display.Loader;
 	import flash.display.Shape;

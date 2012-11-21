@@ -24,7 +24,7 @@
 					cpnt = new Button(componentId, text);
 					break;
 				case ViewItemProperties.SLIDER :
-					cpnt = getSlider(componentId, text);
+					cpnt = new Slider(componentId, text);
 					break;
 				case ViewItemProperties.TOGGLE :
 					cpnt = getToggle(componentId, text);
@@ -41,27 +41,6 @@
 			}
 			cpnt.name = name;
 			return cpnt;
-		}
-		
-		
-		public static function getSlider(sliderId:String, text:String=null):Slider
-		{
-			var sp:SliderProperties = Props.pr.sliderPresets.getPropsByName(sliderId);
-			var track:Button = new Button(sp.trackButtonId);
-			var thumb:Button = new Button(sp.thumbButtonId, text);
-			var reveal:Graphic;
-
-			if (sp.revealGraphicId)
-			{
-				reveal = new Graphic();
-				reveal.render(sp.revealGraphicId);
-			}
-			
-			var slider:Slider = new Slider()
-			slider.create(thumb, track, reveal, sp.vertical, sp.tweenTime, 
-											sp.numSteps, sp.onlyShowTrackOnMouseDown);
-			return slider;
-		
 		}
 		
 		public static function getToggle(toggleId:String, text:String):Toggle

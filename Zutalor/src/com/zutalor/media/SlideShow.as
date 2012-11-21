@@ -7,7 +7,7 @@ package com.zutalor.media
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.utils.DisplayUtils;
 	import com.zutalor.utils.Path;
-	import com.zutalor.view.ViewLoader;
+	import com.zutalor.view.rendering.ViewLoader;
 	import flash.display.Bitmap;
 	import flash.display.Loader;
 	import flash.display.Shape;

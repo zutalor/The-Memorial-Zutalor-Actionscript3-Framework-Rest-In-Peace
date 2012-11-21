@@ -8,8 +8,8 @@
 	import com.zutalor.fx.Transition;
 	import com.zutalor.properties.ViewProperties;
 	import com.zutalor.utils.StageRef;
-	import com.zutalor.view.ViewCloser;
-	import com.zutalor.view.ViewLoader;
+	import com.zutalor.view.utils.ViewCloser;
+	import com.zutalor.view.rendering.ViewLoader;
 	import flash.display.Sprite;
 	import flash.media.StageVideo;
 	import flash.text.TextField;

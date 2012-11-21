@@ -1,7 +1,6 @@
 package com.zutalor.utils 
 {
 	import com.gskinner.utils.IDisposable;
-	import com.zutalor.view.ViewController;
 	import com.zutalor.utils.gDictionary;
 	import flash.utils.getQualifiedSuperclassName;
 	/**

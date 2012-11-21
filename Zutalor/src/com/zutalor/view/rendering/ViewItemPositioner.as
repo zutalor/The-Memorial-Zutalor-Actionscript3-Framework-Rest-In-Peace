@@ -1,9 +1,10 @@
-package com.zutalor.view 
+package com.zutalor.view.rendering 
 {
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.properties.ScrollProperties;
 	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.utils.DisplayUtils;
+	import com.zutalor.view.controller.ViewController;
 	/**
 	 * ...
 	 * @author Geoff Pepos

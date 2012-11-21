@@ -36,7 +36,7 @@
 			
 			if (vScrollBarSliderId)
 			{
-				_vScrollBar = Components.getSlider(vScrollBarSliderId);
+				_vScrollBar = new Slider(vScrollBarSliderId);
 				_scrollBarVisibleY = true;	
 				_vMinThumbHeight = _vScrollBar.height;
 				_vScrollBar.addEventListener(UIEvent.VALUE_CHANGED, vertThumbMoved, false, 0, true);
@@ -44,7 +44,7 @@
 			
 			if (hScrollBarSliderId)
 			{
-				_hScrollBar  = Components.getSlider(hScrollBarSliderId);
+				_hScrollBar  = new Slider(hScrollBarSliderId);
 				_scrollBarVisibleX = true;
 				_hMinThumbWidth = _vScrollBar.width;
 				_hScrollBar.addEventListener(UIEvent.VALUE_CHANGED, horzThumbMoved, false, 0, true);

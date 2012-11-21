@@ -25,7 +25,7 @@ package depreciated
 	import com.zutalor.utils.FullScreen;
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.utils.StageRef;
-	import com.zutalor.view.ViewController;
+	import com.zutalor.view.controller.ViewController;
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.events.MouseEvent;

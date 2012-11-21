@@ -1,4 +1,4 @@
-package com.zutalor.view
+package com.zutalor.view.mediators
 {
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.components.Button;
@@ -21,7 +21,8 @@ package com.zutalor.view
 	import com.zutalor.ui.Focus;
 	import com.zutalor.utils.FullScreen;
 	import com.zutalor.utils.HotKeyManager;
-	import com.zutalor.view.ViewController;
+	import com.zutalor.view.controller.ViewController;
+	import com.zutalor.view.utils.ViewUtils;
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.events.MouseEvent;
@@ -32,7 +33,7 @@ package com.zutalor.view
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class ViewEvents
+	public class ViewEventMediator
 	{
 		public var vc:ViewController;
 		
@@ -45,7 +46,7 @@ package com.zutalor.view
 		
 		public static var navKeys:Array = ["RIGHT", "right", "LEFT", "left", "TAB", "down", "DOWN", "down", "SHIFT+TAB", "up", "UP", "up", "SPACE", "space"];
 		
-		public function ViewEvents(viewController:ViewController)
+		public function ViewEventMediator(viewController:ViewController)
 		{
 			vc = viewController;
 			_init();
@@ -268,7 +269,7 @@ package com.zutalor.view
 				
 					TextUtil.applyTextAttributes(item, vip.textAttributes, int(vip.width), int(vip.height));
 					if (vip.voName)
-						vc.vmg.copyViewItemToValueObject(vip, item);
+						vc.viewModelMediator.copyViewItemToValueObject(vip, item);
 				}
 		}
 		
@@ -330,7 +331,7 @@ package com.zutalor.view
 						{
 							vc.itemWithFocus.value = !vc.itemWithFocus.value;
 							vip = _vpm.getItemPropsByName(vc.viewId, vc.itemWithFocus.name);
-							vc.vmg.copyViewItemToValueObject(vip, vc.itemDictionary.getByKey(vip.name));
+							vc.viewModelMediator.copyViewItemToValueObject(vip, vc.itemDictionary.getByKey(vip.name));
 						}
 						break;
 					default: 
@@ -363,8 +364,8 @@ package com.zutalor.view
 			{
 				if (vip.voName)
 				{
-					vc.vmg.vc.onViewChange(vip.name);
-					vc.vmg.copyViewItemToValueObject(vip, uie.target);
+					vc.viewModelMediator.vc.onViewChange(vip.name);
+					vc.viewModelMediator.copyViewItemToValueObject(vip, uie.target);
 					if (vip.type == ViewItemProperties.COMPONENT_GROUP || vip.type == ViewItemProperties.RADIO_GROUP)
 					{
 						cgp = Props.pr.componentGroupPresets.getPropsByName(vip.componentId);
@@ -455,7 +456,7 @@ package com.zutalor.view
 						
 						vc.initStatusMessage(vip.action);
 						if (vip.voName)
-							vc.vmg.copyViewItemToValueObject(vip, vc.itemDictionary.getByKey(vip.name));
+							vc.viewModelMediator.copyViewItemToValueObject(vip, vc.itemDictionary.getByKey(vip.name));
 						
 						if (vip.actionParams)
 							Plugins.callMethod(dest, vip.action, vip.actionParams);
@@ -479,7 +480,7 @@ package com.zutalor.view
 							case UIEvent.CREATE: 
 							case UIEvent.UPDATE: 
 								vc.setStatusMessage(vc.creatingMessage);
-								if (vc.vmg.validate())
+								if (vc.viewModelMediator.validate())
 									if (vip.actionParams)
 										Plugins.callMethod(dest, vip.action, vip.actionParams);
 									else

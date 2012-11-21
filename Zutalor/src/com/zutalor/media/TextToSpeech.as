@@ -48,7 +48,7 @@ package com.zutalor.media
 							+ "&voice=" + voice + "&speed=" + speed + "&pitch=" + pitch + "&text=" + unescape(text);
 		}
 		
-		public function speak(text:String, afterSpeaking:Function):void
+		public function speak(text:String, afterSpeaking:Function=null):void
 		{
 			var sentences:Array;
 			var l:int;
@@ -58,8 +58,11 @@ package com.zutalor.media
 			voice = country[MathG.rand(0, 1)] + gender[MathG.rand(0, 1)];
 			_afterSpeaking = afterSpeaking;
 			
-			if (!enabled && _afterSpeaking != null)
-				_afterSpeaking();
+			if (!enabled)
+			{
+				if (afterSpeaking != null)
+					afterSpeaking();
+			}
 			else if (!apiUrl)
 				trace("TextToSpeach: No ApiUrl");
 			else

@@ -1,4 +1,4 @@
-﻿package com.zutalor.view 
+﻿package com.zutalor.view.utils 
 {
 	import com.greensock.easing.Quart;
 	import com.greensock.TweenMax;

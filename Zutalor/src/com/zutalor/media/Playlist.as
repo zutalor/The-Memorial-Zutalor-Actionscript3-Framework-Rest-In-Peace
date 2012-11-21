@@ -16,7 +16,7 @@ package com.zutalor.media
 	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
-	import com.zutalor.view.ViewLoader;
+	import com.zutalor.view.rendering.ViewLoader;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Rectangle;

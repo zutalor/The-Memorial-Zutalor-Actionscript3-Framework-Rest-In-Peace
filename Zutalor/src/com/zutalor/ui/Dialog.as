@@ -3,10 +3,9 @@ package com.zutalor.ui
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.StageRef;
-	import com.zutalor.view.ViewCloser;
-	import com.zutalor.view.ViewController;
-	import com.zutalor.view.ViewControllerRegistry;
-	import com.zutalor.view.ViewLoader;
+	import com.zutalor.view.controller.ViewController;
+	import com.zutalor.view.controller.ViewControllerRegistry;
+	import com.zutalor.view.rendering.ViewLoader;
 	import flash.display.Sprite;
 	/**
 	 * ...

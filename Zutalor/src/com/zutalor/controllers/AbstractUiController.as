@@ -8,8 +8,9 @@ package com.zutalor.controllers
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.Logger;
-	import com.zutalor.view.ViewController;
-	import com.zutalor.view.ViewControllerRegistry;
+	import com.zutalor.view.controller.ViewController;
+	import com.zutalor.view.controller.ViewControllerRegistry;
+	import com.zutalor.view.mediators.ViewStateMediator;
 	import flash.desktop.NativeApplication;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -21,7 +22,8 @@ package com.zutalor.controllers
 	public class AbstractUiController implements IUiController
 	{
 		private var _vController:ViewController;
-		protected var _currentView:String;		
+		private var _currentView:String;
+		public var viewStateMediator:ViewStateMediator;
 		
 		final public function init(params:Object):void
 		{	

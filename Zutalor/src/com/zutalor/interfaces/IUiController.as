@@ -1,6 +1,6 @@
 ﻿package com.zutalor.interfaces 
 {
-	import com.zutalor.view.ViewController;
+	import com.zutalor.view.controller.ViewController;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.NetStatusEvent;
