@@ -55,20 +55,20 @@
 				ShowError.fail(ViewContainer,viewItem + " not found on " + name);
 		}
 		
-		public function recycle():void
+		override public function recycle():void
 		{
 			// todo
 			dispose();
 		}
 			
-		public function dispose():void
+		override public function dispose():void
 		{
 			//TODO  get rid of listeners
 			Focus.hide();
 			DisplayObjectUtils.removeAllChildren(this);
 		}
 		
-		public function stop(mediaPreset:String):void 
+		override public function stop():void 
 		{
 			if (viewController)
 				viewController.stop();

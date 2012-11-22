@@ -16,15 +16,6 @@
 		public static const INPUT_TEXT:String = "inputText";
 		public static const LABEL:String = "label";
 		public static const STATUS:String = "status";
-		public static const TOGGLE:String = "toggle";
-		public static const COMPONENT_GROUP:String = "componentGroup";
-		public static const RADIO_GROUP:String = "radioGroup";
-		public static const SLIDER:String = "slider";
-		public static const TEXT_BUTTON:String = "textButton";
-		public static const BUTTON:String = "button";
-		public static const STEPPER:String = "stepper";	
-		public static const LIST:String = "list";
-		public static const COMBOBOX:String = "comboBox";
 		public static const SLIDE_SHOW:String = "slideShow";
 		public static const FLIPBOOK:String = "flipbook";
 		public static const VIDEO:String = "video";

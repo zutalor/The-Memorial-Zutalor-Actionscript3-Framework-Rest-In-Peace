@@ -2,7 +2,6 @@
 {
 	import com.greensock.easing.Quad;
 	import com.greensock.TweenMax;
-	import com.zutalor.components.Components;
 	import com.zutalor.components.Slider;
 	import com.zutalor.events.ContainerEvent;
 	import com.zutalor.events.UIEvent;

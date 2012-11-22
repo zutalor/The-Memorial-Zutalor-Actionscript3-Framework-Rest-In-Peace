@@ -14,12 +14,15 @@ package com.zutalor.components
 	public class RadioGroup extends ComponentGroup implements IDisposable
 	{
 		
+		public function RadioGroup(groupId:String, dataProvider:String)
+		{
+			super.init(groupId, dataProvider);
+		}
 		
 		public function get radioIndex():int
 		{
 			return ArrayUtils.getIndexWithValue(values);
 		}
-		
 		
 		public function set radioIndex(indx:int):void
 		{
@@ -39,7 +42,7 @@ package com.zutalor.components
 			return gp.numComponents;
 		}
 		
-		override protected function onValueChange(uie:UIEvent):void
+		override public function onValueChange(uie:UIEvent):void
 		{
 			var indx:int;
 			var val:*;

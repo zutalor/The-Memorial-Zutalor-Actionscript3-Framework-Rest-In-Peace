@@ -1,5 +1,6 @@
 package com.zutalor.view.mediators  
 {
+	import com.zutalor.components.ComponentTypes;
 	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.media.VideoPlayer;
@@ -60,10 +61,10 @@ package com.zutalor.view.mediators
 						_valueObject[vip.name] = vip.data;
 					}
 					break;
-				case ViewItemProperties.SLIDER :
-				case ViewItemProperties.STEPPER :
-				case ViewItemProperties.COMPONENT_GROUP : 
-				case ViewItemProperties.RADIO_GROUP : 
+				case ComponentTypes.SLIDER :
+				case ComponentTypes.STEPPER :
+				case ComponentTypes.COMPONENT_GROUP : 
+				case ComponentTypes.RADIO_GROUP : 
 					if (vip.voName)
 					{
 						_valueObject = Plugins.callMethod(vc.vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
@@ -104,8 +105,8 @@ package com.zutalor.view.mediators
 				switch (vip.type)
 				{
 					case ViewItemProperties.INPUT_TEXT :
-					case ViewItemProperties.LIST :
-					case ViewItemProperties.COMBOBOX :
+					case ComponentTypes.LIST :
+					case ComponentTypes.COMBOBOX :
 						if (vip.required) 
 						{
 							if (_valueObject[vip.name] == "" || _valueObject[vip.name] == vip.tText || _valueObject[vip.name] == vip.text)
@@ -124,8 +125,8 @@ package com.zutalor.view.mediators
 						
 						break;
 
-					case ViewItemProperties.COMPONENT_GROUP :
-					case ViewItemProperties.RADIO_GROUP :
+					case ComponentTypes.COMPONENT_GROUP :
+					case ComponentTypes.RADIO_GROUP :
 						
 						if (vip.required)
 							if (_valueObject[vip.name])
@@ -178,8 +179,8 @@ package com.zutalor.view.mediators
 				{
 					switch (vip.type)
 					{
-						case ViewItemProperties.LIST :
-						case ViewItemProperties.COMBOBOX :
+						case ComponentTypes.LIST :
+						case ComponentTypes.COMBOBOX :
 							if (item.selectedItem)
 								_valueObject[vip.name] = item.selectedItem;
 							else
@@ -196,13 +197,12 @@ package com.zutalor.view.mediators
 							item.stop();
 							item.visible = false;
 							break;
-						case ViewItemProperties.TOGGLE :
-						case ViewItemProperties.SLIDER :
-						case ViewItemProperties.TEXT_BUTTON :
-						case ViewItemProperties.BUTTON :
-						case ViewItemProperties.STEPPER :
-						case ViewItemProperties.COMPONENT_GROUP :
-						case ViewItemProperties.RADIO_GROUP :
+						case ComponentTypes.TOGGLE :
+						case ComponentTypes.SLIDER :
+						case ComponentTypes.BUTTON :
+						case ComponentTypes.STEPPER :
+						case ComponentTypes.COMPONENT_GROUP :
+						case ComponentTypes.RADIO_GROUP :
 								_valueObject[vip.name] = item.value;
 								break;
 					}
@@ -239,8 +239,8 @@ package com.zutalor.view.mediators
 									TextUtil.applyTextAttributes(item, vip.textAttributes, int(vip.width), int(vip.height));
 								}
 								break;
-							case ViewItemProperties.LIST :	
-							case ViewItemProperties.COMBOBOX :	
+							case ComponentTypes.LIST :	
+							case ComponentTypes.COMBOBOX :	
 								item.selectedItem = _valueObject[vip.name]
 								if (vip.dataProvider)
 								{
@@ -258,14 +258,12 @@ package com.zutalor.view.mediators
 									TextUtil.smoothHtmlBitmaps(t);
 								}
 								break;
-							case ViewItemProperties.TOGGLE :
-							case ViewItemProperties.SLIDER :
-							case ViewItemProperties.TEXT_BUTTON :
-							case ViewItemProperties.BUTTON :
-							case ViewItemProperties.STEPPER :
-							case ViewItemProperties.COMPONENT_GROUP :
-							case ViewItemProperties.RADIO_GROUP :
-
+							case ComponentTypes.TOGGLE :
+							case ComponentTypes.SLIDER :
+							case ComponentTypes.BUTTON :
+							case ComponentTypes.STEPPER :
+							case ComponentTypes.COMPONENT_GROUP :
+							case ComponentTypes.RADIO_GROUP :
 								item.value = _valueObject[vip.name];
 								break;
 							case ViewItemProperties.VIDEO :

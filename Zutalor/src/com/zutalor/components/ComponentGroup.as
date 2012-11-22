@@ -1,10 +1,10 @@
 package com.zutalor.components
 {
-	import com.gskinner.utils.IDisposable;
+	import com.zutalor.application.AppRegistry;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.properties.ComponentGroupProperties;
-	import com.zutalor.propertyManagers.Props;
-	import com.zutalor.utils.ArrayUtils;
+	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.utils.Registry;
 	import com.zutalor.utils.ShowError;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -12,7 +12,7 @@ package com.zutalor.components
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class ComponentGroup extends Sprite implements IDisposable
+	public class ComponentGroup extends Component implements IComponent
 	{
 		protected var gp:ComponentGroupProperties;
 		protected var values:Array;
@@ -20,12 +20,21 @@ package com.zutalor.components
 		
 		protected var numHaveValue:int;
 		
-		public function ComponentGroup() 
+		public function ComponentGroup(groupId:String, dataProvider:String) 
 		{
+			init(groupId, dataProvider);
 			// there is so much more fun to be had with this class!!!! Here comes a DJ mixer with button, slider, lights, or whatever arrays!
 		}
 		
-		public function create(groupId:String, dataProvider:String):void
+		public static function register(preset:XMLList):void
+		{	
+			if (!presets)
+				presets = new PropertyManager(ComponentGroupProperties);
+			
+			presets.parseXML(preset);
+		}
+
+		public function init(groupId:String, dataProvider:String):void
 		{
 			var x:int;
 			var y:int;
@@ -39,7 +48,7 @@ package com.zutalor.components
 			var componentType:String;
 			this.name = name;
 			
-			gp = Props.pr.componentGroupPresets.getPropsByName(groupId);
+			gp = presets.getPropsByName(groupId);
 			contentContainer = new Sprite();
 			addChild(contentContainer);
 
@@ -73,7 +82,7 @@ package com.zutalor.components
 				if (i < componentTypes.length)
 					componentType = componentTypes[i];
 				
-				item = Components.getComponent(name, componentType, componentId);
+				item = AppRegistry.components.retrieve(componentType);
 				contentContainer.addChild(item);
 				
 				item.x = x;
@@ -98,7 +107,7 @@ package com.zutalor.components
 			contentContainer.addEventListener(UIEvent.VALUE_CHANGED, onValueChange, false, 0, true);
 		}
 		
-		protected function onValueChange(uie:UIEvent):void
+		override public function onValueChange(uie:UIEvent):void
 		{
 			var indx:int;
 			var val:*;
@@ -135,7 +144,7 @@ package com.zutalor.components
 			dispatchEvent(new UIEvent(UIEvent.VALUE_CHANGED, null, null, name, values));						
 		}
 		
-		public function set value(v:Array):void
+		override public function set value(v:*):void
 		{
 			values = v;
 			numHaveValue = 0;
@@ -148,12 +157,12 @@ package com.zutalor.components
 			}			
 		}
 		
-		public function get value():*
+		override public function get value():*
 		{
 			return values;
 		}
 		
-		public function dispose():void
+		override public function dispose():void
 		{
 			// todo
 		}

@@ -2,9 +2,7 @@
 {
 	import com.zutalor.fx.Transition;
 	import com.zutalor.objectPool.ObjectPool;
-	import com.zutalor.properties.TransitionProperties;
 	import com.zutalor.properties.ViewProperties;
-	import com.zutalor.propertyManagers.Props;
 
 	/**
 	 * ...
@@ -16,14 +14,12 @@
 		public function render(vp:ViewProperties, transitionType:String, onComplete:Function = null):void
 		{
 			var transition:Transition;
-			var tpp:TransitionProperties;
 			
 			if (vp.transitionPreset)
 			{
 				transition = ObjectPool.getTransition();
-				tpp = Props.pr.transitionPresets.getPropsByName(vp.transitionPreset);	
-				if (tpp)
-					transition.render(vp.container, tpp.inType, tpp.inEase, tpp.inTime, tpp.inDelay, transitionType, tpp.xValue, tpp.yValue, onComplete);
+				if (vp.transitionPreset)
+					transition.simpleRender(vp.container, vp.transitionPreset,  transitionType, onComplete);
 				else
 					if (onComplete != null)
 						onComplete();				

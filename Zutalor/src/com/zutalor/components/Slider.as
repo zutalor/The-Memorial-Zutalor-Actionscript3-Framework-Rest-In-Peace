@@ -1,32 +1,35 @@
 package com.zutalor.components
 {
-	import com.zutalor.containers.Container;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.interfaces.IViewItem;
+	import com.zutalor.properties.PropertiesBase;
 	import com.zutalor.properties.SliderProperties;
-	import com.zutalor.propertyManagers.Props;
+	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.scroll.HScrollBarController;
 	import com.zutalor.scroll.ScrollBarController;
 	import com.zutalor.scroll.VScrollBarController;
-	import flash.display.DisplayObject;
-	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
-	import flash.events.EventDispatcher;
 	/**
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class Slider extends Container implements IViewItem
+	public class Slider extends Component implements IComponent
 	{
 		private var _sliderController:ScrollBarController;
-		private var _name:String;
 		private var _thumb:Button;
 		private var _track:Button;
 		private var _reveal:Graphic;
-		
-		public function Slider(sliderId:String, text:String = null)
+	
+		public function Slider(id:String, text:String = null)
 		{
-			init(sliderId, text);
+			init(id, text);
+		}
+		
+		public static function register(preset:XMLList):void
+		{	
+			if (!presets)
+				presets = new PropertyManager(SliderProperties);
+			
+			presets.parseXML(preset);
 		}
 		
 		private function init(sliderId:String, text:String):void
@@ -36,7 +39,7 @@ package com.zutalor.components
 			_track = new Button(sp.trackButtonId);
 			_thumb = new Button(sp.thumbButtonId, text);
 	
-			sp = Props.pr.sliderPresets.getPropsByName(sliderId);
+			sp = presets.getPropsByName(sliderId);
 
 			if (sp.revealGraphicId)
 			{
@@ -62,27 +65,12 @@ package com.zutalor.components
 			return _thumb;
 		}
 		
-		override public function set name(n:String):void
-		{
-			_name = _track.name = _thumb.name = _reveal.name = n;
-		}
-		
-		override public function get name():String
-		{
-			return _name;
-		}
-		
-		public function dispatchValueChange(uie:UIEvent):void
-		{
-			dispatchEvent(uie.clone());
-		}
-		
-		public function get value():Number
+		override public function get value():*
 		{
 			return _sliderController.getPercent();
 		}
 		
-		public function set value(p:Number):void
+		override public function set value(p:*):void
 		{
 			_sliderController.setPercent(p);
 		}

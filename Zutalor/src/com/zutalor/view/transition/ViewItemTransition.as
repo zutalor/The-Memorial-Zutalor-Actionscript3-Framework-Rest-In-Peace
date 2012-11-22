@@ -3,11 +3,6 @@ package com.zutalor.view.transition
 	import com.zutalor.fx.Transition;
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.properties.ViewItemProperties;
-	import com.zutalor.properties.ViewProperties;
-	import com.zutalor.propertyManagers.Presets
-	import com.zutalor.properties.TransitionProperties;
-	import com.zutalor.propertyManagers.PropertyManager;
-	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.gDictionary;
 	/**
 	 * ...
@@ -19,7 +14,6 @@ package com.zutalor.view.transition
 		{
 			var transition:Transition;
 			var t:Function;
-			var tpp:TransitionProperties;
 			var transitionDelay:Number;
 			var viewItem:*;
 			
@@ -27,21 +21,14 @@ package com.zutalor.view.transition
 			{
 				viewItem = viq.getByKey(vip.name);
 				if (vip.transitionPreset)
-				{		
-					tpp = Props.pr.transitionPresets.getPropsByName(vip.transitionPreset);
-					if (tpp)
-					{
-						transition = ObjectPool.getTransition();
+				{
+					transition = ObjectPool.getTransition();
+					
+					if (vip.transitionDelay)
+						transition.delay = vip.transitionDelay;
 						
-						if (!vip.transitionDelay)
-							transitionDelay = tpp.inDelay;
-						else
-							transitionDelay = vip.transitionDelay;
-														
-						
-						viewItem.alpha = vip.alpha;
-						transition.render(viewItem, tpp.inType, tpp.inEase, tpp.inTime, transitionDelay, inOut, tpp.xValue, tpp.yValue);
-					}
+					viewItem.alpha = vip.alpha;
+					transition.simpleRender(viewItem, vip.transitionPreset, inOut);
 				}
 			}
 		}			

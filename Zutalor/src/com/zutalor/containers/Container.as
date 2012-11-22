@@ -1,12 +1,13 @@
 ﻿package com.zutalor.containers
 {	
+	import com.zutalor.components.IContainer;
 	import com.zutalor.sprites.CenterSprite;
 	import flash.display.Sprite;
 	/**
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class Container extends CenterSprite
+	public class Container extends CenterSprite implements IContainer
 	{
 		public var vx:Number;
 		public var vy:Number;
@@ -32,8 +33,6 @@
 		public var posOffsetY:Number;
 		public var savedScale:Number;
 		
-		private var _name:String;
-		
 		public function Container()
 		{
 			posOffsetX = 0;
@@ -42,16 +41,21 @@
 			mass = 0;
 			friction = 0;
 			windAffect = 0;
-		}	
-		
-		override public function set name(name:String):void
-		{
-			_name = name;
 		}
 		
-		override public function get name():String
+		public function dispose():void
 		{
-			return _name;
+			
+		}
+		
+		public function recycle():void
+		{
+			
+		}
+		
+		public  function stop():void
+		{
+			
 		}
 	}
 }

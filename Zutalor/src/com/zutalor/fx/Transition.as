@@ -4,6 +4,7 @@
 	import com.zutalor.containers.*;
 	import com.zutalor.propertyManagers.Presets
 	import com.zutalor.properties.TransitionProperties;
+	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.utils.*;
 	import flash.display.*;
 	
@@ -35,16 +36,30 @@
 		private var _onComplete:Function;
 		private var _onCompleteParams:*;
 		
+		public var seconds:Number;
+		public var delay:Number;
+		
+		private static var _transitionPresets:PropertyManager;
+		
 		public function Transition()
 		{
 			_mask = new Sprite();
 		}
 		
-		public function simpleRender(dc:DisplayObject, transitionPreset:String, inOut:String, onComplete:Function=null, seconds:Number=-1, delay:Number=-1):void
+		public static function register(xml:XMLList):void
+		{
+			if (!_transitionPresets)
+				_transitionPresets = new PropertyManager(TransitionProperties);
+			
+			_transitionPresets.parseXML(xml);
+		}
+		
+		public function simpleRender(dc:DisplayObject, transitionPreset:String, inOut:String, onComplete:Function=null):void
 		{
 			var tpp:TransitionProperties;
 			_onComplete = onComplete;
-			tpp = Presets.gi().transitionPresets.getPropsByName(transitionPreset);
+			
+			tpp = _transitionPresets.getPropsByName(transitionPreset);
 			
 			if (tpp)
 			{
@@ -70,10 +85,10 @@
 				
 				}
 				
-				if (seconds != -1)
+				if (!isNaN(seconds))
 					_seconds = seconds;
 					
-				if (delay != -1)
+				if (!isNaN(delay))
 					_delay = delay;
 				
 				_inOut = inOut;

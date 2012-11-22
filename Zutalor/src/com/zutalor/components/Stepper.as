@@ -1,11 +1,10 @@
 package com.zutalor.components
 {
-	import com.gskinner.utils.IDisposable;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.properties.StepperProperties;
+	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.text.TextUtil;
-	import com.zutalor.ui.DisposableSprite;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
@@ -13,47 +12,63 @@ package com.zutalor.components
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class Stepper extends DisposableSprite implements IDisposable
+	public class Stepper extends Component implements IComponent
 	{
 		
-		private var _upButton:Button;
-		private var _downButton:Button;
-		private var _displayTextWidth:int;
-		private var _displayTextHeight:int;
-		private var _background:Graphic;
-		private var _sp:StepperProperties;
+		
 		private var _valueDisplay:Sprite;
-
-		public var _value:Number;
-		public var _displayText:TextField;
+		private var _value:Number;
+		private var _displayText:TextField;
+		private var _sp:StepperProperties;
+		private var _background:Graphic;
 		
 		public var showMs:Boolean;
 		
-		public function create(stepperId:String):void
+		public function Stepper(stepperId:String, text:String)
 		{
-			_sp = Props.pr.stepperPresets.getPropsByName(stepperId);
+			init(stepperId, text);
+		}
+		
+		public static function register(preset:XMLList):void
+		{	
+			if (!presets)
+				presets = new PropertyManager(StepperProperties);
 			
-			_upButton = new Button(_sp.upButtonId);
-			_upButton.name = "up";
-			_downButton = new Button(_sp.downButtonId);
-			_downButton.name = "down";
+			presets.parseXML(preset);
+		}
+		
+		private function init(stepperId:String, text:String):void
+		{
+			 var upButton:Button;
+			 var downButton:Button;
+			 var displayTextWidth:int;
+			 var displayTextHeight:int;
+			 var sp:StepperProperties;
+			
+			sp = presets.getPropsByName(stepperId);
+			
+			upButton = new Button(_sp.upButtonId);
+			upButton.name = "up";
+			downButton = new Button(_sp.downButtonId);
+			downButton.name = "down";
 			_background = new Graphic();
 			_background.render(_sp.backgroundGraphicId);
+			
 			_displayText = new TextField();
 			_valueDisplay = new Sprite();
 			
 			if (_sp.vertical)
-				_downButton.y = _background.height - _downButton.height;		
+				downButton.y = _background.height - downButton.height;		
 			else
-				_upButton.x = _background.width - _upButton.width;
+				upButton.x = _background.width - upButton.width;
 				
 			addChild(_background);
-			addChild(_upButton);
-			addChild(_downButton);
+			addChild(upButton);
+			addChild(downButton);
 			addChild(_valueDisplay);
 			
-			_displayTextWidth = _background.width - _downButton.width - _upButton.width;
-			_displayTextHeight = _background.height - _downButton.height - _upButton.height;
+			displayTextWidth = _background.width - downButton.width - upButton.width;
+			displayTextHeight = _background.height - downButton.height - upButton.height;
 			
 			_value = _sp.initialValue;
 			setDisplayText();
@@ -66,12 +81,12 @@ package com.zutalor.components
 			//TODO
 		}
 		
-		public function get value():Number
+		override public function get value():*
 		{
 			return _value;
 		}
 		
-		public function set value(v:Number):void
+		override public function set value(v:*):void
 		{
 			_value = v;
 			setDisplayText();

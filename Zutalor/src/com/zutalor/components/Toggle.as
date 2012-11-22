@@ -1,31 +1,45 @@
 package com.zutalor.components
 {
-	import com.gskinner.utils.IDisposable;
+	import com.zutalor.containers.Container;
 	import com.zutalor.events.UIEvent;
-	import flash.display.Sprite;
+	import com.zutalor.interfaces.IViewItem;
+	import com.zutalor.properties.ToggleProperties;
+	import com.zutalor.propertyManagers.PropertyManager;
 	import flash.events.MouseEvent;
 	/**
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class Toggle extends Sprite implements IDisposable
+	public class Toggle extends Component implements IViewItem
 	{
 		private var _onState:Button;
 		private var _offState:Button;
-		
 		private var _value:Boolean;
+		private var _name:String
 		
-		public function Toggle()
+		public function Toggle(toggleId:String, text:String)
 		{
-			
+			init(toggleId, text);
 		}
 		
-		public function create(onState:Button, offState:Button):void 
+		public static function register(preset:XMLList):void
 		{
-			addChild(onState);
-			addChild(offState);
-			_onState = onState;
-			_offState = offState;
+			if (!presets)
+				presets = new PropertyManager(ToggleProperties);
+			
+			presets.parseXML(preset);
+		}
+		
+		private function init(toggleId:String, text:String):void
+		{
+			var tp:ToggleProperties = presets.getPropsByName(toggleId);
+			
+			_onState = new Button(tp.onStateButtonId, text);
+			_offState = new Button(tp.offStateButtonId, text);
+			
+			value = tp.initialValue;
+			addChild(_onState);
+			addChild(_offState);
 			addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown, false, 0, true);
 		}
 		
@@ -40,9 +54,9 @@ package com.zutalor.components
 			dispatchEvent(new UIEvent(UIEvent.VALUE_CHANGED, null, null, null, _value));						
 		}
 		
-		public function set value(v:Boolean):void
+		override public function set value(value:*):void
 		{
-			_value = v;
+			_value = value;
 			toggle();	
 		}
 		
@@ -60,21 +74,18 @@ package com.zutalor.components
 			}
 		}				
 		
-		public function get value():Boolean
+		override public function get value():*
 		{
-			if (_value)
-				return true;
-			else
-				return false;
+			return _value;
 		}
 
-		public function set enabled(en:Boolean):void
+		override public function set enabled(value:Boolean):void
 		{
-			_onState.enabled = en;
-			_offState.enabled = en;
+			super.enabled = value;			
+			_onState.enabled = _offState.enabled = value;
 		}
 		
-		public function dispose():void
+		override public function dispose():void
 		{
 			removeChildAt(0);
 			removeChildAt(0);

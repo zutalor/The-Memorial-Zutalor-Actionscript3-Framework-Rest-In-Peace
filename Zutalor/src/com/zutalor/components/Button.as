@@ -3,6 +3,8 @@
 	import com.zutalor.containers.Container;
 	import com.zutalor.interfaces.IViewItem;
 	import com.zutalor.properties.ButtonProperties;
+	import com.zutalor.properties.PropertiesBase;
+	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.text.TextUtil;
 	import flash.display.DisplayObject;
@@ -14,7 +16,7 @@
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class Button extends Container implements IViewItem
+	public class Button extends Component implements IComponent
 	{
 		private var _sb:SimpleButton;
 		private var _up:Graphic;
@@ -28,6 +30,14 @@
 		{
 			init(buttonId, text);	
 		}
+		
+		public static function register(preset:XMLList):void
+		{	
+			if (!presets)
+				presets = new PropertyManager(ButtonProperties);
+			
+			presets.parseXML(preset);
+		}
 
 		private function init(buttonId:String, text:String):void
 		{
@@ -39,7 +49,7 @@
 			var vPad:int;
 			var text:String;
 			
-			bp = Props.pr.buttonPresets.getPropsByName(buttonId);
+			bp = ButtonProperties(presets.getPropsByName(buttonId));
 
 			// ToDO throw errors
 			
@@ -85,29 +95,15 @@
 			}
 		}
 		
-		override public function set name(n:String):void
+		override public function set enabled(value:Boolean):void
 		{
-			_name = _sb.name = n;
-		}
-		
-		override public function get name():String
-		{
-			return _name;
-		}
-		
-		public function set enabled(e:Boolean):void
-		{
-			_sb.enabled = _sb.mouseEnabled = e;
+			super.enabled = value;
+			_sb.enabled = _sb.mouseEnabled = value;
 			
-			if (!e)
+			if (!value)
 				_sb.upState = _disabled;
 			else
 				_sb.upState = _up;		
-		}
-		
-		public function get enabled():Boolean
-		{
-			return _enabled;
 		}
 	}
 }

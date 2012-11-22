@@ -50,7 +50,6 @@ package com.zutalor.components
 		private var _gri:GraphicItemProperties;
 		private var _grs:GraphicStyleProperties;
 		private var _grm:NestedPropsManager;
-		private var _grsm:PropertyManager;
 		private var _canvas:CenterSprite;
 		private var _canvasRect:Rectangle;
 		private var _g:Graphics;
@@ -71,8 +70,18 @@ package com.zutalor.components
 		
 		private var _lineEnd:Sprite = new Sprite();
 		
+		private static var _graphicStylePresets:PropertyManager;
+		
 		public function Graphic()
 		{
+		}
+		
+		public static function register(xml:XMLList):void
+		{
+			if (!_graphicStylePresets)
+				_graphicStylePresets = new PropertyManager(GraphicStyleProperties);
+			
+			_graphicStylePresets.parseXML(xml);
 		}
 		
 		public function render(id:String, delay:Number = 0, onRenderComplete:Function=null, onLifeTimeComplete:Function=null):void
@@ -91,7 +100,6 @@ package com.zutalor.components
 			
 			if (!_grm)
 			{
-				_grsm = Props.pr.graphicStylePresets;
 				_grm = Props.graphics;
 			}	
 			if (delay)
@@ -148,7 +156,7 @@ package com.zutalor.components
 						if (_gri.rotation)
 							_canvas.rotationAroundCenter = _gri.rotation;
 						
-						_grs = _grsm.getPropsByName(_gri.graphicStyle);
+						_grs = _graphicStylePresets.getPropsByName(_gri.graphicStyle);
 						
 						if (_grs)
 						{

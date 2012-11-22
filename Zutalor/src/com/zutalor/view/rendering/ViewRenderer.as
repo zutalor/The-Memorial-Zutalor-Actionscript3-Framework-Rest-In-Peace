@@ -1,6 +1,12 @@
 package com.zutalor.view.rendering
 {
+import com.zutalor.components.Button;
+import com.zutalor.components.ComponentGroup;
 import com.zutalor.components.Components;
+import com.zutalor.components.RadioGroup;
+import com.zutalor.components.Slider;
+import com.zutalor.components.Stepper;
+import com.zutalor.components.Toggle;
 import com.zutalor.containers.ViewContainer;
 import com.zutalor.containers.WebContainer;
 import com.zutalor.events.MediaEvent;
@@ -97,14 +103,23 @@ import flash.text.TextField;
 			switch (vip.type)
 			{
 				case ViewItemProperties.TOGGLE :
+					viewItem = new Toggle(vip.componentId, text);
+					break;
 				case ViewItemProperties.SLIDER :
-				case ViewItemProperties.TEXT_BUTTON :
+					viewItem = new Slider(vip.componentId, text);
+					break;
 				case ViewItemProperties.BUTTON :
+					viewItem = new Button(vip.componentId, text);
+					break;
 				case ViewItemProperties.STEPPER :
+					viewItem = new Stepper(vip.componentId, text);
+					break;
 				case ViewItemProperties.COMPONENT_GROUP :
+					viewItem = new ComponentGroup(vip.componentId, vip.dataProvider);
+					break;
 				case ViewItemProperties.RADIO_GROUP :
 					vc.disabledList[itemIndex] = false;
-					viewItem = Components.getComponent(vip.name, vip.type, vip.componentId, text, vip.dataProvider);
+					viewItem = new RadioGroup(vip.componentId, vip.dataProvider);
 					push(viewItem)
 					onItemLoadComplete();
 					break;

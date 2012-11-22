@@ -1,5 +1,6 @@
 package com.zutalor.application 
 {
+	import com.zutalor.components.Component;
 	import com.zutalor.utils.Registry;
 	import org.gestouch.gestures.Gesture;
 	/**
@@ -14,6 +15,7 @@ package com.zutalor.application
 		public static function initialize():void
 		{
 			gestures = new Registry(Gesture);
+			components = new Registry(Component);
 		}
 	}
 }
