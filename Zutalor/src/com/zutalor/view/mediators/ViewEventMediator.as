@@ -3,6 +3,7 @@ package com.zutalor.view.mediators
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.components.Button;
 	import com.zutalor.components.ComponentGroup;
+	import com.zutalor.components.InputText;
 	import com.zutalor.components.RadioGroup;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
@@ -16,6 +17,7 @@ package com.zutalor.view.mediators
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.propertyManagers.Props;
+	import com.zutalor.text.TextAttributes;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.text.Translate;
 	import com.zutalor.ui.Focus;
@@ -120,29 +122,20 @@ package com.zutalor.view.mediators
 		
 		public function itemListenerSetup():void
 		{
-			var vip:ViewItemProperties;
 			var item:*;
 			
 			for (var i:int = 0; i < vc.numViewItems; i++)
 			{
-				vip = _vpm.getItemPropsByIndex(vc.viewId, i);
 				item = vc.itemDictionary.getByIndex(i);
-				
-				if (item)
-				{
-					if (vip.onTap)
-						if (!(item is TextField))
-							item.buttonMode = true;
 					
-					if (vip.type == ViewItemProperties.INPUT_TEXT)
-					{
-						item.addEventListener(FocusEvent.FOCUS_IN, onInputTextFocusIn);
-						item.addEventListener(FocusEvent.FOCUS_OUT, onInputTextFocusOut);
-						item.addEventListener(Event.CHANGE, removeLeadingSpaces);
-					}
-					else
-						item.addEventListener(FocusEvent.FOCUS_IN, onItemFocusIn);
+				if (item is InputText)
+				{
+					item.addEventListener(FocusEvent.FOCUS_IN, onInputTextFocusIn);
+					item.addEventListener(FocusEvent.FOCUS_OUT, onInputTextFocusOut);
+					item.addEventListener(Event.CHANGE, removeLeadingSpaces);
 				}
+				else
+					item.addEventListener(FocusEvent.FOCUS_IN, onItemFocusIn);
 			}
 		}
 		
@@ -235,42 +228,33 @@ package com.zutalor.view.mediators
 			var vip:ViewItemProperties;
 			var item:TextField;
 			vip = _vpm.getItemPropsByName(vc.viewId, fe.currentTarget.name);
-			
-			if (vip)
-				if (vip.type == ViewItemProperties.INPUT_TEXT)
-				{
-					FullScreen.restoreIfNotDesktop();
-					item = vc.itemDictionary.getByKey(vip.name);
-					item.setSelection(0, 999);
-					vip.tText = Translate.text(vip.tText);
-						
-					if (item.text == vip.tText)
-					{
-						item.text = "";
-						TextUtil.applyTextAttributes(item, vip.textAttributes, int(vip.width), int(vip.height));
-					}
-				}
+		
+			FullScreen.restoreIfNotDesktop();
+			item = vc.itemDictionary.getByKey(vip.name);
+			item.setSelection(0, 999);
+			vip.tText = Translate.text(vip.tText);
+				
+			if (item.text == vip.tText)
+			{
+				item.text = "";
+				TextAttributes.apply(item, vip.textAttributes, int(vip.width), int(vip.height));
+			}
 			onItemFocusIn(fe);
 		}
 		
 		private function onInputTextFocusOut(fe:FocusEvent):void
 		{
 			var vip:ViewItemProperties;
-			var item:TextField;
+			var item:TextField = fe.currentTarget.textField;
 			
-			vip = _vpm.getItemPropsByName(vc.viewId, fe.currentTarget.name);
-			
-			if (vip)
-				if (vip.type == ViewItemProperties.INPUT_TEXT)
-				{
-					item = vc.itemDictionary.getByKey(vip.name);
-					if (item.text == "" && vip.tText)
-						item.text = Translate.text(vip.tText);
-				
-					TextUtil.applyTextAttributes(item, vip.textAttributes, int(vip.width), int(vip.height));
-					if (vip.voName)
-						vc.viewModelMediator.copyViewItemToValueObject(vip, item);
-				}
+			vip = _vpm.getItemPropsByName(vc.viewId, item.name);
+		
+			if (item.text == "" && vip.tText)
+				item.text = Translate.text(vip.tText);
+		
+			TextAttributes.apply(item, vip.textAttributes, int(vip.width), int(vip.height));
+			if (vip.voName)
+				vc.viewModelMediator.copyViewItemToValueObject(vip, item);
 		}
 		
 		private function onHotKey(e:HotKeyEvent):void
@@ -350,7 +334,6 @@ package com.zutalor.view.mediators
 		private function onValueChange(uie:UIEvent):void
 		{
 			var vip:ViewItemProperties;
-			var cLip:ViewItemProperties;
 			var cgp:ComponentGroupProperties;
 			var cg:ComponentGroup;
 			var contentContainer:*;
@@ -360,20 +343,17 @@ package com.zutalor.view.mediators
 			else
 				vip = _vpm.getItemPropsByName(vc.viewId, uie.target.name);
 			
-			if (vip)
+			if (vip && vip.voName)
 			{
-				if (vip.voName)
+				vc.viewModelMediator.vc.onViewChange(vip.name);
+				vc.viewModelMediator.copyViewItemToValueObject(vip, uie.target);
+				if (uie.target is ComponentGroup || uie.target is RadioGroup)
 				{
-					vc.viewModelMediator.vc.onViewChange(vip.name);
-					vc.viewModelMediator.copyViewItemToValueObject(vip, uie.target);
-					if (vip.type == ViewItemProperties.COMPONENT_GROUP || vip.type == ViewItemProperties.RADIO_GROUP)
-					{
-						cgp = Props.pr.componentGroupPresets.getPropsByName(vip.componentId);
-						cg = vc.itemDictionary.getByKey(uie.itemName);
-						contentContainer = cg.getChildAt(0);
-						for (var i:int = 0; i < cgp.numComponents; i++)
-							contentContainer.getChildAt(i).value = uie.value[i];
-					}
+					cgp = ComponentGroup.presets.getPropsByName(vip.componentId);
+					cg = vc.itemDictionary.getByKey(uie.itemName);
+					contentContainer = cg.getChildAt(0);
+					for (var i:int = 0; i < cgp.numComponents; i++)
+						contentContainer.getChildAt(i).value = uie.value[i];
 				}
 				onTap(null, vip.name);
 			}

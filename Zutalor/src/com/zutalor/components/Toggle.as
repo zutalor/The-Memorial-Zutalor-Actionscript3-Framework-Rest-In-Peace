@@ -1,9 +1,10 @@
 package com.zutalor.components
 {
-	import com.zutalor.containers.Container;
+	import com.zutalor.containers.ViewObject;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.interfaces.IViewItem;
 	import com.zutalor.properties.ToggleProperties;
+	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import flash.events.MouseEvent;
 	/**
@@ -17,25 +18,24 @@ package com.zutalor.components
 		private var _value:Boolean;
 		private var _name:String
 		
-		public function Toggle(toggleId:String, text:String)
-		{
-			init(toggleId, text);
-		}
-		
 		public static function register(preset:XMLList):void
 		{
-			if (!presets)
-				presets = new PropertyManager(ToggleProperties);
+			if (!_presets)
+				_presets = new PropertyManager(ToggleProperties);
 			
-			presets.parseXML(preset);
+			_presets.parseXML(preset);
 		}
 		
-		private function init(toggleId:String, text:String):void
+		override public function render(vip:ViewItemProperties):void
 		{
-			var tp:ToggleProperties = presets.getPropsByName(toggleId);
+			var tp:ToggleProperties = presets.getPropsByName(vip.presetId);
+			var vp:ViewItemProperties = new ViewItemProperties;
 			
-			_onState = new Button(tp.onStateButtonId, text);
-			_offState = new Button(tp.offStateButtonId, text);
+			vp.graphicId = tp.onStateButtonId;
+			vp.text = vip.text;
+			_onState = new Button(vp);
+			vp.graphicId = tp.offStateButtonId;
+			_offState = new Button(vp);
 			
 			value = tp.initialValue;
 			addChild(_onState);

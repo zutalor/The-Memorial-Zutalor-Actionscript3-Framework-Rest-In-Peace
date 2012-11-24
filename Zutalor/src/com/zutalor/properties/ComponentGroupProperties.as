@@ -9,7 +9,7 @@
 	public class ComponentGroupProperties extends PropertiesBase implements IProperties
 	{	
 		public var componentIds:String;
-		public var componentTypes:String;
+		public var viewItemTypes:String;
 		public var numComponents:int;
 		public var numCols:int;
 		public var hPad:int;

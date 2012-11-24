@@ -2,7 +2,6 @@ package com.zutalor.plugin
 {
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.ShowError;
-	import flash.utils.describeType;
 	import flash.utils.getQualifiedClassName;
 	/**
 	 * ...
@@ -15,14 +14,14 @@ package com.zutalor.plugin
 		private static var _instances:gDictionary;
 		private static var _initialized:Boolean;
 				
-		public static function registerClass(Klass:Class, instanceName:String = null):String
+		public static function registerClass(Klass:Class, name:String = null):String
 		{
 			var className:String;
 			
 			checkIfInitialized();
 			
-			if (instanceName)
-				className = instanceName;
+			if (name)
+				className = name;
 			else
 				className = getClassName(Klass);		
 			
@@ -56,7 +55,7 @@ package com.zutalor.plugin
 			return Klass;	
 		}
 		
-		public function getInstance(classInstanceName:String):*
+		public static function getInstance(classInstanceName:String):*
 		{
 			var instance:*;
 			

@@ -1,6 +1,10 @@
 ﻿package com.zutalor.properties
 {
 	import com.zutalor.interfaces.IProperties;
+	import com.zutalor.utils.MapXML;
+	import com.zutalor.utils.Resources;
+	import flash.text.Font;
+	import flash.text.TextFormat;
 	
 	/**
 	 * ...
@@ -22,5 +26,44 @@
 		public var rightMargin:String;
 		public var size:String;
 		public var underline:Boolean;
+		public var textFormat:TextFormat;
+		
+		override public function parseXML(xml:XML):Boolean
+		{	
+			MapXML.attributesToClass(xml , this); // map the properties
+			name = name.toLowerCase();
+			textFormat = makeTextFormat();
+			return true;
+		}
+		
+		private function makeTextFormat():TextFormat
+		{
+			var tf:TextFormat;
+			
+			tf = new TextFormat();
+			tf.align = align;
+			tf.blockIndent = blockIndent;
+			tf.bold = bold;
+			tf.color = color;
+			if (font)
+			{
+				var klass:Class;
+				var fontInstance:Font;
+				
+				klass = Resources.getClass(font);
+				fontInstance = new klass();
+				tf.font = fontInstance.fontName;
+			}
+			tf.indent = indent;
+			tf.italic = italic;
+			tf.kerning = kerning;
+			tf.leading = leading;
+			tf.leftMargin = leftMargin;
+			tf.letterSpacing = letterSpacing;
+			tf.rightMargin = rightMargin;
+			tf.size = size;
+			tf.underline = underline;
+			return tf;
+		}
 	}
 }

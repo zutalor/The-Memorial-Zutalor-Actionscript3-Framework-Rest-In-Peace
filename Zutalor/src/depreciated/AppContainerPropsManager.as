@@ -1,6 +1,6 @@
 ﻿package depreciated
 {
-	import com.zutalor.containers.Container;
+	import com.zutalor.containers.ViewObject;
 	import com.zutalor.properties.ContainerProperties;
 	import com.zutalor.utils.Singleton;
 	/**
@@ -11,7 +11,7 @@
 	public class AppContainerPropsManager
 
 	{	
-		private var cp:ContainerProperties;	
+		private var cp:ViewObjectProperties;	
 		private var cpm:PropertyManager;
 		
 		private static var _appContainerPropsManager:AppContainerPropsManager;
@@ -43,17 +43,17 @@
 			return cpm.getPropsByName(name).container;
 		}
 		
-		public function getContainerByIndex(index:int):Container
+		public function getContainerByIndex(index:int):ViewObject
 		{
 			return cpm.getPropsByIndex(index).container;
 		}		
 		
-		public function getContainerPropsByName(name:String):ContainerProperties
+		public function getContainerPropsByName(name:String):ViewObjectProperties
 		{
 			return cpm.getPropsByName(name);
 		}
 		
-		public function getContainerPropsByIndex(index:int):ContainerProperties
+		public function getContainerPropsByIndex(index:int):ViewObjectProperties
 		{
 			return cpm.getPropsByIndex(index);
 		}

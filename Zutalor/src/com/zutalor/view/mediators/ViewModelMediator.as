@@ -1,6 +1,10 @@
 package com.zutalor.view.mediators  
 {
-	import com.zutalor.components.ComponentTypes;
+	import com.zutalor.components.Component;
+	import com.zutalor.components.ComponentGroup;
+	import com.zutalor.components.InputText;
+	import com.zutalor.components.Label;
+	import com.zutalor.components.RadioGroup;
 	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.media.VideoPlayer;
@@ -12,6 +16,7 @@ package com.zutalor.view.mediators
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.propertyManagers.Props;
+	import com.zutalor.text.TextAttributes;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.text.Translate;
 	import com.zutalor.utils.ShowError;
@@ -44,38 +49,16 @@ package com.zutalor.view.mediators
 		public function setItemInitialValue(vip:ViewItemProperties):void
 		{
 			var item:*;
+			var ViewItemClass:Class
 			
-			item = vc.itemDictionary.getByKey(vip.name); 
-			switch (vip.type)
+			ViewItemClass = Plugins.getClass(vip.type);
+			item = vc.itemDictionary.getByKey(vip.name);
+			
+			if (ViewItemClass is Component && vip.voName)
 			{
-				case ViewItemProperties.INPUT_TEXT :
-					if (vip.tText)
-						item.text = Translate.text(vip.tText);
-					
-					TextUtil.applyTextAttributes(item, vip.textAttributes, int(vip.width), int(vip.height));			
-					break;
-				case ViewItemProperties.PROPERTY :
-					if (vip.voName)
-					{
-						_valueObject = Plugins.callMethod(vc.vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
-						_valueObject[vip.name] = vip.data;
-					}
-					break;
-				case ComponentTypes.SLIDER :
-				case ComponentTypes.STEPPER :
-				case ComponentTypes.COMPONENT_GROUP : 
-				case ComponentTypes.RADIO_GROUP : 
-					if (vip.voName)
-					{
-						_valueObject = Plugins.callMethod(vc.vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
-						item.value = _valueObject[vip.name];
-					}
-					break;
-			}	
-			function onTranslateComplete(data:*):void
-			{
-				
-			}
+				_valueObject = Plugins.callMethod(vc.vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
+				item.value = _valueObject[vip.name];
+			}			
 		}
 		
 		public function setAllInitialValues():void
@@ -95,39 +78,20 @@ package com.zutalor.view.mediators
 			var vip:ViewItemProperties;
 			var valid:Boolean;
 			var value:*;
+			var ViewItemClass:Class;
 			
 			valid = true;
 			
 			for (var i:int = 0; i < vc.numViewItems; i++)
 			{
 				vip = _vpm.getItemPropsByIndex(vc.viewId, i)
-	
-				switch (vip.type)
+				ViewItemClass = Plugins.getClass(vip.type);
+				
+				
+				switch (ViewItemClass)
 				{
-					case ViewItemProperties.INPUT_TEXT :
-					case ComponentTypes.LIST :
-					case ComponentTypes.COMBOBOX :
-						if (vip.required) 
-						{
-							if (_valueObject[vip.name] == "" || _valueObject[vip.name] == vip.tText || _valueObject[vip.name] == vip.text)
-							{
-								setItemInitialValue(vip);
-								valid = false;
-							}
-						}
-						else if (vip.validate == "email")
-						{
-							if (!validateEmail(_valueObject[vip.name]))
-								valid = false;
-						}
-						else if (_valueObject[vip.name] == vip.tText || _valueObject[vip.name] == vip.text)
-							_valueObject[vip.name] = "";
-						
-						break;
-
-					case ComponentTypes.COMPONENT_GROUP :
-					case ComponentTypes.RADIO_GROUP :
-						
+					case ComponentGroup :
+					case RadioGroup :
 						if (vip.required)
 							if (_valueObject[vip.name])
 							{
@@ -141,6 +105,25 @@ package com.zutalor.view.mediators
 									}
 							}	
 						break;
+					case Component :
+						if (vip.required) 
+						{
+							if (_valueObject[vip.name] == "" || _valueObject[vip.name] == vip.text || _valueObject[vip.name] == vip.text)
+							{
+								setItemInitialValue(vip);
+								valid = false;
+							}
+						}
+						else if (vip.validate == "email")
+						{
+							if (!validateEmail(_valueObject[vip.name]))
+								valid = false;
+						}
+						else if (_valueObject[vip.name] == vip.text || _valueObject[vip.name] == vip.text)
+							_valueObject[vip.name] = "";
+						
+						break;
+
 				}
 				if (!valid)
 					break;
@@ -172,40 +155,16 @@ package com.zutalor.view.mediators
 		
 		public function copyViewItemToValueObject(vip:ViewItemProperties, item:*):void
  		{
+			var ViewItemClass:Class;
+		
 			if (vip.voName)
 			{
+				ViewItemClass = Plugins.getClass(vip.type);
 				_valueObject = Plugins.callMethod(vc.vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
 				if (_valueObject)
 				{
-					switch (vip.type)
-					{
-						case ComponentTypes.LIST :
-						case ComponentTypes.COMBOBOX :
-							if (item.selectedItem)
-								_valueObject[vip.name] = item.selectedItem;
-							else
-								_valueObject[vip.name] = null;
-							break;
-						case ViewItemProperties.INPUT_TEXT :	
-						case ViewItemProperties.LABEL :	
-							_valueObject[vip.name] = item.text;
-							break;
-
-							_valueObject[vip.name] = item.value;
-							break;
-						case ViewItemProperties.VIDEO :
-							item.stop();
-							item.visible = false;
-							break;
-						case ComponentTypes.TOGGLE :
-						case ComponentTypes.SLIDER :
-						case ComponentTypes.BUTTON :
-						case ComponentTypes.STEPPER :
-						case ComponentTypes.COMPONENT_GROUP :
-						case ComponentTypes.RADIO_GROUP :
-								_valueObject[vip.name] = item.value;
-								break;
-					}
+					if (ViewItemClass == Component)
+						_valueObject[vip.name] = item.value;
 				}
 				else
 					ShowError.fail(ViewModelMediator,"valueObject not found: " + vip.voName);
@@ -216,72 +175,71 @@ package com.zutalor.view.mediators
 		{
 			var c:ScrollingContainer;
 			var dataProvider:Array;
+			var ViewItemClass:Class;
 			
 			if (vip.voName)
 			{
 				_valueObject = Plugins.callMethod(vc.vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
+				
 				if (_valueObject)
 				{
-						switch (vip.type)
-						{	
-							case ViewItemProperties.INPUT_TEXT :
-							case ViewItemProperties.LABEL :
-								if (_valueObject[vip.name])
+					ViewItemClass = Plugins.getClass(vip.type);
+					switch (ViewItemClass)
+					{	
+						case Component :
+							if (_valueObject[vip.name])
+							{
+								switch (vip.format)
 								{
-									switch (vip.format)
-									{
-										case FORMAT_TIME :
-											item.text = TextUtil.formatTime(_valueObject[vip.name]);
-											break;
-										default :
-											item.text = _valueObject[vip.name];
-									}
-									TextUtil.applyTextAttributes(item, vip.textAttributes, int(vip.width), int(vip.height));
+									case FORMAT_TIME :
+										item.value = TextUtil.formatTime(_valueObject[vip.name]);
+										break;
+									default :
+										item.value = _valueObject[vip.name];
 								}
-								break;
-							case ComponentTypes.LIST :	
-							case ComponentTypes.COMBOBOX :	
-								item.selectedItem = _valueObject[vip.name]
-								if (vip.dataProvider)
-								{
-									if (_valueObject[vip.dataProvider])
-										item.dataProvider = _valueObject[vip.dataProvider];
-								}
-								break;
-							case ViewItemProperties.HTML :
-								var t:TextField = item;
-								vc.itemDictionary.insert(vip.name, t);
-								TextUtil.applyStylesheet(t, _ap.defaultStyleSheetName, int(vip.width));
-								if (_valueObject[vip.name] != null)
-								{
-									t.htmlText = _valueObject[vip.name];
-									TextUtil.smoothHtmlBitmaps(t);
-								}
-								break;
-							case ComponentTypes.TOGGLE :
-							case ComponentTypes.SLIDER :
-							case ComponentTypes.BUTTON :
-							case ComponentTypes.STEPPER :
-							case ComponentTypes.COMPONENT_GROUP :
-							case ComponentTypes.RADIO_GROUP :
-								item.value = _valueObject[vip.name];
-								break;
-							case ViewItemProperties.VIDEO :
-								var v:VideoPlayer;
-								var mpp:MediaProperties;
-								if (_valueObject[vip.name])
-								{
-									mpp = _pr.mediaPresets.getPropsByName(vip.mediaPreset);
-									item.load(_valueObject[vip.name], mpp.volume, mpp.loopCount, mpp.loopDelay);
-									
-									if (mpp.autoPlay)
-										item.play(mpp.mediaFadeIn, mpp.audioFadeIn, mpp.fadeOut, mpp.startDelay);
-									
-									item.x = vip.x;
-									item.visible = true;
-								}
-						}		
-					}
+								if (vip.textAttributes)
+									TextAttributes.apply(item.value, vip.textAttributes, int(vip.width), int(vip.height));
+							}
+							break;
+							/*
+						case ViewItemTypes.LIST :	
+						case ViewItemTypes.COMBOBOX :	
+							item.selectedItem = _valueObject[vip.name]
+							if (vip.dataProvider)
+							{
+								if (_valueObject[vip.dataProvider])
+									item.dataProvider = _valueObject[vip.dataProvider];
+							}
+							break;
+							
+						case ViewItemProperties.HTML :
+							var t:TextField = item;
+							vc.itemDictionary.insert(vip.name, t);
+							TextUtil.applyStylesheet(t, _ap.defaultStyleSheetName, int(vip.width));
+							if (_valueObject[vip.name] != null)
+							{
+								t.htmlText = _valueObject[vip.name];
+								TextUtil.smoothHtmlBitmaps(t);
+							}
+							break;
+						
+						case ViewItemProperties.VIDEO :
+							var v:VideoPlayer;
+							var mpp:MediaProperties;
+							if (_valueObject[vip.name])
+							{
+								mpp = _pr.mediaPresets.getPropsByName(vip.mediaPreset);
+								item.load(_valueObject[vip.name], mpp.volume, mpp.loopCount, mpp.loopDelay);
+								
+								if (mpp.autoPlay)
+									item.play(mpp.mediaFadeIn, mpp.audioFadeIn, mpp.fadeOut, mpp.startDelay);
+								
+								item.x = vip.x;
+								item.visible = true;
+							}
+								*/
+					}		
+				}
 			}
 		}
 	}

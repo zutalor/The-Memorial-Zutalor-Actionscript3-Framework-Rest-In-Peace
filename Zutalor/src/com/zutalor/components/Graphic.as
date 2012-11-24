@@ -1,6 +1,7 @@
 package com.zutalor.components
 {
 	import com.greensock.TweenMax;
+	import com.zutalor.containers.ViewObject;
 	import com.zutalor.fx.Easing;
 	import com.zutalor.fx.Filters;
 	import com.zutalor.fx.Transition;
@@ -9,13 +10,12 @@ package com.zutalor.components
 	import com.zutalor.properties.GraphicItemProperties;
 	import com.zutalor.properties.GraphicProperties;
 	import com.zutalor.properties.GraphicStyleProperties;
+	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.sprites.CenterSprite;
-	import com.zutalor.text.TextUtil;
 	import com.zutalor.text.Translate;
-	import com.zutalor.utils.DisplayUtils;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.Resources;
@@ -34,7 +34,7 @@ package com.zutalor.components
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class Graphic extends CenterSprite
+	public class Graphic extends ViewObject implements IViewObject
 	{
 		public static const LINE:String = "line";
 		public static const CURVE:String = "curve";
@@ -53,7 +53,7 @@ package com.zutalor.components
 		private var _canvas:CenterSprite;
 		private var _canvasRect:Rectangle;
 		private var _g:Graphics;
-		private var _graphicId:String;
+		private var _vip:ViewItemProperties;
 		private var _pts:Array;
 		private var _data:Array;
 		private var _scale9Data:Array;
@@ -70,28 +70,26 @@ package com.zutalor.components
 		
 		private var _lineEnd:Sprite = new Sprite();
 		
-		private static var _graphicStylePresets:PropertyManager;
-		
-		public function Graphic()
-		{
-		}
+		private static var _presets:PropertyManager;
 		
 		public static function register(xml:XMLList):void
 		{
-			if (!_graphicStylePresets)
-				_graphicStylePresets = new PropertyManager(GraphicStyleProperties);
+			if (!_presets)
+				_presets = new PropertyManager(GraphicStyleProperties);
 			
-			_graphicStylePresets.parseXML(xml);
+			_presets.parseXML(xml);
 		}
+				
+		override public function render(vip:ViewItemProperties):void
 		
-		public function render(id:String, delay:Number = 0, onRenderComplete:Function=null, onLifeTimeComplete:Function=null):void
+		//id:String, delay:Number = 0, onRenderComplete:Function=null, onLifeTimeComplete:Function=null):void
 		{	
 			_ap = ApplicationProperties.gi();
 
-			_onLifeTimeComplete = onLifeTimeComplete;
-			_onRenderComplete = onRenderComplete;
+			//_onLifeTimeComplete = onLifeTimeComplete;
+			//_onRenderComplete = onRenderComplete;
 			
-			_graphicId = id;
+			_vip = vip;
 
 			_canvas = this;
 			_g = _canvas.graphics;
@@ -102,9 +100,9 @@ package com.zutalor.components
 			{
 				_grm = Props.graphics;
 			}	
-			if (delay)
+			if (vip.transitionDelay)
 			{
-				MasterClock.callOnce(_render, delay * 1000);
+				MasterClock.callOnce(_render, vip.transitionDelay * 1000);
 			}	
 			else
 				_render();
@@ -118,10 +116,10 @@ package com.zutalor.components
 			var txt:TextField;
 			var i:int = 0;
 			
-			numGraphics = _grm.getNumItems(_graphicId);
+			numGraphics = _grm.getNumItems(_vip.presetId);
 			
 			if (numGraphics == 0)
-				ShowError.fail(Graphic,"Graphic Render, no items for: " + _graphicId);
+				ShowError.fail(Graphic,"Graphic Render, no items for: " + _vip.presetId);
 				
 			renderNextItem();
 			
@@ -134,9 +132,9 @@ package com.zutalor.components
 				}
 				else
 				{
-					_gri = _grm.getItemPropsByIndex(_graphicId, i);
+					_gri = _grm.getItemPropsByIndex(_vip.presetId, i);
 					if (!_gri)
-						ShowError.fail(this,"Graphic: no properties for graphic id " + _graphicId);
+						ShowError.fail(this,"Graphic: no properties for graphic id " + _vip.presetId);
 					else
 					{	
 						if (_gri.data)
@@ -156,7 +154,7 @@ package com.zutalor.components
 						if (_gri.rotation)
 							_canvas.rotationAroundCenter = _gri.rotation;
 						
-						_grs = _graphicStylePresets.getPropsByName(_gri.graphicStyle);
+						_grs = _presets.getPropsByName(_gri.graphicStyle);
 						
 						if (_grs)
 						{
@@ -185,7 +183,7 @@ package com.zutalor.components
 									//do nothing
 									break;
 								default :
-									ShowError.fail(this,"Graphics, no graphic style for: ID: " + _graphicId + " Type: " + _gri.type + "  Style: " + _gri.graphicStyle + " : " + _gri.name);
+									ShowError.fail(this,"Graphics, no graphic style for: ID: " + _vip.presetId + " Type: " + _gri.type + "  Style: " + _gri.graphicStyle + " : " + _gri.name);
 							}
 						}
 						switch (_gri.type)
@@ -237,19 +235,15 @@ package com.zutalor.components
 								_canvas.addChild(bm);
 								onItemRenderComplete();
 								break;
-							case Graphic.TEXT :
-								txt = new TextField();				
-								txt.text = Translate.text(_gri.tText);
-
-								TextUtil.applyTextAttributes(txt, _gri.textAttribute);
-								DisplayUtils.fitIntoRect(txt, _gri.width, _gri.height, _gri.align, _gri.hPad, _gri.vPad);
-								_canvas.addChild(txt);
+							case Graphic.TEXT :		
+								Label.addLabel(_canvas, Translate.text(_gri.tText), 
+													_gri.textAttribute, _gri.width, _gri.height, _gri.align, _gri.hPad, _gri.vPad);
 								onItemRenderComplete();
 								break;	
 							case Graphic.GRAPHIC : // nested graphic!
 								var gr:Graphic = new Graphic();
 								if (!_gri.data)
-									ShowError.fail(this,"Graphic: data null for " + _graphicId);
+									ShowError.fail(this,"Graphic: data null for " + _vip.presetId);
 								gr.render(_gri.data, 0, onNestedItemRenderComplete);
 								break;
 						}
@@ -278,7 +272,7 @@ package com.zutalor.components
 				
 				function onItemRenderComplete():void 
 				{
-					_grp = _grm.getPropsById(_graphicId);
+					_grp = _grm.getPropsById(_vip.presetId);
 					
 					if (_grp.maskGraphicId)
 					{

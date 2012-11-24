@@ -1,6 +1,6 @@
 ﻿package com.zutalor.sprites 
 {
-	import com.zutalor.containers.Container;
+	import com.zutalor.containers.ViewObject;
 	import com.zutalor.Transition.FX;
 	import com.zutalor.ui.TextOverlay;
 	import flash.display.Sprite;

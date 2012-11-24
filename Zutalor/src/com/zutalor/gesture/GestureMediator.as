@@ -2,7 +2,6 @@ package com.zutalor.gesture
 {
 	import com.gskinner.utils.IDisposable;
 	import com.zutalor.utils.gDictionary;
-	import com.zutalor.utils.Registry;
 	import com.zutalor.utils.ShowError;
 	import flash.display.DisplayObject;
 	import flash.events.EventDispatcher;
@@ -18,12 +17,12 @@ package com.zutalor.gesture
 	public class GestureMediator extends EventDispatcher implements IDisposable 
 	{		
 		private var _activeGestures:gDictionary;
-		private var _gestureRegistry:Registry;
+		private var _plugins:*;
 		
-		public function GestureMediator(gestureRegistry:Registry)
+		public function GestureMediator(plugins:*)
 		{
 			_activeGestures = new gDictionary();
-			_gestureRegistry = gestureRegistry;
+			_plugins = plugins;
 		}
 				
 		public function activateGesture(type:String, target:DisplayObject, name:String):void 
@@ -33,7 +32,7 @@ package com.zutalor.gesture
 			var qualifiedClassName:String;
 			var targetDictionary:gDictionary;
 
-			gestureClass = _gestureRegistry.retrieve(type);
+			gestureClass = _plugins.getClass(type);
 			if (!gestureClass)
 				ShowError.fail(GestureMediator, "Gesture type not registered: " + type);
 			

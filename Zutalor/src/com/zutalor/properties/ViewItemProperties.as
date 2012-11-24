@@ -13,25 +13,10 @@
 	public class ViewItemProperties extends PropertiesBase implements IProperties
 	{	
 		// item type
-		public static const INPUT_TEXT:String = "inputText";
-		public static const LABEL:String = "label";
 		public static const STATUS:String = "status";
-		public static const SLIDE_SHOW:String = "slideShow";
-		public static const FLIPBOOK:String = "flipbook";
-		public static const VIDEO:String = "video";
-		public static const BASIC_VIDEO:String = "basicVideo";
-		public static const YOUTUBE:String = "youtube";
-		public static const AUDIO:String = "audio";
-		public static const HTML:String = "html"
-		public static const WEB:String = "web"
-		public static const TWITTER:String = "twitter";
-		public static const GRAPHIC:String = "graphic";
-		public static const CAMERA:String = "camera";
-		public static const PLAYLIST:String = "playlist";
-		public static const EMBED:String = "embed";
 		public static const PROPERTY:String = "property";
 		
-		// tap types
+		// gesture types
 		public static const APP_STATE_CHANGE:String = "appStateChange";
 		public static const UI_EVENT:String = "uiEvent";
 		public static const PLUGIN_METHOD:String = "pluginMethodCall";
@@ -39,15 +24,20 @@
 		public static const VIEWITEM_METHOD:String = "viewItemMethodCall";	
 		
 		public var type:String;
+		public var presetId:String;
+		public var graphicId:String;
+		public var tKey:String;
+		public var text:String;
+		public var className:String;
+		public var data:String;
+	
+		//public var textureName:String;
 		public var voName:String;
 		public var hidden:Boolean;
 		public var excludeFromDisplayList:Boolean;
-		public var tText:String;
-		public var text:String;
 		public var format:String;
 		public var textAttributes:String;
-		public var data:String;
-		public var dataProvider:String;
+		public var styleSheetName:String;
 		public var width:String; // yes string because it can be either "auto" or a number.
 		public var height:String; // same as above
 		public var tabIndex:int;
@@ -66,21 +56,16 @@
 		public var validate:String;
 		public var required:Boolean;
 		public var tError:String;
-
 		public var onTap:String;
 		public var target:String;
 		public var action:String;
 		public var actionParams:String;		
 		public var onTapContainerNames:String;
-		public var componentId:String;	
 		public var hotkey:String;
 		public var url:String;
 		public var path:String;
 		public var mediaPreset:String;
 		public var playlistName:String;
-		public var graphicId:String;
-		public var textureName:String;
-		public var className:String;
 		public var transitionPreset:String;
 		public var transitionDelay:Number;
 		public var scrollPreset:String;
@@ -100,9 +85,8 @@
 			else
 				url = xml.@url;
 				
-			if (tText)
-				tText = tText.split("\\n").join("\n");	
-							
+			if (tKey)
+				text = tKey.split("\\n").join("\n");
 				
 			return true;	
 		}

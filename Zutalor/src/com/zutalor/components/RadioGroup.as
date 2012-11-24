@@ -1,24 +1,14 @@
 package com.zutalor.components
 {
-	import com.gskinner.utils.IDisposable;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.properties.ComponentGroupProperties;
-	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.ArrayUtils;
 	import flash.display.DisplayObject;
-	import flash.display.Sprite;
 	/**
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class RadioGroup extends ComponentGroup implements IDisposable
-	{
-		
-		public function RadioGroup(groupId:String, dataProvider:String)
-		{
-			super.init(groupId, dataProvider);
-		}
-		
+	public class RadioGroup extends ComponentGroup implements IComponent
+	{	
 		public function get radioIndex():int
 		{
 			return ArrayUtils.getIndexWithValue(values);

@@ -1,6 +1,6 @@
 ﻿package depreciated  
 {
-	import com.zutalor.containers.Container;
+	import com.zutalor.containers.ViewObject;
 	import com.zutalor.containers.MaskedContainer;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -57,7 +57,7 @@
 			_menuContainer.push(textButton);
 		}
 		
-		public function get contentContainer():Container
+		public function get contentContainer():ViewObject
 		{
 			return _menuContainer;
 		}

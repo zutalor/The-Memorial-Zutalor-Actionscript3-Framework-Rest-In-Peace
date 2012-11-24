@@ -2,8 +2,9 @@ package com.zutalor.components
 {
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.properties.StepperProperties;
+	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
-	import com.zutalor.propertyManagers.Props;
+	import com.zutalor.text.TextAttributes;
 	import com.zutalor.text.TextUtil;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
@@ -14,8 +15,6 @@ package com.zutalor.components
 	 */
 	public class Stepper extends Component implements IComponent
 	{
-		
-		
 		private var _valueDisplay:Sprite;
 		private var _value:Number;
 		private var _displayText:TextField;
@@ -24,20 +23,15 @@ package com.zutalor.components
 		
 		public var showMs:Boolean;
 		
-		public function Stepper(stepperId:String, text:String)
-		{
-			init(stepperId, text);
-		}
-		
 		public static function register(preset:XMLList):void
 		{	
-			if (!presets)
-				presets = new PropertyManager(StepperProperties);
+			if (!_presets)
+				_presets = new PropertyManager(StepperProperties);
 			
-			presets.parseXML(preset);
+			_presets.parseXML(preset);
 		}
 		
-		private function init(stepperId:String, text:String):void
+		override public function render(vip:ViewItemProperties):void
 		{
 			 var upButton:Button;
 			 var downButton:Button;
@@ -45,7 +39,7 @@ package com.zutalor.components
 			 var displayTextHeight:int;
 			 var sp:StepperProperties;
 			
-			sp = presets.getPropsByName(stepperId);
+			sp = presets.getPropsByName(vip.presetId);
 			
 			upButton = new Button(_sp.upButtonId);
 			upButton.name = "up";
@@ -102,12 +96,12 @@ package com.zutalor.components
 					break;
 				case "time" :
 					_displayText.text = TextUtil.formatTime(_value);
-					TextUtil.applyTextAttributes(_displayText, _sp.textAttributes);
+					TextAttributes.apply(_displayText, _sp.textAttributes);
 					_valueDisplay.addChild(_displayText);
 					break;
 				default :
 					_displayText.text = String(_value);
-					TextUtil.applyTextAttributes(_displayText, _sp.textAttributes);
+					TextAttributes.apply(_displayText, _sp.textAttributes);
 					_valueDisplay.addChild(_displayText);
 					break;					
 			}	

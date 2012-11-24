@@ -11,7 +11,6 @@ package com.zutalor.utils
 		{
 			var mess:String = getQualifiedClassName(caller) + ": " + message;
 			throw new Error(mess);
-
 		}
 	}
 }

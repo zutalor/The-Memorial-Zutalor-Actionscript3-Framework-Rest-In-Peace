@@ -1,6 +1,6 @@
 package com.zutalor.components 
 {
-	import com.zutalor.containers.Container;
+	import com.zutalor.containers.ViewObject;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.properties.PropertiesBase;
 	import com.zutalor.propertyManagers.PropertyManager;
@@ -8,14 +8,14 @@ package com.zutalor.components
 	 * ...
 	 * @author Geoff
 	 */
-	public class Component extends Container implements IComponent
+	public class Component extends ViewObject
 	{
-		private var _enabled:Boolean;
-		protected static var presets:PropertyManager;
 		
-		public function Component(id:String, data:String)
+		protected static var _presets:PropertyManager;
+		
+		public static function get presets():PropertyManager
 		{
-			
+			return _presets;
 		}
 		
 		override public function set name(n:String):void
@@ -42,16 +42,6 @@ package com.zutalor.components
 		public function set value(value:*):void
 		{
 			
-		}
-		
-		public function set enabled(value:Boolean):void
-		{
-			_enabled = value;
-		}
-		
-		public function get enabled():Boolean
-		{
-			return _enabled;
 		}
 	}
 }

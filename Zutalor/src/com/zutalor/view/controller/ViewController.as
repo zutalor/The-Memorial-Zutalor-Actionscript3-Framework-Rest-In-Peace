@@ -1,12 +1,10 @@
 ﻿package com.zutalor.view.controller
 {
-	import com.greensock.easing.Expo;
 	import com.greensock.TweenMax;
 	import com.gskinner.utils.IDisposable;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.fx.Easing;
 	import com.zutalor.fx.Transition;
 	import com.zutalor.fx.TransitionTypes;
 	import com.zutalor.interfaces.IMediaPlayer;
@@ -18,7 +16,7 @@
 	import com.zutalor.properties.ViewProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Props;
-	import com.zutalor.text.TextUtil;
+	import com.zutalor.text.TextAttributes;
 	import com.zutalor.text.Translate;
 	import com.zutalor.ui.Focus;
 	import com.zutalor.utils.gDictionary;
@@ -484,7 +482,7 @@
 					statusField.text = "";
 
 				vip = vpm.getItemPropsByName(viewId, "status");
-				TextUtil.applyTextAttributes(statusField, vip.textAttributes, int(vip.width), int(vip.height));
+				TextAttributes.apply(statusField, vip.textAttributes, int(vip.width), int(vip.height));
 			}		
 		}
 						
@@ -539,11 +537,10 @@
 			for (s in messages)
 			{
 				vip = vpm.getItemPropsByName(viewId, messages[s]);
-				if (vip)
-					if (vip.tText)
-						this[messages[s]] = Translate(vip.tText);
-					else	
-						this[messages[s]] = "";
+				if (vip && vip.tKey)
+					this[messages[s]] = Translate(vip.tKey);
+				else	
+					this[messages[s]] = "";
 			}
 		}
 		

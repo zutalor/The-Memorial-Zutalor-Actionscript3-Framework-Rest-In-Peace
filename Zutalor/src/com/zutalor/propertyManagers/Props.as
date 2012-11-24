@@ -16,7 +16,7 @@ package com.zutalor.propertyManagers
 	import com.zutalor.properties.TranslateProperties;
 	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.properties.ViewProperties;
-	import com.zutalor.text.StyleSheetUtils;
+	import com.zutalor.text.StyleSheets;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StringUtils;
 
@@ -138,7 +138,8 @@ package com.zutalor.propertyManagers
 				}
 				 _loaders = null;
 
-				StyleSheetUtils.loadCss(onCssLoaded);			
+				StyleSheets.loadCss(onCssLoaded);
+				
 				function onCssLoaded():void
 				{
 					_onComplete();

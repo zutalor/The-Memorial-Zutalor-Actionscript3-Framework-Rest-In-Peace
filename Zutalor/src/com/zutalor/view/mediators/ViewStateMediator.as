@@ -2,17 +2,17 @@ package com.zutalor.view.mediators
 {
 	import com.adobe.xml.syndication.atom.Generator;
 	import com.zutalor.air.AirStatus;
-	import com.zutalor.application.AppRegistry;
 	import com.zutalor.controllers.AbstractUiController;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.gesture.AppGestureEvent;
 	import com.zutalor.gesture.GestureMediator;
-	import com.zutalor.gesture.GestureTypes;
 	import com.zutalor.gesture.UserInputProperties;
 	import com.zutalor.media.AudioController;
 	import com.zutalor.media.MediaPlayer;
 	import com.zutalor.media.TextToSpeech;
+	import com.zutalor.plugin.Plugins;
 	import com.zutalor.view.properties.AnswerProperties;
+	import org.gestouch.gestures.TapGesture;
 
 	import com.zutalor.properties.TranslateItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
@@ -72,7 +72,7 @@ package com.zutalor.view.mediators
 				_uiController.viewStateMediator = this;
 				_answers = new gDictionary();
 				_history = [];
-				_gm = new GestureMediator(AppRegistry.gestures);
+				_gm = new GestureMediator(Plugins);
 				_hkm = new HotKeyManager();
 				_gm.addEventListener(AppGestureEvent.RECOGNIZED, onGesture);
 				_soundPlayer = new MediaPlayer();
@@ -178,9 +178,9 @@ package com.zutalor.view.mediators
 					_uiController.exit();
 				else if (uip.action == "answer")
 				{
-					if (uip.type == GestureTypes.TAP)
+					if (uip.type == Plugins.getClassName(TapGesture))
 						answerIndex = getGridValues(gesture, uip).index;
-					else if (uip.type == GestureTypes.KEY_PRESS)
+					else
 						answerIndex = letterAnswers.indexOf(uip.name.toLowerCase());
 
 					answerText = XML(_curStateText)..Q[answerIndex];

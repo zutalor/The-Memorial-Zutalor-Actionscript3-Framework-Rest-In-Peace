@@ -1,8 +1,10 @@
 package com.zutalor.view.rendering
 {
 import com.zutalor.components.Button;
+import com.zutalor.components.Component;
 import com.zutalor.components.ComponentGroup;
-import com.zutalor.components.Components;
+import com.zutalor.components.Embed;
+import com.zutalor.components.Graphic;
 import com.zutalor.components.RadioGroup;
 import com.zutalor.components.Slider;
 import com.zutalor.components.Stepper;
@@ -11,6 +13,7 @@ import com.zutalor.containers.ViewContainer;
 import com.zutalor.containers.WebContainer;
 import com.zutalor.events.MediaEvent;
 import com.zutalor.media.FlipBook;
+import com.zutalor.media.MediaPlayer;
 import com.zutalor.media.Playlist;
 import com.zutalor.media.SlideShow;
 import com.zutalor.objectPool.ObjectPool;
@@ -74,6 +77,7 @@ import flash.text.TextField;
 			var c:ViewContainer;
 			var txt:TextField;
 			var viewItem:*;
+			var ViewItemClass:Class;
 			var vip:ViewItemProperties;
 			var scaleAdjust:Number;
 	
@@ -94,336 +98,104 @@ import flash.text.TextField;
 			c.visible = true;	
 			vc.containergDictionary.insert(c.name, c);
 		
-			if (vip.tText)
-				text = Translate.text(vip.tText);
+			if (vip.tKey)
+				text = Translate.text(vip.tKey);
 			else
-				text = "";
+				text = vip.text;
+				
+			if (!vip.styleSheetName)
+				vip.styleSheetName = vp.styleSheetName;
 				
 			vc.disabledList[itemIndex] = true;
-			switch (vip.type)
+			
+			ViewItemClass = Plugins.getClass(vip.type);
+			
+			switch (ViewItemClass)
 			{
-				case ViewItemProperties.TOGGLE :
-					viewItem = new Toggle(vip.componentId, text);
-					break;
-				case ViewItemProperties.SLIDER :
-					viewItem = new Slider(vip.componentId, text);
-					break;
-				case ViewItemProperties.BUTTON :
-					viewItem = new Button(vip.componentId, text);
-					break;
-				case ViewItemProperties.STEPPER :
-					viewItem = new Stepper(vip.componentId, text);
-					break;
-				case ViewItemProperties.COMPONENT_GROUP :
-					viewItem = new ComponentGroup(vip.componentId, vip.dataProvider);
-					break;
-				case ViewItemProperties.RADIO_GROUP :
-					vc.disabledList[itemIndex] = false;
-					viewItem = new RadioGroup(vip.componentId, vip.dataProvider);
-					push(viewItem)
-					onItemLoadComplete();
-					break;
-				case ViewItemProperties.INPUT_TEXT :					
-					vc.disabledList[itemIndex] = false;
-				case ViewItemProperties.LABEL :
-				case ViewItemProperties.STATUS :	
-					txt = ObjectPool.getTextField();
-					txt.text = text;
-					viewItem = txt;
-					
-					TextUtil.applyTextAttributes(txt, vip.textAttributes, width, height);					
-					tap = _pr.textAttributePresets.getPropsByName(vip.textAttributes);						
-					
-					if (vip.type == ViewItemProperties.STATUS)
-					{
-						vc.statusField = txt;
-					}
-					push(txt);
-					onItemLoadComplete();	
-					break;
-				case ViewItemProperties.LIST :
-					vc.disabledList[itemIndex] = false;
-					var list:* = Plugins.getNewInstance(PluginClassNames.LIST);
-					var listProvider:Array = new Array();
-					viewItem = list;
-					list.width = width;
-					list.height = height;
-					push(list);
-					
-					if (vip.url)
-						TextUtil.load(vip.url, onListLoadComplete, txt);
-					else 
-					{
-						if (vip.data)
-							listProvider = vip.data.split(",");
-						else
-							listProvider = [];
-							
-						list.dataProvider = listProvider;
-						onItemLoadComplete();
-					}
-					list.selectedItem = text;
-
-					break;
-				case ViewItemProperties.COMBOBOX :
-					vc.disabledList[itemIndex] = false;					
-					var comboBox:* = Plugins.getNewInstance(PluginClassNames.COMBOBOX);
-					var comboProvider:Array = new Array();
-					
-					viewItem = comboBox;
-					comboBox.setSize(width, height);
-					push(comboBox);
-
-					if (vip.url)
-						TextUtil.load(vip.url, onComboBoxLoadComplete, txt);
-					else {
-						if (vip.data)
-							comboProvider = vip.data.split(",");
-						else
-							comboProvider = [];
 						
-						comboBox.dataProvider = comboProvider;
-						onItemLoadComplete();
-					}
-					if (text)
-					{
-						comboBox.selectedItem = text;				
-						comboBox.label = comboBox.selectedItem;
-					}
-					break;
-					
-				case ViewItemProperties.EMBED :	
-					var e:* = Resources.createInstance(vip.className);
-					if (e is Bitmap)
-					{
-						e.smoothing = true;
-						viewItem = new Sprite();
-						viewItem.addChild(e);
-					}
-					
-					push(viewItem);
-					onItemLoadComplete();
-					break;
-					
-				case ViewItemProperties.HTML :
-					vc.disabledList[itemIndex] = false;
-					txt = ObjectPool.getTextField();
-					viewItem = txt;
-					txt.cacheAsBitmap = true;
-					push(txt);
-					
-					if (vip.url)
-					{
-						TextUtil.load(vip.url, onHTMLLoadComplete, txt, width, vp.styleSheetName);
-					}
-					else
-					{
-						if (text)
-						{	
-							TextUtil.applyStylesheet(txt, vp.styleSheetName, width);
-							txt.htmlText = text;							
-						}	
-						onHTMLLoadComplete();
-					}
-					break;
-				case ViewItemProperties.VIDEO :
-				case ViewItemProperties.YOUTUBE :
-				case ViewItemProperties.AUDIO :
-					
-					var mediaPlayer:*;
-									
-					switch (vip.type)
-					{
-						case ViewItemProperties.VIDEO :
-							mediaPlayer = Plugins.getNewInstance(PluginClassNames.VIDEO_PLAYER);
-							break;
-						case ViewItemProperties.YOUTUBE :
-							mediaPlayer = Plugins.getNewInstance(PluginClassNames.YOUTUBE_PLAYER);
-							break;
-						case ViewItemProperties.AUDIO :
-							mediaPlayer = Plugins.getNewInstance(PluginClassNames.AUDIO_PLAYER);
-							break;
-					}
+				case MediaPlayer :
+					viewItem = new ViewItemClass();
 					mpp = _pr.mediaPresets.getPropsByName(vip.mediaPreset);
 					if (!mpp)
 						ShowError.fail(ViewRenderer,"View Renderer: video item needs a media preset in xml: " + vip.url);
 						
-					
-					mediaPlayer.load(vip.url, mpp.volume, width, height, mpp.scaleToFit, 7);
+					viewItem.load(vip.url, mpp.volume, width, height, mpp.scaleToFit, 7);
 					if (mpp.controlsViewId)
-						mediaPlayer.initTransport(mpp.controlsViewId, mpp.controlsContainerName);
+						viewItem.initTransport(mpp.controlsViewId, mpp.controlsContainerName);
 					
-					viewItem = mediaPlayer;
-					push(mediaPlayer);	
 					
 					if (vip.url)
 					{
 						if (mpp.hideOnPlayComplete)
-							mediaPlayer.addEventListener(MediaEvent.COMPLETE, hideMediaPlayerOnPlayComplete, false, 0, true);
+							viewItem.addEventListener(MediaEvent.COMPLETE, hideMediaPlayerOnPlayComplete, false, 0, true);
 
 						if (mpp.autoPlay)
-							mediaPlayer.play(mpp.mediaFadeIn, mpp.audioFadeIn, mpp.fadeOut, 0, mpp.startDelay);
+							viewItem.play(mpp.mediaFadeIn, mpp.audioFadeIn, mpp.fadeOut, 0, mpp.startDelay);
 					}
 					else
-						mediaPlayer.visible = false;
-						
-					onItemLoadComplete();
+						viewItem.visible = false;
 					break;	
-				case ViewItemProperties.BASIC_VIDEO :
-					var basicVideo:* = Plugins.getNewInstance(PluginClassNames.BASIC_VIDEO_PLAYER);
-					basicVideo.load(vip.url, width, height);
-					viewItem = basicVideo;
-					push(basicVideo);
-					onItemLoadComplete();
-					break;
-				case ViewItemProperties.CAMERA :
-					var cam:Camera = Camera.getCamera();
-					var video:Video = new Video(width,height);
-					viewItem = video;
-					push(viewItem);
-					
-					if (cam) 
-					{
-						video.attachCamera(cam);
-						cam.setMode(width, height, 12, true);
-					}
-					else
-					{
-						Logger.add("No camera found");
-					}	
-					onItemLoadComplete();						
-					break;
-				case ViewItemProperties.GRAPHIC :
-					var graphic:Graphic = ObjectPool.getGraphic();
-					viewItem = graphic;
-					graphic.render(vip.graphicId, vip.transitionDelay, onGraphicRenderComplete);
+				case Graphic :
+					viewItem = ObjectPool.getGraphic();
+					viewItem.render(vip.graphicId, vip.transitionDelay);
 					break;			
-				case ViewItemProperties.TWITTER :
-					var twitterLoader:* = Plugins.getNewInstance(PluginClassNames.TWITTER_LOADER);
-					viewItem = twitterLoader;
-					twitterLoader.initialize(vip.url, _ap.proxyLocationUrl, vp.styleSheetName, width, 0, 10, vip.data);	
-					push(twitterLoader);
-					onItemLoadComplete();				
+				case Embed :
+					viewItem = new Embed(vip.className);
 					break;
-				case ViewItemProperties.PLAYLIST :
+				case Playlist :
 					if (!vip.playlistName)
 						ShowError.fail(ViewRenderer,"ViewRenderer: Playlist name cannot be null.");
 						
-					var playlist:Playlist = new Playlist();
-					playlist.create(vip.playlistName, vip.name, width, height); 
-					playlist.x = x + hPad;
-					playlist.y = y = vPad;
-					viewItem = playlist;
-					//if (vip.onClickUiEvent)
-					//	viewItem.buttonMode = true;
-					_viewItemFilterApplier.applyFilters(vip, viewItem);
-					push(viewItem);
-					viewItem.name = vip.name;	
-					vc.itemDictionary.insert(vip.name, viewItem);
-					_onItemRenderCallback();
+					viewItem = new Playlist();
+					viewItem.create(vip.playlistName, vip.name, width, height); 
 					break;
-				case ViewItemProperties.SLIDE_SHOW :
-					var slideShow:SlideShow = new SlideShow();
+				case SlideShow :
+					viewItem = new SlideShow();
 					if (vip.mediaPreset)
 					{
 							mpp = _pr.mediaPresets.getPropsByName(vip.mediaPreset);
 							if (mpp)
-								slideShow.initialize(mpp.controlsViewId, mpp.controlsContainerName);
+								viewItem.initialize(mpp.controlsViewId, mpp.controlsContainerName);
 							else
 								ShowError.fail(ViewRenderer,vip.name + " no media preset properties.");
 					}
-					viewItem = slideShow;
-					slideShow.load(vip.url, vip.path, width, height, mpp.backgroundColor, mpp.slideDelay, mpp.crossFade, mpp.autoPlay);
-					push(viewItem);
-					onItemLoadComplete();
-					break;
-					
-				case ViewItemProperties.FLIPBOOK :
-					var flipBook:FlipBook = new FlipBook();
+					viewItem.load(vip.url, vip.path, width, height, mpp.backgroundColor, mpp.slideDelay, mpp.crossFade, mpp.autoPlay);
+					break;					
+				case FlipBook :
+					viewItem = new FlipBook();
 					if (vip.mediaPreset)
 					{
 							mpp = _pr.mediaPresets.getPropsByName(vip.mediaPreset);
 							if (mpp)
-								flipBook.initialize(mpp.controlsViewId);
+								viewItem.initialize(mpp.controlsViewId);
 							else
 								ShowError.fail(ViewRenderer,vip.name + " no media preset properties.");
 					}
 					
-					viewItem = flipBook;
-					flipBook.load(vip.url, vip.path, width, height, int(vip.data), mpp.urlExtension, mpp.backgroundColor, mpp.fps, mpp.autoPlay);
-					push(viewItem);
-					onItemLoadComplete();
+					viewItem.load(vip.url, vip.path, width, height, int(vip.data), mpp.urlExtension, mpp.backgroundColor, mpp.fps, mpp.autoPlay);
 					break;
-				case ViewItemProperties.WEB :
-					var webContainer:WebContainer = new WebContainer("web", width, height, vip.url)
-					viewItem = webContainer;
-					push(viewItem);
-					onItemLoadComplete();
-					break;
-				case ViewItemProperties.PROPERTY : // these are not added to the display list.
-					onItemLoadComplete();
+				case WebContainer :
+					viewItem = new WebContainer("web", width, height, vip.url)
 					break;
 				default : 
-					ShowError.fail(ViewRenderer,"View Renderer: view item has unknown type: " + vip.name + ":" + vip.type);
+					viewItem = new ViewItemClass(vip);
 					break;
 			}
-		
-		//END OF SWITCH				
-		// COMPLETING METHODS FOR ITEMS LOADED EXTERNALLY
+			if (!vip.excludeFromDisplayList) 
+				c.push(viewItem);
 
-			function onListLoadComplete():void
+			viewItem.name = vip.name;
+			vc.itemDictionary.insert(vip.name, viewItem);
+			_viewItemFilterApplier.applyFilters(vip, viewItem);
+			vc.viewItemPositioner.positionItem(vip);
+			if (vip.tabIndex)
 			{
-				listProvider = txt.text.split(",");
-				list.dataProvider = listProvider;
-				onItemLoadComplete();
-			}
+				viewItem.tabEnabled = true;
+				viewItem.tabIndex = vip.tabIndex;
+				viewItem.focusRect = true;
+			}	
+			_onItemRenderCallback();
 
-			function onComboBoxLoadComplete():void
-			{
-				comboProvider = txt.text.split(",");
-				comboBox.dataProvider = comboProvider;
-				onItemLoadComplete();
-			}
-			
-			function onHTMLLoadComplete():void
-			{		
-				push(txt);
-				c.tweenScrollPercentX(0);
-				c.tweenScrollPercentY(0);
-				onItemLoadComplete();				
-			}
-			
-			function onGraphicRenderComplete():void 
-			{
-				push(viewItem);			
-				onItemLoadComplete();
-			}
-						
-			// CALLED FOR EACH ITEM LOADED AND/OR INITIALIZED
-			
-			function push(item:*):void
-			{
-				if (!vip.excludeFromDisplayList) 
-					c.push(item);
-			}
-			
-			function onItemLoadComplete():void
-			{	
-				if (viewItem)
-				{
-					viewItem.name = vip.name;
-					vc.itemDictionary.insert(vip.name, viewItem);
-					_viewItemFilterApplier.applyFilters(vip, viewItem);
-					vc.viewItemPositioner.positionItem(vip);
-					if (vip.tabIndex)
-					{
-						viewItem.tabEnabled = true;
-						viewItem.tabIndex = vip.tabIndex;
-						viewItem.focusRect = true;
-					}	
-				}
-				_onItemRenderCallback();
-			}
 			// VIDEO PLAY COMPLETE
 			
 			function hideMediaPlayerOnPlayComplete(me:MediaEvent):void

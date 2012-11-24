@@ -31,7 +31,6 @@ package com.zutalor.application
 		
 		private function init():void
 		{
-			AppRegistry.initialize();
 			AirStatus.initialize();
 			Plugins.registerClassAndCreateCachedInstance(DialogController);
 		}

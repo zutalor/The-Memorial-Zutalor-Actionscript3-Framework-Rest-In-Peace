@@ -13,7 +13,7 @@
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class ViewContainer extends Container implements IDisposable
+	public class ViewContainer extends ViewObject implements IDisposable
 	{
 		public static const HORIZONTAL:String = "horizontal";
 		public static const VERTICAL:String = "vertical";

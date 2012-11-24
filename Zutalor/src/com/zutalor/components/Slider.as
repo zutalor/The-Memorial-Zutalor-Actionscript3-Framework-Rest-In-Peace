@@ -1,8 +1,8 @@
 package com.zutalor.components
 {
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.properties.PropertiesBase;
 	import com.zutalor.properties.SliderProperties;
+	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.scroll.HScrollBarController;
 	import com.zutalor.scroll.ScrollBarController;
@@ -18,28 +18,23 @@ package com.zutalor.components
 		private var _thumb:Button;
 		private var _track:Button;
 		private var _reveal:Graphic;
-	
-		public function Slider(id:String, text:String = null)
-		{
-			init(id, text);
-		}
 		
 		public static function register(preset:XMLList):void
 		{	
-			if (!presets)
-				presets = new PropertyManager(SliderProperties);
+			if (!_presets)
+				_presets = new PropertyManager(SliderProperties);
 			
-			presets.parseXML(preset);
+			_presets.parseXML(preset);
 		}
 		
-		private function init(sliderId:String, text:String):void
+		override public function render(vip:ViewItemProperties):void
 		{
 			var sp:SliderProperties;
+	
+			sp = presets.getPropsByName(vip.presetId);
 			
 			_track = new Button(sp.trackButtonId);
 			_thumb = new Button(sp.thumbButtonId, text);
-	
-			sp = presets.getPropsByName(sliderId);
 
 			if (sp.revealGraphicId)
 			{

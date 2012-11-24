@@ -1,17 +1,9 @@
 ﻿package com.zutalor.components
 {
-	import com.zutalor.containers.Container;
-	import com.zutalor.interfaces.IViewItem;
 	import com.zutalor.properties.ButtonProperties;
-	import com.zutalor.properties.PropertiesBase;
+	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
-	import com.zutalor.propertyManagers.Props;
-	import com.zutalor.text.TextUtil;
-	import flash.display.DisplayObject;
-	import flash.display.DisplayObjectContainer;
-	import flash.display.Shape;
 	import flash.display.SimpleButton;
-	import flash.display.Sprite;
 	/**
 	 * ...
 	 * @author Geoff Pepos
@@ -24,22 +16,19 @@
 		private var _down:Graphic;
 		private var _disabled:Graphic;
 		private var _name:String;
-		private var _enabled:Boolean = true;
+		private var _vip:ViewItemProperties;
 		
-		public function Button(buttonId:String, text:String = null)
-		{
-			init(buttonId, text);	
-		}
-		
-		public static function register(preset:XMLList):void
+		public static function register(presets:XMLList):void
 		{	
-			if (!presets)
-				presets = new PropertyManager(ButtonProperties);
+			if (!_presets)
+				_presets = new PropertyManager(ButtonProperties);
 			
-			presets.parseXML(preset);
+			_presets.parseXML(presets);
+			
+			_vip = new ViewItemProperties();
 		}
-
-		private function init(buttonId:String, text:String):void
+		
+		override public function render(vip:ViewItemProperties):void
 		{
 			var bp:ButtonProperties;
 			var width:int;
@@ -49,26 +38,29 @@
 			var vPad:int;
 			var text:String;
 			
-			bp = ButtonProperties(presets.getPropsByName(buttonId));
-
-			// ToDO throw errors
+			bp = ButtonProperties(presets.getPropsByName(vip.presetId));
 			
 			_up = new Graphic();
-			_up.render(bp.upGid);
+			_vip.graphicId = bp.upGid;
+			_up.render(_vip);
 	
 			_over = new Graphic();
-			_over.render(bp.overGid);
+			_vip.graphicId = bp.overGid;
+			_over.render(_vip);
 
 			_down = new Graphic();
-			_down.render(bp.downGid);
+			_vip.graphicId = bp.downGid;
+			_down.render(_vip);
 
 			_disabled = new Graphic();
 			
 			if (bp.disabledGid)
-				_disabled.render(bp.disabledGid);
+				_vip.graphicId = bp.disabledGid;
 			else
-				_disabled.render(bp.upGid);
+				_vip.graphicId = bp.upGid;
 			
+			_disabled.render(_vip);	
+				
 			_sb = new SimpleButton(_up, _over, _down, _up);
 			this.addChild(_sb);
 							
@@ -88,10 +80,11 @@
 				{
 					bp.textAttributesDown = bp.textAttributesDisabled = bp.textAttributes;
 				}
-				TextUtil.add(_up, text, bp.textAttributes, width, height, align, hPad, vPad); 
-				TextUtil.add(_over, text, bp.textAttributes, width, height, align, hPad, vPad);
-				TextUtil.add(_down, text, bp.textAttributesDown, width, height, align, hPad, vPad);
-				TextUtil.add(_disabled, text, bp.textAttributesDisabled, width, height,align, hPad, vPad);
+				
+				Label.addLabel(_up, text, bp.textAttributes, width, height, align, hPad, vPad); 
+				Label.addLabel(_over, text, bp.textAttributes, width, height, align, hPad, vPad);
+				Label.addLabel(_down, text, bp.textAttributesDown, width, height, align, hPad, vPad);
+				Label.addLabel(_disabled, text, bp.textAttributesDisabled, width, height,align, hPad, vPad);
 			}
 		}
 		

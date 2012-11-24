@@ -1,10 +1,10 @@
 package com.zutalor.components
 {
-	import com.zutalor.application.AppRegistry;
 	import com.zutalor.events.UIEvent;
+	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.ComponentGroupProperties;
+	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
-	import com.zutalor.utils.Registry;
 	import com.zutalor.utils.ShowError;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -20,21 +20,22 @@ package com.zutalor.components
 		
 		protected var numHaveValue:int;
 		
-		public function ComponentGroup(groupId:String, dataProvider:String) 
-		{
-			init(groupId, dataProvider);
-			// there is so much more fun to be had with this class!!!! Here comes a DJ mixer with button, slider, lights, or whatever arrays!
-		}
-		
+		// there is so much more fun to be had with this class!!!! Here comes a DJ mixer with button, slider, lights, or whatever arrays!
+
 		public static function register(preset:XMLList):void
 		{	
-			if (!presets)
-				presets = new PropertyManager(ComponentGroupProperties);
+			if (!_presets)
+				_presets = new PropertyManager(ComponentGroupProperties);
 			
-			presets.parseXML(preset);
+			_presets.parseXML(preset);
 		}
-
-		public function init(groupId:String, dataProvider:String):void
+		
+		public static function get presets():PropertyManager
+		{
+			return _presets;
+		}
+		
+		override public function render(vip:ViewItemProperties):void
 		{
 			var x:int;
 			var y:int;
@@ -44,26 +45,26 @@ package com.zutalor.components
 			var inits:Array;
 			var componentId:String;
 			var componentIds:Array;
-			var componentTypes:Array;
+			var viewItemTypes:Array;
 			var componentType:String;
 			this.name = name;
 			
-			gp = presets.getPropsByName(groupId);
+			gp = _presets.getPropsByName(vip.presetId);
 			contentContainer = new Sprite();
 			addChild(contentContainer);
 
 			values = [];
-			if (dataProvider)
-				inits = dataProvider.split(",");
+			if (vip.text)
+				inits = vip.text.split(",");
 
 			if (!gp.componentIds)
 				ShowError.fail(ComponentGroup,"Component Group: no component Ids to render.");
 			
-			if (!gp.componentTypes)
+			if (!gp.viewItemTypes)
 				ShowError.fail(ComponentGroup,"Component Group: need at least one component type."); 
 
 			componentIds = gp.componentIds.split(",");
-			componentTypes = gp.componentTypes.split(",");		
+			viewItemTypes = gp.viewItemTypes.split(",");		
 			
 			if (!gp.numComponents)
 				gp.numComponents = componentIds.length;	
@@ -79,10 +80,10 @@ package com.zutalor.components
 				if (i < componentIds.length)
 					componentId = componentIds[i];
 				
-				if (i < componentTypes.length)
-					componentType = componentTypes[i];
+				if (i < viewItemTypes.length)
+					componentType = viewItemTypes[i];
 				
-				item = AppRegistry.components.retrieve(componentType);
+				item = Plugins.getClass(componentType);
 				contentContainer.addChild(item);
 				
 				item.x = x;

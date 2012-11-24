@@ -1,13 +1,14 @@
 ﻿package com.zutalor.containers
 {	
-	import com.zutalor.components.IContainer;
+	import com.zutalor.components.IViewObject;
+	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.sprites.CenterSprite;
 	import flash.display.Sprite;
 	/**
-	 * ...
+	 * 
 	 * @author Geoff Pepos
 	 */
-	public class Container extends CenterSprite implements IContainer
+	public class ViewObject extends CenterSprite implements IViewObject
 	{
 		public var vx:Number;
 		public var vy:Number;
@@ -33,7 +34,9 @@
 		public var posOffsetY:Number;
 		public var savedScale:Number;
 		
-		public function Container()
+		private var _enabled:Boolean;
+		
+		public function ViewObject()
 		{
 			posOffsetX = 0;
 			posOffsetY = 0;
@@ -42,20 +45,20 @@
 			friction = 0;
 			windAffect = 0;
 		}
-		
-		public function dispose():void
+	
+		public function set enabled(value:Boolean):void
 		{
-			
+			_enabled = value;
 		}
 		
-		public function recycle():void
+		public function get enabled():Boolean
 		{
-			
+			return _enabled;
 		}
 		
-		public  function stop():void
-		{
-			
-		}
+		public function render(vip:ViewItemProperties):void {}		
+		public function dispose():void {}
+		public function recycle():void {}
+		public  function stop():void {}	
 	}
 }
