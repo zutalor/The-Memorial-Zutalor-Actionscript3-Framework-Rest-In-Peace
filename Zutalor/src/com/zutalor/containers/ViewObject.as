@@ -55,8 +55,6 @@
 		{
 			return _enabled;
 		}
-		
-		public function render(vip:ViewItemProperties):void {}		
 		public function dispose():void {}
 		public function recycle():void {}
 		public  function stop():void {}	

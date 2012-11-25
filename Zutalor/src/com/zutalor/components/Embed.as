@@ -9,8 +9,10 @@ package com.zutalor.components
 	 */
 	public class Embed extends Component implements IComponent 
 	{	
-		override public function render(vip:ViewItemProperties):void
+		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
+			super.render(viewItemProperties);
+			
 			var e:* = Resources.createInstance(vip.className);
 			if (e is Bitmap)
 				e.smoothing = true;

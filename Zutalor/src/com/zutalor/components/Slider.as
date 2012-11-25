@@ -7,6 +7,7 @@ package com.zutalor.components
 	import com.zutalor.scroll.HScrollBarController;
 	import com.zutalor.scroll.ScrollBarController;
 	import com.zutalor.scroll.VScrollBarController;
+	import com.zutalor.text.Translate;
 	import flash.display.Sprite;
 	/**
 	 * ...
@@ -19,27 +20,33 @@ package com.zutalor.components
 		private var _track:Button;
 		private var _reveal:Graphic;
 		
-		public static function register(preset:XMLList):void
+		public static function register(presets:XMLList):void
 		{	
 			if (!_presets)
 				_presets = new PropertyManager(SliderProperties);
 			
-			_presets.parseXML(preset);
+			_presets.parseXML(presets);
 		}
 		
-		override public function render(vip:ViewItemProperties):void
+		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
 			var sp:SliderProperties;
 	
+			super.render(viewItemProperties);
 			sp = presets.getPropsByName(vip.presetId);
 			
-			_track = new Button(sp.trackButtonId);
-			_thumb = new Button(sp.thumbButtonId, text);
+			_track = new Button();
+			_track.vip.presetId = sp.trackButtonId;
+			_thumb = new Button();
+			_thumb.vip.presetId = sp.thumbButtonId;
+			_thumb.vip.text = Translate.text(vip.tKey);
+			_thumb.vip.textAttributes = vip.textAttributes;
 
 			if (sp.revealGraphicId)
 			{
 				_reveal = new Graphic();
-				_reveal.render(sp.revealGraphicId);
+				_reveal.vip.presetId = sp.revealGraphicId;
+				_reveal.render();
 			}
 			
 			if (sp.vertical)

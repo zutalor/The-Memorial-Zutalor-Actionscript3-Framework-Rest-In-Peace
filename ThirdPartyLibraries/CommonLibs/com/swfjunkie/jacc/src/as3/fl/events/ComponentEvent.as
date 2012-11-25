@@ -22,7 +22,7 @@ package fl.events {
      *  @playerversion AIR 1.0
      *  @productversion Flash CS3
      */
-	public class ComponentEvent extends Event {
+	public class ControlEvent extends Event {
 
         /**
          * Defines the value of the <code>type</code> property of a <code>buttonDown</code>

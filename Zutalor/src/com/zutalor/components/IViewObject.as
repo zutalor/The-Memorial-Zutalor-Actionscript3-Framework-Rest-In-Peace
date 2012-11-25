@@ -8,7 +8,6 @@ package com.zutalor.components
 	 */
 	public interface IViewObject 
 	{
-		function render(viewItemProperties:ViewItemProperties):void
 		function dispose():void
 		function recycle():void
 		function stop():void

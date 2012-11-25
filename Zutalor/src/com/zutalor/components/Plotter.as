@@ -58,7 +58,7 @@ package com.zutalor.components
 				_line.cancel();
 		}
 		
-		override public function render(xA:Array, yA:Array = null, start:int = 0, end:int = int.MAX_VALUE, speed:Number=0, onComplete:Function = null):void
+		public function render(xA:Array, yA:Array = null, start:int = 0, end:int = int.MAX_VALUE, speed:Number=0, onComplete:Function = null):void
 		{	
 			_line = new Line(this);
 			_displayData = [];

@@ -3,8 +3,8 @@ package com.zutalor.view.mediators
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.components.Button;
 	import com.zutalor.components.ComponentGroup;
-	import com.zutalor.components.InputText;
 	import com.zutalor.components.RadioGroup;
+	import com.zutalor.components.Text;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
@@ -128,7 +128,7 @@ package com.zutalor.view.mediators
 			{
 				item = vc.itemDictionary.getByIndex(i);
 					
-				if (item is InputText)
+				if (item is Text)
 				{
 					item.addEventListener(FocusEvent.FOCUS_IN, onInputTextFocusIn);
 					item.addEventListener(FocusEvent.FOCUS_OUT, onInputTextFocusOut);
@@ -232,9 +232,9 @@ package com.zutalor.view.mediators
 			FullScreen.restoreIfNotDesktop();
 			item = vc.itemDictionary.getByKey(vip.name);
 			item.setSelection(0, 999);
-			vip.tText = Translate.text(vip.tText);
+			vip.text = Translate.text(vip.tKey);
 				
-			if (item.text == vip.tText)
+			if (item.text == vip.text)
 			{
 				item.text = "";
 				TextAttributes.apply(item, vip.textAttributes, int(vip.width), int(vip.height));
@@ -249,8 +249,8 @@ package com.zutalor.view.mediators
 			
 			vip = _vpm.getItemPropsByName(vc.viewId, item.name);
 		
-			if (item.text == "" && vip.tText)
-				item.text = Translate.text(vip.tText);
+			if (item.text == "" && vip.tKey)
+				item.text = Translate.text(vip.tKey);
 		
 			TextAttributes.apply(item, vip.textAttributes, int(vip.width), int(vip.height));
 			if (vip.voName)
@@ -349,7 +349,7 @@ package com.zutalor.view.mediators
 				vc.viewModelMediator.copyViewItemToValueObject(vip, uie.target);
 				if (uie.target is ComponentGroup || uie.target is RadioGroup)
 				{
-					cgp = ComponentGroup.presets.getPropsByName(vip.componentId);
+					cgp = ComponentGroup.presets.getPropsByName(vip.presetId);
 					cg = vc.itemDictionary.getByKey(uie.itemName);
 					contentContainer = cg.getChildAt(0);
 					for (var i:int = 0; i < cgp.numComponents; i++)
@@ -382,18 +382,18 @@ package com.zutalor.view.mediators
 			if (eventTargetName)
 			{
 				vip = _vpm.getItemPropsByName(vc.viewId, eventTargetName);
-				if (vip && vip.action)
+				if (vip && vip.tapAction)
 				{
 					if (me)
 						me.stopImmediatePropagation();
 					
-					if (!vip.onTapContainerNames)
+					if (!vip.tapContainerNames)
 					{
 						containerNames = [];
 						containerNames.push(vc.container.name);
 					}
 					else	
-						containerNames = vip.onTapContainerNames.split(",");
+						containerNames = vip.tapContainerNames.split(",");
 					
 					switch (vip.onTap)
 					{
@@ -419,13 +419,13 @@ package com.zutalor.view.mediators
 					function appStateChange():void
 					{
 						vc.container.dispatchEvent(new UIEvent(UIEvent.APP_STATE_SELECTED, 
-																vc.container.name, vip.action));
+																vc.container.name, vip.tapAction));
 					}
 					
 					function viewItemMethodCall():void
 					{
 						for (i = 0; i < containerNames.length; i++)
-							_vu.callViewItemMethod(containerNames[i], vip.target, vip.action, vip.actionParams);
+							_vu.callViewItemMethod(containerNames[i], vip.tapTarget, vip.tapAction, vip.tapActionOptions);
 					}
 					
 					function PluginMethodCall():void
@@ -434,20 +434,20 @@ package com.zutalor.view.mediators
 						
 						dest = vc.vp.uiControllerInstanceName;
 						
-						vc.initStatusMessage(vip.action);
+						vc.initStatusMessage(vip.tapAction);
 						if (vip.voName)
 							vc.viewModelMediator.copyViewItemToValueObject(vip, vc.itemDictionary.getByKey(vip.name));
 						
-						if (vip.actionParams)
-							Plugins.callMethod(dest, vip.action, vip.actionParams);
+						if (vip.tapActionOptions)
+							Plugins.callMethod(dest, vip.tapAction, vip.tapActionOptions);
 						else
-							Plugins.callMethod(dest, vip.action);
+							Plugins.callMethod(dest, vip.tapAction);
 					}
 					
 					function containerMethodCall():void
 					{
 						for (i = 0; i < containerNames.length; i++)
-							_vu.callViewContainerMethod(containerNames[i], vip.action, vip.actionParams);
+							_vu.callViewContainerMethod(containerNames[i], vip.tapAction, vip.tapActionOptions);
 					}
 						
 					function uiEvent():void
@@ -455,22 +455,21 @@ package com.zutalor.view.mediators
 						var dest:String;
 						dest = vc.vp.uiControllerInstanceName;
 						
-						switch (vip.action)
+						switch (vip.tapAction)
 						{
 							case UIEvent.CREATE: 
 							case UIEvent.UPDATE: 
 								vc.setStatusMessage(vc.creatingMessage);
 								if (vc.viewModelMediator.validate())
-									if (vip.actionParams)
-										Plugins.callMethod(dest, vip.action, vip.actionParams);
+									if (vip.tapActionOptions)
+										Plugins.callMethod(dest, vip.tapAction, vip.tapActionOptions);
 									else
-										Plugins.callMethod(dest, vip.action);
+										Plugins.callMethod(dest, vip.tapAction);
 								break;
 							case UIEvent.ZOOM_IN: 
 							case UIEvent.ZOOM_OUT: 
-								containerNames = vip.onTapContainerNames.split(",");
 								for (i = 0; i < containerNames.length; i++)
-									_vu.zoom(null, vip.action, containerNames[i]);
+									_vu.zoom(null, vip.tapAction, containerNames[i]);
 								break;
 							case UIEvent.NATIVE_WINDOW_CLOSE: 
 								if (AirStatus.isNativeApplication)
@@ -494,7 +493,7 @@ package com.zutalor.view.mediators
 							default: 
 								var c:ViewContainer = vc.vpm.getPropsById(containerNames[i]).container;
 								for (i = 0; i < containerNames.length; i++)
-									c.dispatchEvent(new UIEvent(vip.action, containerNames[i], vc.vp.appState));
+									c.dispatchEvent(new UIEvent(vip.tapAction, containerNames[i], vc.vp.appState));
 						}						
 					}
 				}

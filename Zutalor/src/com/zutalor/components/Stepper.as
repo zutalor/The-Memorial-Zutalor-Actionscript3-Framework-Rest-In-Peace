@@ -31,7 +31,7 @@ package com.zutalor.components
 			_presets.parseXML(preset);
 		}
 		
-		override public function render(vip:ViewItemProperties):void
+		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
 			 var upButton:Button;
 			 var downButton:Button;
@@ -39,14 +39,22 @@ package com.zutalor.components
 			 var displayTextHeight:int;
 			 var sp:StepperProperties;
 			
+			super.render(viewItemProperties);
 			sp = presets.getPropsByName(vip.presetId);
 			
-			upButton = new Button(_sp.upButtonId);
+			upButton = new Button();
+			upButton.vip.presetId = _sp.upButtonId;
 			upButton.name = "up";
-			downButton = new Button(_sp.downButtonId);
+			upButton.render();
+			
+			downButton = new Button();
+			downButton.vip.presetId = _sp.downButtonId;
 			downButton.name = "down";
+			downButton.render();
+			
 			_background = new Graphic();
-			_background.render(_sp.backgroundGraphicId);
+			_background.vip.presetId = _sp.backgroundGraphicId;
+			_background.render();
 			
 			_displayText = new TextField();
 			_valueDisplay = new Sprite();

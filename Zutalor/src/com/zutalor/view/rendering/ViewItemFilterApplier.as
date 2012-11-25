@@ -42,7 +42,8 @@ package com.zutalor.view.rendering
 				if (vip.maskGid)
 				{
 					mask = new Graphic();
-					mask.render(vip.maskGid);
+					mask.vip.graphicId = vip.maskGid;
+					mask.render();
 					viewItem.mask = mask;
 					viewItem.addChild(mask);
 				}		

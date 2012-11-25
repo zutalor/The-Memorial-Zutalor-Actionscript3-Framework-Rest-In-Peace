@@ -2,7 +2,6 @@ package com.zutalor.view.mediators
 {
 	import com.zutalor.components.Component;
 	import com.zutalor.components.ComponentGroup;
-	import com.zutalor.components.InputText;
 	import com.zutalor.components.Label;
 	import com.zutalor.components.RadioGroup;
 	import com.zutalor.containers.ScrollingContainer;

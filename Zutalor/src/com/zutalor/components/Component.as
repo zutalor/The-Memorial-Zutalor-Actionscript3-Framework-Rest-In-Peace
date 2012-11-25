@@ -3,25 +3,27 @@ package com.zutalor.components
 	import com.zutalor.containers.ViewObject;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.properties.PropertiesBase;
+	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	/**
 	 * ...
 	 * @author Geoff
 	 */
-	public class Component extends ViewObject
+	public class Component extends ViewObject implements IComponent
 	{
 		
 		protected static var _presets:PropertyManager;
+		public var vip:ViewItemProperties = new ViewItemProperties();
 		
 		public static function get presets():PropertyManager
 		{
 			return _presets;
 		}
 		
-		override public function set name(n:String):void
+		public function render(viewItemProperties:ViewItemProperties = null):void
 		{
-			for (var i:int; i < numChildren; i++)
-				getChildAt(i).name = n;
+			if (viewItemProperties)
+				vip = viewItemProperties;
 		}
 				
 		public function onValueChange(uie:UIEvent):void

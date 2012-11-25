@@ -2,22 +2,21 @@ package com.zutalor.components
 {
 	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.text.StyleSheets;
-	import com.zutalor.text.TextAttributes;
-	import com.zutalor.text.TextUtil;
+	import flash.display.Bitmap;
+	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
-	import flash.text.StyleSheet;
 	import flash.text.TextField;
 	/**
 	 * ...
 	 * @author Geoff
 	 */
-	public class Html extends InputText implements IComponent 
+	public class Html extends Text implements IComponent 
 	{		
-		override public function render(vip:ViewItemProperties):void
+		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
-			super.render(vip);
+			super.render(viewItemProperties);
 			enabled = false;
 			if (vip.url)
 				loadHtml(vip.url);
@@ -25,7 +24,7 @@ package com.zutalor.components
 			{
 				textField.htmlText = textField.text;
 				if (vip.styleSheetName)
-						StyleSheets.apply(textField, vip.styleSheetName, vip.width);
+						StyleSheets.apply(textField, vip.styleSheetName, int(vip.width));
 			}
 		}
 		
@@ -51,7 +50,7 @@ package com.zutalor.components
 
 			function onTextLoadComplete(event:Event):void
 			{
-				event.target.removeEventListener(Event.COMPLETE, _onTextLoadComplete);
+				event.target.removeEventListener(Event.COMPLETE, onTextLoadComplete);
 				event.target.close();
 				if (textField)
 				{
@@ -62,14 +61,10 @@ package com.zutalor.components
 					textField.height = textField.textHeight;
 					smoothHtmlBitmaps(textField);
 				}
-				if (_onComplete != null)
-					_onComplete();
 			}
-			
 		}
 		
-
-		public static function smoothHtmlBitmaps(txt:TextField):void
+		public function smoothHtmlBitmaps(txt:TextField):void
 		{
 			var bm:Bitmap;
 			var xml:XML;

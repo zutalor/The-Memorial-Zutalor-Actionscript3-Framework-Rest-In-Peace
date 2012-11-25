@@ -35,7 +35,10 @@
 			
 			if (vScrollBarSliderId)
 			{
-				_vScrollBar = new Slider(vScrollBarSliderId);
+				
+				_vScrollBar = new Slider();
+				_vScrollBar.vip.presetId = vScrollBarSliderId;
+				_vScrollBar.render();
 				_scrollBarVisibleY = true;	
 				_vMinThumbHeight = _vScrollBar.height;
 				_vScrollBar.addEventListener(UIEvent.VALUE_CHANGED, vertThumbMoved, false, 0, true);
@@ -43,7 +46,10 @@
 			
 			if (hScrollBarSliderId)
 			{
-				_hScrollBar  = new Slider(hScrollBarSliderId);
+				_hScrollBar = new Slider();
+				_hScrollBar.vip.presetId = hScrollBarSliderId;
+				_hScrollBar.render();
+				
 				_scrollBarVisibleX = true;
 				_hMinThumbWidth = _vScrollBar.width;
 				_hScrollBar.addEventListener(UIEvent.VALUE_CHANGED, horzThumbMoved, false, 0, true);

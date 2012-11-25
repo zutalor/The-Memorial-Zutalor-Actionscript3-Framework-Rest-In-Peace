@@ -26,16 +26,24 @@ package com.zutalor.components
 			_presets.parseXML(preset);
 		}
 		
-		override public function render(vip:ViewItemProperties):void
+		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
-			var tp:ToggleProperties = presets.getPropsByName(vip.presetId);
-			var vp:ViewItemProperties = new ViewItemProperties;
+			var tp:ToggleProperties;
+			var vp:ViewItemProperties;
 			
+			super.render(viewItemProperties);
+			
+			tp = _presets.getPropsByName(vip.presetId);
+			vp = new ViewItemProperties();
 			vp.graphicId = tp.onStateButtonId;
 			vp.text = vip.text;
-			_onState = new Button(vp);
+			
+			_onState = new Button();
+			_onState.render(vp);
+			
 			vp.graphicId = tp.offStateButtonId;
-			_offState = new Button(vp);
+			_offState = new Button();
+			_offState.render(vp);
 			
 			value = tp.initialValue;
 			addChild(_onState);

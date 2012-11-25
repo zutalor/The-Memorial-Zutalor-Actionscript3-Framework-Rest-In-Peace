@@ -25,6 +25,7 @@
 		public var blendMode:String;		
 		public var easing:String;
 		public var brush:String;	
+		public var tKey:String;
 		public var tText:String;
 		public var textAttribute:String;
 		public var graphicId:String;

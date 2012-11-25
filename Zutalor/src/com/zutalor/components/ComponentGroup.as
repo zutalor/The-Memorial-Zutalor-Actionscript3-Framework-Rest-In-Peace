@@ -35,7 +35,7 @@ package com.zutalor.components
 			return _presets;
 		}
 		
-		override public function render(vip:ViewItemProperties):void
+		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
 			var x:int;
 			var y:int;
@@ -47,7 +47,8 @@ package com.zutalor.components
 			var componentIds:Array;
 			var viewItemTypes:Array;
 			var componentType:String;
-			this.name = name;
+			
+			super.render(viewItemProperties);
 			
 			gp = _presets.getPropsByName(vip.presetId);
 			contentContainer = new Sprite();

@@ -2,8 +2,9 @@ package com.zutalor.ui
 {
 	import com.greensock.TweenMax;
 	import com.zutalor.components.Graphic;
+	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.utils.StageRef;
-	import flash.display.DisplayObjectContainer;
+	import com.zutalor.view.rendering.ViewItemFilterApplier;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.Event;
@@ -22,12 +23,13 @@ package com.zutalor.ui
 		}
 
 		public static function init(spinnerGraphicId:String, rotationCyclesPerSecond:Number = 2):void
-		{
+		{			
 			_rotIncr = 360 / StageRef.stage.frameRate * rotationCyclesPerSecond;
 			s = StageRef.stage;
 			canvas = new Sprite();
 			_spinGraphic = new Graphic();
-			_spinGraphic.render(spinnerGraphicId);
+			_spinGraphic.vip.graphicId = spinnerGraphicId;
+			_spinGraphic.render();
 			canvas.addChild(_spinGraphic);
 			_spinGraphic.x -= _spinGraphic.width * .5;
 			_spinGraphic.y -= _spinGraphic.height * .5;

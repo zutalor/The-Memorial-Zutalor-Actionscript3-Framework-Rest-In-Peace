@@ -135,20 +135,6 @@ import flash.text.TextField;
 					else
 						viewItem.visible = false;
 					break;	
-				case Graphic :
-					viewItem = ObjectPool.getGraphic();
-					viewItem.render(vip.graphicId, vip.transitionDelay);
-					break;			
-				case Embed :
-					viewItem = new Embed(vip.className);
-					break;
-				case Playlist :
-					if (!vip.playlistName)
-						ShowError.fail(ViewRenderer,"ViewRenderer: Playlist name cannot be null.");
-						
-					viewItem = new Playlist();
-					viewItem.create(vip.playlistName, vip.name, width, height); 
-					break;
 				case SlideShow :
 					viewItem = new SlideShow();
 					if (vip.mediaPreset)

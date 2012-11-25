@@ -25,7 +25,7 @@
 		
 		public var type:String;
 		public var presetId:String;
-		public var graphicId:String;
+		
 		public var tKey:String;
 		public var text:String;
 		public var className:String;
@@ -35,13 +35,19 @@
 		public var voName:String;
 		public var hidden:Boolean;
 		public var excludeFromDisplayList:Boolean;
+		
 		public var format:String;
 		public var textAttributes:String;
 		public var styleSheetName:String;
+		
 		public var width:String; // yes string because it can be either "auto" or a number.
 		public var height:String; // same as above
-		public var tabIndex:int;
 		public var align:String;
+		public var tabIndex:int;
+		
+		public var url:String;
+		public var path:String;
+
 		public var x:Number;
 		public var y:Number;
 		public var hPad:Number;
@@ -53,20 +59,28 @@
 		public var rotationY:Number;
 		public var rotationZ:Number;
 		public var alpha:Number;
+		
 		public var validate:String;
 		public var required:Boolean;
 		public var tError:String;
+
 		public var onTap:String;
-		public var target:String;
-		public var action:String;
-		public var actionParams:String;		
-		public var onTapContainerNames:String;
+		public var tapTarget:String;
+		public var tapAction:String;
+		public var tapActionOptions:String;
+		public var tapContainerNames:String;
+		
+		public var onPress:String;
+		public var pressTarget:String;
+		public var pressAction:String;
+		public var pressActionOptions:String;			
+		
 		public var hotkey:String;
-		public var url:String;
-		public var path:String;
+		
 		public var mediaPreset:String;
 		public var playlistName:String;
-		public var transitionPreset:String;
+		
+		public var transitionPreset:String;	
 		public var transitionDelay:Number;
 		public var scrollPreset:String;
 		public var filterPreset:String;
