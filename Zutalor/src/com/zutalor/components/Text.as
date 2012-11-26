@@ -16,6 +16,8 @@ package com.zutalor.components
 		{
 			super.render(viewItemProperties);
 			textField = new TextField();
+			if (!vip.text)
+				vip.text = "";
 			textField.text = vip.text;
 			applyTextAttributes();
 			addChild(textField);
@@ -36,7 +38,8 @@ package com.zutalor.components
 		
 		private function applyTextAttributes():void
 		{
-			TextAttributes.apply(textField, vip.textAttributes);
+			if (vip.textAttributes)
+				TextAttributes.apply(textField, vip.textAttributes);
 		}
 	}
 }

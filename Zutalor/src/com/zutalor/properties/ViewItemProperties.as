@@ -84,7 +84,7 @@
 		public var transitionDelay:Number;
 		public var scrollPreset:String;
 		public var filterPreset:String;
-		public var maskGid:String;
+		public var maskId:String;
 		public var tMeta:String; // use for whatever. Runs through "translate" text.
 					
 		override public function parseXML(xml:XML):Boolean

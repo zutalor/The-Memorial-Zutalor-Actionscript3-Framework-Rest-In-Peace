@@ -42,10 +42,10 @@ package com.zutalor.components
 			_thumb.vip.text = Translate.text(vip.tKey);
 			_thumb.vip.textAttributes = vip.textAttributes;
 
-			if (sp.revealGraphicId)
+			if (sp.revealId)
 			{
 				_reveal = new Graphic();
-				_reveal.vip.presetId = sp.revealGraphicId;
+				_reveal.vip.presetId = sp.revealId;
 				_reveal.render();
 			}
 			

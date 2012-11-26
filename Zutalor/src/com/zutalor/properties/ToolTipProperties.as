@@ -12,7 +12,7 @@
 		public var textAttributes:String;
 		public var fadeTime:Number;
 		public var delay:Number;
-		public var backgroundGraphicId:String;
+		public var backgroundpresetId:String;
 		public var hPadText:int;
 		public var vPadText:int;
 		public var hPadBackground:int;

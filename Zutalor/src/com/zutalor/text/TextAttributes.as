@@ -59,7 +59,7 @@ package com.zutalor.text
 			if (tap.stylesheet)
 				t.styleSheet = StyleSheets.getStyleSheetById(tap.stylesheet);
 			else if (tap.textformat)
-				t.setTextFormat(_textFormats.getPropsByName(tap.textformat), beginIndex, endIndex);
+				t.setTextFormat(_textFormats.getPropsByName(tap.textformat).textFormat, beginIndex, endIndex);
 			else
 				ShowError.fail(TextUtil,"Missing textformat for textAttributes: " + tap.name);
 		}

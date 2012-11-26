@@ -68,7 +68,7 @@
 			DisplayObjectUtils.removeAllChildren(this);
 		}
 		
-		override public function stop():void 
+		override public function stop(fadeSeconds:Number = 0):void 
 		{
 			if (viewController)
 				viewController.stop();

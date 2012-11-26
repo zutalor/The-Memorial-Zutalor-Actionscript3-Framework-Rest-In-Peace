@@ -226,18 +226,18 @@ package com.zutalor.view.mediators
 		private function onInputTextFocusIn(fe:FocusEvent):void
 		{
 			var vip:ViewItemProperties;
-			var item:TextField;
+			var item:*;
 			vip = _vpm.getItemPropsByName(vc.viewId, fe.currentTarget.name);
 		
 			FullScreen.restoreIfNotDesktop();
 			item = vc.itemDictionary.getByKey(vip.name);
-			item.setSelection(0, 999);
+			item.textField.setSelection(0, 999);
 			vip.text = Translate.text(vip.tKey);
 				
-			if (item.text == vip.text)
+			if (item.textField.text == vip.text)
 			{
-				item.text = "";
-				TextAttributes.apply(item, vip.textAttributes, int(vip.width), int(vip.height));
+				item.textField.text = "";
+				TextAttributes.apply(item.textField, vip.textAttributes, int(vip.width), int(vip.height));
 			}
 			onItemFocusIn(fe);
 		}

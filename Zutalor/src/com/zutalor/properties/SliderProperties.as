@@ -9,7 +9,7 @@
 	{
 		public var thumbButtonId:String;
 		public var trackButtonId:String;
-		public var revealGraphicId:String;
+		public var revealId:String;
 		public var vertical:Boolean;
 		public var numSteps:int;
 		public var tweenTime:Number;

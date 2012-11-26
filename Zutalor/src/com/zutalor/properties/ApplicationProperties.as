@@ -29,7 +29,7 @@
 		public var firstState:String;
 		public var language:String;
 		public var gateway:String;
-		public var spinningGraphicId:String;
+		public var spinningpresetId:String;
 		public var spinningGraphicCyclesPerSecond:Number;
 		public var appXmlPath:String;
 		public var systemXmlPath:String;
@@ -97,7 +97,7 @@
 			version = appSettings.version.@value;
 			targetPortable = StringUtils.toBoolean(appSettings.targetPortable.@value);
 			
-			spinningGraphicId = appSettings.spinningGraphicId.@value;
+			spinningpresetId = appSettings.spinningpresetId.@value;
 			spinningGraphicCyclesPerSecond = appSettings.spinningGraphicCyclesPerSecond.@value;
 			
 			appXmlUrls = appSettings.appXmlUrls.@value;

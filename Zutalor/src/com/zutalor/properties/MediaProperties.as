@@ -12,9 +12,8 @@
 		public static const PLAYER_AUDIO:String = "audio";
 		public static const PLAYER_YOUTUBE:String = "youTube";
 		
-		public var width:int;
-		public var height:int;
 		public var volume:Number = 1;
+		public var bufferTime:Number = 7;
 		public var autoPlay:Boolean;
 		public var loopCount:int; // -1 for infinite loop (well up to int.MAX_VALUE)
 		public var startDelay:Number;

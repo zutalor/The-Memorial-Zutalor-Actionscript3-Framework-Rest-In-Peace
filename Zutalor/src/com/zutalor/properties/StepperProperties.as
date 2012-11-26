@@ -10,7 +10,7 @@
 		public var type:String;
 		public var upButtonId:String;
 		public var downButtonId:String;
-		public var backgroundGraphicId:String;
+		public var backgroundId:String;
 		public var increment:Number;
 		public var precision:int;
 		public var initialValue:Number;

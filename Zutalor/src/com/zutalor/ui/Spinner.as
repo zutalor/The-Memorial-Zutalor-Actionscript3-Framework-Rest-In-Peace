@@ -22,13 +22,13 @@ package com.zutalor.ui
 			
 		}
 
-		public static function init(spinnerGraphicId:String, rotationCyclesPerSecond:Number = 2):void
+		public static function init(spinnerpresetId:String, rotationCyclesPerSecond:Number = 2):void
 		{			
 			_rotIncr = 360 / StageRef.stage.frameRate * rotationCyclesPerSecond;
 			s = StageRef.stage;
 			canvas = new Sprite();
 			_spinGraphic = new Graphic();
-			_spinGraphic.vip.graphicId = spinnerGraphicId;
+			_spinGraphic.vip.presetId = spinnerpresetId;
 			_spinGraphic.render();
 			canvas.addChild(_spinGraphic);
 			_spinGraphic.x -= _spinGraphic.width * .5;

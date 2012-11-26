@@ -296,7 +296,7 @@ import flash.text.TextField;
 				case ViewItemProperties.GRAPHIC :
 					var graphic:Graphic = ObjectPool.getGraphic();
 					viewItem = graphic;
-					graphic.render(vip.graphicId, vip.transitionDelay, onGraphicRenderComplete);
+					graphic.render(vip.presetId, vip.transitionDelay, onGraphicRenderComplete);
 					break;			
 				case ViewItemProperties.TWITTER :
 					var twitterLoader:* = Plugins.getNewInstance(PluginClassNames.TWITTER_LOADER);

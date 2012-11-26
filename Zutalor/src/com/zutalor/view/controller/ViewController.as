@@ -295,7 +295,7 @@
 		
 		// PUBLIC STOP & CLEANUP (WHEN VIEW CONTAINER IS CLOSED) 
 				
-		public function stop():void
+		public function stop(fadeSeconds:Number = 0):void
 		{
 			var item:*;
 			
@@ -304,7 +304,7 @@
 				item = itemDictionary.getByIndex(i);
 				if (item is IMediaPlayer)
 				{
-					item.stop();
+					item.stop(fadeSeconds);
 				}
 			}
 		}

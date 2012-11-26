@@ -38,23 +38,23 @@
 			bp = ButtonProperties(presets.getPropsByName(vip.presetId));
 			
 			_up = new Graphic();
-			this.vip.graphicId = bp.upGid;
+			this.vip.presetId = bp.upId;
 			_up.render(vip);
 	
 			_over = new Graphic();
-			vip.graphicId = bp.overGid;
+			vip.presetId = bp.overId;
 			_over.render(vip);
 
 			_down = new Graphic();
-			vip.graphicId = bp.downGid;
+			vip.presetId = bp.downId;
 			_down.render(vip);
 
 			_disabled = new Graphic();
 			
-			if (bp.disabledGid)
-				vip.graphicId = bp.disabledGid;
+			if (bp.disabledId)
+				vip.presetId = bp.disabledId;
 			else
-				vip.graphicId = bp.upGid;
+				vip.presetId = bp.upId;
 			
 			_disabled.render(vip);	
 				

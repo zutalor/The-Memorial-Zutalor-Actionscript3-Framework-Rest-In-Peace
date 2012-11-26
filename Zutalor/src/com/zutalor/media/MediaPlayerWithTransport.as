@@ -41,7 +41,7 @@ package com.zutalor.media
 		
 		//PUBLIC METHODS
 		
-		public function initTransport(transportViewId:String, transportContainer:String):void
+		override public function initTransport(transportViewId:String, transportContainer:String):void
 		{
 			_transportLoader = new ContainerLoader();
 			_transportLoader.load(transportContainer, "", transportViewId);

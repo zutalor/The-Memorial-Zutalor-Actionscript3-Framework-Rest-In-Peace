@@ -110,7 +110,7 @@ package com.zutalor.components
 			var txt:TextField;
 			var i:int = 0;
 			
-			numGraphics = _grm.getNumItems(vip.graphicId);
+			numGraphics = _grm.getNumItems(vip.presetId);
 			
 			if (numGraphics == 0)
 				ShowError.fail(Graphic,"Graphic Render, no items for: " + vip.presetId);
@@ -278,10 +278,10 @@ package com.zutalor.components
 				{
 					_grp = _grm.getPropsById(vip.presetId);
 					
-					if (_grp.maskGraphicId)
+					if (_grp.maskId)
 					{
 						var mask:Graphic = new Graphic();
-						vip.graphicId = _grp.maskGraphicId;
+						vip.presetId = _grp.maskId;
 						mask.render(vip);
 						_canvas.addChild(mask);
 						mask.x = _grp.maskX;
@@ -348,7 +348,7 @@ package com.zutalor.components
 			if (_gri.endcap)
 			{
 				endcap = new Graphic();
-				vip.graphicId = _gri.endcap;
+				vip.presetId = _gri.endcap;
 				endcap.render(vip);
 				_lineEnd.addChild(endcap);
 				_canvas.addChild(_lineEnd);

@@ -20,13 +20,13 @@ package depreciated
 			
 		}
 
-		public static function iit(waitingGraphicId:String = null, rotationCyclesPerSecond:Number = 2):void
+		public static function iit(waitingpresetId:String = null, rotationCyclesPerSecond:Number = 2):void
 		{
 			_rotIncr = 360 / StageRef.stage.frameRate * rotationCyclesPerSecond;
-			if (waitingGraphicId)
+			if (waitingpresetId)
 			{
 				_waitGraphic = new Graphic();
-				_waitGraphic.render(waitingGraphicId);
+				_waitGraphic.render(waitingpresetId);
 			}
 			else
 			{

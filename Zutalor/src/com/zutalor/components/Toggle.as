@@ -35,13 +35,13 @@ package com.zutalor.components
 			
 			tp = _presets.getPropsByName(vip.presetId);
 			vp = new ViewItemProperties();
-			vp.graphicId = tp.onStateButtonId;
+			vp.presetId = tp.onStateButtonId;
 			vp.text = vip.text;
 			
 			_onState = new Button();
 			_onState.render(vp);
 			
-			vp.graphicId = tp.offStateButtonId;
+			vp.presetId = tp.offStateButtonId;
 			_offState = new Button();
 			_offState.render(vp);
 			

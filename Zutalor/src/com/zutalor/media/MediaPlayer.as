@@ -1,12 +1,17 @@
 ﻿package com.zutalor.media 
 {
 	import com.greensock.TweenMax;
+	import com.zutalor.components.Component;
+	import com.zutalor.components.IComponent;
 	import com.zutalor.events.MediaEvent;
 	import com.zutalor.events.MediaLoadProgressEvent;
 	import com.zutalor.interfaces.IMediaPlayer;
 	import com.zutalor.properties.MediaProperties;
+	import com.zutalor.properties.ViewItemProperties;
+	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.ui.Spinner;
 	import com.zutalor.utils.MasterClock;
+	import com.zutalor.utils.ShowError;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -17,7 +22,7 @@
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class MediaPlayer extends Sprite implements IMediaPlayer
+	public class MediaPlayer extends Component implements IMediaPlayer, IComponent
 	{	
 		protected var mediaController:MediaController;
 		protected var _volume:Number;
@@ -38,25 +43,39 @@
 		private var _loopDelayTimer:Timer;
 		private var _bufferingTime:Number;	
 		private var _playerType:String;
+		private var _mpp:MediaProperties;
 		
-		public function MediaPlayer() 
-		{
+		public static function register(presets:XMLList):void
+		{	
+			if (!_presets)
+				_presets = new PropertyManager(MediaProperties);
+			
+			_presets.parseXML(presets);
 		}
 		
-		public function initialize(playerType:String, mediaController:MediaController):void
+		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
-			var v:Sprite;
+			var mpp:MediaProperties;
+			
+			super.render(viewItemProperties);
+			_mpp = _presets.getPropsByName(vip.mediaPreset);
+			if (!_mpp)
+				ShowError.fail(MediaPlayer,"No media preset " + vip.url);
+						
+			load(vip.url, _mpp.volume, int(vip.width), int(vip.height), _mpp.scaleToFit, _mpp.bufferTime);
+			if (_mpp.controlsViewId)
+				initTransport(_mpp.controlsViewId, _mpp.controlsContainerName);			
+			
+			if (vip.url)
+			{
+				if (_mpp.hideOnPlayComplete)
+					addEventListener(MediaEvent.COMPLETE, hideMediaPlayerOnPlayComplete, false, 0, true);
 
-			endVariance = 0;
-			_playerType = playerType;	
-			this.mediaController = mediaController;	
-			v = new Sprite();
-			addChild(v);
-			mediaController.view = v;
-			mediaController.addEventListener(MediaEvent.COMPLETE, onPlayComplete);
-			mediaController.addEventListener(MediaEvent.STOP, onPlayComplete);
-			mediaController.addEventListener(MediaEvent.BUFFER_FULL, onBufferFull, false, 0, true);
-			mediaController.addEventListener(MediaEvent.BUFFER_EMPTY, onBufferEmpty, false, 0, true);
+				if (_mpp.autoPlay)
+					play(_mpp.mediaFadeIn, _mpp.audioFadeIn, _mpp.fadeOut, 0, _mpp.startDelay);
+			}
+			else
+				visible = false;	
 		}
 		
 		// PROTECTED METHODS
@@ -153,13 +172,12 @@
 			return _playerType;
 		}
 		
-		public function load(url:String, defaultVolume:Number = 1, playerWidth:int = 0, playerHeight:int = 0, scaleToFit:Boolean = true, bufferTime:Number=0):void
-		{			
-			
+		public function load(vip:ViewItemProperties, mpp:MediaProperties):void
+		{				
 			_url = url;
 			
 			if (!volume)
-				volume = defaultVolume;
+				volume = mpp.volume;
 			
 			mediaController.returnToZeroOnStop = true;			
 			var t:uint = getTimer();
@@ -256,7 +274,7 @@
 			mediaController.seek(value);
 		}
 				
-		public function stop(fadeOut:Number = 0):void
+		override public function stop(fadeOut:Number = 0):void
 		{	
 			MasterClock.unRegisterCallback(onEndClip);
 			MasterClock.unRegisterCallback(onOverLapClip);
@@ -270,7 +288,7 @@
 				onStopComplete();
 		}
 
-		public function dispose():void
+		override public function dispose():void
 		{	
 			mediaController.stop();			
 			mediaController.removeEventListener(MediaEvent.COMPLETE, onPlayComplete);
@@ -280,6 +298,20 @@
 		}		
 						
 		// PRIVATE METHODS
+		
+		private function initiaize(playerType:String, mediaController:MediaController):void
+		{
+			endVariance = 0;
+			_playerType = playerType;	
+			this.mediaController = mediaController;	
+			mediaController.view = this;
+			mediaController.addEventListener(MediaEvent.COMPLETE, onPlayComplete);
+			mediaController.addEventListener(MediaEvent.STOP, onPlayComplete);
+			mediaController.addEventListener(MediaEvent.BUFFER_FULL, onBufferFull, false, 0, true);
+			mediaController.addEventListener(MediaEvent.BUFFER_EMPTY, onBufferEmpty, false, 0, true);
+		}
+		
+		private function initTransport(transportViewId:String, transportContainer:String):void {}		
 		
 		private function onTotalTimeFound():void
 		{
@@ -402,6 +434,11 @@
 		{
 			_bufferingTime = getTimer();
 			Spinner.show(2);
+		}
+		
+		private function hideMediaPlayerOnPlayComplete(me:MediaEvent):void
+		{
+			me.target.visible = false;
 		}
 	}
 }

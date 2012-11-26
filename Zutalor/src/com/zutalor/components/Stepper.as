@@ -53,7 +53,7 @@ package com.zutalor.components
 			downButton.render();
 			
 			_background = new Graphic();
-			_background.vip.presetId = _sp.backgroundGraphicId;
+			_background.vip.presetId = _sp.backgroundId;
 			_background.render();
 			
 			_displayText = new TextField();

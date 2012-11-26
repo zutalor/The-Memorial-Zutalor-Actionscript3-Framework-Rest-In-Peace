@@ -9,7 +9,7 @@
 	public class GraphicProperties extends PropertiesBase implements IProperties
 	{			
 		public var graphicItemProperties:PropertyManager;
-		public var maskGraphicId:String;
+		public var maskId:String;
 		public var maskX:int;
 		public var maskY:int;
 		public var autoOrient:Boolean = true;	

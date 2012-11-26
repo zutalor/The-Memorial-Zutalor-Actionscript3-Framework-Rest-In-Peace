@@ -297,8 +297,8 @@
 			StageRef.stage.addChild(ap.contentLayer);			
 			Translate.language = Props.ap.language;
 
-			if (ap.spinningGraphicId)
-				Spinner.init(ap.spinningGraphicId, ap.spinningGraphicCyclesPerSecond);
+			if (ap.spinningpresetId)
+				Spinner.init(ap.spinningpresetId, ap.spinningGraphicCyclesPerSecond);
 				
 			if (ap.enableWind)
 				Wind.start();

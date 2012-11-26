@@ -6,6 +6,7 @@
 	import com.zutalor.components.Stepper;
 	import com.zutalor.components.Toggle;
 	import com.zutalor.fx.Transition;
+	import com.zutalor.media.MediaPlayer;
 	import com.zutalor.properties.AppStateProperties;
 	import com.zutalor.properties.ColorProperties;
 	import com.zutalor.properties.DropShadowFilterProperties;
@@ -26,7 +27,6 @@
 	public class Presets
 	{
 		public var scrollPresets:PropertyManager;
-		public var mediaPresets:PropertyManager;
 		public var uiPresets:PropertyManager;
 		public var toolTipPresets:PropertyManager;
 		public var shadowPresets:PropertyManager;
@@ -48,7 +48,6 @@
 		{
 			Singleton.assertSingle(Presets);
 			scrollPresets = new PropertyManager(ScrollProperties);
-			mediaPresets = new PropertyManager(MediaProperties);
 			uiPresets = new PropertyManager(UIProperties);
 			toolTipPresets = new PropertyManager(ToolTipProperties);
 			shadowPresets = new PropertyManager(DropShadowFilterProperties);
@@ -78,9 +77,9 @@
 			ComponentGroup.register(xml.componentGroupPresets);
 			TextAttributes.register(xml.textAttributePresets, xml.textFormatPresets);
 			StyleSheets.register(xml.cssPresets);
+			MediaPlayer.register(xml.mediaPresets);
 			
 			scrollPresets.parseXML(xml.scrollPresets);
-			mediaPresets.parseXML(xml.mediaPresets);
 			uiPresets.parseXML(xml.uiPresets);
 			toolTipPresets.parseXML(xml.toolTipPresets);
 			shadowPresets.parseXML(xml.shadowPresets);

@@ -41,7 +41,7 @@ package com.zutalor.view.mediators
 		private var _curStateText:String;
 		private var _curStateMeta:String;
 		
-		private var _soundPlayer:MediaPlayer;
+		private var _soundPlayer:AudioPlayer;
 		private var _textToSpeech:TextToSpeech;
 		private var _uiController:AbstractUiController;
 		private var _gm:GestureMediator;

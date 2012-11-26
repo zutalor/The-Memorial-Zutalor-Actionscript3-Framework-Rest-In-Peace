@@ -10,6 +10,7 @@
 	public class GraphicItemProperties extends PropertiesBase implements IProperties
 	{
 		public var type:String;
+		public var presetId:String;	
 		public var data:String;
 		public var scale9Data:String;
 		public var rotation:Number;
@@ -28,7 +29,6 @@
 		public var tKey:String;
 		public var tText:String;
 		public var textAttribute:String;
-		public var graphicId:String;
 		public var className:String;
 		public var spriteSheet:String;
 		public var spriteSheetItem:String;

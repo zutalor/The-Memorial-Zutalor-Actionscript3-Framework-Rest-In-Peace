@@ -22,7 +22,7 @@ package com.zutalor.view.rendering
 		{
 			var mask:Graphic;
 
-			if (vip.filterPreset || vip.maskGid)
+			if (vip.filterPreset || vip.maskId)
 			{
 				if (vip.transitionDelay)
 					MasterClock.callOnce(_applyFilters, vip.transitionDelay);
@@ -39,10 +39,10 @@ package com.zutalor.view.rendering
 					filters.add(viewItem, vip.filterPreset);
 				}
 				
-				if (vip.maskGid)
+				if (vip.maskId)
 				{
 					mask = new Graphic();
-					mask.vip.graphicId = vip.maskGid;
+					mask.vip.presetId = vip.maskId;
 					mask.render();
 					viewItem.mask = mask;
 					viewItem.addChild(mask);

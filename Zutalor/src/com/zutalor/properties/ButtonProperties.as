@@ -10,10 +10,10 @@
 	 */
 	public class ButtonProperties extends PropertiesBase implements IProperties
 	{		
-		public var upGid:String;
-		public var overGid:String;
-		public var downGid:String;
-		public var disabledGid:String;
+		public var upId:String;
+		public var overId:String;
+		public var downId:String;
+		public var disabledId:String;
 		
 		//the following apply to the text fields
 		
