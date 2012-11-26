@@ -28,6 +28,7 @@
 	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.SimpleMessage;
 	import com.zutalor.utils.StageRef;
+	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.utils.ViewCloser;
 	import com.zutalor.view.rendering.ViewLoader;
 	import com.zutalor.view.utils.ViewUtils;
@@ -283,7 +284,7 @@
 			ap = ApplicationProperties.gi();
 			vu = ViewUtils.gi();
 			mu = MotionUtils.gi();
-			vpm = Props.views;
+			vpm = ViewController.views;
 			
 			ap.ip = _ip;
 			StageRef.stage.addEventListener(StageVideoAvailabilityEvent.STAGE_VIDEO_AVAILABILITY, 

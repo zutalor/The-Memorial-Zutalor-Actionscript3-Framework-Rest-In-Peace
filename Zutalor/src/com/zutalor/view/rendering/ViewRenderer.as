@@ -1,9 +1,9 @@
 package com.zutalor.view.rendering
 {
+import com.zutalor.components.Component;
 import com.zutalor.containers.ViewContainer;
 import com.zutalor.plugin.Plugins;
 import com.zutalor.properties.ViewItemProperties;
-import com.zutalor.propertyManagers.Props;
 import com.zutalor.text.Translate;
 import com.zutalor.view.controller.ViewController;
 
@@ -23,11 +23,11 @@ import com.zutalor.view.controller.ViewController;
 		public function renderItem(itemIndex:int):void
 		{
 			var c:ViewContainer;
-			var viewItem:*;
+			var viewItem:Component;
 			var ViewItemClass:Class;
 			var vip:ViewItemProperties;
 
-			vip = Props.views.getItemPropsByIndex(vc.viewId, itemIndex);
+			vip = ViewController.views.getItemPropsByIndex(vc.viewId, itemIndex);
 			
 			c = vc.vp.container;			
 			c.visible = true;	
@@ -49,9 +49,9 @@ import com.zutalor.view.controller.ViewController;
 				c.push(viewItem);
 
 			viewItem.name = vip.name;
-			vc.itemDictionary.insert(vip.name, viewItem);
 			_viewItemFilterApplier.applyFilters(vip, viewItem);
 			vc.viewItemPositioner.positionItem(vip);
+			
 			if (vip.tabIndex)
 			{
 				viewItem.tabEnabled = true;

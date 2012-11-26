@@ -32,7 +32,7 @@
 		
 		public function ViewLoader() 
 		{
-			vpm = Props.views;
+			vpm = ViewController.views;
 			vu = ViewUtils.gi();
 			ap = Props.ap;
 			pr = Props.pr;

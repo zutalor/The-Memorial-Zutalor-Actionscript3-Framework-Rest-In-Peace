@@ -15,6 +15,7 @@
 	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.Singleton;
 	import com.zutalor.utils.StageRef;
+	import com.zutalor.view.controller.ViewController;
 	import flash.display.DisplayObject;
 	import flash.display.Stage;
 	import flash.events.Event;
@@ -44,7 +45,7 @@
 		{
 			Singleton.assertSingle(ViewUtils);
 			ap = ApplicationProperties.gi();
-			vpm = Props.views;
+			vpm = ViewController.views;
 			mu = MotionUtils.gi();
 			pr = Presets.gi();
 		}

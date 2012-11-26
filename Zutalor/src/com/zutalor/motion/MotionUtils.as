@@ -13,6 +13,7 @@
 	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.utils.TimerRegistery;
+	import com.zutalor.view.controller.ViewController;
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -66,7 +67,7 @@
 		{
 			Singleton.assertSingle(Motion);
 			ap = ApplicationProperties.gi();
-			vpm = Props.views;
+			vpm = ViewController.views;
 		}
 		
 		public static function gi():MotionUtils

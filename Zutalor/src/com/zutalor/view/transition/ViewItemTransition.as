@@ -1,5 +1,6 @@
 package com.zutalor.view.transition  
 {
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.fx.Transition;
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.properties.ViewItemProperties;
@@ -10,7 +11,7 @@ package com.zutalor.view.transition
 	 */
 	public class ViewItemTransition
 	{				
-		public function render(vip:ViewItemProperties, viq:gDictionary, inOut:String):void
+		public function render(vip:ViewItemProperties, vc:ViewContainer, inOut:String):void
 		{
 			var transition:Transition;
 			var t:Function;
@@ -19,7 +20,7 @@ package com.zutalor.view.transition
 			
 			if (!vip.hidden)
 			{
-				viewItem = viq.getByKey(vip.name);
+				viewItem = vc.getChildByName(vip.name);
 				if (vip.transitionPreset)
 				{
 					transition = ObjectPool.getTransition();

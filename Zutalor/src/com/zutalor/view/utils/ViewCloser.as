@@ -10,6 +10,7 @@ package com.zutalor.view.utils
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
+	import com.zutalor.view.controller.ViewController;
     /**
      * ...
      * @author Geoff Pepos
@@ -30,7 +31,7 @@ package com.zutalor.view.utils
 
         public function close(viewId:String, onComplete:Function = null):void
         {
-			_vp = Props.views.getPropsById(viewId);
+			_vp = ViewController.views.getPropsById(viewId);
             _onComplete = onComplete;
 
             if (!_vp)

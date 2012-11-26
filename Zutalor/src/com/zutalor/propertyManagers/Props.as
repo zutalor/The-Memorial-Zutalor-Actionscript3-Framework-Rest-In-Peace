@@ -15,10 +15,9 @@ package com.zutalor.propertyManagers
 	import com.zutalor.properties.SequenceProperties;
 	import com.zutalor.properties.TranslateItemProperties;
 	import com.zutalor.properties.TranslateProperties;
-	import com.zutalor.properties.ViewItemProperties;
-	import com.zutalor.properties.ViewProperties;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StringUtils;
+	import com.zutalor.view.controller.ViewController;
 
 	/**
 	 * ...
@@ -31,7 +30,6 @@ package com.zutalor.propertyManagers
 		
 		public static var sequences:NestedPropsManager;
 		public static var playlists:NestedPropsManager;
-		public static var views:NestedPropsManager;
 		public static var graphics:NestedPropsManager;
 		public static var filters:NestedPropsManager;
 		public static var paths:PropertyManager;
@@ -58,7 +56,6 @@ package com.zutalor.propertyManagers
 			pr = Presets.gi();	
 			ap = ApplicationProperties.gi();
 			sequences = new NestedPropsManager();
-			views = new NestedPropsManager();
 			filters = new NestedPropsManager();
 			graphics = new NestedPropsManager();
 			playlists = new NestedPropsManager();
@@ -149,9 +146,9 @@ package com.zutalor.propertyManagers
 		
 		private static function parseProps(xml:XML):void
 		{	
+			ViewController.register(xml);
 			paths.parseXML(xml.paths, "props");
 			sequences.parseXML(SequenceProperties, SequenceItemProperties, xml.sequences, "sequence", xml.sequence, "props");
-			views.parseXML(ViewProperties, ViewItemProperties, xml.views, "view", xml.view, "props");
 			playlists.parseXML(PlaylistProperties, PlaylistItemProperties, xml.playlists, "playlist", xml.playlist, "props");						
 			pr.parseXML(xml);		
 			translations.parseXML(TranslateProperties, TranslateItemProperties, xml.translations, "language", xml.language,"props");

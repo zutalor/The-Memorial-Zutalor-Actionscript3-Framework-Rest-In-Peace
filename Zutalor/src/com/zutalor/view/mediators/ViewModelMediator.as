@@ -34,7 +34,7 @@ package com.zutalor.view.mediators
 		public function ViewModelMediator(viewController:ViewController) 
 		{
 			vc = viewController;
-			_vpm = Props.views;
+			_vpm = ViewController.views;
 			_ap = ApplicationProperties.gi();
 			_pr = Presets.gi();
 		}
@@ -45,7 +45,7 @@ package com.zutalor.view.mediators
 			var ViewItemClass:Class
 			
 			ViewItemClass = Plugins.getClass(vip.type);
-			item = vc.itemDictionary.getByKey(vip.name);
+			item = vc.container.getChildByName(vip.name);
 			
 			if (ViewItemClass is Component && vip.voName)
 			{

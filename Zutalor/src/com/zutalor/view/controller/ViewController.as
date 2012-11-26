@@ -1,5 +1,6 @@
 ﻿package com.zutalor.view.controller
 {
+	import com.google.analytics.components.FlashTracker;
 	import com.greensock.TweenMax;
 	import com.gskinner.utils.IDisposable;
 	import com.zutalor.components.Component;
@@ -69,8 +70,6 @@
 		public var vp:ViewProperties;
 		public	var vpm:NestedPropsManager;		
 		public var filters:Array;
-
-		public var itemDictionary:gDictionary;
 		public var containergDictionary:gDictionary;
 		public var itemWithFocus:Component;
 		public var itemWithFocusIndex:int;
@@ -80,6 +79,16 @@
 			_init();
 		}
 		
+		public static var views:NestedPropsManager;
+		
+		public static function register(xml:XML):void
+		{	
+			if (!views)
+				views = new NestedPropsManager();
+			
+			views.parseXML(ViewProperties, ViewItemProperties, xml.views, "view", xml.view, "props");
+		}
+		
 		private function _init():void
 		{
 			viewRenderer = new ViewRenderer(this, processNextViewItem);
@@ -87,7 +96,7 @@
 			viewItemPositioner = new ViewItemPositioner(this);
 			_viewEventMediator = new ViewEventMediator(this);
 			
-			vpm = Props.views;
+			vpm = ViewController.views;
 			_ap = ApplicationProperties.gi();
 		}
 	
@@ -108,7 +117,6 @@
 			_container.viewController = this;
 			
 			filters = [];
-			itemDictionary = new gDictionary();
 			containergDictionary = new gDictionary();			
 			_itemIndex = 0;
 			initMessages();			
@@ -237,7 +245,7 @@
 				if (vip)
 				{
 					Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
-					item = itemDictionary.getByKey(itemName);
+					item = container.getChildByName(itemName) as Component;
 					viewModelMediator.copyViewItemToValueObject(vip, item);
 				}
 				else
@@ -251,7 +259,7 @@
 					Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
 					if (vip.voName)
 					{
-						item = itemDictionary.getByIndex(i);
+						item = container.getChildAt(i) as Component;
 						viewModelMediator.copyViewItemToValueObject(vip, item);
 					}
 				}
@@ -267,7 +275,7 @@
 				vip = vpm.getItemPropsByName(viewId, itemName);
 				if (vip)
 				{
-					item = itemDictionary.getByKey(itemName);
+					item = container.getChildByName(itemName) as Component;
 					viewModelMediator.copyValueObjectToViewItem(vip, item);
 				}
 				else
@@ -279,7 +287,7 @@
 					vip = vpm.getItemPropsByIndex(viewId, i);
 					if (vip.voName)
 					{
-						item = itemDictionary.getByIndex(i);
+						item = container.getChildAt(i) as Component;
 						viewModelMediator.copyValueObjectToViewItem(vip, item);
 					}
 				}
@@ -298,7 +306,7 @@
 			
 			for (var i:int = 0; i < numViewItems; i++)
 			{
-				item = itemDictionary.getByIndex(i);
+				item = container.getChildAt(i) as Component;
 				if (item is IMediaPlayer)
 				{
 					item.stop(fadeSeconds);
@@ -332,11 +340,6 @@
 			}
 				
 			filters = null;
-			if (itemDictionary)
-			{
-				itemDictionary.dispose();
-				itemDictionary = null;
-			}
 			numViewItems = 0;
 			viewRenderer = null;
 			viewModelMediator = null;
@@ -348,12 +351,12 @@
 		
 		public function getItemByIndex(indx:int):Component
 		{
-			return itemDictionary.getByIndex(indx);
+			return container.getChildAt(indx) as Component;
 		}
 		
 		public function getItemIndexByName(name:String):int
 		{
-			return itemDictionary.getIndexByKey(name);
+			return container.getChildIndex(container.getChildByName(name));
 		}
 		
 		public function getItemByName(itemName:String):Component
@@ -362,9 +365,8 @@
 			var item:Component;
 			
 			vip = vpm.getItemPropsByName(viewId, itemName);
-			if (vip)
-				if (itemDictionary)
-					item = itemDictionary.getByKey(itemName);
+			if (vip && container.numChildren)
+				item = container.getChildByName(itemName) as Component;
 
 			return item;
 		}
@@ -388,13 +390,10 @@
 			var item:Component;
 			
 			vip = vpm.getItemPropsByName(viewId, itemName);
-			if (vip)
-				if (itemDictionary)
-				{
-					item = itemDictionary.getByKey(itemName);
-					if (item)
-						item.alpha = a;
-				}
+			if (vip && container.numChildren)
+				item = container.getChildByName(itemName) as Component;
+				if (item)
+					item.alpha = a;
 		}
 		
 		public function setAllItemVisibility(visible:Boolean=true, fade:Number = 0, delay:Number = 0):void
@@ -402,29 +401,29 @@
 			var ni:int;
 			
 			setItemVisibility(null, visible, fade, delay);
-			if (itemDictionary)
+			if (container.numChildren)
 			{
-				ni = itemDictionary.length;
+				ni = container.numChildren;
 				for (var i:int = 0; i < ni; i++)
-					ItemFX.fade(vp.name, itemDictionary.getByIndex(i), visible, fade, delay);
+					ItemFX.fade(vp.name, container.getChildAt(i), visible, fade, delay);
 			}
 		}
 		
 		public function setItemVisibility(name:String, visible:Boolean = true, fade:int = 0, delay:int = 0):void
 		{
-			ItemFX.fade(vp.name, itemDictionary.getByKey(name), visible, fade, delay);
+			ItemFX.fade(vp.name, container.getChildByName(name), visible, fade, delay);
 		}
 		
 		public function get numItems():int
 		{
-			return itemDictionary.length;
+			return container.numChildren;
 		}
 		
 		public function setEnabled(itemName:String, d:Boolean):void
 		{
 			var item:Component;
 			
-			item = itemDictionary.getByKey(itemName);
+			item = container.getChildByName(itemName) as Component;
 			if (item)
 			{
 				if(item.hasOwnProperty("enabled"))
@@ -551,7 +550,7 @@
 			var vip:ViewItemProperties;			
 			
 			l = containergDictionary.length;
-			c = itemDictionary.length;
+			c = container.numChildren;
 			_viewEventMediator.itemListenerSetup();				
 			
 			_onComplete();
@@ -565,7 +564,7 @@
 				vip = vpm.getItemPropsByIndex(viewId, i);
 				if (vip && vip.transitionPreset) {
 					viewItemTransition = new ViewItemTransition();
-					viewItemTransition.render(vip, itemDictionary, TransitionTypes.IN);
+					viewItemTransition.render(vip, container, TransitionTypes.IN);
 				}
 			}
 			

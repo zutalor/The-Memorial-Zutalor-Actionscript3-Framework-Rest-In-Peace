@@ -1,6 +1,8 @@
 ﻿package com.zutalor.containers
 {
+	import adobe.utils.CustomActions;
 	import com.gskinner.utils.IDisposable;
+	import com.zutalor.components.Component;
 	import com.zutalor.events.ContainerEvent;
 	import com.zutalor.properties.ApplicationProperties;
 	import com.zutalor.propertyManagers.Presets;

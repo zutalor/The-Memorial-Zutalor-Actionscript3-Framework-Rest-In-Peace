@@ -56,7 +56,7 @@ package com.zutalor.view.mediators
 		
 		private function _init():void
 		{
-			_vpm = Props.views;
+			_vpm = ViewController.views;
 			_vu = ViewUtils.gi();			
 			_pr = Presets.gi();
 			_mu = MotionUtils.gi();
@@ -126,7 +126,7 @@ package com.zutalor.view.mediators
 			
 			for (var i:int = 0; i < vc.numViewItems; i++)
 			{
-				item = vc.itemDictionary.getByIndex(i);
+				item = vc.container.getChildAt(i) as Component;
 					
 				if (item is Text && item.editable)
 				{
@@ -182,12 +182,12 @@ package com.zutalor.view.mediators
 			var l:int;
 			var item:*;
 			
-			if (vc.itemDictionary)
+			if (vc.container.numChildren)
 			{
-				l = vc.itemDictionary.length;
+				l = vc.container.numChildren;
 				for (var i:int = 0; i < l; i++)
 				{
-					item = vc.itemDictionary.getByIndex(i);
+					item = vc.container.getChildAt(i);
 					if (item is TextField && item.hasEventListener(FocusEvent.FOCUS_IN))
 					{
 						item.removeEventListener(FocusEvent.FOCUS_IN, onInputTextFocusIn);
@@ -232,7 +232,7 @@ package com.zutalor.view.mediators
 			vip = _vpm.getItemPropsByName(vc.viewId, fe.currentTarget.name);
 		
 			FullScreen.restoreIfNotDesktop();
-			item = vc.itemDictionary.getByKey(vip.name);
+			item = vc.container.getChildByName(vip.name);
 			item.textField.setSelection(0, 999);
 			vip.text = Translate.text(vip.tKey);
 				
@@ -317,7 +317,7 @@ package com.zutalor.view.mediators
 						{
 							vc.itemWithFocus.value = !vc.itemWithFocus.value;
 							vip = _vpm.getItemPropsByName(vc.viewId, vc.itemWithFocus.name);
-							vc.viewModelMediator.copyViewItemToValueObject(vip, vc.itemDictionary.getByKey(vip.name));
+							vc.viewModelMediator.copyViewItemToValueObject(vip, vc.container.getChildByName(vip.name));
 						}
 						break;
 					default: 
@@ -352,7 +352,7 @@ package com.zutalor.view.mediators
 				if (uie.target is ComponentGroup || uie.target is RadioGroup)
 				{
 					cgp = ComponentGroup.presets.getPropsByName(vip.presetId);
-					cg = vc.itemDictionary.getByKey(uie.itemName);
+					cg = vc.container.getChildByName(uie.itemName) as ComponentGroup;
 					contentContainer = cg.getChildAt(0);
 					for (var i:int = 0; i < cgp.numComponents; i++)
 						contentContainer.getChildAt(i).value = uie.value[i];
@@ -438,7 +438,7 @@ package com.zutalor.view.mediators
 						
 						vc.initStatusMessage(vip.tapAction);
 						if (vip.voName)
-							vc.viewModelMediator.copyViewItemToValueObject(vip, vc.itemDictionary.getByKey(vip.name));
+							vc.viewModelMediator.copyViewItemToValueObject(vip, vc.container.getChildByName(vip.name));
 						
 						if (vip.tapActionOptions)
 							Plugins.callMethod(dest, vip.tapAction, vip.tapActionOptions);

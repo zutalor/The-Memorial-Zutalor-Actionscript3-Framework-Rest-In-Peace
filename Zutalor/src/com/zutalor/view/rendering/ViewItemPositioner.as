@@ -36,7 +36,7 @@ package com.zutalor.view.rendering
 			var hPad:int;
 			var vPad:int;
 			
-			viewItem = _vc.itemDictionary.getByKey(vip.name);
+			viewItem = _vc.container.getChildByName(vip.name);
 			
 			width = int(vip.width);
 			height = int(vip.height);
