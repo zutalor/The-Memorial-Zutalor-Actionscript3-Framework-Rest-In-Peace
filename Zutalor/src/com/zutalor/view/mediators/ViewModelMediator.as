@@ -1,22 +1,16 @@
 package com.zutalor.view.mediators  
 {
 	import com.zutalor.components.Component;
-	import com.zutalor.components.ComponentGroup;
-	import com.zutalor.components.Label;
-	import com.zutalor.components.RadioGroup;
+	import com.zutalor.components.group.ComponentGroup;
+	import com.zutalor.components.group.RadioGroup;
 	import com.zutalor.containers.ScrollingContainer;
-	import com.zutalor.containers.ViewContainer;
-	import com.zutalor.media.VideoPlayer;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.ApplicationProperties;
-	import com.zutalor.properties.MediaProperties;
 	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.propertyManagers.Props;
-	import com.zutalor.text.TextAttributes;
-	import com.zutalor.text.TextUtil;
 	import com.zutalor.text.Translate;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.view.controller.ViewController;
@@ -170,7 +164,7 @@ package com.zutalor.view.mediators
 			}
 		}
 		
-		public function copyValueObjectToViewItem(vip:ViewItemProperties, item:*):void
+		public function copyValueObjectToViewItem(vip:ViewItemProperties, item:Component):void
 		{
 			var c:ScrollingContainer;
 			var dataProvider:Array;
@@ -179,28 +173,15 @@ package com.zutalor.view.mediators
 			if (vip.voName)
 			{
 				_valueObject = Plugins.callMethod(vc.vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
-				
-				if (_valueObject)
-				{
-					ViewItemClass = Plugins.getClass(vip.type);
-					switch (ViewItemClass)
-					{	
-						case Component :
-							if (_valueObject[vip.name])
-							{
-								switch (vip.format)
-								{
-									case FORMAT_TIME :
-										item.value = TextUtil.formatTime(_valueObject[vip.name]);
-										break;
-									default :
-										item.value = _valueObject[vip.name];
-								}
-								if (vip.textAttributes)
-									TextAttributes.apply(item.value, vip.textAttributes, int(vip.width), int(vip.height));
-							}
-							break;
-							/*
+				ViewItemClass = Plugins.getClass(vip.type);							
+				item.value = _valueObject[vip.name];
+				trace("copyValueObjectToViewItem:", item.value);
+			}
+		}
+	}
+}
+
+/*
 						case ViewItemTypes.LIST :	
 						case ViewItemTypes.COMBOBOX :	
 							item.selectedItem = _valueObject[vip.name]
@@ -237,9 +218,3 @@ package com.zutalor.view.mediators
 								item.visible = true;
 							}
 								*/
-					}		
-				}
-			}
-		}
-	}
-}

@@ -2,6 +2,8 @@
 {
 	import com.greensock.TweenMax;
 	import com.gskinner.utils.IDisposable;
+	import com.zutalor.components.Component;
+	import com.zutalor.components.text.TextAttributes;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
@@ -16,7 +18,6 @@
 	import com.zutalor.properties.ViewProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Props;
-	import com.zutalor.text.TextAttributes;
 	import com.zutalor.text.Translate;
 	import com.zutalor.ui.Focus;
 	import com.zutalor.utils.gDictionary;
@@ -71,9 +72,7 @@
 
 		public var itemDictionary:gDictionary;
 		public var containergDictionary:gDictionary;
-
-		public var disabledList:Array;
-		public var itemWithFocus:*;
+		public var itemWithFocus:Component;
 		public var itemWithFocusIndex:int;
 		
 		public function ViewController()
@@ -107,10 +106,8 @@
 			ObjectPool.getContainer(vp);
 			_container = vp.container;
 			_container.viewController = this;
-			viewRenderer.vp = vp;
 			
 			filters = [];
-			disabledList = [];
 			itemDictionary = new gDictionary();
 			containergDictionary = new gDictionary();			
 			_itemIndex = 0;
@@ -231,7 +228,7 @@
 		private function copyViewToModel(itemName:String = null):void
 		{
 			var vip:ViewItemProperties;
-			var item:*;
+			var item:Component;
 			
 			if (itemName)
 			{
@@ -263,7 +260,7 @@
 		private function copyModelToView(itemName:String=null):void
 		{
 			var vip:ViewItemProperties;
-			var item:*;
+			var item:Component;
 
 			if (itemName)
 			{
@@ -297,7 +294,7 @@
 				
 		public function stop(fadeSeconds:Number = 0):void
 		{
-			var item:*;
+			var item:Component;
 			
 			for (var i:int = 0; i < numViewItems; i++)
 			{
@@ -349,7 +346,7 @@
 		
 		// GET THE UI ITEM's OBJECT OR PROPERTIES
 		
-		public function getItemByIndex(indx:int):*
+		public function getItemByIndex(indx:int):Component
 		{
 			return itemDictionary.getByIndex(indx);
 		}
@@ -359,10 +356,10 @@
 			return itemDictionary.getIndexByKey(name);
 		}
 		
-		public function getItemByName(itemName:String):*
+		public function getItemByName(itemName:String):Component
 		{
 			var vip:ViewItemProperties;
-			var item:*
+			var item:Component;
 			
 			vip = vpm.getItemPropsByName(viewId, itemName);
 			if (vip)
@@ -388,7 +385,7 @@
 		public function setItemAlpha(itemName:String, a:Number):void		
 		{
 			var vip:ViewItemProperties;
-			var item:*
+			var item:Component;
 			
 			vip = vpm.getItemPropsByName(viewId, itemName);
 			if (vip)
@@ -423,14 +420,13 @@
 			return itemDictionary.length;
 		}
 		
-		public function setDisabled(itemName:String, d:Boolean):void
+		public function setEnabled(itemName:String, d:Boolean):void
 		{
-			var item:*;
+			var item:Component;
 			
 			item = itemDictionary.getByKey(itemName);
 			if (item)
 			{
-				disabledList[ itemDictionary.getIndexByKey(itemName) ] = d;
 				if(item.hasOwnProperty("enabled"))
 					item.enabled = d;
 			}
@@ -438,13 +434,13 @@
 		
 		public function getDisabled(itemName:String):Boolean
 		{
-			var item:*
+			var item:Component;
 			
 			item = getItemByName(itemName); 
 			if (item.alpha == 0 || item.visible == false)
 				return true;
 			
-			return disabledList[ itemDictionary.getIndexByKey(itemName) ];
+			return item.enabled;
 		}
 		
 		public function hide(useTransition:Boolean=true):void

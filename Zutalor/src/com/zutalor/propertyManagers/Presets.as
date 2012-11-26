@@ -1,24 +1,23 @@
 ﻿package com.zutalor.propertyManagers
 {
-	import com.zutalor.components.Button;
-	import com.zutalor.components.ComponentGroup;
-	import com.zutalor.components.Graphic;
-	import com.zutalor.components.Stepper;
-	import com.zutalor.components.Toggle;
+	import com.zutalor.components.button.Button;
+	import com.zutalor.components.graphic.Graphic;
+	import com.zutalor.components.group.ComponentGroup;
+	import com.zutalor.components.html.StyleSheets;
+	import com.zutalor.components.media.base.MediaPlayer;
+	import com.zutalor.components.stepper.Stepper;
+	import com.zutalor.components.text.TextAttributes;
+	import com.zutalor.components.toggle.Toggle;
 	import com.zutalor.fx.Transition;
-	import com.zutalor.media.MediaPlayer;
 	import com.zutalor.properties.AppStateProperties;
 	import com.zutalor.properties.ColorProperties;
 	import com.zutalor.properties.DropShadowFilterProperties;
 	import com.zutalor.properties.GlowFilterProperties;
-	import com.zutalor.properties.MediaProperties;
 	import com.zutalor.properties.RippleProperties;
 	import com.zutalor.properties.ScrollProperties;
 	import com.zutalor.properties.ToolTipProperties;
 	import com.zutalor.properties.UIProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
-	import com.zutalor.text.StyleSheets;
-	import com.zutalor.text.TextAttributes;
 	import com.zutalor.utils.Singleton;
 	/**
 	 * ...

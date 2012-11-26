@@ -99,8 +99,8 @@
 			else
 				url = xml.@url;
 				
-			if (tKey)
-				text = tKey.split("\\n").join("\n");
+			if (text)
+				text = text.split("\\n").join("\n");
 				
 			return true;	
 		}

@@ -2,34 +2,21 @@ package com.zutalor.view.rendering
 {
 import com.zutalor.containers.ViewContainer;
 import com.zutalor.plugin.Plugins;
-import com.zutalor.properties.ApplicationProperties;
 import com.zutalor.properties.ViewItemProperties;
-import com.zutalor.properties.ViewProperties;
-import com.zutalor.propertyManagers.Presets;
 import com.zutalor.propertyManagers.Props;
 import com.zutalor.text.Translate;
 import com.zutalor.view.controller.ViewController;
-import com.zutalor.view.utils.ViewUtils;
 
 	public class ViewRenderer
 	{
-		private var _pr:Presets;
-		private var _ap:ApplicationProperties;
-		private var _tabIndex:int;
 		private var _onItemRenderCallback:Function;
-		
+		private var _viewItemFilterApplier:ViewItemFilterApplier;		
 		public var vc:ViewController;
-		public var vp:ViewProperties;
-		public var vu:ViewUtils;
-		
-		private var _viewItemFilterApplier:ViewItemFilterApplier;
-								
+
 		public function ViewRenderer(viewController:ViewController, onItemRenderCallback:Function) 
 		{	
 			_onItemRenderCallback = onItemRenderCallback;
 			vc = viewController;
-			_pr = Props.pr;
-			_ap = ApplicationProperties.gi();
 			_viewItemFilterApplier = new ViewItemFilterApplier(vc);
 		}
 		
@@ -52,9 +39,8 @@ import com.zutalor.view.utils.ViewUtils;
 				vip.text = vip.text;
 				
 			if (!vip.styleSheetName)
-				vip.styleSheetName = vp.styleSheetName;
+				vip.styleSheetName = vc.vp.styleSheetName;
 				
-			vc.disabledList[itemIndex] = true;
 			ViewItemClass = Plugins.getClass(vip.type);
 			viewItem = new ViewItemClass();
 			viewItem.render(vip);

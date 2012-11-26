@@ -16,12 +16,6 @@
 	 */
 	public class TextUtil
 	{
-		public static var textFormats:gDictionary;
-		
-		private static var _txt:TextField;
-		private static var _width:int;
-		private static var _stylesheet:String;
-		private static var _onComplete:Function;
 		private static var _unique:int;
 	
 		public static function getUniqueName():String

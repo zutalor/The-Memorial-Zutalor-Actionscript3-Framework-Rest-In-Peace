@@ -1,19 +1,14 @@
 package com.zutalor.view.mediators
 {
-	import com.adobe.xml.syndication.atom.Generator;
 	import com.zutalor.air.AirStatus;
+	import com.zutalor.components.media.audio.AudioPlayer;
 	import com.zutalor.controllers.AbstractUiController;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.gesture.AppGestureEvent;
 	import com.zutalor.gesture.GestureMediator;
 	import com.zutalor.gesture.UserInputProperties;
-	import com.zutalor.media.AudioController;
-	import com.zutalor.media.MediaPlayer;
 	import com.zutalor.media.TextToSpeech;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.view.properties.AnswerProperties;
-	import org.gestouch.gestures.TapGesture;
-
 	import com.zutalor.properties.TranslateItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.propertyManagers.Props;
@@ -25,11 +20,12 @@ package com.zutalor.view.mediators
 	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.SimpleMessage;
 	import com.zutalor.utils.StageRef;
+	import com.zutalor.view.properties.AnswerProperties;
 	import com.zutalor.view.properties.GenericData;
-	import flash.events.MediaEvent;
 	import org.gestouch.gestures.Gesture;
-	import org.gestouch.gestures.PanGesture;
 	import org.gestouch.gestures.SwipeGesture;
+	import org.gestouch.gestures.TapGesture;
+
 	
 	public class ViewStateMediator
 	{	
@@ -40,9 +36,8 @@ package com.zutalor.view.mediators
 		private var _history:Array;
 		private var _curStateText:String;
 		private var _curStateMeta:String;
-		
-		private var _soundPlayer:AudioPlayer;
 		private var _textToSpeech:TextToSpeech;
+		private var _audioPlayer:AudioPlayer;
 		private var _uiController:AbstractUiController;
 		private var _gm:GestureMediator;
 		private var _hkm:HotKeyManager;
@@ -75,8 +70,7 @@ package com.zutalor.view.mediators
 				_gm = new GestureMediator(Plugins);
 				_hkm = new HotKeyManager();
 				_gm.addEventListener(AppGestureEvent.RECOGNIZED, onGesture);
-				_soundPlayer = new MediaPlayer();
-				_soundPlayer.initialize("audio", new AudioController());				
+				_audioPlayer = new AudioPlayer();				
 				_textToSpeech = new TextToSpeech();
 				
 				if (AirStatus.isMobile)
@@ -318,8 +312,8 @@ package com.zutalor.view.mediators
 				_textToSpeech.speak(TextUtil.stripSurroundedBy(page, "<", ">"));
 			else if (soundName)
 			{
-				_soundPlayer.load(soundName + soundExt);
-				_soundPlayer.play();
+				_audioPlayer.load(soundName + soundExt);
+				_audioPlayer.play();
 			}
 		}
 		
@@ -327,7 +321,7 @@ package com.zutalor.view.mediators
 		{
 			_textToSpeech.stop();			
 			_uiController.stop();
-			_soundPlayer.stop();
+			_audioPlayer.stop();
 		}
 		
 		// UTILITY

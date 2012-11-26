@@ -1,6 +1,6 @@
 ﻿package com.zutalor.objectPool 
 {
-	import com.zutalor.components.Graphic;
+	import com.zutalor.components.graphic.Graphic;
 	import com.zutalor.containers.MaskedContainer;
 	import com.zutalor.containers.ParallaxContainer;
 	import com.zutalor.containers.ScrollingContainer;

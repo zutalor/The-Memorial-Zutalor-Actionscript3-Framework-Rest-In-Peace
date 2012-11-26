@@ -1,6 +1,6 @@
 ﻿package com.zutalor.containers
 {	
-	import com.zutalor.components.IViewObject;
+	import com.zutalor.components.interfaces.IViewObject;
 	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.sprites.CenterSprite;
 	import flash.display.Sprite;
@@ -34,6 +34,7 @@
 		public var posOffsetY:Number;
 		public var savedScale:Number;
 		
+		private var _editable:Boolean;
 		private var _enabled:Boolean;
 		
 		public function ViewObject()
@@ -44,6 +45,17 @@
 			mass = 0;
 			friction = 0;
 			windAffect = 0;
+			editable = false;
+		}
+		
+		public function set editable(value:Boolean):void
+		{
+			_editable = value;
+		}
+		
+		public function get editable():Boolean
+		{
+			return _editable;
 		}
 	
 		public function set enabled(value:Boolean):void

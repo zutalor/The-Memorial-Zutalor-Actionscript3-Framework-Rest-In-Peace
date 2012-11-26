@@ -1,5 +1,6 @@
 package com.zutalor.propertyManagers 
 {
+	import com.zutalor.components.html.StyleSheets;
 	import com.zutalor.loaders.URLLoaderG;
 	import com.zutalor.properties.ApplicationProperties;
 	import com.zutalor.properties.BitmapProperties;
@@ -16,7 +17,6 @@ package com.zutalor.propertyManagers
 	import com.zutalor.properties.TranslateProperties;
 	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.properties.ViewProperties;
-	import com.zutalor.text.StyleSheets;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StringUtils;
 

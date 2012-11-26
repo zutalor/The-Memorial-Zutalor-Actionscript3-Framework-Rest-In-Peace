@@ -1,13 +1,14 @@
 package com.zutalor.components
 {
 	import com.gskinner.utils.IDisposable;
+	import com.zutalor.components.interfaces.IViewObject;
 	import com.zutalor.containers.ViewObject;
 	import com.zutalor.ui.Line;
 	import com.zutalor.utils.ArrayUtils;
 	import flash.display.Graphics;
 	import flash.display.Sprite;
 	/**
-	 * ...
+	 * 
 	 * @author Geoff Pepos
 	 */
 	public class Plotter extends ViewObject implements IViewObject

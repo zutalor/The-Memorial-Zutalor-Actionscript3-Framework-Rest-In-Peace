@@ -1,5 +1,6 @@
 package com.zutalor.components 
 {
+	import com.zutalor.components.interfaces.IComponent;
 	import com.zutalor.containers.ViewObject;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.properties.PropertiesBase;

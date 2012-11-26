@@ -1,10 +1,13 @@
 package com.zutalor.view.mediators
 {
 	import com.zutalor.air.AirStatus;
-	import com.zutalor.components.Button;
-	import com.zutalor.components.ComponentGroup;
-	import com.zutalor.components.RadioGroup;
-	import com.zutalor.components.Text;
+	import com.zutalor.components.button.Button;
+	import com.zutalor.components.Component;
+	import com.zutalor.components.group.ComponentGroup;
+	import com.zutalor.components.group.ComponentGroupProperties;
+	import com.zutalor.components.group.RadioGroup;
+	import com.zutalor.components.text.Text;
+	import com.zutalor.components.text.TextAttributes;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
@@ -12,13 +15,10 @@ package com.zutalor.view.mediators
 	import com.zutalor.plugin.constants.PluginClasses;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.properties.ComponentGroupProperties;
 	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.propertyManagers.Props;
-	import com.zutalor.text.TextAttributes;
-	import com.zutalor.text.TextUtil;
 	import com.zutalor.text.Translate;
 	import com.zutalor.ui.Focus;
 	import com.zutalor.utils.FullScreen;
@@ -122,13 +122,13 @@ package com.zutalor.view.mediators
 		
 		public function itemListenerSetup():void
 		{
-			var item:*;
+			var item:Component;
 			
 			for (var i:int = 0; i < vc.numViewItems; i++)
 			{
 				item = vc.itemDictionary.getByIndex(i);
 					
-				if (item is Text)
+				if (item is Text && item.editable)
 				{
 					item.addEventListener(FocusEvent.FOCUS_IN, onInputTextFocusIn);
 					item.addEventListener(FocusEvent.FOCUS_OUT, onInputTextFocusOut);
@@ -141,9 +141,12 @@ package com.zutalor.view.mediators
 		
 		public function validateSelection(e:HotKeyEvent):void
 		{
-			if (!vc.disabledList[vc.itemWithFocusIndex])
+			var item:Component;
+			
+			item = vc.getItemByIndex(vc.itemWithFocusIndex);
+			if ( item.editable && item.enabled)
 			{
-				vc.itemWithFocus = vc.getItemByIndex(vc.itemWithFocusIndex);
+				vc.itemWithFocus = item;
 				if (vc.itemWithFocus.visible && vc.itemWithFocus.alpha > 0)
 					onItemFocusIn();
 				else
@@ -203,17 +206,16 @@ package com.zutalor.view.mediators
 		public function onItemFocusIn(fe:FocusEvent = null):void
 		{
 			var vip:ViewItemProperties;
-			var item:*;
+			var item:Component;
 			
 			if (fe)
-				item = vc.itemWithFocus = fe.currentTarget;
+				item = vc.itemWithFocus = Component(fe.currentTarget);
 			else
 				item = vc.itemWithFocus;
 			
 			if (item)
 			{
-				vc.itemWithFocusIndex = vc.getItemIndexByName(item.name);
-				if (!vc.disabledList[vc.itemWithFocusIndex] && item.visible && item.alpha > 0)
+				if (!item.enabled && item.visible && item.alpha > 0)
 				{
 					Focus.show(item, vc.container);
 					vip = vc.getItemPropsByName(item.name);

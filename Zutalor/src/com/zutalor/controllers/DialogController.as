@@ -1,7 +1,7 @@
 package com.zutalor.controllers
 {
 	import com.zutalor.air.AirStatus;
-	import com.zutalor.components.Button;
+	import com.zutalor.components.button.Button;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.text.Translate;
@@ -130,12 +130,12 @@ package com.zutalor.controllers
 		
 		private function getOkButton():Button
 		{
-			return vc.getItemByName("okButton");
+			return vc.getItemByName("okButton") as Button;
 		}
 		
 		private function getCancelButton():Button
 		{
-			return vc.getItemByName("cancelButton");
+			return vc.getItemByName("cancelButton") as Button;
 		}
 		
 		private function getX(percentage:Number, b:Button):Number

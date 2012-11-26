@@ -1,6 +1,6 @@
 package com.zutalor.view.rendering
 {
-import com.zutalor.components.Button;
+import com.zutalor.components.button.Button;
 import com.zutalor.components.ComponentGroup;
 import com.zutalor.components.Components;
 import com.zutalor.components.RadioGroup;

@@ -1,6 +1,6 @@
 package com.zutalor.view.rendering 
 {
-	import com.zutalor.components.Graphic;
+	import com.zutalor.components.graphic.Graphic;
 	import com.zutalor.fx.Filters;
 	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.utils.MasterClock;
