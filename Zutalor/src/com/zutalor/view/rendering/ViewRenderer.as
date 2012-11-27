@@ -43,7 +43,7 @@ package com.zutalor.view.rendering
 			
 			_applyFilters(vip, viewItem);
 			
-			if (_positionItem)
+			if (_positionItem != null)
 				_positionItem(vip);
 			
 			if (vip.tabIndex)

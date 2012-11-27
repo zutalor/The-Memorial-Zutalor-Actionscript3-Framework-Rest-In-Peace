@@ -1,5 +1,8 @@
 package com.zutalor.view.rendering 
 {
+	import adobe.utils.CustomActions;
+	import com.zutalor.components.Component;
+	import com.zutalor.containers.Container;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.properties.ScrollProperties;
 		import com.zutalor.view.properties.ViewItemProperties;
@@ -12,18 +15,21 @@ package com.zutalor.view.rendering
 	 */
 	public class ViewItemPositioner
 	{
-		private var _vc:ViewController;
+		private var _c:Container;
+		private var _width:int;
+		private var _height:int;
 		
-		public function ViewItemPositioner(vc:ViewController)
+		public function ViewItemPositioner(c:Container, width:int, height:int)
 		{
-			_vc = vc;
+			_c = c;
+			_width = width;
+			_height = height;
 		}
 		
 		public function positionItem(vip:ViewItemProperties):void
 		{
 			var scrollProperties:ScrollProperties;
-			var viewItem:*;
-			var c:ViewContainer = _vc.container;
+			var viewItem:Component;
 			var width:int;
 			var height:int;
 			var x:int;
@@ -31,7 +37,7 @@ package com.zutalor.view.rendering
 			var hPad:int;
 			var vPad:int;
 			
-			viewItem = _vc.container.getChildByName(vip.name);
+			viewItem = _c.getChildByName(vip.name) as Component;
 			
 			width = int(vip.width);
 			height = int(vip.height);
@@ -43,18 +49,18 @@ package com.zutalor.view.rendering
 							
 			if (vip.width)
 				if (vip.width == "auto")
-					viewItem.width = c.width - hPad - x;
+					viewItem.width = _c.width - hPad - x;
 				else	
 					viewItem.width = width;
 					
 			if (vip.height)
 				if (vip.height == "auto")
-					viewItem.height = c.height - vPad - y;
+					viewItem.height = _c.height - vPad - y;
 				else
 					viewItem.height = height;
 						
 			if (vip.align)
-				DisplayUtils.alignInRect(viewItem, _vc.vp.width, _vc.vp.height, vip.align, vip.hPad, vip.vPad);
+				DisplayUtils.alignInRect(viewItem, _width, _height, vip.align, vip.hPad, vip.vPad);
 			else
 			{
 				viewItem.x = x + hPad;

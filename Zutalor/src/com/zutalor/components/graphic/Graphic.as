@@ -73,7 +73,9 @@ package com.zutalor.components.graphic
 		private var _brushRect:Rectangle;
 		private var _lineEnd:Sprite = new Sprite();
 		
-		private static var _presets:PropertyManager;	
+		private static var _presets:PropertyManager;
+		
+		private var _label:Label;
 		
 		public static function register(xml:XMLList):void
 		{
@@ -82,7 +84,21 @@ package com.zutalor.components.graphic
 			
 			_presets.parseXML(xml);
 		}
-				
+			
+		override public function get value():*
+		{
+			if (_label)
+				return _label.value;
+			else
+				return null;
+		}
+		
+		override public function set value(v:*):void
+		{
+			if (_label)
+				_label.value = v;
+		}
+		
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		
 		//id:String, delay:Number = 0, onRenderComplete:Function=null, onLifeTimeComplete:Function=null):void
@@ -233,7 +249,6 @@ package com.zutalor.components.graphic
 								onItemRenderComplete();
 								break;
 							case Graphic.TEXT :	
-								var label:Label;
 								var vip:ViewItemProperties;
 								vip.text = Translate.text(_gri.tKey);
 								vip.width = String(_gri.width);
@@ -241,10 +256,10 @@ package com.zutalor.components.graphic
 								vip.align = _gri.align;
 								vip.hPad = _gri.hPad;
 								vip.vPad = _gri.vPad;
-								label = new Label();
-								label.render(vip);
-								label.name = name;
-								_canvas.addChild(label);
+								_label = new Label();
+								_label.render(vip);
+								_label.name = name;
+								_canvas.addChild(_label);
 								onItemRenderComplete();
 								break;	
 							case Graphic.GRAPHIC : // nested graphic!

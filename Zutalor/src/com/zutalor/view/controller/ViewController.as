@@ -52,12 +52,6 @@
 		public var onStatus:Function;		
 		public var viewModelMediator:ViewModelMediator;
 		
-	
-		public function ViewController()
-		{
-			init();
-		}
-		
 		public static var views:NestedPropsManager;
 		
 		public static function register(xml:XML):void
@@ -67,22 +61,14 @@
 			
 			views.parseXML(ViewProperties, ViewItemProperties, xml.views, "view", xml.view, "props");
 		}
-		
-		private function init():void
-		{
-			viewModelMediator = new ViewModelMediator(this);
-			_viewItemPositioner = new ViewItemPositioner(this);
-			_viewEventMediator = new ViewEventMediator(this);
-			_viewItemFilterApplier = new ViewItemFilterApplier(_filters);
-
-			views = views;
-		}
 	
 		public function load(_viewId:String, appState:String, onComplete:Function):void
 		{			
 			
 			_onComplete = onComplete;
 			vp = views.getPropsById(_viewId);
+			_filters = [];
+			_itemIndex = 0;			
 
 			if (!vp)
 				ShowError.fail(ViewController,"No view properties for viewId: " + _viewId);
@@ -93,12 +79,18 @@
 			ObjectPool.getContainer(vp);
 			_container = vp.container;
 			_container.viewController = this;
-			_filters = [];
-			_itemIndex = 0;
+
 			Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.INIT, { controller:this, id:_viewId } );
 			_defaultVO = Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT);
-			_viewRenderer = new ViewRenderer(_container, renderNextViewItem, _viewItemFilterApplier.applyFilters, _viewItemPositioner.positionItem);			
+			
 			_numViewItems = views.getNumItems(_viewId);
+	
+			viewModelMediator = new ViewModelMediator(this);
+			_viewItemPositioner = new ViewItemPositioner(container, vp.width, vp.height);
+			_viewEventMediator = new ViewEventMediator(this);
+			_viewItemFilterApplier = new ViewItemFilterApplier(_filters);
+			_viewRenderer = new ViewRenderer(_container, renderNextViewItem, _viewItemFilterApplier.applyFilters, 
+																				_viewItemPositioner.positionItem);			
 			renderNextViewItem();
 		}
 		
@@ -126,9 +118,12 @@
 				_viewItemPositioner.positionItem(views.getItemPropsByIndex(_viewId, i));
 		}
 		
-		public function callAppControllerMethod(method:String, arg:*):void
+		public function callUiControllerMethod(method:String, arg:*, controllerId:String = null):void
 		{
-			Plugins.callMethod(vp.uiControllerInstanceName, method, arg);
+			if (!controllerId)
+				controllerId = vp.uiControllerInstanceName;
+			
+			Plugins.callMethod(controllerId, method, arg);
 		}
 		
 		public function setModelValue(itemName:String, val:*):void

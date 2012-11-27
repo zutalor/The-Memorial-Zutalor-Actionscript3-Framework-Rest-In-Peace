@@ -19,12 +19,12 @@
 		private var _down:Graphic;
 		private var _disabled:Graphic;
 		
-		public static function register(presets:XMLList):void
-		{	
+		public static function register(xml:XMLList):void
+		{
 			if (!_presets)
 				_presets = new PropertyManager(ButtonProperties);
 			
-			_presets.parseXML(presets);
+			_presets.parseXML(xml);
 		}
 		
 		override public function render(viewItemProperties:ViewItemProperties = null):void

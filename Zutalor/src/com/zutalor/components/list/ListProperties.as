@@ -8,15 +8,18 @@
 	 */
 	public class ListProperties extends PropertiesBase implements IProperties
 	{	
-		public var selectorId:String;
-		public var background:String;
-		public var itemBackground:String;
-		public var textAttributes:String;
+		public var closedStatePresetId:String;
+		public var closedStateType:String;
+		public var listView:String;
+		public var itemView:String;
 		public var width:String;
 		public var height:String;
+		public var itemWidth:String;
+		public var itemHeight:String;
 		public var align:String;
 		public var hPad:String;
 		public var vPad:Number;
 		public var spacing:Number;
+		public var tKey:String;
 	}
 }

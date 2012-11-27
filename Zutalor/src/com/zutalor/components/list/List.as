@@ -21,11 +21,12 @@ package com.zutalor.components.list
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
 			var _numItems:int;
-			
+			var filters:Array = [];
 			var listItem:Container = new Container("list", vip.width, vip.height);
 			var viewRenderer:ViewRenderer = new ViewRenderer(c, onItemRenderCallBack, new ViewItemFilterApplier(filters));
 			
-			_numItems = ViewController.views.getNumItems(vip.presetId)
+			_numItems = ViewController.views.getNumItems(vip.presetId);
+			onItemRenderCallBack();
 			
 			function onItemRenderCallBack():void
 			{
@@ -34,12 +35,9 @@ package com.zutalor.components.list
 				if (_itemIndex < _numViewItems)
 				{
 					vip = views.getItemPropsByIndex(_viewId, _itemIndex++);
-					if (!vip.styleSheetName)
-						vip.styleSheetName = vp.styleSheetName;
 					_viewRenderer.renderItem(vip);
 				}	
 			}
-			
 		}
 				
 		override public function onValueChange(uie:UIEvent):void
