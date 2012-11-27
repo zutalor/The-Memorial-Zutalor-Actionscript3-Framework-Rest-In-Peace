@@ -7,7 +7,7 @@ package com.zutalor.view.mediators
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.ApplicationProperties;
-	import com.zutalor.properties.ViewItemProperties;
+		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.propertyManagers.Props;
@@ -124,9 +124,9 @@ package com.zutalor.view.mediators
 			if (!valid)
 			{
 				if (vip.tError)
-					vc.setStatusMessage(Translate.text(vip.tError));
+					vc.setStatus(Translate.text(vip.tError));
 				else
-					vc.setStatusMessage("Please correct empty fields");
+					vc.setStatus("Please correct empty fields");
 			}
 			
 			return valid;
@@ -175,7 +175,6 @@ package com.zutalor.view.mediators
 				_valueObject = Plugins.callMethod(vc.vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
 				ViewItemClass = Plugins.getClass(vip.type);							
 				item.value = _valueObject[vip.name];
-				trace("copyValueObjectToViewItem:", item.value);
 			}
 		}
 	}

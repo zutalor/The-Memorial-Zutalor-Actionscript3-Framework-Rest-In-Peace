@@ -13,7 +13,7 @@ package com.zutalor.components.graphic
 	import com.zutalor.properties.GraphicItemProperties;
 	import com.zutalor.properties.GraphicProperties;
 	import com.zutalor.properties.GraphicStyleProperties;
-	import com.zutalor.properties.ViewItemProperties;
+		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.propertyManagers.Props;

@@ -5,12 +5,13 @@ package com.zutalor.view.utils
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.properties.ApplicationProperties;
 	import com.zutalor.properties.MediaProperties;
-	import com.zutalor.properties.ViewProperties;
+	import com.zutalor.view.properties.ViewProperties;
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.controller.ViewController;
+	import com.zutalor.view.properties.ViewProperties;
     /**
      * ...
      * @author Geoff Pepos

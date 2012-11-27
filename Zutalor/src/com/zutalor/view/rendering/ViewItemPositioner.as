@@ -2,9 +2,10 @@ package com.zutalor.view.rendering
 {
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.properties.ScrollProperties;
-	import com.zutalor.properties.ViewItemProperties;
+		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.utils.DisplayUtils;
 	import com.zutalor.view.controller.ViewController;
+	import com.zutalor.view.properties.ViewItemProperties;
 	/**
 	 * ...
 	 * @author Geoff Pepos
@@ -16,12 +17,6 @@ package com.zutalor.view.rendering
 		public function ViewItemPositioner(vc:ViewController)
 		{
 			_vc = vc;
-		}
-		
-		public function positionAllItems():void
-		{
-			for (var i:int; i < _vc.numViewItems; i++)
-				positionItem(_vc.vpm.getItemPropsByIndex(_vc.viewId, i));
 		}
 		
 		public function positionItem(vip:ViewItemProperties):void
@@ -45,10 +40,6 @@ package com.zutalor.view.rendering
 			hPad = int(vip.hPad);
 			vPad = int(vip.vPad);
 	
-			if (vip.scrollPreset)
-			{
-				_vc.vu.updateContainerScrollPosition(vip.scrollPreset);
-			}
 							
 			if (vip.width)
 				if (vip.width == "auto")

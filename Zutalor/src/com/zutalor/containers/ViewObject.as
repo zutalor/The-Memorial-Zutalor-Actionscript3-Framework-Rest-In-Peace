@@ -1,7 +1,6 @@
 ﻿package com.zutalor.containers
 {	
 	import com.zutalor.components.interfaces.IViewObject;
-	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.sprites.CenterSprite;
 	import flash.display.Sprite;
 	/**

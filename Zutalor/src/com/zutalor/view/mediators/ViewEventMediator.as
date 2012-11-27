@@ -7,7 +7,6 @@ package com.zutalor.view.mediators
 	import com.zutalor.components.group.ComponentGroupProperties;
 	import com.zutalor.components.group.RadioGroup;
 	import com.zutalor.components.text.Text;
-	import com.zutalor.components.text.TextAttributes;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
@@ -15,7 +14,7 @@ package com.zutalor.view.mediators
 	import com.zutalor.plugin.constants.PluginClasses;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.properties.ViewItemProperties;
+		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.propertyManagers.Props;
@@ -45,6 +44,7 @@ package com.zutalor.view.mediators
 		private var _mu:MotionUtils;
 		private var _hkm:HotKeyManager;
 		private var _itemsSkipped:int;
+		private var _numItems:int;
 		
 		public static var navKeys:Array = ["RIGHT", "right", "LEFT", "left", "TAB", "down", "DOWN", "down", "SHIFT+TAB", "up", "UP", "up", "SPACE", "space"];
 		
@@ -69,7 +69,7 @@ package com.zutalor.view.mediators
 			var keys:Array;
 			var i:int;
 			var numKeys:int;
-			
+			_numItems = vc.numViewItems;
 			listenerUtil(c.addEventListener);
 			_hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey, false, 0, true);
 			
@@ -77,7 +77,7 @@ package com.zutalor.view.mediators
 			for (i = 0; i < numKeys; i += 2)
 				_hkm.addMapping(c, navKeys[i], navKeys[i + 1]);
 			
-			for (i = 0; i < vc.numViewItems; i++)
+			for (i = 0; i < _numItems; i++)
 			{
 				vip = vc.getItemPropsByIndex(i);
 				if (vip.hotkey)
@@ -124,7 +124,7 @@ package com.zutalor.view.mediators
 		{
 			var item:Component;
 			
-			for (var i:int = 0; i < vc.numViewItems; i++)
+			for (var i:int = 0; i < _numItems; i++)
 			{
 				item = vc.container.getChildAt(i) as Component;
 					
@@ -151,7 +151,7 @@ package com.zutalor.view.mediators
 					onItemFocusIn();
 				else
 				{
-					if (_itemsSkipped < vc.numItems)
+					if (_itemsSkipped < _numItems)
 					{
 						_itemsSkipped++;
 						onHotKey(e);
@@ -160,7 +160,7 @@ package com.zutalor.view.mediators
 						_itemsSkipped--;
 				}
 			}
-			else if (_itemsSkipped < vc.numItems)
+			else if (_itemsSkipped < _numItems)
 			{
 				_itemsSkipped++;
 				onHotKey(e); 	
@@ -228,33 +228,31 @@ package com.zutalor.view.mediators
 		private function onInputTextFocusIn(fe:FocusEvent):void
 		{
 			var vip:ViewItemProperties;
-			var item:*;
+			var item:Component;
 			vip = _vpm.getItemPropsByName(vc.viewId, fe.currentTarget.name);
 		
 			FullScreen.restoreIfNotDesktop();
-			item = vc.container.getChildByName(vip.name);
-			item.textField.setSelection(0, 999);
+			item = vc.container.getChildByName(vip.name) as Component;
 			vip.text = Translate.text(vip.tKey);
 				
-			if (item.textField.text == vip.text)
-			{
-				item.textField.text = "";
-				TextAttributes.apply(item.textField, vip.textAttributes, int(vip.width), int(vip.height));
-			}
+			if (item.value == vip.text)
+				item.value = "";
+
 			onItemFocusIn(fe);
 		}
 		
 		private function onInputTextFocusOut(fe:FocusEvent):void
 		{
 			var vip:ViewItemProperties;
-			var item:TextField = fe.currentTarget.textField;
+			var item:Component
+			
+			item = fe.currentTarget as Component;
 			
 			vip = _vpm.getItemPropsByName(vc.viewId, item.name);
 		
-			if (item.text == "" && vip.tKey)
-				item.text = Translate.text(vip.tKey);
+			if (item.value == "" && vip.tKey)
+				item.value = Translate.text(vip.tKey);
 		
-			TextAttributes.apply(item, vip.textAttributes, int(vip.width), int(vip.height));
 			if (vip.voName)
 				vc.viewModelMediator.copyViewItemToValueObject(vip, item);
 		}
@@ -294,7 +292,7 @@ package com.zutalor.view.mediators
 						
 						break;
 					case "down": 
-						if (vc.itemWithFocusIndex < vc.numItems - 1)
+						if (vc.itemWithFocusIndex < _numItems - 1)
 							vc.itemWithFocusIndex++;
 						else
 							vc.itemWithFocusIndex = 0;
@@ -305,7 +303,7 @@ package com.zutalor.view.mediators
 						if (vc.itemWithFocusIndex > 0)
 							vc.itemWithFocusIndex--;
 						else
-							vc.itemWithFocusIndex = vc.numItems - 1;
+							vc.itemWithFocusIndex = _numItems - 1;
 						
 						validateSelection(e);
 						break;
@@ -436,7 +434,6 @@ package com.zutalor.view.mediators
 						
 						dest = vc.vp.uiControllerInstanceName;
 						
-						vc.initStatusMessage(vip.tapAction);
 						if (vip.voName)
 							vc.viewModelMediator.copyViewItemToValueObject(vip, vc.container.getChildByName(vip.name));
 						
@@ -461,7 +458,6 @@ package com.zutalor.view.mediators
 						{
 							case UIEvent.CREATE: 
 							case UIEvent.UPDATE: 
-								vc.setStatusMessage(vc.creatingMessage);
 								if (vc.viewModelMediator.validate())
 									if (vip.tapActionOptions)
 										Plugins.callMethod(dest, vip.tapAction, vip.tapActionOptions);
@@ -493,7 +489,7 @@ package com.zutalor.view.mediators
 								FullScreen.toggle();
 								break;
 							default: 
-								var c:ViewContainer = vc.vpm.getPropsById(containerNames[i]).container;
+								var c:ViewContainer = ViewController.views.getPropsById(containerNames[i]).container;
 								for (i = 0; i < containerNames.length; i++)
 									c.dispatchEvent(new UIEvent(vip.tapAction, containerNames[i], vc.vp.appState));
 						}						

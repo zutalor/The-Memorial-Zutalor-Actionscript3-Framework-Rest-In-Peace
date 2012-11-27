@@ -3,7 +3,7 @@ package com.zutalor.view.transition
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.fx.Transition;
 	import com.zutalor.objectPool.ObjectPool;
-	import com.zutalor.properties.ViewItemProperties;
+		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.utils.gDictionary;
 	/**
 	 * ...

@@ -1,8 +1,9 @@
 package com.zutalor.view.rendering 
 {
+	import com.zutalor.components.Component;
 	import com.zutalor.components.graphic.Graphic;
 	import com.zutalor.fx.Filters;
-	import com.zutalor.properties.ViewItemProperties;
+		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.view.controller.ViewController;
 	/**
@@ -11,14 +12,14 @@ package com.zutalor.view.rendering
 	 */
 	public class ViewItemFilterApplier 
 	{
-		private var _vc:ViewController;
+		private var _filters:Array;
 			
-		public function ViewItemFilterApplier(vc:ViewController):void
+		public function ViewItemFilterApplier(filters:Array):void
 		{
-			_vc = vc;
+			_filters = filters;
 		}
 		
-		public function applyFilters(vip:ViewItemProperties, viewItem:*):void
+		public function applyFilters(vip:ViewItemProperties, viewItem:Component):void
 		{
 			var mask:Graphic;
 
@@ -32,10 +33,10 @@ package com.zutalor.view.rendering
 			
 			function _applyFilters():void
 			{
-				if (_vc.filters)
+				if (_filters)
 				{
 					var filters:Filters = new Filters();
-					_vc.filters.push(filters);
+					_filters.push(filters);
 					filters.add(viewItem, vip.filterPreset);
 				}
 				

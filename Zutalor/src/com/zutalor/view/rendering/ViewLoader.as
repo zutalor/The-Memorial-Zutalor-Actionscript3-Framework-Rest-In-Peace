@@ -5,7 +5,7 @@
 	import com.zutalor.fx.TransitionTypes;
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.properties.ApplicationProperties;
-	import com.zutalor.properties.ViewProperties;
+	import com.zutalor.view.properties.ViewProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.propertyManagers.Props;

@@ -4,8 +4,8 @@ package com.zutalor.components
 	import com.zutalor.containers.ViewObject;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.properties.PropertiesBase;
-	import com.zutalor.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.view.properties.ViewItemProperties;
 	/**
 	 * ...
 	 * @author Geoff

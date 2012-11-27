@@ -15,7 +15,6 @@
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.ApplicationProperties;
 	import com.zutalor.properties.AppStateProperties;
-	import com.zutalor.properties.ViewProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.sequence.Sequence;
@@ -29,6 +28,7 @@
 	import com.zutalor.utils.SimpleMessage;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.controller.ViewController;
+	import com.zutalor.view.properties.ViewProperties;
 	import com.zutalor.view.utils.ViewCloser;
 	import com.zutalor.view.rendering.ViewLoader;
 	import com.zutalor.view.utils.ViewUtils;

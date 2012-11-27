@@ -1,7 +1,7 @@
 package com.zutalor.components.interfaces
 {
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.properties.ViewItemProperties;
+	import com.zutalor.view.properties.ViewItemProperties;
 	
 	/**
 	 * ...

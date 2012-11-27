@@ -4,7 +4,7 @@
 	import com.zutalor.components.graphic.Graphic;
 	import com.zutalor.components.interfaces.IComponent;
 	import com.zutalor.components.label.Label;
-	import com.zutalor.properties.ViewItemProperties;
+		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import flash.display.SimpleButton;
 	/**

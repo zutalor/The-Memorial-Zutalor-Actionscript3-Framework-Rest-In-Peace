@@ -2,7 +2,9 @@ package com.zutalor.components.text
 {
 	import com.zutalor.components.Component;
 	import com.zutalor.components.interfaces.IComponent;
-	import com.zutalor.properties.ViewItemProperties;
+		import com.zutalor.view.properties.ViewItemProperties;
+	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.utils.ShowError;
 	import flash.text.TextField;
 	/**
 	 * ...
@@ -10,7 +12,22 @@ package com.zutalor.components.text
 	 */
 	public class Text extends Component implements IComponent 
 	{		
-		public var textField:TextField;
+		protected var textField:TextField;
+		
+		private static var _textAttributes:PropertyManager;
+		private static var _textFormats:PropertyManager;
+		private var _tap:TextAttributeProperties;
+		
+		public static function register(textAttributes:XMLList, textFormats:XMLList):void
+		{	
+			if (!_textAttributes)
+			{
+				_textAttributes = new PropertyManager(TextAttributeProperties);
+				_textFormats = new PropertyManager(TextFormatProperties);
+			}
+			_textAttributes.parseXML(textAttributes);
+			_textFormats.parseXML(textFormats);
+		}
 		
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
@@ -20,10 +37,21 @@ package com.zutalor.components.text
 			if (vip.text)
 			{
 				textField.text = vip.text;
-				applyTextAttributes();
+				if (!textField.text)
+					textField.text = ""
+				if (vip.textAttributes)
+					textAttributes = vip.textAttributes;
 			}
 			addChild(textField);
 		}
+		
+		public function set textAttributes(preset:String):void
+		{
+			_tap = _textAttributes.getPropsByName(preset);
+			if (_tap)
+				applyTextAttributes();
+		}
+
 		
 		override public function set width(w:Number):void
 		{
@@ -46,10 +74,24 @@ package com.zutalor.components.text
 			return textField.text;
 		}
 		
+		// PRIVATE METHODS
+				
 		private function applyTextAttributes():void
 		{
-			if (vip.textAttributes)
-				TextAttributes.apply(textField, vip.textAttributes);
+			textField.selectable = _tap.selectable;
+			textField.type = _tap.type;
+			textField.autoSize = _tap.autoSize;
+			textField.antiAliasType = _tap.antiAliasType;
+			textField.multiline = _tap.multiline;
+			textField.wordWrap = _tap.wordWrap;
+			textField.embedFonts = true;
+			if (_tap.maxChars)
+				textField.maxChars = _tap.maxChars;
+			
+			if (_tap.textformat)
+				textField.setTextFormat(_textFormats.getPropsByName(_tap.textformat).textFormat);
+			else
+				ShowError.fail(Text,"Missing textformat for textAttributes: " + _tap.name);
 		}
 	}
 }

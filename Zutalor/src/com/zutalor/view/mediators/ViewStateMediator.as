@@ -192,7 +192,6 @@ package com.zutalor.view.mediators
 					{
 						_curStateId = answer.questionId = _curStateId + " - " + _dataFromUiController.name;
 						answer.data = _dataFromUiController.data;
-						trace(answer.questionId);
 					}
 					_answers.insert(_curStateId, answer);
 					
@@ -291,12 +290,10 @@ package com.zutalor.view.mediators
 						_uiController[XML(tp.tMeta).state.@method](XML(tp.tMeta).state);	
 						break;
 					case "submitAnswers" :
-						trace("submitting answers");
 						var ap:AnswerProperties;
 						for (var i:int = 0; i < _answers.length; i++)
 						{
 							ap = _answers.getByIndex(i);
-							trace (ap.questionId);
 						}
 						activateStateById(String(XML(tp.tMeta).state.@onCompleteState));
 						break;

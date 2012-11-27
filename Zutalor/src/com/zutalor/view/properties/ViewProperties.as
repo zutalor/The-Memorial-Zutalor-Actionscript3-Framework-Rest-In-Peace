@@ -1,7 +1,8 @@
-﻿package com.zutalor.properties 
+﻿package com.zutalor.view.properties 
 {
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.interfaces.IProperties;
+	import com.zutalor.properties.PropertiesBase;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.MapXML;

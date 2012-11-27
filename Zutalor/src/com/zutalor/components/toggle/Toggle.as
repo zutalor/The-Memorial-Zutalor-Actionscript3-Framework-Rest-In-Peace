@@ -4,7 +4,7 @@ package com.zutalor.components.toggle
 	import com.zutalor.components.Component;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.interfaces.IViewItem;
-	import com.zutalor.properties.ViewItemProperties;
+		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import flash.events.MouseEvent;
 	/**

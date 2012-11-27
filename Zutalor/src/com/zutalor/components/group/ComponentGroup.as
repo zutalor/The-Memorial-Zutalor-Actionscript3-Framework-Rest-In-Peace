@@ -4,7 +4,7 @@ package com.zutalor.components.group
 	import com.zutalor.components.interfaces.IComponent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.properties.ViewItemProperties;
+		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.utils.ShowError;
 	import flash.display.DisplayObject;

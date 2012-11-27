@@ -11,7 +11,7 @@ package depreciated
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.ComponentGroupProperties;
 	import com.zutalor.properties.SoundFxProperties;
-	import com.zutalor.properties.ViewItemProperties;
+		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.propertyManagers.Props;

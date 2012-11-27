@@ -6,7 +6,7 @@
 	import com.zutalor.components.html.StyleSheets;
 	import com.zutalor.components.media.base.MediaPlayer;
 	import com.zutalor.components.stepper.Stepper;
-	import com.zutalor.components.text.TextAttributes;
+	import com.zutalor.components.text.Text;
 	import com.zutalor.components.toggle.Toggle;
 	import com.zutalor.fx.Transition;
 	import com.zutalor.properties.AppStateProperties;
@@ -29,7 +29,6 @@
 		public var uiPresets:PropertyManager;
 		public var toolTipPresets:PropertyManager;
 		public var shadowPresets:PropertyManager;
-		public var textAttributePresets:PropertyManager;
 		public var glowPresets:PropertyManager;
 		public var ripplePresets:PropertyManager;
 		public var hotkeyPresets:PropertyManager;
@@ -74,7 +73,7 @@
 			Toggle.register(xml.togglePresets);
 			Stepper.register(xml.stepperPresets);
 			ComponentGroup.register(xml.componentGroupPresets);
-			TextAttributes.register(xml.textAttributePresets, xml.textFormatPresets);
+			Text.register(xml.textAttributePresets, xml.textFormatPresets);
 			StyleSheets.register(xml.cssPresets);
 			MediaPlayer.register(xml.mediaPresets);
 			

@@ -1,10 +1,8 @@
 ﻿package com.zutalor.view.controller
 {
-	import com.google.analytics.components.FlashTracker;
 	import com.greensock.TweenMax;
 	import com.gskinner.utils.IDisposable;
 	import com.zutalor.components.Component;
-	import com.zutalor.components.text.TextAttributes;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
@@ -14,69 +12,50 @@
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.properties.ApplicationProperties;
-	import com.zutalor.properties.ViewItemProperties;
-	import com.zutalor.properties.ViewProperties;
+	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
-	import com.zutalor.propertyManagers.Props;
-	import com.zutalor.text.Translate;
 	import com.zutalor.ui.Focus;
-	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.mediators.ViewEventMediator;
 	import com.zutalor.view.mediators.ViewModelMediator;
+	import com.zutalor.view.properties.ViewItemProperties;
+	import com.zutalor.view.properties.ViewProperties;
+	import com.zutalor.view.rendering.ViewItemFilterApplier;
 	import com.zutalor.view.rendering.ViewItemPositioner;
 	import com.zutalor.view.rendering.ViewRenderer;
 	import com.zutalor.view.transition.ItemFX;
 	import com.zutalor.view.transition.ViewItemTransition;
-	import com.zutalor.view.utils.ViewUtils;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.events.Event;
+	import flash.sampler.getSize;
 
 	public class ViewController implements IDisposable
-	{	
-		public static const READING:String = "readingMessage";
-		public static const CREATING:String = "creatingMessage";
-		public static const DELETING:String = "deletingMessage";
-		public static const UPDATING:String = "updatingMessage";
-		public static const SUCCESS:String = "successMessage";
-		public static const ERROR:String = "errorMessage";
-		
-		private	var _ap:ApplicationProperties;
+	{		
 		private var _onComplete:Function;
 		private var _itemIndex:int;
 		private var _viewEventMediator:ViewEventMediator;
 		private var _container:ViewContainer;
 		private var _defaultVO:*;
+		private var _viewId:String;	
+		private var _viewItemFilterApplier:ViewItemFilterApplier;
+		private var _viewItemPositioner:ViewItemPositioner;
+		private var _viewRenderer:ViewRenderer;
+		private var _numViewItems:int;
+		private var _filters:Array;
+		private var _viewItemTransition:ViewItemTransition;
 		
-		public var successMessage:String;
-		public var errorMessage:String;
-		public var creatingMessage:String;
-		public var readingMessage:String;
-		public var deletingMessage:String;
-		public var updatingMessage:String;
-		
-		public var viewId:String;	
-		public var viewItemPositioner:ViewItemPositioner;
-		public var viewRenderer:ViewRenderer;
-		public var viewModelMediator:ViewModelMediator;
-		public var vu:ViewUtils = ViewUtils.gi();
-		public var numViewItems:int;
-
-		public var viewItemTransition:ViewItemTransition;
-		public var statusField:*;
-		public var vp:ViewProperties;
-		public	var vpm:NestedPropsManager;		
-		public var filters:Array;
-		public var containergDictionary:gDictionary;
+		public var vp:ViewProperties;	
 		public var itemWithFocus:Component;
-		public var itemWithFocusIndex:int;
+		public var itemWithFocusIndex:int;		
+		public var onStatus:Function;		
+		public var viewModelMediator:ViewModelMediator;
 		
+	
 		public function ViewController()
 		{
-			_init();
+			init();
 		}
 		
 		public static var views:NestedPropsManager;
@@ -89,50 +68,62 @@
 			views.parseXML(ViewProperties, ViewItemProperties, xml.views, "view", xml.view, "props");
 		}
 		
-		private function _init():void
+		private function init():void
 		{
-			viewRenderer = new ViewRenderer(this, processNextViewItem);
 			viewModelMediator = new ViewModelMediator(this);
-			viewItemPositioner = new ViewItemPositioner(this);
+			_viewItemPositioner = new ViewItemPositioner(this);
 			_viewEventMediator = new ViewEventMediator(this);
-			
-			vpm = ViewController.views;
-			_ap = ApplicationProperties.gi();
+			_viewItemFilterApplier = new ViewItemFilterApplier(_filters);
+
+			views = views;
 		}
 	
-		public function load(viewId:String, appState:String, onComplete:Function):void
+		public function load(_viewId:String, appState:String, onComplete:Function):void
 		{			
 			
 			_onComplete = onComplete;
-			vp = vpm.getPropsById(viewId);
+			vp = views.getPropsById(_viewId);
 
 			if (!vp)
-				ShowError.fail(ViewController,"No view properties for viewId: " + viewId);
+				ShowError.fail(ViewController,"No view properties for viewId: " + _viewId);
 			
 			vp.appState = appState;
-			this.viewId = viewId;
-			ViewControllerRegistry.registerController(viewId, this);
+			this._viewId = _viewId;
+			ViewControllerRegistry.registerController(_viewId, this);
 			ObjectPool.getContainer(vp);
 			_container = vp.container;
 			_container.viewController = this;
-			
-			filters = [];
-			containergDictionary = new gDictionary();			
+			_filters = [];
 			_itemIndex = 0;
-			initMessages();			
-			
-			Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.INIT, { controller:this, id:viewId } );
+			Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.INIT, { controller:this, id:_viewId } );
 			_defaultVO = Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT);
-			numViewItems = vpm.getNumItems(viewId);
-			processNextViewItem();
+			_viewRenderer = new ViewRenderer(_container, renderNextViewItem, _viewItemFilterApplier.applyFilters, _viewItemPositioner.positionItem);			
+			_numViewItems = views.getNumItems(_viewId);
+			renderNextViewItem();
 		}
 		
 		
 		// PUBLIC METHODS
 		
+		public function get numViewItems():int
+		{
+			return _numViewItems;
+		}
+		
+		public function get viewId():String
+		{
+			return _viewId;
+		}
+		
 		public function get container():ViewContainer
 		{
 			return _container;
+		}
+					
+		public function positionAllItems():void
+		{
+			for (var i:int; i < _numViewItems; i++)
+				_viewItemPositioner.positionItem(views.getItemPropsByIndex(_viewId, i));
 		}
 		
 		public function callAppControllerMethod(method:String, arg:*):void
@@ -201,11 +192,8 @@
 					copyModelToView(items[i]);
 			}
 			else
-			{
-				setStatusMessage(successMessage);
 				copyModelToView();
-			}
-			
+
 			if (transition)
 			{
 				t = new Transition();
@@ -227,10 +215,7 @@
 					copyViewToModel(items[i]);
 			}
 			else
-			{
-				setStatusMessage(updatingMessage);
 				copyViewToModel();
-			}
 		}
 		
 		private function copyViewToModel(itemName:String = null):void
@@ -240,7 +225,7 @@
 			
 			if (itemName)
 			{
-				vip = vpm.getItemPropsByName(viewId, itemName);
+				vip = views.getItemPropsByName(_viewId, itemName);
 			
 				if (vip)
 				{
@@ -249,12 +234,12 @@
 					viewModelMediator.copyViewItemToValueObject(vip, item);
 				}
 				else
-					ShowError.fail(ViewController,"invalid item name " + itemName + " for view: " + viewId);
+					ShowError.fail(ViewController,"invalid item name " + itemName + " for view: " + _viewId);
 			}
 			else
-				for (var i:int = 0; i < numViewItems; i++) 
+				for (var i:int = 0; i < _numViewItems; i++) 
 				{
-					vip = vpm.getItemPropsByIndex(viewId, i);
+					vip = views.getItemPropsByIndex(_viewId, i);
 						
 					Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
 					if (vip.voName)
@@ -272,30 +257,36 @@
 
 			if (itemName)
 			{
-				vip = vpm.getItemPropsByName(viewId, itemName);
+				vip = views.getItemPropsByName(_viewId, itemName);
 				if (vip)
 				{
 					item = container.getChildByName(itemName) as Component;
 					viewModelMediator.copyValueObjectToViewItem(vip, item);
 				}
 				else
-					ShowError.fail(ViewController,"ModelGateway: invalid item name " + itemName + " for view: " + viewId);
+					ShowError.fail(ViewController, "Invalid item name " + itemName + " for view: " + _viewId);
 			}
 			else
-				for (var i:int = 0; i < numViewItems; i++) 
+				for (var i:int = 0; i < _numViewItems; i++) 
 				{
-					vip = vpm.getItemPropsByIndex(viewId, i);
+					vip = views.getItemPropsByIndex(_viewId, i);
 					if (vip.voName)
 					{
 						item = container.getChildAt(i) as Component;
 						viewModelMediator.copyValueObjectToViewItem(vip, item);
 					}
 				}
-		}				
+		}	
+		
+		public function setStatus(s:String):void
+		{
+			if (onStatus != null)
+				onStatus(s);
+		}
 		
 		public function onModelError(responds:Object=null):void
 		{
-			setStatusMessage(errorMessage);
+			setStatus(String(responds));
 		}		
 		
 		// PUBLIC STOP & CLEANUP (WHEN VIEW CONTAINER IS CLOSED) 
@@ -304,7 +295,7 @@
 		{
 			var item:Component;
 			
-			for (var i:int = 0; i < numViewItems; i++)
+			for (var i:int = 0; i < _numViewItems; i++)
 			{
 				item = container.getChildAt(i) as Component;
 				if (item is IMediaPlayer)
@@ -321,27 +312,21 @@
 			var l:int;
 			var c:ViewContainer;
 		
-			ViewControllerRegistry.unregisterController(viewId);
+			ViewControllerRegistry.unregisterController(_viewId);
 			
 			_viewEventMediator.itemListenerCleanup();
+			_viewEventMediator.removeListenersFromContainer(container);
 			
-			l = containergDictionary.length;
-			for (i = 0; i < l; i++) 
+			if (_filters)
 			{
-				c = containergDictionary.getByIndex(i);
-				_viewEventMediator.removeListenersFromContainer(c);
-			}
-			
-			if (filters)
-			{
-				numFilters = filters.length;
+				numFilters = _filters.length;
 				for (i = 0; i < numFilters; i++)
-					filters[i].dispose();
+					_filters[i].dispose();
 			}
 				
-			filters = null;
-			numViewItems = 0;
-			viewRenderer = null;
+			_filters = null;
+			_numViewItems = 0;
+			_viewRenderer = null;
 			viewModelMediator = null;
 			_viewEventMediator = null;		
 			Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.DISPOSE)			
@@ -364,7 +349,7 @@
 			var vip:ViewItemProperties;
 			var item:Component;
 			
-			vip = vpm.getItemPropsByName(viewId, itemName);
+			vip = views.getItemPropsByName(_viewId, itemName);
 			if (vip && container.numChildren)
 				item = container.getChildByName(itemName) as Component;
 
@@ -373,12 +358,12 @@
 		
 		public function getItemPropsByName(itemName:String):ViewItemProperties
 		{
-			return vpm.getItemPropsByName(viewId, itemName);
+			return views.getItemPropsByName(_viewId, itemName);
 		}
 		
 		public function getItemPropsByIndex(index:int):ViewItemProperties
 		{
-			return vpm.getItemPropsByIndex(viewId, index);
+			return views.getItemPropsByIndex(_viewId, index);
 		}
 		
 		
@@ -389,7 +374,7 @@
 			var vip:ViewItemProperties;
 			var item:Component;
 			
-			vip = vpm.getItemPropsByName(viewId, itemName);
+			vip = views.getItemPropsByName(_viewId, itemName);
 			if (vip && container.numChildren)
 				item = container.getChildByName(itemName) as Component;
 				if (item)
@@ -414,11 +399,6 @@
 			ItemFX.fade(vp.name, container.getChildByName(name), visible, fade, delay);
 		}
 		
-		public function get numItems():int
-		{
-			return container.numChildren;
-		}
-		
 		public function setEnabled(itemName:String, d:Boolean):void
 		{
 			var item:Component;
@@ -431,13 +411,13 @@
 			}
 		}
 		
-		public function getDisabled(itemName:String):Boolean
+		public function getEnabled(itemName:String):Boolean
 		{
 			var item:Component;
 			
 			item = getItemByName(itemName); 
 			if (item.alpha == 0 || item.visible == false)
-				return true;
+				item.enabled = false;
 			
 			return item.enabled;
 		}
@@ -465,42 +445,6 @@
 			}
 		}
 				
-		public function setStatusMessage(s:String):void
-		{
-			var vip:ViewItemProperties;
-			
-			if (statusField)
-			{
-				if (s)
-					statusField.text = s;
-				else
-					statusField.text = "";
-
-				vip = vpm.getItemPropsByName(viewId, "status");
-				TextAttributes.apply(statusField, vip.textAttributes, int(vip.width), int(vip.height));
-			}		
-		}
-						
-		public function initStatusMessage(m:String):void
-		{
-			switch (m)
-			{
-				case UIEvent.READ :
-				case UIEvent.NEXT :
-				case UIEvent.PREVIOUS :
-				case UIEvent.LAST :
-				case UIEvent.FIRST :
-					setStatusMessage(readingMessage);
-					break;
-				case UIEvent.PURGE :
-					setStatusMessage(deletingMessage);
-					break;
-				case UIEvent.UPDATE :
-					setStatusMessage(updatingMessage);
-					break;
-			}	
-		}
-		
 		//EVENT DISPATCH
 		
 		public function dispatchStateSelection(ms:String):void
@@ -515,28 +459,19 @@
 		
 		// PRIVATE METHODS
 
-		private function processNextViewItem(e:Event = null):void
+		private function renderNextViewItem():void
 		{	
-			if (_itemIndex < numViewItems)
-				viewRenderer.renderItem(_itemIndex++);
+			var vip:ViewItemProperties;
+			
+			if (_itemIndex < _numViewItems)
+			{
+				vip = views.getItemPropsByIndex(_viewId, _itemIndex++);
+				if (!vip.styleSheetName)
+					vip.styleSheetName = vp.styleSheetName;
+				_viewRenderer.renderItem(vip);
+			}	
 			else
 				viewPopulateComplete();
-		}
-		
-		private function initMessages():void
-		{
-			var messages:Array = [ READING, CREATING, DELETING, UPDATING, SUCCESS, ERROR ];
-			var vip:ViewItemProperties;
-			var s:String;
-
-			for (s in messages)
-			{
-				vip = vpm.getItemPropsByName(viewId, messages[s]);
-				if (vip && vip.tKey)
-					this[messages[s]] = Translate(vip.tKey);
-				else	
-					this[messages[s]] = "";
-			}
 		}
 		
 		// FINISH UP VIEW RENDER
@@ -549,28 +484,22 @@
 			var disabledCount:int;
 			var vip:ViewItemProperties;			
 			
-			l = containergDictionary.length;
 			c = container.numChildren;
 			_viewEventMediator.itemListenerSetup();				
-			
+			_viewEventMediator.addListenersToContainer(_container);
 			_onComplete();
 			
-			for (i = 0; i < l; i++)
-			{
-				_viewEventMediator.addListenersToContainer(containergDictionary.getByIndex(i));
-			}
 			for (i = 0; i < c; i++)
 			{
-				vip = vpm.getItemPropsByIndex(viewId, i);
+				vip = views.getItemPropsByIndex(_viewId, i);
 				if (vip && vip.transitionPreset) {
-					viewItemTransition = new ViewItemTransition();
-					viewItemTransition.render(vip, container, TransitionTypes.IN);
+					_viewItemTransition = new ViewItemTransition();
+					_viewItemTransition.render(vip, container, TransitionTypes.IN);
 				}
 			}
 			
 			if (vp.initialMethod)
 			{
-				initStatusMessage(vp.initialMethod);
 				if (vp.initialMethodParams)
 					Plugins.callMethod(vp.uiControllerInstanceName, vp.initialMethod,vp.initialMethodParams);
 				else

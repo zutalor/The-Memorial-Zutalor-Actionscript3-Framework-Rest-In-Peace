@@ -2,9 +2,6 @@
 {
 	import com.zutalor.interfaces.IProperties;
 	import com.zutalor.properties.PropertiesBase;
-	import com.zutalor.propertyManagers.PropertyManager;
-	import com.zutalor.utils.MapXML;
-	import flash.display.LineScaleMode;
 	/**
 	 * ...
 	 * @author Geoff Pepos

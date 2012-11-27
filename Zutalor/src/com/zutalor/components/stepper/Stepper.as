@@ -4,9 +4,9 @@ package com.zutalor.components.stepper
 	import com.zutalor.components.Component;
 	import com.zutalor.components.graphic.Graphic;
 	import com.zutalor.components.interfaces.IComponent;
-	import com.zutalor.components.text.TextAttributes;
+	import com.zutalor.components.label.Label;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.properties.ViewItemProperties;
+		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.text.TextUtil;
 	import flash.display.Sprite;
@@ -18,9 +18,8 @@ package com.zutalor.components.stepper
 	 */
 	public class Stepper extends Component implements IComponent
 	{
-		private var _valueDisplay:Sprite;
 		private var _value:Number;
-		private var _displayText:TextField;
+		private var _displayText:Label;
 		private var _sp:StepperProperties;
 		private var _background:Graphic;
 		
@@ -59,9 +58,8 @@ package com.zutalor.components.stepper
 			_background.vip.presetId = _sp.backgroundId;
 			_background.render();
 			
-			_displayText = new TextField();
-			_valueDisplay = new Sprite();
-			
+			_displayText = new Label();
+		
 			if (_sp.vertical)
 				downButton.y = _background.height - downButton.height;		
 			else
@@ -70,7 +68,7 @@ package com.zutalor.components.stepper
 			addChild(_background);
 			addChild(upButton);
 			addChild(downButton);
-			addChild(_valueDisplay);
+			addChild(_displayText);
 			
 			displayTextWidth = _background.width - downButton.width - upButton.width;
 			displayTextHeight = _background.height - downButton.height - upButton.height;
@@ -106,19 +104,15 @@ package com.zutalor.components.stepper
 					// TODO
 					break;
 				case "time" :
-					_displayText.text = TextUtil.formatTime(_value);
-					TextAttributes.apply(_displayText, _sp.textAttributes);
-					_valueDisplay.addChild(_displayText);
+					_displayText.value = TextUtil.formatTime(_value);
 					break;
 				default :
-					_displayText.text = String(_value);
-					TextAttributes.apply(_displayText, _sp.textAttributes);
-					_valueDisplay.addChild(_displayText);
+					_displayText.value = String(_value);
 					break;					
 			}	
 			
-			_valueDisplay.y = (_background.height >> 1) - (_valueDisplay.height >> 1) + 3;
-			_valueDisplay.x = (_background.width >> 1) - (_valueDisplay.width >> 1);
+			_displayText.y = ((_background.height - _displayText.height) >> 1)  + 3;
+			_displayText.x = (_background.width - _displayText.width) >> 1;
 		}
 						
 		private function onMouseDown(me:MouseEvent):void

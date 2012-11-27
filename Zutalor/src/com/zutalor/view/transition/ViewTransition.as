@@ -2,7 +2,7 @@
 {
 	import com.zutalor.fx.Transition;
 	import com.zutalor.objectPool.ObjectPool;
-	import com.zutalor.properties.ViewProperties;
+	import com.zutalor.view.properties.ViewProperties;
 
 	/**
 	 * ...

@@ -7,7 +7,6 @@
 	import com.zutalor.motion.MotionUtils;
 	import com.zutalor.properties.ApplicationProperties;
 	import com.zutalor.properties.ScrollProperties;
-	import com.zutalor.properties.ViewProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.propertyManagers.Props;
@@ -16,6 +15,7 @@
 	import com.zutalor.utils.Singleton;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.controller.ViewController;
+	import com.zutalor.view.properties.ViewProperties;
 	import flash.display.DisplayObject;
 	import flash.display.Stage;
 	import flash.events.Event;

@@ -5,7 +5,7 @@ package com.zutalor.components.slider
 	import com.zutalor.components.graphic.Graphic;
 	import com.zutalor.components.interfaces.IComponent;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.properties.ViewItemProperties;
+		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.scroll.HScrollBarController;
 	import com.zutalor.scroll.ScrollBarController;

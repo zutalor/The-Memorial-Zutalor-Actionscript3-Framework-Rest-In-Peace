@@ -2,7 +2,7 @@ package com.zutalor.components.label
 {
 	import com.zutalor.components.interfaces.IViewObject;
 	import com.zutalor.components.text.Text;
-	import com.zutalor.properties.ViewItemProperties;
+		import com.zutalor.view.properties.ViewItemProperties;
 	/**
 	 * ...
 	 * @author Geoff

@@ -4,7 +4,7 @@ package com.zutalor.controllers.message
 	import com.zutalor.controllers.AbstractController;
 	import com.zutalor.interfaces.IUiController;
 	import com.zutalor.properties.ApplicationProperties;
-	import com.zutalor.properties.ViewItemProperties;
+		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.ViewPropsManager;
 	import com.zutalor.text.Translate;
 	/**

@@ -1,7 +1,5 @@
 package com.zutalor.components.interfaces 
 {
-	import com.zutalor.properties.ViewItemProperties;
-	
 	/**
 	 * ...
 	 * @author Geoff
