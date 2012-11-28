@@ -23,7 +23,6 @@ package com.zutalor.controllers
 	{
 		private var _vController:ViewController;
 		private var _currentView:String;
-		public var viewStateMediator:ViewStateMediator;
 		
 		final public function init(params:Object):void
 		{	

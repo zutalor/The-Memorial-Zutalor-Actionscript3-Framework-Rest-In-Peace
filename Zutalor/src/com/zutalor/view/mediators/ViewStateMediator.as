@@ -29,7 +29,6 @@ package com.zutalor.view.mediators
 	
 	public class ViewStateMediator
 	{	
-		private var _intitialized:Boolean;
 		private var _prevState:int;
 		private var _curStateId:String;
 		private var _curState:int;
@@ -50,69 +49,102 @@ package com.zutalor.view.mediators
 		private var _transitionBack:String;
 		private var _curTransitionType:String;
 		private var _inTransition:Boolean;
-		private var _callBack:Function;
-		private var _callBackOptions:*;
+		
+		private var _loopCount:int;
+		private var _questions:Array;
+		private var _currentQuestion:int;
+		private var _loops:int;
+		private var _onCompleteState:String;
+
 		
 		private static const soundExt:String = ".mp3";
 		private static const letterAnswers:String = "abcdefgh";
+		
+		public function ViewStateMediator(uiController:AbstractUiController)
+		{
+			_uiController = uiController;
+			init();
+		}
 										
-		public function initialize(uiController:AbstractUiController):void
+		private function init():void
 		{
 			var l:int;
 			var gs:GraphSettings;
 			var tMeta:XML;
-
-			if (!_intitialized)
+		
+			_answers = new gDictionary();
+			_history = [];
+			_gm = new GestureMediator(Plugins);
+			_hkm = new HotKeyManager();
+			_gm.addEventListener(AppGestureEvent.RECOGNIZED, onGesture);
+			_audioPlayer = new AudioPlayer();				
+			_textToSpeech = new TextToSpeech();
+			
+			if (AirStatus.isMobile)
+				_textToSpeech.apiUrl = Props.ap.textToSpeechApiUrlMobile;
+			else
+				_textToSpeech.apiUrl = Props.ap.textToSpeechApiUrlPC;
+				
+			_textToSpeech.enabled = Props.ap.enableTextToSpeech;
+			
+			initUserInput();
+			tMeta = XML(Translate.getMetaByName("settings"));
+			
+			_transitionNext = tMeta.settings.@transitionNext;
+			_transitionBack = tMeta.settings.@transitionBack;
+			
+			if (tMeta.setttings.@firstPage)
+				activateStateById(tMeta.settings.@firstPage);
+			else
+				activateStateByIndex(0);
+		}
+		
+		public function onUiControllerMethodCompleted(args:XMLList, data:GenericData):void
+		{
+			_dataFromUiController = data;
+			if (!_loopCount)
 			{
-				_intitialized = true;
-				_uiController = uiController;
-				_uiController.viewStateMediator = this;
-				_answers = new gDictionary();
-				_history = [];
-				_gm = new GestureMediator(Plugins);
-				_hkm = new HotKeyManager();
-				_gm.addEventListener(AppGestureEvent.RECOGNIZED, onGesture);
-				_audioPlayer = new AudioPlayer();				
-				_textToSpeech = new TextToSpeech();
-				
-				if (AirStatus.isMobile)
-					_textToSpeech.apiUrl = Props.ap.textToSpeechApiUrlMobile;
-				else
-					_textToSpeech.apiUrl = Props.ap.textToSpeechApiUrlPC;
-					
-				_textToSpeech.enabled = Props.ap.enableTextToSpeech;
-				
-				initUserInput();
-				tMeta = XML(Translate.getMetaByName("settings"));
-				
-				_transitionNext = tMeta.settings.@transitionNext;
-				_transitionBack = tMeta.settings.@transitionBack;
-				
-				if (tMeta.setttings.@firstPage)
-					activateStateById(tMeta.settings.@firstPage);
-				else
-					activateStateByIndex(0);
+				_questions = args.@questions.split(",");
+				_loops = args.@loop;
+				_onCompleteState = args.@onCompleteState;
+				questionLoop();
 			}
 		}
 		
-		public function activateStateById(id:String, data:GenericData = null, callBack:Function = null, callBackOptions:* = null):void
+		// PRIVATE METHODS
+		
+		private function questionLoop():void
+		{
+			if (_loopCount == _loops)
+			{
+				_loopCount = 0;
+				activateStateById(_onCompleteState);
+			}
+			else if (_loopCount < _loops)
+			{
+				if (_currentQuestion < _questions.length)
+				{
+					_dataFromUiController.name = (_loopCount + 1) + " - " + _questions[_currentQuestion];
+					activateStateById(_questions[_currentQuestion++]);
+				}
+				if (_currentQuestion == _questions.length)
+				{
+					++_loopCount;
+					_currentQuestion = 0;
+				}
+			}
+		}
+		
+		private function activateStateById(id:String):void
 		{
 			var index:int;
-			
-			_callBack = callBack;
-			_callBackOptions = callBackOptions;
 			
 			index = Props.translations.getItemIndexByName(Translate.language, id)
 			if (index == -1)
 				trace("State not found: " + id);
-			else
-			{
-				_dataFromUiController = data;
+			else 
 				activateStateByIndex(index);
-			}
 		}
-
-		// PRIVATE METHODS
 		
 		private function initUserInput():void
 		{
@@ -169,6 +201,7 @@ package com.zutalor.view.mediators
 		{
 			var tMeta:XML;
 			tMeta = XML(Translate.getMetaByIndex(_curState));
+			
 			switch (String(tMeta.state.@type))
 			{
 				case "page" :
@@ -211,34 +244,24 @@ package com.zutalor.view.mediators
 
 					if (_dataFromUiController)
 					{
-						_curStateId = answer.questionId = _curStateId + " - " + _dataFromUiController.name;
+						_curStateId = answer.questionId = _dataFromUiController.name;
 						answer.data = _dataFromUiController.data;
 					}
 					_answers.insert(_curStateId, answer);
-					
 					playSound(answerText, XML(_curStateText)..Q[answerIndex].@sound);
+					
 				}
 				else
 				{
 					//if (_answers.getByKey(_curStateId))
-						checkStateInput(uip);
+					checkStateInput(uip);
 				}
-								
-				if (_callBack != null)
-				{
-					if (_callBackOptions)
-						_callBack(_callBackOptions);
-					else
-						_callBack();
-					
-					_callBack = _callBackOptions = null;	
-				}
-
 			}
 			
 			function checkStateInput():void
 			{				
 				_curTransitionType = _transitionNext;
+				trace(uip.action);
 				switch (uip.action)
 				{
 					case "back" :
@@ -254,13 +277,19 @@ package com.zutalor.view.mediators
 						}
 						break;
 					case "next" :
-						if (String(tMeta.state.@next))
+						if (String(tMeta.state.@next) == "question")
+							questionLoop();
+						else
 							activateStateById(tMeta.state.@next);
 						break;		
 					case "exit" :
 						_uiController.exit();
 						break;
-					break;
+					case "questionLoop" :
+						questionLoop();
+						break;
+					default :
+						break;
 				}
 			}
 		}
@@ -312,7 +341,7 @@ package com.zutalor.view.mediators
 						for (var i:int = 0; i < _answers.length; i++)
 						{
 							ap = _answers.getByIndex(i);
-							trace(ap.data);
+							trace(ap.answer, ap.questionId);
 						}
 						activateStateById(String(XML(tp.tMeta).state.@onCompleteState));
 						break;
