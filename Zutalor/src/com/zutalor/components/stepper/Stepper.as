@@ -18,7 +18,6 @@ package com.zutalor.components.stepper
 	 */
 	public class Stepper extends Component implements IComponent
 	{
-		private var _value:Number;
 		private var _displayText:Label;
 		private var _sp:StepperProperties;
 		private var _background:Graphic;
@@ -73,7 +72,8 @@ package com.zutalor.components.stepper
 			displayTextWidth = _background.width - downButton.width - upButton.width;
 			displayTextHeight = _background.height - downButton.height - upButton.height;
 			
-			_value = _sp.initialValue;
+			value = _sp.initialValue;
+			value = 
 			setDisplayText();
 				
 			addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown, false, 0, true);			
@@ -86,12 +86,12 @@ package com.zutalor.components.stepper
 		
 		override public function get value():*
 		{
-			return _value;
+			return value;
 		}
 		
 		override public function set value(v:*):void
 		{
-			_value = v;
+			super.value = v;
 			setDisplayText();
 		}
 		
@@ -104,10 +104,10 @@ package com.zutalor.components.stepper
 					// TODO
 					break;
 				case "time" :
-					_displayText.value = TextUtil.formatTime(_value);
+					_displayText.value = TextUtil.formatTime(value);
 					break;
 				default :
-					_displayText.value = String(_value);
+					_displayText.value = String(value);
 					break;					
 			}	
 			
@@ -119,22 +119,21 @@ package com.zutalor.components.stepper
 		{
 			if (me.target.name == "up")
 			{
-				if (_value < _sp.maxValue)
-					_value += _sp.increment;
+				if (value < _sp.maxValue)
+					value += _sp.increment;
 					
-				if (_value > _sp.maxValue)
-					_value = _sp.maxValue;
+				if (value > _sp.maxValue)
+					value = _sp.maxValue;
 			}
 			else if (me.target.name == "down")
 			{
-				if (_value > _sp.minValue)
-					_value -= _sp.increment;
+				if (value > _sp.minValue)
+					value -= _sp.increment;
 				
-				if (_value < _sp.minValue)
-					_value = _sp.minValue;
+				if (value < _sp.minValue)
+					value = _sp.minValue;
 			}		
 			setDisplayText();
-			dispatchEvent(new UIEvent(UIEvent.VALUE_CHANGED, null, null, null, _value));
 		}
 		
 		private function formatTime():String
@@ -145,7 +144,7 @@ package com.zutalor.components.stepper
 			var ms:int;
 			var time:String;
 			
-			var date:Date = new Date(null, null, null, 0, 0, int(_value));
+			var date:Date = new Date(null, null, null, 0, 0, int(value));
 			time = "";
 			hours = date.getHours();
 			minutes = date.getMinutes();
@@ -180,7 +179,6 @@ package com.zutalor.components.stepper
 				else
 					time += ms;
 			}
-			
 			return(time);
 		}		
 	}

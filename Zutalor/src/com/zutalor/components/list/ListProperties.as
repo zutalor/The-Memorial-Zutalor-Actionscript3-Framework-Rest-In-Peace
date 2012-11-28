@@ -19,7 +19,6 @@
 		public var align:String;
 		public var hPad:String;
 		public var vPad:Number;
-		public var spacing:Number;
-		public var tKey:String;
+		public var padding:Number;
 	}
 }

@@ -50,6 +50,8 @@ package com.zutalor.view.mediators
 		private var _transitionBack:String;
 		private var _curTransitionType:String;
 		private var _inTransition:Boolean;
+		private var _callBack:Function;
+		private var _callBackOptions:*;
 		
 		private static const soundExt:String = ".mp3";
 		private static const letterAnswers:String = "abcdefgh";
@@ -92,7 +94,26 @@ package com.zutalor.view.mediators
 					activateStateByIndex(0);
 			}
 		}
-				
+		
+		public function activateStateById(id:String, data:GenericData = null, callBack:Function = null, callBackOptions:* = null):void
+		{
+			var index:int;
+			
+			_callBack = callBack;
+			_callBackOptions = callBackOptions;
+			
+			index = Props.translations.getItemIndexByName(Translate.language, id)
+			if (index == -1)
+				trace("State not found: " + id);
+			else
+			{
+				_dataFromUiController = data;
+				activateStateByIndex(index);
+			}
+		}
+
+		// PRIVATE METHODS
+		
 		private function initUserInput():void
 		{
 			var tMeta:XML;
@@ -202,6 +223,17 @@ package com.zutalor.view.mediators
 					//if (_answers.getByKey(_curStateId))
 						checkStateInput(uip);
 				}
+								
+				if (_callBack != null)
+				{
+					if (_callBackOptions)
+						_callBack(_callBackOptions);
+					else
+						_callBack();
+					
+					_callBack = _callBackOptions = null;	
+				}
+
 			}
 			
 			function checkStateInput():void
@@ -232,21 +264,7 @@ package com.zutalor.view.mediators
 				}
 			}
 		}
-		
-		private function activateStateById(id:String, data:GenericData = null):void
-		{
-			var index:int;
-			
-			index = Props.translations.getItemIndexByName(Translate.language, id)
-			if (index == -1)
-				trace("State not found: " + id);
-			else
-			{
-				_dataFromUiController = data;
-				activateStateByIndex(index);
-			}
-		}
-		
+				
 		private function activateStateByIndex(index:int):void
 		{
 			var tp:TranslateItemProperties;	
@@ -294,6 +312,7 @@ package com.zutalor.view.mediators
 						for (var i:int = 0; i < _answers.length; i++)
 						{
 							ap = _answers.getByIndex(i);
+							trace(ap.data);
 						}
 						activateStateById(String(XML(tp.tMeta).state.@onCompleteState));
 						break;

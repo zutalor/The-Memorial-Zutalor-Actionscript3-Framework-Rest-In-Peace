@@ -70,13 +70,9 @@ package com.zutalor.components.slider
 			return _thumb;
 		}
 		
-		override public function get value():*
-		{
-			return _sliderController.getPercent();
-		}
-		
 		override public function set value(p:*):void
 		{
+			super.value = p;
 			_sliderController.setPercent(p);
 		}
 	}

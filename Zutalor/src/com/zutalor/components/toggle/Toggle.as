@@ -15,7 +15,6 @@ package com.zutalor.components.toggle
 	{
 		private var _onState:Button;
 		private var _offState:Button;
-		private var _value:Boolean;
 		private var _name:String
 		
 		public static function register(preset:XMLList):void
@@ -53,24 +52,23 @@ package com.zutalor.components.toggle
 		
 		private function onMouseDown(me:MouseEvent):void
 		{
-			if (_value)
-				_value = false;
+			if (value)
+				value = false;
 			else
-				_value = true;
+				value = true;
 			
-			toggle();
-			dispatchEvent(new UIEvent(UIEvent.VALUE_CHANGED, null, null, null, _value));						
+			toggle();					
 		}
 		
 		override public function set value(value:*):void
 		{
-			_value = value;
+			super.value = value;
 			toggle();	
 		}
 		
 		private function toggle():void
 		{
-			if (_value) 
+			if (value) 
 			{
 				_onState.visible = true;
 				_offState.visible = false;
@@ -81,11 +79,6 @@ package com.zutalor.components.toggle
 				_offState.visible = true;
 			}
 		}				
-		
-		override public function get value():*
-		{
-			return _value;
-		}
 
 		override public function set enabled(value:Boolean):void
 		{

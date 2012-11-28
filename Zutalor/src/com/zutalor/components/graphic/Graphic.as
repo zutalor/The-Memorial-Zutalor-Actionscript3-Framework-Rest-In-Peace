@@ -84,17 +84,10 @@ package com.zutalor.components.graphic
 			
 			_presets.parseXML(xml);
 		}
-			
-		override public function get value():*
-		{
-			if (_label)
-				return _label.value;
-			else
-				return null;
-		}
-		
+					
 		override public function set value(v:*):void
 		{
+			super.value = v;
 			if (_label)
 				_label.value = v;
 		}

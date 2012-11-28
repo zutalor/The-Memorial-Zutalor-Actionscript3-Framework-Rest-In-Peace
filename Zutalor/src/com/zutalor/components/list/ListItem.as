@@ -2,7 +2,10 @@ package com.zutalor.components.list
 {
 	import com.zutalor.components.Component;
 	import com.zutalor.components.graphic.Graphic;
+	import com.zutalor.components.interfaces.IComponent;
+	import com.zutalor.components.interfaces.IListItemComponent;
 	import com.zutalor.components.label.Label;
+	import com.zutalor.utils.ObjectUtil;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.view.rendering.ViewItemFilterApplier;
@@ -12,8 +15,9 @@ package com.zutalor.components.list
 	 * ...
 	 * @author Geoff
 	 */
-	public class ListItem extends Component implements Component
+	public class ListItem extends Component implements IComponent
 	{
+		public var itemView:String;
 		public var background:Graphic;
 		public var rightIcon:Graphic;
 		public var leftIcon:Graphic;
@@ -21,50 +25,40 @@ package com.zutalor.components.list
 		
 		private var _filters:Array;
 		
-		public static function register(presets:XMLList):void
-		{	
-			if (!_presets)
-				_presets = new PropertyManager(ListProperties);
-			
-			_presets.parseXML(presets);
-		}	
-		
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
 			super(viewItemProperties);
 			
 			var filterApplier:ViewItemFilterApplier;
 			var itemPositioner:ViewItemPositioner;
-			var viewRenderer:ViewRenderer;
-			
-			var lp:ListProperties;
-			var vip:ViewItemProperties;
-
+			var viewRenderer:ViewRenderer;			
 			var itemIndex:int;
 			var numViewItems:int;
 		
 			_filters = [];
 			filterApplier = new ViewItemFilterApplier();
-			itemPositioner = new ViewItemPositioner(
+			itemPositioner = new ViewItemPositioner(this, vip.width, vip.height);
 			
-			lp = _presets(vip.presetId);
-			viewRenderer = new ViewRenderer(c, onItemRenderCallBack, new ViewItemFilterApplier(_filters),
+			viewRenderer = new ViewRenderer(this, onItemRenderCallBack, new ViewItemFilterApplier(_filters), itemPositioner);
 			
-			
-																		);
-			numItems = ViewController.views.getNumItems(vip.presetId);
+			numViewItems = ViewController.views.getNumItems(itemView);
 			onItemRenderCallBack();
 			
 			function onItemRenderCallBack():void
 			{
 				var vip:ViewItemProperties;
-			
+				
 				if (itemIndex < numViewItems)
 				{
-					vip = views.getItemPropsByIndex(lp.listView, itemIndex++);
+					vip = views.getItemPropsByIndex(itemView, itemIndex++);
 					viewRenderer.renderItem(vip);
 				}	
 			}	
+		}
+		
+		public function clone():ListItem
+		{
+			return ObjectUtil.clone(this) as ListItem;
 		}
 		
 		override public function dispose():void

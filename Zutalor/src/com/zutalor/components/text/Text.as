@@ -65,13 +65,9 @@ package com.zutalor.components.text
 		
 		override public function set value(value:*):void
 		{
+			super.value = textField.text;
 			textField.text = value.split("\\n").join("\n");
 			applyTextAttributes();
-		}
-		
-		override public function get value():*
-		{
-			return textField.text;
 		}
 		
 		// PRIVATE METHODS

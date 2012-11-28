@@ -88,34 +88,42 @@
 			var i:int = 0;
 			var width:int = 0;
 			var height:int = 0;
-			var padding:int = 0;
+			var padding:Number = 0;
 			var arrange:String = HORIZONTAL;
-			
+			var child:DisplayObject;
+							
 			if ("padding" in options)
 				padding = options["padding"];
 				
 			if ("arrange" in options)	
 				arrange = options["arrange"];
+			
 				
 			for (i = 0; i < numChildren; i++)
 			{
 				if (arrange == HORIZONTAL)
 				{
-					if (i) // no front padding on first entry
-					{
+					if (padding && padding < 1)
+						padding *= width; 
+					
+					if (i) 
 						width += padding;
-					}	
-					getChildAt(i).x = width;
-					width += getChildAt(i).width;
+					
+					child = getChildAt(i);
+					child.x = width;
+					width += child.width;
 				}
 				else
 				{
+					if (padding && padding < 1)
+						padding *= height; 
+
 					if (i) // no front padding on first entry
-					{
 						height += padding;
-					}
-					getChildAt(i).y = height;
-					height += getChildAt(i).height;
+					
+					child = getChildAt(i);
+					child.y = height;
+					height += child.height;
 				}
 			}
 			if (numChildren)

@@ -12,7 +12,7 @@ package com.zutalor.components
 	 */
 	public class Component extends ViewObject implements IComponent
 	{
-		
+		private var _value:*;
 		protected static var _presets:PropertyManager;
 		public var vip:ViewItemProperties = new ViewItemProperties();
 		
@@ -39,12 +39,13 @@ package com.zutalor.components
 		
 		public function get value():*
 		{
-			return null;
+			return _value;
 		}
 		
 		public function set value(value:*):void
 		{
-			
+			_value = value;
+			dispatchEvent(new UIEvent(UIEvent.VALUE_CHANGED, null, null, null, value));
 		}
 	}
 }

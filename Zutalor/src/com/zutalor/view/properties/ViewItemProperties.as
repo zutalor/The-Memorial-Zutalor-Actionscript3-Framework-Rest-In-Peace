@@ -29,7 +29,9 @@
 		
 		public var tKey:String;
 		public var text:String;
+		
 		public var className:String;
+		public var viewId:String;
 		public var data:String;
 	
 		public var voName:String;
