@@ -1,10 +1,11 @@
-﻿package com.zutalor.properties 
+﻿package com.zutalor.components.graphic 
 {
 	import com.zutalor.interfaces.IProperties;
+	import com.zutalor.properties.PropertiesBase;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.utils.MapXML;
 	/**
-	 * ...
+	 * 
 	 * @author Geoff Pepos
 	 */
 	public class GraphicItemProperties extends PropertiesBase implements IProperties

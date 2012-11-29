@@ -1,6 +1,7 @@
-﻿package com.zutalor.properties  
+﻿package com.zutalor.components.graphic  
 {
 	import com.zutalor.interfaces.IProperties;
+	import com.zutalor.properties.PropertiesBase;
 	import com.zutalor.utils.MapXML;
 	import flash.display.LineScaleMode;
 	/**

@@ -17,6 +17,8 @@ package com.zutalor.components.toggle
 		private var _offState:Button;
 		private var _name:String
 		
+		protected static var _presets:PropertyManager;
+		
 		public static function register(preset:XMLList):void
 		{
 			if (!_presets)

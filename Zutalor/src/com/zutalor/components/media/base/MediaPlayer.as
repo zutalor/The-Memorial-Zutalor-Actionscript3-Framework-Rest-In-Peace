@@ -44,6 +44,8 @@
 		private var _playerType:String;
 		private var _mpp:MediaProperties;
 		
+		protected static var _presets:PropertyManager;
+		
 		public static function register(presets:XMLList):void
 		{	
 			if (!_presets)

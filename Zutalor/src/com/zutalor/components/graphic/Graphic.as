@@ -4,27 +4,19 @@ package com.zutalor.components.graphic
 	import com.zutalor.components.Component;
 	import com.zutalor.components.interfaces.IComponent;
 	import com.zutalor.components.label.Label;
-	import com.zutalor.containers.ViewObject;
 	import com.zutalor.fx.Easing;
 	import com.zutalor.fx.Filters;
 	import com.zutalor.fx.Transition;
 	import com.zutalor.objectPool.ObjectPool;
-	import com.zutalor.properties.ApplicationProperties;
-	import com.zutalor.properties.GraphicItemProperties;
-	import com.zutalor.properties.GraphicProperties;
-	import com.zutalor.properties.GraphicStyleProperties;
-		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.PropertyManager;
-	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.sprites.CenterSprite;
 	import com.zutalor.text.Translate;
-	import com.zutalor.utils.DisplayUtils;
-	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.Resources;
 	import com.zutalor.utils.ShowError;
+	import com.zutalor.view.properties.ViewItemProperties;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Graphics;
@@ -54,7 +46,6 @@ package com.zutalor.components.graphic
 		private var _gri:GraphicItemProperties;
 		private var _grs:GraphicStyleProperties;
 		private var _grm:NestedPropsManager;
-		private var _canvas:CenterSprite;
 		private var _canvasRect:Rectangle;
 		private var _g:Graphics;
 
@@ -73,16 +64,21 @@ package com.zutalor.components.graphic
 		private var _brushRect:Rectangle;
 		private var _lineEnd:Sprite = new Sprite();
 		
-		private static var _presets:PropertyManager;
+		private static var _stylePresets:PropertyManager;
+		private static var _graphics:NestedPropsManager;
 		
 		private var _label:Label;
 		
-		public static function register(xml:XMLList):void
+		public static function register(styles:XMLList, xml:XML):void
 		{
-			if (!_presets)
-				_presets = new PropertyManager(GraphicStyleProperties);
+			if (!_stylePresets)
+				_stylePresets = new PropertyManager(GraphicStyleProperties);
+				
+			if (!_graphics)
+				_graphics = new NestedPropsManager();
 			
-			_presets.parseXML(xml);
+			_stylePresets.parseXML(styles);
+			_graphics.parseXML(GraphicProperties, GraphicItemProperties, xml.graphics, "graphic", xml.graphic, "props");
 		}
 					
 		override public function set value(v:*):void
@@ -99,14 +95,13 @@ package com.zutalor.components.graphic
 			//_onLifeTimeComplete = onLifeTimeComplete;
 			//_onRenderComplete = onRenderComplete;
 			super.render(viewItemProperties);
-
-			_canvas = this;
-			_g = _canvas.graphics;
-			_canvas.alpha = 1;
-			_canvas.visible = true;
+			
+			_g = graphics;
+			alpha = 1;
+			visible = true;
 			
 			if (!_grm)
-				_grm = Props.graphics;
+				_grm = _graphics;
 				
 			if (vip.transitionDelay)
 				MasterClock.callOnce(_render, vip.transitionDelay * 1000);
@@ -151,16 +146,12 @@ package com.zutalor.components.graphic
 								_data[e] = int(_data[e]);
 						}
 						if (i)
-						{
-							_canvas = new CenterSprite();
-							_g = _canvas.graphics;
-							addChild(_canvas);	
-						}
+							_g = graphics;	
 							
 						if (_gri.rotation)
-							_canvas.rotationAroundCenter = _gri.rotation;
+							rotationAroundCenter = _gri.rotation;
 						
-						_grs = _presets.getPropsByName(_gri.graphicStyle);
+						_grs = _stylePresets.getPropsByName(_gri.graphicStyle);
 						
 						if (_grs)
 						{
@@ -177,7 +168,7 @@ package com.zutalor.components.graphic
 								_g.beginGradientFill(_grs.fillType, _grs.colorsArray, _grs.alphasArray, _grs.ratiosArray, matrix, _grs.spreadMethod);
 							}
 							else if (_grs.fillAlpha)
-									_g.beginFill(_grs.fillColor, _grs.fillAlpha);		
+								_g.beginFill(_grs.fillColor, _grs.fillAlpha);		
 						}
 						else
 						{
@@ -189,7 +180,7 @@ package com.zutalor.components.graphic
 									//do nothing
 									break;
 								default :
-									ShowError.fail(this,"Graphics, no graphic style for: ID: " + vip.presetId + " Type: " + _gri.type + "  Style: " + _gri.graphicStyle + " : " + _gri.name);
+									ShowError.fail(Graphic,"Graphics, no graphic style for: ID: " + vip.presetId + " Type: " + _gri.type + "  Style: " + _gri.graphicStyle + " : " + _gri.name);
 							}
 						}
 						switch (_gri.type)
@@ -238,7 +229,7 @@ package com.zutalor.components.graphic
 								bm = Resources.createInstance(_gri.className);
 								bm.x = int(_gri.hPad);
 								bm.y = int(_gri.vPad);
-								_canvas.addChild(bm);
+								addChild(bm);
 								onItemRenderComplete();
 								break;
 							case Graphic.TEXT :	
@@ -252,7 +243,7 @@ package com.zutalor.components.graphic
 								_label = new Label();
 								_label.render(vip);
 								_label.name = name;
-								_canvas.addChild(_label);
+								addChild(_label);
 								onItemRenderComplete();
 								break;	
 							case Graphic.GRAPHIC : // nested graphic!
@@ -281,7 +272,7 @@ package com.zutalor.components.graphic
 				{
 					gr.x = int(_gri.hPad);
 					gr.y = int(_gri.vPad);
-					_canvas.addChild(gr);
+					addChild(gr);
 					onItemRenderComplete();
 				}
 				
@@ -294,33 +285,33 @@ package com.zutalor.components.graphic
 						var mask:Graphic = new Graphic();
 						vip.presetId = _grp.maskId;
 						mask.render(vip);
-						_canvas.addChild(mask);
+						addChild(mask);
 						mask.x = _grp.maskX;
 						mask.y = _grp.maskY;
-						_canvas.mask = mask;
+						mask = mask;
 					}
 					
 					if (_grp.lifeTime)
 						MasterClock.callOnce(transitionOut, _grp.lifeTime * 1000);
 					
 					if (_gri.scale)
-						_canvas.scaleX = _canvas.scaleY = _gri.scale;
+						scaleX = scaleY = _gri.scale;
 					
 					if (_grs)
 					{
 						if (_grs.alpha)
-							_canvas.alpha = _grs.alpha;
+							alpha = _grs.alpha;
 								
 						if (_grs.fillAlpha || _grs.fillLibraryName || _grs.fillType)
 							_g.endFill();
 					}
 					if (_gri.blendMode)
-						_canvas.blendMode = _gri.blendMode;
+						blendMode = _gri.blendMode;
 						
 					if (_gri.filterPreset)
 					{
 						var filters:Filters = new Filters();
-						filters.add(_canvas, _gri.filterPreset);		
+						filters.add(this, _gri.filterPreset);		
 					}					
 					i++;
 					renderNextItem();
@@ -331,11 +322,11 @@ package com.zutalor.components.graphic
 		private function transitionOut():void
 		{
 			var t:Transition = ObjectPool.getTransition();
-			t.simpleRender(_canvas, _grp.transitionOut, "out", finish);
+			t.simpleRender(this, _grp.transitionOut, "out", finish);
 			
 			function finish():void
 			{
-				//_canvas.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+				//removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 				if (_onLifeTimeComplete != null)
 					_onLifeTimeComplete();
 			}
@@ -353,7 +344,7 @@ package com.zutalor.components.graphic
 			//_bm = new Bitmap(_bmd, "auto", true);
 			
 			//_canvasRect = new Rectangle(StageRef.stage.stageWidth * _Scale.curAppScaleX, StageRef.stage.stageHeight * _Scale.curAppScaleY);
-			//_canvas.addChild(_bm);							
+			//addChild(_bm);							
 			setupLineData();
 
 			if (_gri.endcap)
@@ -362,7 +353,7 @@ package com.zutalor.components.graphic
 				vip.presetId = _gri.endcap;
 				endcap.render(vip);
 				_lineEnd.addChild(endcap);
-				_canvas.addChild(_lineEnd);
+				addChild(_lineEnd);
 				autoOrient = _grm.getPropsById(_gri.endcap).autoOrient;
 			}
 			
@@ -372,7 +363,7 @@ package com.zutalor.components.graphic
 				//_brushRect = new Rectangle(0, 0, _brush.width, _brush.height);
 			}
 		
-			//_canvas.addEventListener(Event.ENTER_FRAME, onEnterFrame, false, 0, true);
+			//addEventListener(Event.ENTER_FRAME, onEnterFrame, false, 0, true);
 			ease = Easing.getEase(_gri.easing);
 			TweenMax.to(_lineEnd, _gri.paintTime, { bezierThrough:_pts, onUpdate:renderPaint, orientToBezier:autoOrient, ease:ease } );
 		}

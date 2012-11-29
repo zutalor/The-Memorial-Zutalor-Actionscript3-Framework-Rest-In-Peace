@@ -261,7 +261,6 @@ package com.zutalor.view.mediators
 			function checkStateInput():void
 			{				
 				_curTransitionType = _transitionNext;
-				trace(uip.action);
 				switch (uip.action)
 				{
 					case "back" :

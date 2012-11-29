@@ -23,6 +23,8 @@ package com.zutalor.components.slider
 		private var _track:Button;
 		private var _reveal:Graphic;
 		
+		protected static var _presets:PropertyManager;		
+		
 		public static function register(presets:XMLList):void
 		{	
 			if (!_presets)
@@ -36,7 +38,7 @@ package com.zutalor.components.slider
 			var sp:SliderProperties;
 	
 			super.render(viewItemProperties);
-			sp = presets.getPropsByName(vip.presetId);
+			sp = _presets.getPropsByName(vip.presetId);
 			
 			_track = new Button();
 			_track.vip.presetId = sp.trackButtonId;

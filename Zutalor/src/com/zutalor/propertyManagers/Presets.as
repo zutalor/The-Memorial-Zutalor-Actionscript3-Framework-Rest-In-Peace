@@ -67,9 +67,9 @@
 		
 		public function parseXML(xml:XML):void
 		{
-			Graphic.register(xml.graphicStylePresets);
+			Graphic.register(xml.graphicStylePresets, xml);
 			Transition.register(xml.transitionPresets);
-			Button.register(xml.transitionPresets);
+			Button.register(xml.buttonPresets);
 			Toggle.register(xml.togglePresets);
 			Stepper.register(xml.stepperPresets);
 			ComponentGroup.register(xml.componentGroupPresets);

@@ -4,6 +4,7 @@
 	import com.zutalor.components.graphic.Graphic;
 	import com.zutalor.components.interfaces.IComponent;
 	import com.zutalor.components.label.Label;
+		import com.zutalor.utils.DisplayUtils;
 		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import flash.display.SimpleButton;
@@ -19,6 +20,8 @@
 		private var _down:Graphic;
 		private var _disabled:Graphic;
 		
+		protected static var _presets:PropertyManager;
+		
 		public static function register(xml:XMLList):void
 		{
 			if (!_presets)
@@ -32,11 +35,11 @@
 			var width:Number;
 			var height:Number;
 			var bp:ButtonProperties;
-			var buttonStates:Array = [_up, _over, _down, _disabled];
+			var buttonStates:Array;
 			
 			super.render(viewItemProperties);
 			
-			bp = ButtonProperties(presets.getPropsByName(vip.presetId));
+			bp = ButtonProperties(_presets.getPropsByName(vip.presetId));
 			
 			_up = new Graphic();
 			this.vip.presetId = bp.upId;
@@ -85,6 +88,7 @@
 				
 				vip.textAttributes = bp.textAttributes;
 
+				buttonStates = [_up, _over, _down, _disabled];
 				for (var i:int = 0; i < buttonStates.length; i++)
 				{
 					var label:Label;
@@ -95,12 +99,14 @@
 					label.render(vip);
 					label.name = name;
 					buttonStates[i].addChild(label);
+					DisplayUtils.alignInRect(label, buttonStates[0].width, buttonStates[0].height)
 				}
 			}
 		}
 		
 		override public function set name(n:String):void
 		{
+			super.name = n;
 			for (var i:int; i < numChildren; i++)
 				getChildAt(i).name = n;
 		}

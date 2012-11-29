@@ -6,8 +6,6 @@ package com.zutalor.propertyManagers
 	import com.zutalor.properties.BitmapProperties;
 	import com.zutalor.properties.FiltersItemProperties;
 	import com.zutalor.properties.FiltersProperties;
-	import com.zutalor.properties.GraphicItemProperties;
-	import com.zutalor.properties.GraphicProperties;
 	import com.zutalor.properties.PathProperties;
 	import com.zutalor.properties.PlaylistItemProperties;
 	import com.zutalor.properties.PlaylistProperties;
@@ -30,7 +28,6 @@ package com.zutalor.propertyManagers
 		
 		public static var sequences:NestedPropsManager;
 		public static var playlists:NestedPropsManager;
-		public static var graphics:NestedPropsManager;
 		public static var filters:NestedPropsManager;
 		public static var paths:PropertyManager;
 		public static var translations:NestedPropsManager;
@@ -57,7 +54,6 @@ package com.zutalor.propertyManagers
 			ap = ApplicationProperties.gi();
 			sequences = new NestedPropsManager();
 			filters = new NestedPropsManager();
-			graphics = new NestedPropsManager();
 			playlists = new NestedPropsManager();
 			translations = new NestedPropsManager();
 			bitmaps = new PropertyManager(BitmapProperties);
@@ -152,7 +148,7 @@ package com.zutalor.propertyManagers
 			playlists.parseXML(PlaylistProperties, PlaylistItemProperties, xml.playlists, "playlist", xml.playlist, "props");						
 			pr.parseXML(xml);		
 			translations.parseXML(TranslateProperties, TranslateItemProperties, xml.translations, "language", xml.language,"props");
-			graphics.parseXML(GraphicProperties, GraphicItemProperties, xml.graphics, "graphic", xml.graphic, "props");
+			
 			filters.parseXML(FiltersProperties, FiltersItemProperties, xml.filters, "filter", xml.filter, "props");
 			bitmaps.parseXML(xml.bitmaps, "props");
 		}

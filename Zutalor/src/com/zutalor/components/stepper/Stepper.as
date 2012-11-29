@@ -24,6 +24,8 @@ package com.zutalor.components.stepper
 		
 		public var showMs:Boolean;
 		
+		protected static var _presets:PropertyManager;
+		
 		public static function register(preset:XMLList):void
 		{	
 			if (!_presets)
@@ -41,7 +43,7 @@ package com.zutalor.components.stepper
 			 var sp:StepperProperties;
 			
 			super.render(viewItemProperties);
-			sp = presets.getPropsByName(vip.presetId);
+			sp = _presets.getPropsByName(vip.presetId);
 			
 			upButton = new Button();
 			upButton.vip.presetId = _sp.upButtonId;

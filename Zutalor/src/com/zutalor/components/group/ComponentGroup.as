@@ -20,6 +20,7 @@ package com.zutalor.components.group
 		public var contentContainer:Sprite;
 		
 		protected var numHaveValue:int;
+		protected static var _presets:PropertyManager;
 		
 		// there is so much more fun to be had with this class!!!! Here comes a DJ mixer with button, slider, lights, or whatever arrays!
 
