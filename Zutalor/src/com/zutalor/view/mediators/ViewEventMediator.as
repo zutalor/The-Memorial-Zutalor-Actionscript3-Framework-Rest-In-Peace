@@ -14,15 +14,14 @@ package com.zutalor.view.mediators
 	import com.zutalor.plugin.constants.PluginClasses;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
-		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Presets;
-	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.text.Translate;
 	import com.zutalor.ui.Focus;
 	import com.zutalor.utils.FullScreen;
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.view.controller.ViewController;
+	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.view.utils.ViewUtils;
 	import flash.events.Event;
 	import flash.events.FocusEvent;

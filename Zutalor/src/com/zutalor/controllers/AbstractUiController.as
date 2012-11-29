@@ -148,17 +148,6 @@ package com.zutalor.controllers
 				return false;
 		}	
 		
-		public function closeView(view:String):Boolean
-		{
-			if (ViewControllerRegistry.getController(view))
-			{
-				ViewControllerRegistry.getController(view).dispatchUiEvent(UIEvent.CLOSE);
-				return true;				
-			}
-			else
-				return false;
-		}
-		
 		public function onItemFocusIn(params:*):void
 		{
 			

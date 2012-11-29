@@ -185,8 +185,7 @@ package com.zutalor.view.mediators
 			var uip:UserInputProperties;
 			
 			uip = _viewGestures.getPropsByName(age.name);
-			
-			SimpleMessage.show(String(age.gesture));
+		
 			if (age.gesture is SwipeGesture)
 			{
 				if (SwipeGesture(age.gesture).offsetX > 1)

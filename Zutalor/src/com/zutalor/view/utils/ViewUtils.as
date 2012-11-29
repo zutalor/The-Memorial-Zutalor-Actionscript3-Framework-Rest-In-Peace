@@ -122,8 +122,8 @@
 				switch (vp.resizeMode)
 				{
 					case SCALE :
-						vp.container.width *= Scale.curAppScale;
-						vp.container.height *= Scale.curAppScale;						
+						vp.container.width = Scale.curAppScale * vp.container.originalWidth;
+						vp.container.height = Scale.curAppScale * vp.container.originalHeight;						
 						break;
 					case RESIZE_TO_STAGE :
 						vp.container.width = StageRef.stage.stageWidth;				

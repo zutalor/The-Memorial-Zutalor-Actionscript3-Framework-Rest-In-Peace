@@ -1,10 +1,11 @@
 package com.zutalor.components.graphic
 {
-	import com.greensock.TweenMax;
+	import com.greensock.loading.core.DisplayObjectLoader;
 	import com.zutalor.components.Component;
+	import com.zutalor.components.embed.Embed;
 	import com.zutalor.components.interfaces.IComponent;
 	import com.zutalor.components.label.Label;
-	import com.zutalor.fx.Easing;
+	import com.zutalor.containers.ViewObject;
 	import com.zutalor.fx.Filters;
 	import com.zutalor.fx.Transition;
 	import com.zutalor.objectPool.ObjectPool;
@@ -13,61 +14,43 @@ package com.zutalor.components.graphic
 	import com.zutalor.sprites.CenterSprite;
 	import com.zutalor.text.Translate;
 	import com.zutalor.utils.MasterClock;
-	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.Resources;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.view.properties.ViewItemProperties;
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
+	import flash.display.DisplayObject;
 	import flash.display.Graphics;
 	import flash.display.Sprite;
-	import flash.events.Event;
 	import flash.geom.Matrix;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
-	import flash.text.TextField;
-	import flash.utils.getTimer;
 	/**
 	 * ...
 	 * @author Geoff Pepos
 	 */
 	public class Graphic extends Component implements IComponent
 	{
-		public static const LINE:String = "line";
-		public static const CURVE:String = "curve";
+		public static const LABEL:String = "label";
 		public static const BOX:String = "box";
 		public static const ELIPSE:String = "elipse";
 		public static const CIRCLE:String = "circle";
-		public static const PAINT:String = "paint";
-		public static const TEXT:String = "text";
-		public static const GRAPHIC:String = "graphic";
 		public static const EMBED:String = "embed";
-		
-		private var _gri:GraphicItemProperties;
-		private var _grs:GraphicStyleProperties;
-		private var _grm:NestedPropsManager;
-		private var _canvasRect:Rectangle;
-		private var _g:Graphics;
+		public static const GRAPHIC:String = "graphic";
 
-		private var _pts:Array;
-		private var _data:Array;
-		private var _scale9Data:Array;
-		private var _grp:GraphicProperties;	
-		private var _onLifeTimeComplete:Function;
-		private var _onRenderComplete:Function;
-		private var _frameRate:int = 60;
-		private var _bmd:BitmapData;
-		private var _tick:int;
-		private var _tickLast:int;	
-		private var _lastPos:Point;
-		private var _brush:Bitmap;
-		private var _brushRect:Rectangle;
-		private var _lineEnd:Sprite = new Sprite();
-		
+		public var onLifeTimeComplete:Function;
+		public var onRenderComplete:Function;
+
 		private static var _stylePresets:PropertyManager;
 		private static var _graphics:NestedPropsManager;
 		
-		private var _label:Label;
+		
+		private var grs:GraphicStyleProperties;
+		private var grp:GraphicProperties;			
+		private var grm:NestedPropsManager;
+		private var g:Graphics;
+		
+		private var scale9Data:Array;
+		private var numGraphics:int;
+		private var scale9Rect:Rectangle;
+		private var i:int = 0;
 		
 		public static function register(styles:XMLList, xml:XML):void
 		{
@@ -86,23 +69,11 @@ package com.zutalor.components.graphic
 			super.value = v;
 			if (_label)
 				_label.value = v;
-		}
+		}		
 		
 		override public function render(viewItemProperties:ViewItemProperties = null):void
-		
-		//id:String, delay:Number = 0, onRenderComplete:Function=null, onLifeTimeComplete:Function=null):void
 		{	
-			//_onLifeTimeComplete = onLifeTimeComplete;
-			//_onRenderComplete = onRenderComplete;
 			super.render(viewItemProperties);
-			
-			_g = graphics;
-			alpha = 1;
-			visible = true;
-			
-			if (!_grm)
-				_grm = _graphics;
-				
 			if (vip.transitionDelay)
 				MasterClock.callOnce(_render, vip.transitionDelay * 1000);
 			else
@@ -111,377 +82,234 @@ package com.zutalor.components.graphic
 		
 		private function _render():void
 		{
-			var numGraphics:int;
-			var scale9Rect:Rectangle;
-			var bm:Bitmap;
-			var txt:TextField;
-			var i:int = 0;
-			
-			numGraphics = _grm.getNumItems(vip.presetId);
+			alpha = 1;
+			visible = true;
+			g = graphics;
+			grm = _graphics;
+			numGraphics = grm.getNumItems(vip.presetId);
 			
 			if (numGraphics == 0)
 				ShowError.fail(Graphic,"Graphic Render, no items for: " + vip.presetId);
 				
-			renderNextItem();
+			renderNextItem();			
+		}	
+		
+		private function renderNextItem():void
+		{
+			var item:DisplayObject;
+			var gri:GraphicItemProperties;			
 			
-			function renderNextItem():void
+			if (i == numGraphics)
 			{
-				if (i == numGraphics)
+				if (onRenderComplete != null)
+					onRenderComplete();
+			}
+			else
+			{
+				gri = grm.getItemPropsByIndex(vip.presetId, i);
+				if (!gri)
+					ShowError.fail(Graphic, "No properties for graphic id " + vip.presetId);
+
+				switch (gri.type)
 				{
-					if (_onRenderComplete != null)
-						_onRenderComplete();
+					case Graphic.EMBED :
+						embed(gri);
+						break;
+					case Graphic.LABEL :	
+						label(gri);
+						break;	
+					case Graphic.GRAPHIC : // nested graphic!
+						graphic(gri);
+						break;
+					default :
+						draw(gri);
+						break;
 				}
-				else
-				{
-					_gri = _grm.getItemPropsByIndex(vip.presetId, i);
-					if (!_gri)
-						ShowError.fail(this,"Graphic: no properties for graphic id " + vip.presetId);
-					else
-					{	
-						if (_gri.data)
-						{
-							_data =  _gri.data.split(",");
-							
-							for (var e:int = 0; e < _data.length; e++)
-								_data[e] = int(_data[e]);
-						}
-						if (i)
-							_g = graphics;	
-							
-						if (_gri.rotation)
-							rotationAroundCenter = _gri.rotation;
-						
-						_grs = _stylePresets.getPropsByName(_gri.graphicStyle);
-						
-						if (_grs)
-						{
-							if (_grs.thickness)
-								_g.lineStyle(_grs.thickness, _grs.lineColor, _grs.lineAlpha, false, _grs.scaleMode, _grs.caps, _grs.joints);
-							
-							if (_grs.fillClassName)
-								_g.beginBitmapFill(Resources.createInstance(_grs.fillClassName).bitmapData, null, _grs.fillRepeat);
-							else if (_grs.fillType)
-							{
-								var matrix:Matrix = new Matrix();
-										
-								matrix.createGradientBox(_data[2],_data[3], _grs.rotation * Math.PI/180);							
-								_g.beginGradientFill(_grs.fillType, _grs.colorsArray, _grs.alphasArray, _grs.ratiosArray, matrix, _grs.spreadMethod);
-							}
-							else if (_grs.fillAlpha)
-								_g.beginFill(_grs.fillColor, _grs.fillAlpha);		
-						}
-						else
-						{
-							switch (_gri.type)
-							{
-								case Graphic.EMBED :
-								case Graphic.TEXT :
-								case Graphic.GRAPHIC :
-									//do nothing
-									break;
-								default :
-									ShowError.fail(Graphic,"Graphics, no graphic style for: ID: " + vip.presetId + " Type: " + _gri.type + "  Style: " + _gri.graphicStyle + " : " + _gri.name);
-							}
-						}
-						switch (_gri.type)
-						{
-							case Graphic.LINE :
-							case Graphic.CURVE :
-								drawLines();
-								onItemRenderComplete();
-								break;
-							case Graphic.BOX :
-								if (_gri.scale9Data)
-								{	
-									_scale9Data = Vector.<int>(_gri.scale9Data.split(","));
-									addPositionOffsets();
-									scale9Rect = new Rectangle(_scale9Data[0], _scale9Data[1], _scale9Data[2], _scale9Data[3]); 	
-								}
-								else
-									addPositionOffsets();
-								
-								if (_data.length == 4)
-								{
-									_data.push(0);
-									_data.push(0);
-								}	
-								_g.drawRoundRect(_data[0], _data[1], _data[2], _data[3], _data[4], _data[5]);
-								if (scale9Rect)
-									this.scale9Grid = scale9Rect;
-									
-								onItemRenderComplete();
-								break;
-							case Graphic.ELIPSE :
-								addPositionOffsets();
-								_g.drawEllipse(_data[0], _data[1], _data[2], _data[3]);
-								onItemRenderComplete();
-								break;
-							case Graphic.CIRCLE :
-								addPositionOffsets();
-								_g.drawCircle(_data[0], _data[1], _data[2]);
-								onItemRenderComplete();
-								break;
-							case Graphic.PAINT :
-								paint();
-								onItemRenderComplete();
-								break;
-							case Graphic.EMBED :							
-								bm = Resources.createInstance(_gri.className);
-								bm.x = int(_gri.hPad);
-								bm.y = int(_gri.vPad);
-								addChild(bm);
-								onItemRenderComplete();
-								break;
-							case Graphic.TEXT :	
-								var vip:ViewItemProperties;
-								vip.text = Translate.text(_gri.tKey);
-								vip.width = String(_gri.width);
-								vip.height = String(_gri.height);
-								vip.align = _gri.align;
-								vip.hPad = _gri.hPad;
-								vip.vPad = _gri.vPad;
-								_label = new Label();
-								_label.render(vip);
-								_label.name = name;
-								addChild(_label);
-								onItemRenderComplete();
-								break;	
-							case Graphic.GRAPHIC : // nested graphic!
-								var gr:Graphic = new Graphic();
-								if (!_gri.data)
-									ShowError.fail(this, "Graphic: data null for " + vip.presetId);
-								gr.render(vip);
-								break;
-						}
-					}
-				}
-				
-				function addPositionOffsets():void
-				{
-					_data[0] += int(_gri.hPad);
-					_data[1] += int(_gri.vPad);
-					
-					if (_scale9Data)
-					{
-						_scale9Data[0] += int(_gri.hPad);
-						_scale9Data[1] += int(_gri.hPad);
-					}
-				}
-				
-				function onNestedItemRenderComplete():void
-				{
-					gr.x = int(_gri.hPad);
-					gr.y = int(_gri.vPad);
-					addChild(gr);
-					onItemRenderComplete();
-				}
-				
-				function onItemRenderComplete():void 
-				{
-					_grp = _grm.getPropsById(vip.presetId);
-					
-					if (_grp.maskId)
-					{
-						var mask:Graphic = new Graphic();
-						vip.presetId = _grp.maskId;
-						mask.render(vip);
-						addChild(mask);
-						mask.x = _grp.maskX;
-						mask.y = _grp.maskY;
-						mask = mask;
-					}
-					
-					if (_grp.lifeTime)
-						MasterClock.callOnce(transitionOut, _grp.lifeTime * 1000);
-					
-					if (_gri.scale)
-						scaleX = scaleY = _gri.scale;
-					
-					if (_grs)
-					{
-						if (_grs.alpha)
-							alpha = _grs.alpha;
-								
-						if (_grs.fillAlpha || _grs.fillLibraryName || _grs.fillType)
-							_g.endFill();
-					}
-					if (_gri.blendMode)
-						blendMode = _gri.blendMode;
-						
-					if (_gri.filterPreset)
-					{
-						var filters:Filters = new Filters();
-						filters.add(this, _gri.filterPreset);		
-					}					
-					i++;
-					renderNextItem();
-				}
+				onItemRenderComplete();
 			}
 		}
+		
+		private function draw(gri:GraphicItemProperties):DisplayObject
+		{
+			var item:CenterSprite = new CenterSprite();
+			var data:Array;
+			var g:Graphics;
+			
+			data =  gri.data.split(",");
 				
+			for (var e:int = 0; e < data.length; e++)
+				data[e] = int(data[e]);
+			
+			data[0] += int(gri.hPad);
+			data[1] += int(gri.vPad);
+			
+			if (scale9Data)
+			{
+				scale9Data[0] += int(gri.hPad);
+				scale9Data[1] += int(gri.hPad);
+			}
+				
+			switch (gri.type)
+			{
+				case Graphic.BOX :
+					drawBox(gri);
+					break;
+				case Graphic.ELIPSE :
+					g.drawEllipse(data[0], data[1], data[2], data[3]);
+					break;
+				case Graphic.CIRCLE :
+					g.drawCircle(data[0], data[1], data[2]);
+					break;
+			}
+			
+			if (gri.rotation)
+				item.rotationAroundCenter = gri.rotation;
+			
+			function drawBox():CenterSprite
+			{
+				if (gri.scale9Data)
+				{	
+					scale9Data = Vector.<int>(gri.scale9Data.split(","));
+					scale9Rect = new Rectangle(scale9Data[0], scale9Data[1], scale9Data[2], scale9Data[3]); 	
+				}
+				
+				if (data.length == 4)
+				{
+					data.push(0);
+					data.push(0);
+				}	
+				
+				g.drawRoundRect(data[0], data[1], data[2], data[3], data[4], data[5]);
+				if (scale9Rect)
+					item.scale9Grid = scale9Rect;
+			}				
+		}
+		
+
+		private function graphic(gri:GraphicItemProperties):DisplayObject
+		{
+			var gr:Graphic = new Graphic();
+			
+			if (!gri.data)
+				ShowError.fail(Graphic, "data null for " + vip.presetId);
+			
+			gr.render(vip);	
+			addChild(gr);
+		}
+		
+		private function embed(gri:GraphicItemProperties):DisplayObject
+		{
+			var em:Embed;
+			
+			em = new Embed();
+			em.vip.className = gri.className;
+			em.render();
+			em.x = int(gri.hPad);
+			em.y = int(gri.vPad);
+			addChild(em);
+		}
+		
+		private function label(gri:GraphicItemProperties):DisplayObject
+		{
+			var:label = new Label();
+			label.vip.text = Translate.text(gri.tKey);
+			label.vip.width = String(gri.width);
+			label.vip.height = String(gri.height);
+			label.vip.align = gri.align;
+			label.vip.hPad = gri.hPad;
+			label.vip.vPad = gri.vPad;
+			label.render();
+			addChild(label);
+		}
+		
+		
+		
+		private function setupData():void
+		{
+			
+		}
+		
+		private function setGraphicStyle(item:Sprite, graphicStyle:String):void
+		{
+			grs = _stylePresets.getPropsByName(graphicStyle);
+			
+			var g:Graphics = item.graphics;
+			
+			if (grs.thickness)
+				g.lineStyle(grs.thickness, grs.lineColor, grs.lineAlpha, false, grs.scaleMode, grs.caps, grs.joints);
+			
+			if (grs.fillClassName)
+				g.beginBitmapFill(Resources.createInstance(grs.fillClassName).bitmapData, null, grs.fillRepeat);
+			else if (grs.fillType)
+			{
+				var matrix:Matrix = new Matrix();
+						
+				matrix.createGradientBox(data[2],data[3], grs.rotation * Math.PI/180);							
+				g.beginGradientFill(grs.fillType, grs.colorsArray, grs.alphasArray, grs.ratiosArray, matrix, grs.spreadMethod);
+			}
+			else if (grs.fillAlpha)
+				g.beginFill(grs.fillColor, grs.fillAlpha);		
+		}				
+		
+		private function addPositionOffsets():void
+		{
+			
+		}
+		
+		private function onItemRenderComplete():void 
+		{
+			grp = grm.getPropsById(vip.presetId);
+			
+			if (gri.width)
+				
+			
+			if (grp.maskId)
+			{
+				var mask:Graphic = new Graphic();
+				vip.presetId = grp.maskId;
+				mask.render(vip);
+				addChild(mask);
+				mask.x = grp.maskX;
+				mask.y = grp.maskY;
+				mask = mask;
+			}
+			
+			if (grp.lifeTime)
+				MasterClock.callOnce(transitionOut, grp.lifeTime * 1000);
+			
+			if (gri.scale)
+				scaleX = scaleY = gri.scale;
+			
+			if (grs)
+			{
+				if (grs.alpha)
+					alpha = grs.alpha;
+						
+				if (grs.fillAlpha || grs.fillLibraryName || grs.fillType)
+					g.endFill();
+			}
+			
+			if (gri.blendMode)
+				blendMode = gri.blendMode;
+				
+			if (gri.filterPreset)
+			{
+				var filters:Filters = new Filters();
+				filters.add(this, gri.filterPreset);		
+			}
+			
+			i++;
+			renderNextItem();
+		}
+		
 		private function transitionOut():void
 		{
 			var t:Transition = ObjectPool.getTransition();
-			t.simpleRender(this, _grp.transitionOut, "out", finish);
+			t.simpleRender(this, grp.transitionOut, "out", finish);
 			
 			function finish():void
 			{
-				//removeEventListener(Event.ENTER_FRAME, onEnterFrame);
-				if (_onLifeTimeComplete != null)
-					_onLifeTimeComplete();
-			}
-		}
-				
-		private function paint():void
-		{
-			var pt:Object;
-			var ease:Function;
-			var autoOrient:Boolean;
-			var endcap:Graphic;
-			
-			_lastPos = new Point();			
-			//_bmd = new BitmapData(StageRef.stage.width * _Scale.curAppScaleX, StageRef.stage.height * _Scale.curAppScaleY, true, 0x000000);
-			//_bm = new Bitmap(_bmd, "auto", true);
-			
-			//_canvasRect = new Rectangle(StageRef.stage.stageWidth * _Scale.curAppScaleX, StageRef.stage.stageHeight * _Scale.curAppScaleY);
-			//addChild(_bm);							
-			setupLineData();
-
-			if (_gri.endcap)
-			{
-				endcap = new Graphic();
-				vip.presetId = _gri.endcap;
-				endcap.render(vip);
-				_lineEnd.addChild(endcap);
-				addChild(_lineEnd);
-				autoOrient = _grm.getPropsById(_gri.endcap).autoOrient;
-			}
-			
-			if (_gri.brush)
-			{
-				//_brush = _bm.getBitmap(_gri.brush);
-				//_brushRect = new Rectangle(0, 0, _brush.width, _brush.height);
-			}
-		
-			//addEventListener(Event.ENTER_FRAME, onEnterFrame, false, 0, true);
-			ease = Easing.getEase(_gri.easing);
-			TweenMax.to(_lineEnd, _gri.paintTime, { bezierThrough:_pts, onUpdate:renderPaint, orientToBezier:autoOrient, ease:ease } );
-		}
-		
-		private function onEnterFrame(event:Event):void 
-		{ 
-			_tick = int((getTimer() % 1000) / _frameRate);
-			if (_tickLast != _tick)
-			{ 
-				_tickLast = _tick;
-				_bmd.lock();
-				_bmd.fillRect(_canvasRect, 0x000000);
-				renderPaint();
-				_bmd.unlock();
-			}
-		}					
-			
-		private function renderPaint():void
-		{
-			var dist:int;
-			
-			if (_lastPos)
-			{
-				if (_gri.brush) 
-				{
-					dist = MathG.calcDistance(_lastPos.x, _lastPos.y, _lineEnd.x, _lineEnd.y)
-					for (var i:int = 0; i < dist; i++)
-					{
-						_bmd.copyPixels(_brush.bitmapData, _brushRect, MathG.GetPointOnLine(_lastPos.x, _lastPos.y, _lineEnd.x, _lineEnd.y, i / dist), null, null, true);
-					}
-				}
-				else
-				{
-					_g.moveTo(_lastPos.x, _lastPos.y);					
-					_g.lineStyle(_grs.thickness, _grs.lineColor, _grs.lineAlpha, false, _grs.scaleMode, _grs.caps, _grs.joints);
-					_g.lineTo(_lineEnd.x, _lineEnd.y);
-				}
-			}
-			_lastPos.x = _lineEnd.x;
-			_lastPos.y = _lineEnd.y;				
-		}		
-				
-		private function setupLineData():void
-		{
-			var c:int = 0;
-							
-			_pts = [];	
-			
-			for (var i:int = 0; i < _data.length; i++)
-			{
-				if (i % 2)
-				{
-					_pts[c].y = int(_data[i]) + _gri.vPad;
-					c++;
-				}				
-				else
-				{
-					_pts[c] = new Object();
-					_pts[c].x = int(_data[i]) + _gri.hPad;
-				}
-			}			
-		}		
-		
-		private function drawLines():void
-		{
-			var i:int;
-			var l:int;
-			var midpt:Point = new Point();
-			var pt1:Point = new Point();
-			var pt2:Point = new Point();			
-			var prevMidPoint:Point = new Point;
-
-			setupLineData();
-			
-			l = _pts.length;
-			
-			if (_gri.type == Graphic.CURVE)
-				curves();
-			else
-				lines();
-					
-			function lines():void
-			{
-				_g.moveTo(_pts[0].x, _pts[0].y);
-				_g.lineTo(_pts[1].x, _pts[1].y);
-				for (i = 2; i < l; i++)
-				{
-					_g.lineTo(_pts[i-1].x, _pts[i-1].y);
-				}
-				_g.lineTo(_pts[i-1].x, _pts[i-1].y);
-			}
-			
-			function curves():void
-			{
-				
-				for (i = 1; i < l; i++)
-				{
-					pt1.x = _pts[i - 1].x;
-					pt1.y = _pts[i - 1].y;
-					pt2.x = _pts[i].x;
-					pt2.y = _pts[i].y;
-					
-					midpt.x = (pt1.x + (pt2.x - pt1.x)) >> 1;
-					midpt.y = (pt1.y + (pt2.y - pt1.y)) >> 1;
-				
-					if (prevMidPoint) 
-					{
-						_g.moveTo(prevMidPoint.x, prevMidPoint.y);
-						_g.curveTo(pt1.x,pt1.y, midpt.x, midpt.y);
-					} else {
-						// draw start segment:
-						_g.moveTo(pt1.x,pt1.y);
-						_g.lineTo(midpt.x,midpt.y);
-					}
-					prevMidPoint.x = midpt.x;
-					prevMidPoint.y = midpt.y;
-				}
-				_g.lineTo(_pts[i - 1].x, _pts[i - 1].y);
+				onLifeTimeComplete();
 			}
 		}		
 	}
