@@ -104,11 +104,6 @@ package com.zutalor.controllers
 			vc.setItemVisibility("htmlText", true, .75, .2);
 		}
 		
-		private function close():void
-		{
-			vc.dispatchUiEvent(UIEvent.CLOSE);
-		}
-		
 		private function initConfirm():void
 		{	
 			var okButton:Button;

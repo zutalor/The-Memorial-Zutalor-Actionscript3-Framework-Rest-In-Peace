@@ -98,15 +98,14 @@ package com.zutalor.ui
 			sheild.graphics.drawRect(0, 0, StageRef.stage.stageWidth, StageRef.stage.stageHeight)
 			sheild.graphics.endFill();
 			sheild.name = "__Sheild";
-			Props.ap.contentLayer.addChildAt(sheild, 0);
+			Props.ap.contentLayer.addChild(sheild);
 		}
 		
 		private static function hideSheild():void
 		{
 			if (Props.ap.contentLayer.getChildByName("__Sheild"))
 				Props.ap.contentLayer.removeChild(sheild);
-		}	
-		
+		}		
 		
 		private static function onSelection(choice:String = null):void
 		{

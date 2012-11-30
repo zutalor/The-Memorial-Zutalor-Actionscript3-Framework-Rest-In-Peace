@@ -23,8 +23,6 @@
 		public static const GRID:String = "grid";
 		
 		private var _containerName:String;	
-		private var _originalWidth:Number;
-		private var _originalHeight:Number;
 		private var _width:Number;
 		private var _height:Number;
 				
@@ -36,19 +34,9 @@
 		
 		private function init(width:Number = 0, height:Number = 0):void
 		{
-			this.width = _originalWidth = width;
-			this.height = _originalHeight = height;
+			this.width = width;
+			this.height = height;
 			cacheAsBitmap = true;
-		}
-		
-		public function get originalWidth():Number
-		{
-			return _originalWidth;
-		}
-		
-		public function get originalHeight():Number
-		{
-			return _originalHeight;
 		}
 		
 		override public function recycle():void

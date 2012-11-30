@@ -19,20 +19,15 @@
 		public var height:int;
 		public var scale:Number;
 		public var graphicStyle:String;
-		public var align:String;
 		public var vPad:int;
-		public var hPad:int;				
-		public var endcap:String;
-		public var paintTime:Number;
+		public var hPad:int;
+		public var align:String;
 		public var blendMode:String;		
 		public var easing:String;
 		public var brush:String;	
 		public var tKey:String;
-		public var tText:String;
-		public var textAttribute:String;
+		public var textAttributes:String;
 		public var className:String;
-		public var spriteSheet:String;
-		public var spriteSheetItem:String;
 		public var filterPreset:String;
 				
 		override public function parseXML(xml:XML):Boolean

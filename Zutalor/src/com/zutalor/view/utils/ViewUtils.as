@@ -119,24 +119,25 @@
 		
 		private function resizeContainer(vp:ViewProperties):void
 		{
-				switch (vp.resizeMode)
-				{
-					case SCALE :
-						vp.container.width = Scale.curAppScale * vp.container.originalWidth;
-						vp.container.height = Scale.curAppScale * vp.container.originalHeight;						
-						break;
-					case RESIZE_TO_STAGE :
-						vp.container.width = StageRef.stage.stageWidth;				
-						vp.container.height = StageRef.stage.stageHeight;
-						break;
-					case FIT_TO_STAGE :
-					    DisplayUtils.fitIntoRect(vp.container, StageRef.stage.stageWidth, StageRef.stage.stageHeight, DisplayUtils.TOP_LEFT, 0, 0, true);
-						break;
-					case KEEP :
-					default :
-						// do nothing
-						break;
-				}
+			switch (vp.resizeMode)
+			{
+				case SCALE :
+					vp.container.width = Scale.curAppScale * vp.width;
+					vp.container.height = Scale.curAppScale * vp.height;						
+					break;
+				case RESIZE_TO_STAGE :
+					vp.container.width = StageRef.stage.stageWidth;				
+					vp.container.height = StageRef.stage.stageHeight;
+					break;
+				case FIT_TO_STAGE :
+					DisplayUtils.fitIntoRect(vp.container, StageRef.stage.stageWidth, StageRef.stage.stageHeight, DisplayUtils.TOP_LEFT, 0, 0, true);
+					break;
+				case KEEP :
+				default :
+					vp.container.width = vp.width;
+					vp.container.height = vp.height;
+					break;
+			}
 		}
 		
 		private function positionContainer(vp:ViewProperties):void
