@@ -45,17 +45,16 @@ package com.zutalor.view.rendering
 			y = int(vip.y);
 			hPad = int(vip.hPad);
 			vPad = int(vip.vPad);
-	
-							
+				
 			if (vip.width)
 				if (vip.width == "auto")
-					viewItem.width = _c.width - hPad - x;
+					viewItem.width = _width - hPad - x;
 				else	
 					viewItem.width = width;
 					
 			if (vip.height)
 				if (vip.height == "auto")
-					viewItem.height = _c.height - vPad - y;
+					viewItem.height = _width - vPad - y;
 				else
 					viewItem.height = height;
 						

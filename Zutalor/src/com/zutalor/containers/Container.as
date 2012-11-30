@@ -52,26 +52,6 @@
 			DisplayObjectUtils.removeAllChildren(this);
 		}
 		
-		override public function set width(n:Number):void
-		{
-			super.width = _width = n;
-		}
-		
-		override public function get width():Number
-		{
-			return _width;
-		}
-		
-		override public function get height():Number
-		{
-			return _height;				
-		}		
-
-		override public function set height(n:Number):void
-		{
-			super.height = _height = n;
-		}
-		
 		public function get containerName():String
 		{
 			return _containerName;

@@ -66,7 +66,7 @@
 			if (sip)
 			{
 				sequenceIndx++
-				_controller(sip.menuItem);
+				_controller(sip.item);
 			}
 		}			
 	}

@@ -31,6 +31,7 @@ package com.zutalor.view.mediators
 	{	
 		private var _prevState:int;
 		private var _curStateId:String;
+		private var _curAnswerKey:String;
 		private var _curState:int;
 		private var _history:Array;
 		private var _curStateText:String;
@@ -243,17 +244,22 @@ package com.zutalor.view.mediators
 
 					if (_dataFromUiController)
 					{
-						_curStateId = answer.questionId = _dataFromUiController.name;
+						_curAnswerKey = answer.questionId = _dataFromUiController.name;
 						answer.data = _dataFromUiController.data;
 					}
-					_answers.insert(_curStateId, answer);
+					else
+						_curAnswerKey = _curStateId;
+						
+					_answers.insert(_curAnswerKey, answer);
 					playSound(answerText, XML(_curStateText)..Q[answerIndex].@sound);
-					
 				}
 				else
 				{
-					//if (_answers.getByKey(_curStateId))
-					checkStateInput(uip);
+					if (_answers.getByKey(_curAnswerKey))
+					{
+						checkStateInput(uip);
+						_curAnswerKey = null;
+					}
 				}
 			}
 			

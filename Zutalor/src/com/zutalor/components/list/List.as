@@ -143,7 +143,4 @@ package com.zutalor.components.list
 			// todo highlight and scroll to the proper value.
 		}
 	}
-		
-	}
-
 }

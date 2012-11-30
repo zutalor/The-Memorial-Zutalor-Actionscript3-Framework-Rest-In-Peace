@@ -170,7 +170,7 @@ package com.zutalor.utils
 									
 			var tX : Number = 0.0;
 			var tY : Number = 0.0;
-			
+
 			if (wD + hPad > width)
 				scaleX = width / (wD + hPad);
 			

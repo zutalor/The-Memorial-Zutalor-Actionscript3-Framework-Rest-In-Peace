@@ -8,7 +8,7 @@
 	 */
 	public class SequenceItemProperties extends PropertiesBase implements IProperties
 	{
-		public var menuItem:String;
+		public var item:String;
 		public var delay:Number;
 	}
 }
