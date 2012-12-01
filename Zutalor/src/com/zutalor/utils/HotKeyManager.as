@@ -17,7 +17,6 @@
 	 */
 	final public class HotKeyManager extends EventDispatcher
 	{
-		private static var inst:HotKeyManager;	
 		private var attemptedWordTimeout:Number;		
 		private var keyMappings:Dictionary;		
 		private var wordMappings:Dictionary;
@@ -26,8 +25,12 @@
 		private var tmpDict:Dictionary;
 		private var keysDown:String;		
 
-		public function HotKeyManager()
+		
+		private static var _instance:HotKeyManager;
+
+		public function HotKeyManager() 
 		{
+			Singleton.assertSingle(HotKeyManager);
 			keyMappings=new Dictionary();
 			wordMappings=new Dictionary();
 			sequenceMessages=new Dictionary();
@@ -36,9 +39,16 @@
 			keysDown="";
 		}
 		
-		private function init():void
+		public static function gi():HotKeyManager
 		{
+			if (!_instance)
+				_instance = new HotKeyManager();
 			
+			return _instance;
+		}
+		
+		public function initialize():void
+		{
 		}
 		
 		/**
@@ -112,7 +122,7 @@
 		 * </ul>
 		 * 
 		 */
-		public function addMapping(obj:*,mapping:String,message:String):void
+		public function  addMapping(obj:*,mapping:String,message:String):void
 		{
 			if(obj is Array)
 			{
@@ -131,7 +141,7 @@
 				addWordMapping(obj, mapping, message);
 		}
 		
-		public function removeMapping(obj:*, mapping:String):void
+		public function  removeMapping(obj:*, mapping:String):void
 		{
 			if(obj is Array)
 			{
@@ -151,11 +161,12 @@
 			clearKeys();
 		}
 		
-		public function clearKeys():void
+		public function  clearKeys():void
 		{
 			keysDown="";
 		}
 
+		
 		// private methods
 		
 		

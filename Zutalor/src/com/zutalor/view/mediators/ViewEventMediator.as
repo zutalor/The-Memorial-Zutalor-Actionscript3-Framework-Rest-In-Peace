@@ -45,7 +45,7 @@ package com.zutalor.view.mediators
 		private var _itemsSkipped:int;
 		private var _numItems:int;
 		
-		public static var navKeys:Array = ["RIGHT", "right", "LEFT", "left", "TAB", "down", "DOWN", "down", "SHIFT+TAB", "up", "UP", "up", "SPACE", "space"];
+		public static var navKeys:Array = ["RIGHT", "right", "LEFT", "left", "TAB", "tab", "DOWN", "down", "SHIFT+TAB", "shift+tab", "UP", "up", "SPACE", "space"];
 		
 		public function ViewEventMediator(viewController:ViewController)
 		{
@@ -59,7 +59,7 @@ package com.zutalor.view.mediators
 			_vu = ViewUtils.gi();			
 			_pr = Presets.gi();
 			_mu = MotionUtils.gi();
-			_hkm = new HotKeyManager();
+			_hkm = HotKeyManager.gi();
 		}
 		
 		public function addListenersToContainer(c:ViewContainer):void
@@ -74,8 +74,9 @@ package com.zutalor.view.mediators
 			
 			numKeys = navKeys.length - 1;
 			for (i = 0; i < numKeys; i += 2)
+			{
 				_hkm.addMapping(c, navKeys[i], navKeys[i + 1]);
-			
+			}
 			for (i = 0; i < _numItems; i++)
 			{
 				vip = vc.getItemPropsByIndex(i);
@@ -93,7 +94,7 @@ package com.zutalor.view.mediators
 			var vip:ViewItemProperties;
 			var numKeys:int;
 			var keys:Array;
-			
+		
 			listenerUtil(c.removeEventListener);
 			_hkm.removeEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey);
 			

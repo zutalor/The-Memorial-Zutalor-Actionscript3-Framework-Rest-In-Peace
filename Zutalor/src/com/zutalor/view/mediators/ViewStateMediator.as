@@ -76,7 +76,7 @@ package com.zutalor.view.mediators
 			_answers = new gDictionary();
 			_history = [];
 			_gm = new GestureMediator(Plugins);
-			_hkm = new HotKeyManager();
+			_hkm = HotKeyManager.gi();
 			_gm.addEventListener(AppGestureEvent.RECOGNIZED, onGesture);
 			_audioPlayer = new AudioPlayer();				
 			_textToSpeech = new TextToSpeech();
@@ -168,7 +168,8 @@ package com.zutalor.view.mediators
 			_hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey, false, 0, true);
 			_viewKeyboardInput = new PropertyManager(UserInputProperties);
 			_viewKeyboardInput.parseXML(tMeta.keystrokes, "keystroke");
-			l = _viewKeyboardInput.length;
+			
+			l = _viewKeyboardInput.length;			
 			for (i = 0; i < l; i++)
 			{
 				up = _viewKeyboardInput.getPropsByIndex(i);

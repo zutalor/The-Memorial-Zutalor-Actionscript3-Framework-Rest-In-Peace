@@ -22,6 +22,7 @@
 	import com.zutalor.ui.Spinner;
 	import com.zutalor.utils.DisplayUtils;
 	import com.zutalor.utils.gDictionary;
+	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.Resources;
 	import com.zutalor.utils.Scale;

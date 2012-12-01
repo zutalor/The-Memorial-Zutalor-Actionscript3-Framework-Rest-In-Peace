@@ -100,7 +100,7 @@ package com.zutalor.media
 			_playlistName = playlistName;
 			_width = width;
 			_height = height;
-			_hkm = new HotKeyManager();
+			_hkm = HotKeyManager().gi();
 			_players = new gDictionary();
 			_ppm = Props.playlists;
 			_hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey, false, 0, true);

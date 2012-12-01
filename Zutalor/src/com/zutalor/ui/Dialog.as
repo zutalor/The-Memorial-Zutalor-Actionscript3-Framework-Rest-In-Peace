@@ -81,7 +81,7 @@ package com.zutalor.ui
 			_progressBar.visible = false;
 			_lastMessage = null;
 			_lastType = CLOSED;
-			StageRef.stage.removeChild(_vc.container);
+			_vc.container.visible = false;
 		}
 		
 		private static function cancel():void
