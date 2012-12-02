@@ -17,12 +17,11 @@
 	 */
 	public class ViewContainer extends Container implements IDisposable
 	{
-		
 		public var viewController:ViewController;
 				
-		public function ViewContainer(containerName:String, width:Number=0, height:Number=0) 
+		public function ViewContainer(containerName:String) 
 		{
-			super(containerName, width, height);
+			super(containerName);
 		}
 		
 		public function callContainerMethod(method:String, params:String):void

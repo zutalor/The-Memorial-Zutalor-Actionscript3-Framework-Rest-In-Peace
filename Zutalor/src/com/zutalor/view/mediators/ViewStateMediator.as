@@ -78,7 +78,7 @@ package com.zutalor.view.mediators
 			_gm = new GestureMediator(Plugins);
 			_hkm = HotKeyManager.gi();
 			_gm.addEventListener(AppGestureEvent.RECOGNIZED, onGesture);
-			_audioPlayer = new AudioPlayer();				
+			_audioPlayer = new AudioPlayer("audio");				
 			_textToSpeech = new TextToSpeech();
 			
 			if (AirStatus.isMobile)
@@ -211,6 +211,9 @@ package com.zutalor.view.mediators
 				case "question" :
 					onAnswer();
 					break;
+				case "exit" :
+					_uiController.exit();
+					break;
 				default :
 					break;
 			}
@@ -284,12 +287,11 @@ package com.zutalor.view.mediators
 					case "next" :
 						if (String(tMeta.state.@next) == "question")
 							questionLoop();
+						else if (String(tMeta.state.@next) == "exit")
+							_uiController.exit();
 						else
 							activateStateById(tMeta.state.@next);
 						break;		
-					case "exit" :
-						_uiController.exit();
-						break;
 					case "questionLoop" :
 						questionLoop();
 						break;

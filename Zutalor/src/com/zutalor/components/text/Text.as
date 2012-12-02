@@ -18,6 +18,11 @@ package com.zutalor.components.text
 		private static var _textFormats:PropertyManager;
 		private var _tap:TextAttributeProperties;
 		
+		public function Text(name:String)
+		{
+			super(name);
+		}
+		
 		public static function register(textAttributes:XMLList, textFormats:XMLList):void
 		{	
 			if (!_textAttributes)

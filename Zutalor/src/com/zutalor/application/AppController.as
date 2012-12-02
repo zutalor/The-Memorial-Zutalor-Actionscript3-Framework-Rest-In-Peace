@@ -294,7 +294,7 @@
 			MasterClock.initialize();
 			Remoting.gateway = ap.gateway;
 			_appStateCallStack = new gDictionary();	
-			ap.contentLayer = new ViewContainer("contentLayer", ap.designWidth, ap.designHeight);
+			ap.contentLayer = new ViewContainer("contentLayer");
 			
 			StageRef.stage.addChild(ap.contentLayer);			
 			Translate.language = Props.ap.language;

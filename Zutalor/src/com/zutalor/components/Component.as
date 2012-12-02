@@ -1,6 +1,7 @@
 package com.zutalor.components 
 {
 	import com.zutalor.components.interfaces.IComponent;
+	import com.zutalor.containers.Container;
 	import com.zutalor.containers.ViewObject;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.view.properties.ViewItemProperties;
@@ -8,10 +9,15 @@ package com.zutalor.components
 	 * ...
 	 * @author Geoff
 	 */
-	public class Component extends ViewObject implements IComponent
+	public class Component extends Container implements IComponent
 	{
 		private var _value:*;
 		public var vip:ViewItemProperties = new ViewItemProperties();
+		
+		public function Component(containerName:String)
+		{
+			super(containerName);
+		}
 		
 		public function render(viewItemProperties:ViewItemProperties = null):void
 		{

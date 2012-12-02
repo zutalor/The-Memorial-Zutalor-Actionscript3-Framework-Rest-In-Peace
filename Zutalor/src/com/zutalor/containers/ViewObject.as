@@ -66,6 +66,7 @@
 		{
 			return _enabled;
 		}
+		
 		public function dispose():void {}
 		public function recycle():void {}
 		public function stop(fadeSeconds:Number = 0):void {}	

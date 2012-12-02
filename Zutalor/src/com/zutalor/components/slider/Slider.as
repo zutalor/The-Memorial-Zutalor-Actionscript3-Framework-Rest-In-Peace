@@ -25,6 +25,11 @@ package com.zutalor.components.slider
 		
 		protected static var _presets:PropertyManager;		
 		
+		public function Slider(name:String)
+		{
+			super(name);
+		}
+
 		public static function register(presets:XMLList):void
 		{	
 			if (!_presets)
@@ -40,16 +45,16 @@ package com.zutalor.components.slider
 			super.render(viewItemProperties);
 			sp = _presets.getPropsByName(vip.presetId);
 			
-			_track = new Button();
+			_track = new Button(vip.name);
 			_track.vip.presetId = sp.trackButtonId;
-			_thumb = new Button();
+			_thumb = new Button(vip.name);
 			_thumb.vip.presetId = sp.thumbButtonId;
 			_thumb.vip.text = Translate.text(vip.tKey);
 			_thumb.vip.textAttributes = vip.textAttributes;
 
 			if (sp.revealId)
 			{
-				_reveal = new Graphic();
+				_reveal = new Graphic(vip.name);
 				_reveal.vip.presetId = sp.revealId;
 				_reveal.render();
 			}

@@ -30,12 +30,12 @@
 		private const DFLT_WIDTH_MULTIPLIER:Number = 1.5; 
 		private const DFLT_WIDTH_INCREMENT:Number = 2;
 		
-		public function ParallaxContainer(containerName:String, maskWidth:int, maskHeight:int, 
+		public function ParallaxContainer(containerName:String,
 									vScrollBarSliderId:String, hScrollBarSliderId:String, autoAdjustThumbSize:Boolean=true) 
 		
 		// TODO options: numLayers & reverseThumbs
 		{
-			super(containerName, maskWidth, maskHeight, hScrollBarSliderId, vScrollBarSliderId, autoAdjustThumbSize);
+			super(containerName, hScrollBarSliderId, vScrollBarSliderId, autoAdjustThumbSize);
 			addEventListener(Event.ADDED_TO_STAGE, addedToStage, false, 0, true);
 		}	
 		
@@ -152,7 +152,7 @@
 			
 				if (i) // because '0' is "this"
 				{
-					_layers[i] = new ScrollingContainer(this.containerName + String(i), width, height);
+					_layers[i] = new ScrollingContainer(name + String(i));
 					_layers[i].push(_blankShapes[i]);
 					addChild(_layers[i]);
 					_layers[i].scrollBarsVisible = false;

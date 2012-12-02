@@ -8,7 +8,12 @@ package com.zutalor.components.label
 	 * @author Geoff
 	 */
 	public class Label extends Text implements IViewObject 
-	{		
+	{
+		public function Label(name:String)
+		{
+			super(name);
+		}
+
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
 			super.render(viewItemProperties);

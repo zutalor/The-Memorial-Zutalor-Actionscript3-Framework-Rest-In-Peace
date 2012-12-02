@@ -40,9 +40,9 @@
 			return sv;
 		}
 		
-		public static function getGraphic():Graphic
+		public static function getGraphic(name:String):Graphic
 		{
-			return new Graphic();
+			return new Graphic(name);
 		}
 		
 		public static function getSprite():Sprite
@@ -75,21 +75,17 @@
 			switch (vp.containerType)
 			{
 				case ViewProperties.CONTAINER_SCROLLING :
-					vp.container = new ScrollingContainer(vp.name, vp.width, vp.height, vp.hScrollBarSliderId, 
-																vp.vScrollBarSliderId, vp.autoAdjustThumbSize);
+					vp.container = new ScrollingContainer(vp.name, vp.hScrollBarSliderId, vp.vScrollBarSliderId, vp.autoAdjustThumbSize);
 					break;
 				case ViewProperties.CONTAINER_MASKED :
-					vp.container = new MaskedContainer(vp.name, vp.width, vp.height);
+					vp.container = new MaskedContainer(vp.name);
 					break;					
 				case ViewProperties.CONTAINER_PARALLAX :
-					vp.container = new ParallaxContainer(vp.name, vp.width, vp.height, vp.hScrollBarSliderId, 
-																vp.vScrollBarSliderId, vp.autoAdjustThumbSize);
+					vp.container = new ParallaxContainer(vp.name, vp.hScrollBarSliderId, vp.vScrollBarSliderId, vp.autoAdjustThumbSize);
 					break;		
 				case ViewProperties.CONTAINER_BASIC :
-					vp.container = new ViewContainer(vp.name, vp.width, vp.height);
-					break;
 				default :
-					vp.container = new ViewContainer(vp.name, vp.width, vp.height);
+					vp.container = new ViewContainer(vp.name);
 					break;
 			}
 		}				

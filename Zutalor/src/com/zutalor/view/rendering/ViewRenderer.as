@@ -1,7 +1,7 @@
 package com.zutalor.view.rendering
 {
 	import com.zutalor.components.Component;
-	import com.zutalor.containers.ViewContainer;
+	import com.zutalor.containers.Container;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.text.Translate;
 	import com.zutalor.view.properties.ViewItemProperties;
@@ -11,9 +11,9 @@ package com.zutalor.view.rendering
 		private var _onItemRenderCallback:Function;	
 		private var _applyFilters:Function;
 		private var _positionItem:Function;
-		private var _container:ViewContainer;
+		private var _container:Container;
 
-		public function ViewRenderer(container:ViewContainer, onItemRenderCallback:Function, applyFilters:Function, positionItem:Function = null) 
+		public function ViewRenderer(container:Container, onItemRenderCallback:Function, applyFilters:Function, positionItem:Function = null) 
 		{	
 			_onItemRenderCallback = onItemRenderCallback;
 			_applyFilters = applyFilters;
@@ -33,7 +33,7 @@ package com.zutalor.view.rendering
 				vip.text = vip.text;
 		
 			ViewItemClass = Plugins.getClass(vip.type);
-			viewItem = new ViewItemClass();
+			viewItem = new ViewItemClass(vip.name);
 			viewItem.render(vip);
 	
 			if (!vip.excludeFromDisplayList) 

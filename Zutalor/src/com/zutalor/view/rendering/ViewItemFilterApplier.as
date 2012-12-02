@@ -42,7 +42,7 @@ package com.zutalor.view.rendering
 				
 				if (vip.maskId)
 				{
-					mask = new Graphic();
+					mask = new Graphic(vip.name);
 					mask.vip.presetId = vip.maskId;
 					mask.render();
 					viewItem.mask = mask;

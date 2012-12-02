@@ -18,6 +18,11 @@ package com.zutalor.components.toggle
 		private var _name:String
 		
 		protected static var _presets:PropertyManager;
+				
+		public function Toggle(name:String)
+		{
+			super(name);
+		}
 		
 		public static function register(preset:XMLList):void
 		{
@@ -39,11 +44,11 @@ package com.zutalor.components.toggle
 			vp.presetId = tp.onStateButtonId;
 			vp.text = vip.text;
 			
-			_onState = new Button();
+			_onState = new Button(vip.name);
 			_onState.render(vp);
 			
 			vp.presetId = tp.offStateButtonId;
-			_offState = new Button();
+			_offState = new Button(vip.name);
 			_offState.render(vp);
 			
 			value = tp.initialValue;

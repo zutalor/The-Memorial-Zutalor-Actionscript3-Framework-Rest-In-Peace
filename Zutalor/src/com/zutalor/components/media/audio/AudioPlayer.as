@@ -10,8 +10,9 @@
 	{
 		private var _audioController:AudioController;
 		
-		public function AudioPlayer()
+		public function AudioPlayer(name:String)
 		{
+			super(name);
 			init();
 		}
 		

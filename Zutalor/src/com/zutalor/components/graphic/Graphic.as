@@ -44,6 +44,11 @@ package com.zutalor.components.graphic
 		private var _width:int;
 		private var _height:int;
 		
+		public function Graphic(name:String)
+		{
+			super(name);
+		}
+
 		public static function register(styles:XMLList, xml:XML):void
 		{
 			if (!_stylePresets)
@@ -161,7 +166,7 @@ package com.zutalor.components.graphic
 			
 			if (grp.maskId)
 			{
-				var mask:Graphic = new Graphic();
+				var mask:Graphic = new Graphic(vip.name);
 				vip.presetId = grp.maskId;
 				mask.render(vip);
 				addChild(mask);
@@ -225,7 +230,7 @@ package com.zutalor.components.graphic
 		
 		private function graphic(gri:GraphicItemProperties):ViewObject
 		{
-			var gr:Graphic = new Graphic();
+			var gr:Graphic = new Graphic(vip.name);
 			
 			if (!gri.data)
 				ShowError.fail(Graphic, "data null for " + vip.presetId);
@@ -239,7 +244,7 @@ package com.zutalor.components.graphic
 		{
 			var em:Embed;
 			
-			em = new Embed();
+			em = new Embed(gri.name);
 			em.vip.className = gri.className;
 			em.render();
 			em.x = int(gri.hPad);
@@ -249,7 +254,7 @@ package com.zutalor.components.graphic
 		
 		private function label(gri:GraphicItemProperties):ViewObject
 		{
-			var label:Label = new Label();
+			var label:Label = new Label(vip.name);
 			label.vip.text = Translate.text(gri.tKey);
 			label.vip.textAttributes  = gri.textAttributes;
 			label.vip.width = String(gri.width);

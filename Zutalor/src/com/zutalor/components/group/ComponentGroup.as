@@ -22,6 +22,11 @@ package com.zutalor.components.group
 		protected var numHaveValue:int;
 		protected static var _presets:PropertyManager;
 		
+		public function ComponentGroup(name:String)
+		{
+			super(name);
+		}
+		
 		// there is so much more fun to be had with this class!!!! Here comes a DJ mixer with button, slider, lights, or whatever arrays!
 
 		public static function register(preset:XMLList):void

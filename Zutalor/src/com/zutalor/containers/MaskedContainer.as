@@ -35,21 +35,11 @@
 			return _scrollRect.height * scaleY;
 		}		
 	
-		public function MaskedContainer(containerName:String, width:int, height:int)
+		public function MaskedContainer(containerName:String)
 		{
-			super(containerName, width, height);
-			init(width,height);
+			super(containerName);
 		}
-					
-		private function init(width:Number = 0, height:Number = 0):void
-		{
-			_scrollPercentX = _scrollPercentY = 0;
-			_scrollRect = new Rectangle(0, 0, width, height);
-			scrollRect = _scrollRect;	
-			cacheAsBitmap = true;
-		}
-		
-			
+								
 		protected function get hScrollable():Boolean
 		{
 			if (_scrollRect.width >= width)

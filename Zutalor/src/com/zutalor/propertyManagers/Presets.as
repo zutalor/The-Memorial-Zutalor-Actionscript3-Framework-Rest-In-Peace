@@ -4,6 +4,7 @@
 	import com.zutalor.components.graphic.Graphic;
 	import com.zutalor.components.group.ComponentGroup;
 	import com.zutalor.components.html.StyleSheets;
+	import com.zutalor.components.list.List;
 	import com.zutalor.components.media.base.MediaPlayer;
 	import com.zutalor.components.stepper.Stepper;
 	import com.zutalor.components.text.Text;
@@ -76,6 +77,7 @@
 			Text.register(xml.textAttributePresets, xml.textFormatPresets);
 			StyleSheets.register(xml.cssPresets);
 			MediaPlayer.register(xml.mediaPresets);
+			List.register(xml.listPresets);
 			
 			scrollPresets.parseXML(xml.scrollPresets);
 			uiPresets.parseXML(xml.uiPresets);

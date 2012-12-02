@@ -27,7 +27,7 @@ package com.zutalor.ui
 			_rotIncr = 360 / StageRef.stage.frameRate * rotationCyclesPerSecond;
 			s = StageRef.stage;
 			canvas = new Sprite();
-			_spinGraphic = new Graphic();
+			_spinGraphic = new Graphic("spinner");
 			_spinGraphic.vip.presetId = spinnerpresetId;
 			_spinGraphic.render();
 			canvas.addChild(_spinGraphic);

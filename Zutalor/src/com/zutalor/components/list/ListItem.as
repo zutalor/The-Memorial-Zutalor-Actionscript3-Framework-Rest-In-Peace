@@ -25,9 +25,14 @@ package com.zutalor.components.list
 		
 		private var _filters:Array;
 		
+		public function ListItem(name:String)
+		{
+			super(name);
+		}
+		
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
-			super(viewItemProperties);
+			super.render(viewItemProperties);
 			
 			var filterApplier:ViewItemFilterApplier;
 			var itemPositioner:ViewItemPositioner;
@@ -36,10 +41,10 @@ package com.zutalor.components.list
 			var numViewItems:int;
 		
 			_filters = [];
-			filterApplier = new ViewItemFilterApplier();
-			itemPositioner = new ViewItemPositioner(this, vip.width, vip.height);
+			filterApplier = new ViewItemFilterApplier(_filters);
+			itemPositioner = new ViewItemPositioner(this, int(vip.width), int(vip.height));
 			
-			viewRenderer = new ViewRenderer(this, onItemRenderCallBack, new ViewItemFilterApplier(_filters), itemPositioner);
+			viewRenderer = new ViewRenderer(this, onItemRenderCallBack, new ViewItemFilterApplier(_filters).applyFilters, itemPositioner.positionItem);
 			
 			numViewItems = ViewController.views.getNumItems(itemView);
 			onItemRenderCallBack();
@@ -50,7 +55,7 @@ package com.zutalor.components.list
 				
 				if (itemIndex < numViewItems)
 				{
-					vip = views.getItemPropsByIndex(itemView, itemIndex++);
+					vip = ViewController.views.getItemPropsByIndex(itemView, itemIndex++);
 					viewRenderer.renderItem(vip);
 				}	
 			}	

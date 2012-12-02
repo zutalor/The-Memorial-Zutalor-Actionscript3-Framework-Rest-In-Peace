@@ -22,6 +22,11 @@
 		
 		protected static var _presets:PropertyManager;
 		
+		public function Button(name:String)
+		{
+			super(name);
+		}
+
 		public static function register(xml:XMLList):void
 		{
 			if (!_presets)
@@ -41,19 +46,19 @@
 			
 			bp = ButtonProperties(_presets.getPropsByName(vip.presetId));
 			
-			_up = new Graphic();
+			_up = new Graphic(vip.name);
 			this.vip.presetId = bp.upId;
 			_up.render(vip);
 	
-			_over = new Graphic();
+			_over = new Graphic(vip.name);
 			vip.presetId = bp.overId;
 			_over.render(vip);
 
-			_down = new Graphic();
+			_down = new Graphic(vip.name);
 			vip.presetId = bp.downId;
 			_down.render(vip);
 
-			_disabled = new Graphic();
+			_disabled = new Graphic(vip.name);
 			
 			if (bp.disabledId)
 				vip.presetId = bp.disabledId;
@@ -92,7 +97,7 @@
 				for (var i:int = 0; i < buttonStates.length; i++)
 				{
 					var label:Label;
-					label = new Label();
+					label = new Label(vip.name);
 					vip.align = bp.align;
 					vip.hPad = bp.hPad;
 					vip.vPad = bp.vPad;

@@ -22,21 +22,9 @@
 		public static const KEEP:String = "keep";
 		public static const GRID:String = "grid";
 		
-		private var _containerName:String;	
-		private var _width:Number;
-		private var _height:Number;
-				
-		public function Container(containerName:String, width:Number=0, height:Number=0) 
+		public function Container(containerName:String) 
 		{
-			_containerName = this.name = containerName;
-			init(width, height);
-		}
-		
-		private function init(width:Number = 0, height:Number = 0):void
-		{
-			this.width = width;
-			this.height = height;
-			cacheAsBitmap = true;
+			name = containerName;
 		}
 		
 		override public function recycle():void
@@ -52,16 +40,11 @@
 			DisplayObjectUtils.removeAllChildren(this);
 		}
 		
-		public function get containerName():String
-		{
-			return _containerName;
-		}
-		
 		public function push(child:DisplayObject, options:Object = null):void
 		{
 			addChild(child);
 			dispatchEvent(new ContainerEvent(ContainerEvent.CONTENT_CHANGED));
-		}	
+		}
 		
 		public function autoArrangeContainerChildren(options:Object):void
 		{

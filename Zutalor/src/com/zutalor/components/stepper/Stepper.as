@@ -26,6 +26,11 @@ package com.zutalor.components.stepper
 		
 		protected static var _presets:PropertyManager;
 		
+		public function Stepper(name:String)
+		{
+			super(name);
+		}
+		
 		public static function register(preset:XMLList):void
 		{	
 			if (!_presets)
@@ -45,21 +50,21 @@ package com.zutalor.components.stepper
 			super.render(viewItemProperties);
 			sp = _presets.getPropsByName(vip.presetId);
 			
-			upButton = new Button();
+			upButton = new Button(vip.name);
 			upButton.vip.presetId = _sp.upButtonId;
 			upButton.name = "up";
 			upButton.render();
 			
-			downButton = new Button();
+			downButton = new Button(vip.name);
 			downButton.vip.presetId = _sp.downButtonId;
 			downButton.name = "down";
 			downButton.render();
 			
-			_background = new Graphic();
+			_background = new Graphic(vip.name);
 			_background.vip.presetId = _sp.backgroundId;
 			_background.render();
 			
-			_displayText = new Label();
+			_displayText = new Label(vip.name);
 		
 			if (_sp.vertical)
 				downButton.y = _background.height - downButton.height;		

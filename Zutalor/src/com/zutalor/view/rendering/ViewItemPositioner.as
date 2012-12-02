@@ -4,6 +4,7 @@ package com.zutalor.view.rendering
 	import com.zutalor.components.Component;
 	import com.zutalor.containers.Container;
 	import com.zutalor.containers.ViewContainer;
+	import com.zutalor.containers.ViewObject;
 	import com.zutalor.properties.ScrollProperties;
 		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.utils.DisplayUtils;
@@ -15,11 +16,11 @@ package com.zutalor.view.rendering
 	 */
 	public class ViewItemPositioner
 	{
-		private var _c:Container;
+		private var _c:ViewObject;
 		private var _width:int;
 		private var _height:int;
 		
-		public function ViewItemPositioner(c:Container, width:int, height:int)
+		public function ViewItemPositioner(c:ViewObject, width:int, height:int)
 		{
 			_c = c;
 			_width = width;

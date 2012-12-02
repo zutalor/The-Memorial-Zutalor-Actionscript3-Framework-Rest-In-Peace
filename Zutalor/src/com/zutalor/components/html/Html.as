@@ -15,7 +15,12 @@ package com.zutalor.components.html
 	 * @author Geoff
 	 */
 	public class Html extends Text implements IComponent 
-	{		
+	{	
+		public function Html(name:String)
+		{
+			super(name);
+		}
+
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
 			super.render(viewItemProperties);

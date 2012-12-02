@@ -25,18 +25,18 @@
 		private var _hMinThumbWidth:int;
 		private var _vMinThumbHeight:int;
 		
-		public function ScrollingContainer(containerName:String, width:int, height:int, 
+		public function ScrollingContainer(containerName:String,
 											hScrollBarSliderId:String=null, vScrollBarSliderId:String=null, autoAdjustThumbSize:Boolean = true) 
 		{
 			
-			super(containerName, width, height);
+			super(containerName);
 			
 			_autoAdjustThumbSize = autoAdjustThumbSize;
 			
 			if (vScrollBarSliderId)
 			{
 				
-				_vScrollBar = new Slider();
+				_vScrollBar = new Slider(containerName);
 				_vScrollBar.vip.presetId = vScrollBarSliderId;
 				_vScrollBar.render();
 				_scrollBarVisibleY = true;	
@@ -46,7 +46,7 @@
 			
 			if (hScrollBarSliderId)
 			{
-				_hScrollBar = new Slider();
+				_hScrollBar = new Slider(containerName);
 				_hScrollBar.vip.presetId = hScrollBarSliderId;
 				_hScrollBar.render();
 				

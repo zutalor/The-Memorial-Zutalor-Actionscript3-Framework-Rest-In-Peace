@@ -45,6 +45,11 @@
 		private var _mpp:MediaProperties;
 		
 		protected static var _presets:PropertyManager;
+				
+		public function MediaPlayer(name:String)
+		{
+			super(name);
+		}
 		
 		public static function register(presets:XMLList):void
 		{	

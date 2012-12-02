@@ -14,6 +14,11 @@ package com.zutalor.components.group
 		{
 			return ArrayUtils.getIndexWithValue(values);
 		}
+
+		public function RadioGroup(name:String)
+		{
+			super(name);
+		}
 		
 		public function set radioIndex(indx:int):void
 		{

@@ -11,6 +11,11 @@ package com.zutalor.components.embed
 	 */
 	public class Embed extends Component implements IComponent 
 	{	
+		public function Embed(name:String)
+		{
+			super(name);
+		}
+
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
 			super.render(viewItemProperties);
