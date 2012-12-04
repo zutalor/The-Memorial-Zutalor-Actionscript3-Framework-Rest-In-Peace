@@ -8,6 +8,7 @@
 		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import flash.display.SimpleButton;
+	import flash.events.MouseEvent;
 	/**
 	 * ...
 	 * @author Geoff Pepos
@@ -19,6 +20,7 @@
 		private var _over:Graphic;
 		private var _down:Graphic;
 		private var _disabled:Graphic;
+		private var _buttonStates:Array;
 		
 		protected static var _presets:PropertyManager;
 		
@@ -40,25 +42,24 @@
 			var width:Number;
 			var height:Number;
 			var bp:ButtonProperties;
-			var buttonStates:Array;
 			
 			super.render(viewItemProperties);
 			
 			bp = ButtonProperties(_presets.getPropsByName(vip.presetId));
 			
-			_up = new Graphic(vip.name);
+			_up = new Graphic(name);
 			this.vip.presetId = bp.upId;
 			_up.render(vip);
 	
-			_over = new Graphic(vip.name);
+			_over = new Graphic(name);
 			vip.presetId = bp.overId;
 			_over.render(vip);
 
-			_down = new Graphic(vip.name);
+			_down = new Graphic(name);
 			vip.presetId = bp.downId;
 			_down.render(vip);
 
-			_disabled = new Graphic(vip.name);
+			_disabled = new Graphic(name);
 			
 			if (bp.disabledId)
 				vip.presetId = bp.disabledId;
@@ -93,20 +94,39 @@
 				
 				vip.textAttributes = bp.textAttributes;
 
-				buttonStates = [_up, _over, _down, _disabled];
-				for (var i:int = 0; i < buttonStates.length; i++)
+				_buttonStates = [_up, _over, _down, _disabled];
+				for (var i:int = 0; i < _buttonStates.length; i++)
 				{
 					var label:Label;
-					label = new Label(vip.name);
+					label = new Label("label");
+					label.value = vip.tKey;
 					vip.align = bp.align;
 					vip.hPad = bp.hPad;
 					vip.vPad = bp.vPad;
 					label.render(vip);
-					label.name = name;
-					buttonStates[i].addChild(label);
-					DisplayUtils.alignInRect(label, buttonStates[0].width, buttonStates[0].height)
+					_buttonStates[i].addChild(label);
+					DisplayUtils.alignInRect(label, _buttonStates[0].width, _buttonStates[0].height);
 				}
 			}
+		}
+		
+		override public function set value(v:*):void
+		{
+			super.value = v;
+			var l:Label;
+			
+			if (_buttonStates)
+				for (var i:int = 0; i < _buttonStates.length; i++)
+				{
+					l = _buttonStates[i].getChildByName("label");
+					l.value = v;
+					DisplayUtils.alignInRect(l, _buttonStates[0].width, _buttonStates[0].height);
+				}
+		}
+		
+		override public function get value():*
+		{
+			return super.value;
 		}
 		
 		override public function set name(n:String):void

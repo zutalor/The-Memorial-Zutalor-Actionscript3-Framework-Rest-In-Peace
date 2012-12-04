@@ -1,16 +1,16 @@
 package com.zutalor.components.list 
 {
+	import com.zutalor.components.button.Button;
 	import com.zutalor.components.Component;
 	import com.zutalor.components.interfaces.IComponent;
 	import com.zutalor.containers.Container;
 	import com.zutalor.containers.ScrollingContainer;
-	import com.zutalor.containers.ViewContainer;
-	import com.zutalor.events.UIEvent;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.view.rendering.ViewItemFilterApplier;
 	import com.zutalor.view.rendering.ViewRenderer;
+	import flash.display.SimpleButton;
 	import flash.events.MouseEvent;
 	/**
 	 * ...
@@ -19,8 +19,6 @@ package com.zutalor.components.list
 	public class List  extends Component implements IComponent
 	{
 		private static var _presets:PropertyManager;
-		
-		private var _listContainer:Container;
 		private var _scrollingContainer:ScrollingContainer;	
 		private var _lp:ListProperties;
 		
@@ -43,8 +41,6 @@ package com.zutalor.components.list
 			
 			var numItems:int;
 			var itemIndex:int;
-			var width:int;
-			var height:int;
 			var filters:Array = [];
 
 			var filterApplier:ViewItemFilterApplier;
@@ -54,12 +50,8 @@ package com.zutalor.components.list
 			
 			visible = true;
 			
-			_listContainer = new Container("list");
-			_listContainer.visible = false;			
-			addChild(_listContainer);
-			
 			filterApplier = new ViewItemFilterApplier(filters);
-			viewRenderer = new ViewRenderer(_listContainer, onItemRenderCallBack, filterApplier.applyFilters);
+			viewRenderer = new ViewRenderer(this, onItemRenderCallBack, filterApplier.applyFilters);
 
 			numItems = ViewController.views.getNumItems(_lp.listView);
 			onItemRenderCallBack();
@@ -74,18 +66,17 @@ package com.zutalor.components.list
 					viewRenderer.renderItem(vip);	
 				}	
 				else
-					onRenderComplete();
+					onListRenderComplete();
 			}
 			
-			function onRenderComplete():void
+			function onListRenderComplete():void
 			{
 				var data:Array;
-				var listItem:ListItem;
+				var listItem:Button;
 				
-
 				_scrollingContainer = new ScrollingContainer("list");
 				_scrollingContainer.addEventListener(MouseEvent.CLICK, onTap, false, 0, true);
-				_listContainer.addChild(_scrollingContainer);
+				addChild(_scrollingContainer);
 				data = _lp.dataProvider.split(",");
 				
 				for (var i:int = 0; i < data.length; i++)
@@ -97,30 +88,28 @@ package com.zutalor.components.list
 				_scrollingContainer.autoArrangeContainerChildren( { padding:_lp.spacing, arrange:_lp.arrange } );
 			}
 			
-			function createListItem():ListItem
+			function createListItem():Button
 			{
-				var listItem:ListItem;
+				var lib:Button;
 				
-				listItem = new ListItem(vip.name);
-				listItem.itemView = _lp.itemView;
-				listItem.vip.width = String(width);
-				listItem.vip.height = String(height);
-				listItem.render();
-				return listItem;
+				lib = new Button(name);
+				lib.vip.tKey = vip.tKey;
+				lib.vip.presetId = _lp.itemButtonId;
+				lib.vip.width = String(_lp.itemWidth);
+				lib.vip.height = String(_lp.itemHeight);
+				lib.render();
+				return lib;
 			}
 		}
 		
 		public function onTap(me:MouseEvent):void
 		{
-			value = me.target.value;
+			var b:Button;
+			b = _scrollingContainer.getChildByName(me.target.name) as Button;
+			value = b.value;
 			visible = !visible;
 			
 			trace(value);
-		}
-		
-		public function load(items:Array):void
-		{
-			_scrollingContainer.autoArrangeContainerChildren( { padding:_lp.spacing, arrange:_lp.arrange } );
 		}
 	}
 }

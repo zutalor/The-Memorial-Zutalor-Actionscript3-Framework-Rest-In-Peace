@@ -9,7 +9,7 @@
 	public class ListProperties extends PropertiesBase implements IProperties
 	{	
 		public var listView:String;
-		public var itemView:String;
+		public var itemButtonId:String;
 		public var dataProvider:String;
 		public var width:String;
 		public var height:String;
