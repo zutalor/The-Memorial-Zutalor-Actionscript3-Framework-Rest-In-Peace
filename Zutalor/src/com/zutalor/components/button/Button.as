@@ -4,11 +4,10 @@
 	import com.zutalor.components.graphic.Graphic;
 	import com.zutalor.components.interfaces.IComponent;
 	import com.zutalor.components.label.Label;
-		import com.zutalor.utils.DisplayUtils;
-		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.utils.DisplayUtils;
+	import com.zutalor.view.properties.ViewItemProperties;
 	import flash.display.SimpleButton;
-	import flash.events.MouseEvent;
 	/**
 	 * ...
 	 * @author Geoff Pepos
@@ -118,6 +117,7 @@
 		{
 			var label:Label;
 			if (_buttonLabels)
+			{
 				for (var i:int = 0; i < 4; i++)
 				{
 					label = _buttonLabels[i];
@@ -125,6 +125,8 @@
 					DisplayUtils.alignInRect(label, int(vip.height), int(vip.width),
 															_bp.align, _bp.hPad, _bp.vPad);
 				}
+			}
+			name = text;
 		}
 		
 		public function get labelText():String
