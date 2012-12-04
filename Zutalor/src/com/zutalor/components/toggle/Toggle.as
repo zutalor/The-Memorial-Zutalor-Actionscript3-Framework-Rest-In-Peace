@@ -4,7 +4,7 @@ package com.zutalor.components.toggle
 	import com.zutalor.components.Component;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.interfaces.IViewItem;
-		import com.zutalor.view.properties.ViewItemProperties;
+	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import flash.events.MouseEvent;
 	/**
@@ -24,12 +24,12 @@ package com.zutalor.components.toggle
 			super(name);
 		}
 		
-		public static function register(preset:XMLList):void
-		{
+		public static function registerPresets(options:Object):void
+		{	
 			if (!_presets)
 				_presets = new PropertyManager(ToggleProperties);
 			
-			_presets.parseXML(preset);
+			_presets.parseXML(options.xml[options.nodeId]);
 		}
 		
 		override public function render(viewItemProperties:ViewItemProperties = null):void

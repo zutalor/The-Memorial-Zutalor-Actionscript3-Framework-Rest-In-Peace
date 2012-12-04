@@ -10,7 +10,6 @@ package com.zutalor.components.interfaces
 	public interface IComponent
 	{
 		function set name(name:String):void
-		function registerPresets(xmlList:XMLList, xml:XML):void
 		function dispatchValueChange(uie:UIEvent):void
 		function onValueChange(uie:UIEvent):void
 		function get value():*

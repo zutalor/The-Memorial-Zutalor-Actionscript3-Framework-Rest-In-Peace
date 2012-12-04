@@ -24,12 +24,12 @@ package com.zutalor.components.list
 			super(name);
 		}
 	
-		public static function register(presets:XMLList):void
+		public static function registerPresets(options:Object):void
 		{	
 			if (!_presets)
 				_presets = new PropertyManager(ListProperties);
 			
-			_presets.parseXML(presets);
+			_presets.parseXML(options.xml[options.nodeId]);
 		}
 			
 		override public function render(viewItemProperties:ViewItemProperties = null):void

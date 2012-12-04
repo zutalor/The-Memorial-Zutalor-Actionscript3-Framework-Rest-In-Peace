@@ -36,13 +36,13 @@
 		public static var appStates:PropertyManager;
 		public static var colorPresets:PropertyManager;
 		
-		private static var _registrey:Vector.<PresetRegistryProperties>;
+		private static var _registry:Vector.<PresetRegistryProperties>;
 		
 		public static function register(presetClass:*, nodeId:String, childNodeId:String = null, alternateFunction:Function = null):void
 		{
-			if (!_registrey)
+			if (!_registry)
 			{
-				_registrey = new Vector.<PresetRegistryProperties>;
+				_registry = new Vector.<PresetRegistryProperties>;
 				init();
 			}
 			var p:PresetRegistryProperties = new PresetRegistryProperties();
@@ -52,28 +52,27 @@
 			p.childNodeId = childNodeId;
 			p.alternateFunction = alternateFunction;
 			
-			_registrey.push(p);
+			_registry.push(p);
 		}
 		
 		public static function parseXML(xml:XML):void
 		{
 			var l:int;
-			l = _registrey.length;
+			l = _registry.length;
 			
 			for (var i:int = 0; i < l; i++)
 			{
-				var f:Function;
+				var func:Function;
 				var p:PresetRegistryProperties;
 				
-				p = _registrey[i];
+				p = _registry[i];
 				
 				if (p.alternateFunction != null)
-					f = p.alternateFunction;
+					func = p.alternateFunction;
 				else
-					f = p.presetClass.register;
+					func = p.presetClass.registerPresets;
 			
-				f(xml[ p.nodeId ], xml);
-
+				func( { xml:xml, nodeId:p.nodeId, childNodeId:p.childNodeId } );
 			}
 
 			scrollPresets.parseXML(xml.scrollPresets);

@@ -6,7 +6,7 @@ package com.zutalor.components.stepper
 	import com.zutalor.components.interfaces.IComponent;
 	import com.zutalor.components.label.Label;
 	import com.zutalor.events.UIEvent;
-		import com.zutalor.view.properties.ViewItemProperties;
+	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.text.TextUtil;
 	import flash.display.Sprite;
@@ -31,12 +31,12 @@ package com.zutalor.components.stepper
 			super(name);
 		}
 		
-		public static function register(preset:XMLList):void
+		public static function registerPresets(options:Object):void
 		{	
 			if (!_presets)
 				_presets = new PropertyManager(StepperProperties);
 			
-			_presets.parseXML(preset);
+			_presets.parseXML(options.xml[options.nodeId]);
 		}
 		
 		override public function render(viewItemProperties:ViewItemProperties = null):void

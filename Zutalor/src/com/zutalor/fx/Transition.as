@@ -39,19 +39,19 @@
 		public var seconds:Number;
 		public var delay:Number;
 		
-		private static var _transitionPresets:PropertyManager;
+		private static var _presets:PropertyManager;
 		
 		public function Transition()
 		{
 			_mask = new Sprite();
 		}
 		
-		public static function register(xmlList:XMLList, xml:XML):void
-		{
-			if (!_transitionPresets)
-				_transitionPresets = new PropertyManager(TransitionProperties);
+		public static function registerPresets(options:Object):void
+		{	
+			if (!_presets)
+				_presets = new PropertyManager(TransitionProperties);
 			
-			_transitionPresets.parseXML(xmlList);
+			_presets.parseXML(options.xml[options.nodeId]);
 		}
 		
 		public function simpleRender(dc:DisplayObject, transitionPreset:String, inOut:String, onComplete:Function=null):void
@@ -59,7 +59,7 @@
 			var tpp:TransitionProperties;
 			_onComplete = onComplete;
 			
-			tpp = _transitionPresets.getPropsByName(transitionPreset);
+			tpp = _presets.getPropsByName(transitionPreset);
 			
 			if (tpp)
 			{

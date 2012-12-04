@@ -51,16 +51,22 @@ package com.zutalor.components.graphic
 			super(name);
 		}
 
-		public static function register(styles:XMLList, xml:XML):void
+		public static function registerStylePresets(options:Object):void
 		{
 			if (!_stylePresets)
 				_stylePresets = new PropertyManager(GraphicStyleProperties);
 				
+			_stylePresets.parseXML(options.xml[options.nodeId]);
+			
+		}
+		
+		public static function registerGraphicPresets(options:Object):void
+		{
 			if (!_graphics)
 				_graphics = new NestedPropsManager();
 			
-			_stylePresets.parseXML(styles);
-			_graphics.parseXML(GraphicProperties, GraphicItemProperties, xml.graphics, "graphic", xml.graphic, "props");
+			_graphics.parseXML(GraphicProperties, GraphicItemProperties, options.xml[options.nodeId].graphics, "graphic", 
+																				options.xml[options.nodeId].graphic, "props");
 		}
 		
 		override public function render(viewItemProperties:ViewItemProperties = null):void

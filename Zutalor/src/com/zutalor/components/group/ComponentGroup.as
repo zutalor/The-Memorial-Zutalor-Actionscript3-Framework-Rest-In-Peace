@@ -4,7 +4,7 @@ package com.zutalor.components.group
 	import com.zutalor.components.interfaces.IComponent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.plugin.Plugins;
-		import com.zutalor.view.properties.ViewItemProperties;
+	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.utils.ShowError;
 	import flash.display.DisplayObject;
@@ -29,12 +29,12 @@ package com.zutalor.components.group
 		
 		// there is so much more fun to be had with this class!!!! Here comes a DJ mixer with button, slider, lights, or whatever arrays!
 
-		public static function register(preset:XMLList):void
+		public static function registerPresets(options:Object):void
 		{	
 			if (!_presets)
 				_presets = new PropertyManager(ComponentGroupProperties);
 			
-			_presets.parseXML(preset);
+			_presets.parseXML(options.xml[options.nodeId]);
 		}
 		
 		public static function get presets():PropertyManager

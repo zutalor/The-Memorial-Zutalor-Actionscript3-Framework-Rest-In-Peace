@@ -21,12 +21,12 @@ package com.zutalor.components.html
 		private static var _onComplete:Function;
 		private static var _presets:PropertyManager;
 		
-		public static function register(presets:XMLList):void
+		public static function registerPresets(options:Object):void
 		{	
 			if (!_presets)
 				_presets = new PropertyManager(CssProperties);
 			
-			_presets.parseXML(presets);
+			_presets.parseXML(options.xml[options.nodeId]);
 		}
 		
 		public static function apply(textField:TextField, stylesheet:String, width:Number = 0):void
