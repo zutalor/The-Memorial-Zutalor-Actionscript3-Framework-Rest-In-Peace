@@ -17,6 +17,7 @@ package com.zutalor.components.graphic
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import flash.display.Graphics;
+	import flash.display.GraphicsPathCommand;
 	import flash.display.Sprite;
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
@@ -30,6 +31,7 @@ package com.zutalor.components.graphic
 		public static const BOX:String = "box";
 		public static const ELIPSE:String = "elipse";
 		public static const CIRCLE:String = "circle";
+		public static const PATH:String = "path";
 		public static const EMBED:String = "embed";
 		public static const GRAPHIC:String = "graphic";
 
@@ -97,8 +99,9 @@ package com.zutalor.components.graphic
 			var gri:GraphicItemProperties;
 			gri = _graphics.getItemPropsByIndex(vip.presetId, itemIndex);
 			
+	
 			if (!gri)
-				trace(Graphic, "No properties for graphic id " + vip.presetId + " : graphic id : " + gri.presetId);
+				trace(Graphic, "No preset graphic id " + vip.presetId);
 			else
 			{
 				switch (gri.type)
@@ -197,33 +200,61 @@ package com.zutalor.components.graphic
 		private function draw(gri:GraphicItemProperties):ViewObject
 		{
 			var item:ViewObject = new ViewObject();
-			var data:Array;
+			var coordsStr:Array;
+			var commandsStr:Array;
+			var commands:Vector.<int>;
+			var coords:Vector.<Number>;
+			var c:int;
+						
+			coords = new Vector.<Number>;
+			
 			
 			if (!gri.data)
-				ShowError.fail(Graphic, "No graphic item properties for: " + gri.name);
-			
-			data =  gri.data.split(",");
-			for (var i:int = 0; i < data.length; i++)
-				data[i] = int(data[i]);
+				return item;
+				
+			coordsStr =  gri.data.split(",");
+			for (var i:int = 0; i < coordsStr.length; i++)
+				coords.push(int(coordsStr[i]));
 			
 			setGraphicStyle(item, gri);
 				
 			switch (gri.type)
 			{
 				case Graphic.BOX :
-					if (data.length == 4) // adds the rounded corner param; in this case no corners.
+					if (coords.length == 4) // adds the rounded corner param; in this case no corners.
 					{
-						data.push(0);
-						data.push(0);
+						coords.push(0);
+						coords.push(0);
 					}	
-					item.graphics.drawRoundRect(data[0], data[1], data[2], data[3], data[4], data[5]);
+					item.graphics.drawRoundRect(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
 					break;
 				case Graphic.ELIPSE :
-					item.graphics.drawEllipse(data[0], data[1], data[2], data[3]);
+					item.graphics.drawEllipse(coords[0], coords[1], coords[2], coords[3]);
 					break;
 				case Graphic.CIRCLE :
-					item.graphics.drawCircle(data[0], data[1], data[2]);
+					item.graphics.drawCircle(coords[0], coords[1], coords[2]);
 					break;
+				case Graphic.PATH :	
+					commands = new Vector.<int>;
+			
+
+					if (gri.commands)
+					{
+							commandsStr = gri.commands.split(","); 
+						for (i = 0; i < commandsStr.length; i++)
+							commands.push(commandsStr[i]);
+					}
+					else
+					{
+						commands.push(1);
+						c = (coords.length / 2) - 1;
+						for (i = 0; i < c; i++)
+							commands.push(2);
+					}
+					
+					item.graphics.drawPath(commands, coords);
+					break;
+					
 			}
 			return item;
 		}

@@ -10,6 +10,7 @@
 	{	
 		public var listView:String;
 		public var itemView:String;
+		public var dataProvider:String;
 		public var width:String;
 		public var height:String;
 		public var itemWidth:String;

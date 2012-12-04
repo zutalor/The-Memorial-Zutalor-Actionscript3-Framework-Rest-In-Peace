@@ -13,6 +13,7 @@
 		public var type:String;
 		public var presetId:String;	
 		public var data:String;
+		public var commands:String;
 		public var scale9Data:String;
 		public var rotation:Number;
 		public var width:int;

@@ -61,11 +61,6 @@ package com.zutalor.components.list
 			}	
 		}
 		
-		public function clone():ListItem
-		{
-			return ObjectUtil.clone(this) as ListItem;
-		}
-		
 		override public function dispose():void
 		{
 			super.dispose();

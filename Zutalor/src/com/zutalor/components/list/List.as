@@ -39,6 +39,8 @@ package com.zutalor.components.list
 			
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
+			super.render(viewItemProperties);
+			
 			var numItems:int;
 			var itemIndex:int;
 			var width:int;
@@ -50,9 +52,9 @@ package com.zutalor.components.list
 			
 			_lp = _presets.getPropsByName(vip.presetId);
 			
-			visible = false;
+			visible = true;
 			
-			_listContainer.name = "list";
+			_listContainer = new Container("list");
 			_listContainer.visible = false;			
 			addChild(_listContainer);
 			
@@ -80,19 +82,17 @@ package com.zutalor.components.list
 				var data:Array;
 				var listItem:ListItem;
 				
-				listItem = createListItem();
+
 				_scrollingContainer = new ScrollingContainer("list");
 				_scrollingContainer.addEventListener(MouseEvent.CLICK, onTap, false, 0, true);
-				_listContainer.addChild(_listContainer);
-				data = vip.text.split(",");
+				_listContainer.addChild(_scrollingContainer);
+				data = _lp.dataProvider.split(",");
 				
 				for (var i:int = 0; i < data.length; i++)
 				{
-					var li:ListItem;
-					
-					li = listItem.clone();
-					li.value = data[i];
-					_scrollingContainer.push(li);
+					listItem = createListItem();
+					listItem.value = data[i];
+					_scrollingContainer.push(listItem);
 				}
 				_scrollingContainer.autoArrangeContainerChildren( { padding:_lp.spacing, arrange:_lp.arrange } );
 			}
