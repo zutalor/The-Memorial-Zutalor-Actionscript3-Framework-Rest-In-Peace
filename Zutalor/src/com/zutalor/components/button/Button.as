@@ -40,8 +40,6 @@
 		
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
-			var width:Number;
-			var height:Number;
 			var buttonStates:Array;
 			
 			super.render(viewItemProperties);
@@ -73,17 +71,6 @@
 			addChild(_sb);
 			_sb.name = vip.text;				
 			
-			if (!_bp.width) 
-			{
-				width = _up.width;
-				height = _up.height;	
-			}
-			else
-			{
-				width = _bp.width;
-				height = _bp.height;
-			}
-			
 			vip.hPad = _bp.hPad;
 			vip.vPad = _bp.vPad;
 
@@ -97,6 +84,12 @@
 			buttonStates = [_up, _over, _down, _disabled];
 			_buttonLabels = [new Label(name), new Label(name), new Label(name), new Label(name)];
 			
+			if (!_bp.width) 
+			{
+				_bp.width = int(vip.width);
+				_bp.height = int(vip.height);	
+			}
+				
 			var label:Label;
 			for (var i:int = 0; i < 4; i++)
 			{
@@ -105,11 +98,10 @@
 				vip.align = _bp.align;
 				vip.hPad = _bp.hPad;
 				vip.vPad = _bp.vPad;
-				label.render(vip);
+				label.render();
 				buttonStates[i].addChild(label);
 				_buttonLabels[i] = label;
-				DisplayUtils.alignInRect(label, buttonStates[0].width, buttonStates[0].height, 
-																		_bp.align, _bp.hPad, _bp.vPad);
+				DisplayUtils.alignInRect(label, _bp.width, _bp.height, _bp.align, _bp.hPad, _bp.vPad);
 			}
 		}
 		
@@ -122,8 +114,7 @@
 				{
 					label = _buttonLabels[i];
 					label.value = text;
-					DisplayUtils.alignInRect(label, int(vip.height), int(vip.width),
-															_bp.align, _bp.hPad, _bp.vPad);
+					DisplayUtils.alignInRect(label, _bp.width, _bp.height, _bp.align, _bp.hPad, _bp.vPad);
 				}
 			}
 			name = text;

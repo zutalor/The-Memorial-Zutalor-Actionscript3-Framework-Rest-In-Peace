@@ -6,10 +6,8 @@ package com.zutalor.components.list
 	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.text.Translate;
-	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.properties.ViewItemProperties;
-	import com.zutalor.view.rendering.ViewItemFilterApplier;
-	import com.zutalor.view.rendering.ViewRenderer;
+	import com.zutalor.view.rendering.ViewLoader;
 	import flash.events.MouseEvent;
 	/**
 	 * ...
@@ -36,71 +34,54 @@ package com.zutalor.components.list
 			
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
+			var viewLoader:ViewLoader;
 			super.render(viewItemProperties);
 			
-			var numItems:int;
-			var itemIndex:int;
-			var filters:Array = [];
-
-			var filterApplier:ViewItemFilterApplier;
-			var viewRenderer:ViewRenderer; 
-			
 			_lp = _presets.getPropsByName(vip.presetId);
-			
+			viewLoader = new ViewLoader();
+			viewLoader.load(_lp.listView, null, populateList);
 			visible = true;
 			
-			filterApplier = new ViewItemFilterApplier(filters);
-			viewRenderer = new ViewRenderer(this, itemRender, filterApplier.applyFilters);
-
-			numItems = ViewController.views.getNumItems(_lp.listView);
-			itemRender();
-			
-			function itemRender():void
-			{
-				var vip:ViewItemProperties;
-			
-				if (itemIndex < numItems)
-				{
-					vip = ViewController.views.getItemPropsByIndex(_lp.listView, itemIndex++);
-					viewRenderer.renderItem(vip);	
-				}	
-				else
-					onListRenderComplete();
-			}
-			
-			function onListRenderComplete():void
+			function populateList():void
 			{
 				var data:Array;
-				var listItem:Button;
-				
-				_scrollingContainer = new ScrollingContainer("list");
-				_scrollingContainer.addEventListener(MouseEvent.CLICK, onTap, false, 0, true);
+				_scrollingContainer = new ScrollingContainer("list");	
 				addChild(_scrollingContainer);
-				data = _lp.dataProvider.split(",");
 				
-				for (var i:int = 0; i < data.length; i++)
+				if (_lp.url)
+					loadData();
+				else
 				{
-					listItem = createListItem(data[i]);
-					_scrollingContainer.push(listItem);
-				}
-				_scrollingContainer.autoArrangeContainerChildren( { padding:_lp.spacing, arrange:_lp.arrange } );
-			}
-			
-			function createListItem(text:String):Button
-			{
-				var b:Button;
+					data = _lp.data.split(","); 
 				
-				b = new Button(name);
-				b.vip.text = Translate.text(text);
-				b.vip.presetId = _lp.itemButtonId;
-				b.vip.width = String(_lp.itemWidth);
-				b.vip.height = String(_lp.itemHeight);
-				b.render();
-				return b;
+					for (var i:int = 0; i < data.length; i++)
+						_scrollingContainer.push(createListItem(data[i]));
+				}
+
+				_scrollingContainer.autoArrangeContainerChildren( { padding:_lp.spacing, arrange:_lp.arrange } );
+				_scrollingContainer.addEventListener(MouseEvent.CLICK, onTap, false, 0, true);
 			}
 		}
 		
-		public function onTap(me:MouseEvent):void
+		private function loadData():void
+		{
+			//TODO
+		}
+		
+		private function createListItem(text:String):Button
+		{
+			var b:Button;
+			
+			b = new Button(name);
+			b.vip.text = Translate.text(text);
+			b.vip.presetId = _lp.itemButtonId;
+			b.vip.width = String(_lp.itemWidth);
+			b.vip.height = String(_lp.itemHeight);
+			b.render();
+			return b;
+		}
+		
+		private function onTap(me:MouseEvent):void
 		{
 			value = me.target.name;
 			visible = !visible;

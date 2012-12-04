@@ -4,14 +4,10 @@
 	import com.zutalor.fx.Filters;
 	import com.zutalor.fx.TransitionTypes;
 	import com.zutalor.objectPool.ObjectPool;
-	import com.zutalor.properties.ApplicationProperties;
-	import com.zutalor.view.properties.ViewProperties;
-	import com.zutalor.propertyManagers.NestedPropsManager;
-	import com.zutalor.propertyManagers.Presets;
-	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.controller.ViewController;
+	import com.zutalor.view.properties.ViewProperties;
 	import com.zutalor.view.transition.ViewTransition;
 	import com.zutalor.view.utils.ViewUtils;
 	import flash.events.EventDispatcher;
@@ -22,21 +18,10 @@
 	 */
 	public class ViewLoader extends EventDispatcher
 	{
-		private var ap:ApplicationProperties;		
-		private var vu:ViewUtils;
-		private var vpm:NestedPropsManager;
-		private var pr:Presets;
+		
 		private var vp:ViewProperties;
 		private var c:ViewContainer; 
-		private var _onComplete:Function;
-		
-		public function ViewLoader() 
-		{
-			vpm = ViewController.views;
-			vu = ViewUtils.gi();
-			ap = Props.ap;
-			pr = Props.pr;
-		}
+		private var _onComplete:Function;		
 		
 		public function get container():ViewContainer
 		{
@@ -47,7 +32,7 @@
 		{			
 			_onComplete = onComplete;
 
-			vp = vpm.getPropsById(viewId);		
+			vp = ViewController.views.getPropsById(viewId);		
 			
 			if (!vp.container)
 				ObjectPool.getContainer(vp);

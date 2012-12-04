@@ -236,11 +236,9 @@ package com.zutalor.components.graphic
 					break;
 				case Graphic.PATH :	
 					commands = new Vector.<int>;
-			
-
 					if (gri.commands)
 					{
-							commandsStr = gri.commands.split(","); 
+						commandsStr = gri.commands.split(","); 
 						for (i = 0; i < commandsStr.length; i++)
 							commands.push(commandsStr[i]);
 					}
@@ -251,10 +249,8 @@ package com.zutalor.components.graphic
 						for (i = 0; i < c; i++)
 							commands.push(2);
 					}
-					
 					item.graphics.drawPath(commands, coords);
 					break;
-					
 			}
 			return item;
 		}
