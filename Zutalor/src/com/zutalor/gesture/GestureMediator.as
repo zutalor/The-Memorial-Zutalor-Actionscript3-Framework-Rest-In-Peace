@@ -16,14 +16,28 @@ package com.zutalor.gesture
 	 */
 	public class GestureMediator extends EventDispatcher implements IDisposable 
 	{		
-		private var _activeGestures:gDictionary;
-		private var _plugins:*;
+		private static var _activeGestures:gDictionary;
+		private static var _plugins:*;
+		private static var _instance:*;
 		
-		public function GestureMediator(plugins:*)
+		public static function initialize(plugins:*):void
 		{
-			_activeGestures = new gDictionary();
-			_plugins = plugins;
+			if (!_instance)
+			{
+				_activeGestures = new gDictionary();
+				_plugins = plugins;
+				_instance = new GestureMediator();
+			}
 		}
+		
+		public static function gi():GestureMediator
+		{	
+			if (!_instance)
+				ShowError.fail(GestureMediator, "Must be initialiazed first.");
+
+			return _instance;
+		}
+		
 				
 		public function activateGesture(type:String, target:DisplayObject, name:String):void 
 		{

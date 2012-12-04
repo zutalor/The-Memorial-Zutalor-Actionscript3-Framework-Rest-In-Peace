@@ -23,16 +23,25 @@ package com.zutalor.components.text
 			super(name);
 		}
 		
-		public static function register(textAttributes:XMLList, textFormats:XMLList):void
+		public static function registerTextAttributes(textAttributes:XMLList):void
 		{	
 			if (!_textAttributes)
 			{
 				_textAttributes = new PropertyManager(TextAttributeProperties);
-				_textFormats = new PropertyManager(TextFormatProperties);
 			}
 			_textAttributes.parseXML(textAttributes);
+		
+		}
+		
+		public static function registerTextFormats(textFormats:XMLList):void
+		{
+			if (!_textFormats)
+			{
+				_textFormats = new PropertyManager(TextFormatProperties);
+			}
 			_textFormats.parseXML(textFormats);
 		}
+		
 		
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{

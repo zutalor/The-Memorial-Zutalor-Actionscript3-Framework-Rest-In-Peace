@@ -31,7 +31,7 @@ package com.zutalor.fx
 		public static const LIQUIFY_PRESET:String = "liquifyPreset";
 		
 		private var _fpm:NestedPropsManager;
-		private var _pr:Presets;
+		private var _pr:*;
 		private var _gRippler:gRippler;
 		private var _d:DisplayObject;
 		private var _rp:RippleProperties;
@@ -41,7 +41,7 @@ package com.zutalor.fx
 		public function Filters()
 		{
 			_fpm = Props.filters;
-			_pr = Presets.gi();
+			_pr = Presets;
 		}
 		
 		public function dispose():void

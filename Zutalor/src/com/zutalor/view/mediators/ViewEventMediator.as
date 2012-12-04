@@ -39,7 +39,7 @@ package com.zutalor.view.mediators
 		
 		private var _vpm:NestedPropsManager;
 		private var _vu:ViewUtils;
-		private var _pr:Presets;
+		private var _pr:*;
 		private var _mu:MotionUtils;
 		private var _hkm:HotKeyManager;
 		private var _itemsSkipped:int;
@@ -57,7 +57,7 @@ package com.zutalor.view.mediators
 		{
 			_vpm = ViewController.views;
 			_vu = ViewUtils.gi();			
-			_pr = Presets.gi();
+			_pr = Presets;
 			_mu = MotionUtils.gi();
 			_hkm = HotKeyManager.gi();
 		}

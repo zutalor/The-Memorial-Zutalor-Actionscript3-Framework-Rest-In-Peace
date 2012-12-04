@@ -37,7 +37,7 @@
 		private var ap:ApplicationProperties;
 		private var vpm:NestedPropsManager;
 		private var mu:MotionUtils;
-		private var pr:Presets;
+		private var pr:*;
 		
 		private static var _viewUtils:ViewUtils;
 
@@ -47,7 +47,7 @@
 			ap = ApplicationProperties.gi();
 			vpm = ViewController.views;
 			mu = MotionUtils.gi();
-			pr = Presets.gi();
+			pr = Presets;
 		}
 		
 		public static function gi():ViewUtils

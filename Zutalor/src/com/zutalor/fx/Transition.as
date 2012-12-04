@@ -46,12 +46,12 @@
 			_mask = new Sprite();
 		}
 		
-		public static function register(xml:XMLList):void
+		public static function register(xmlList:XMLList, xml:XML):void
 		{
 			if (!_transitionPresets)
 				_transitionPresets = new PropertyManager(TransitionProperties);
 			
-			_transitionPresets.parseXML(xml);
+			_transitionPresets.parseXML(xmlList);
 		}
 		
 		public function simpleRender(dc:DisplayObject, transitionPreset:String, inOut:String, onComplete:Function=null):void

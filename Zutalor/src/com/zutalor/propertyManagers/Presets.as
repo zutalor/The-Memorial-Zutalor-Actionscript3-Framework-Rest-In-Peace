@@ -26,59 +26,56 @@
 	 */
 	public class Presets
 	{
-		public var scrollPresets:PropertyManager;
-		public var uiPresets:PropertyManager;
-		public var toolTipPresets:PropertyManager;
-		public var shadowPresets:PropertyManager;
-		public var glowPresets:PropertyManager;
-		public var ripplePresets:PropertyManager;
-		public var hotkeyPresets:PropertyManager;
-		public var appStates:PropertyManager;
-		public var colorPresets:PropertyManager;
+		public static var scrollPresets:PropertyManager;
+		public static var uiPresets:PropertyManager;
+		public static var toolTipPresets:PropertyManager;
+		public static var shadowPresets:PropertyManager;
+		public static var glowPresets:PropertyManager;
+		public static var ripplePresets:PropertyManager;
+		public static var hotkeyPresets:PropertyManager;
+		public static var appStates:PropertyManager;
+		public static var colorPresets:PropertyManager;
 		
-		private static var _presets:Presets;
+		private static var _registrey:Vector.<PresetRegistryProperties>;
 		
-		public function Presets() 
+		public static function register(presetClass:*, nodeId:String, childNodeId:String = null, alternateFunction:Function = null):void
 		{
-			init();  
+			if (!_registrey)
+			{
+				_registrey = new Vector.<PresetRegistryProperties>;
+				init();
+			}
+			var p:PresetRegistryProperties = new PresetRegistryProperties();
+			
+			p.presetClass = presetClass;
+			p.nodeId = nodeId;
+			p.childNodeId = childNodeId;
+			p.alternateFunction = alternateFunction;
+			
+			_registrey.push(p);
 		}
 		
-		private function init():void
+		public static function parseXML(xml:XML):void
 		{
-			Singleton.assertSingle(Presets);
-			scrollPresets = new PropertyManager(ScrollProperties);
-			uiPresets = new PropertyManager(UIProperties);
-			toolTipPresets = new PropertyManager(ToolTipProperties);
-			shadowPresets = new PropertyManager(DropShadowFilterProperties);
-		
-			glowPresets = new PropertyManager(GlowFilterProperties);
-			ripplePresets = new PropertyManager(RippleProperties);
-	
-			appStates = new PropertyManager(AppStateProperties);
-			colorPresets = new PropertyManager(ColorProperties);
-		}
+			var l:int;
+			l = _registrey.length;
+			
+			for (var i:int = 0; i < l; i++)
+			{
+				var f:Function;
+				var p:PresetRegistryProperties;
 				
-		public static function gi():Presets
-		{
-			if (!_presets)
-				_presets = new Presets();
+				p = _registrey[i];
+				
+				if (p.alternateFunction != null)
+					f = p.alternateFunction;
+				else
+					f = p.presetClass.register;
 			
-			return _presets;
-		}
-		
-		public function parseXML(xml:XML):void
-		{
-			Graphic.register(xml.graphicStylePresets, xml);
-			Transition.register(xml.transitionPresets);
-			Button.register(xml.buttonPresets);
-			Toggle.register(xml.togglePresets);
-			Stepper.register(xml.stepperPresets);
-			ComponentGroup.register(xml.componentGroupPresets);
-			Text.register(xml.textAttributePresets, xml.textFormatPresets);
-			StyleSheets.register(xml.cssPresets);
-			MediaPlayer.register(xml.mediaPresets);
-			List.register(xml.listPresets);
-			
+				f(xml[ p.nodeId ], xml);
+
+			}
+
 			scrollPresets.parseXML(xml.scrollPresets);
 			uiPresets.parseXML(xml.uiPresets);
 			toolTipPresets.parseXML(xml.toolTipPresets);
@@ -88,6 +85,18 @@
 
 			colorPresets.parseXML(xml.colorPresets);			
 			appStates.parseXML(xml.appStates);
+		}
+			
+		private static function init():void
+		{
+			scrollPresets = new PropertyManager(ScrollProperties);
+			uiPresets = new PropertyManager(UIProperties);
+			toolTipPresets = new PropertyManager(ToolTipProperties);
+			shadowPresets = new PropertyManager(DropShadowFilterProperties);
+			glowPresets = new PropertyManager(GlowFilterProperties);
+			ripplePresets = new PropertyManager(RippleProperties);
+			appStates = new PropertyManager(AppStateProperties);
+			colorPresets = new PropertyManager(ColorProperties);
 		}
 	}
 }

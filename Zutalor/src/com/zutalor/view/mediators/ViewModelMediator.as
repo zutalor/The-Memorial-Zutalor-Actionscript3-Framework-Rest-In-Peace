@@ -26,7 +26,7 @@ package com.zutalor.view.mediators
 		
 		private var _vpm:NestedPropsManager;
 		private var _ap:ApplicationProperties;
-		private var _pr:Presets;
+		private var _pr:*;
 		
 		private static var _cachedVOName:String;
 		private static var _valueObject:*;
@@ -36,7 +36,7 @@ package com.zutalor.view.mediators
 			vc = viewController;
 			_vpm = ViewController.views;
 			_ap = ApplicationProperties.gi();
-			_pr = Presets.gi();
+			_pr = Presets;
 		}
 
 		public function setItemInitialValue(vip:ViewItemProperties):void

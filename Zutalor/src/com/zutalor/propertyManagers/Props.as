@@ -24,7 +24,7 @@ package com.zutalor.propertyManagers
 	public class Props
 	{
 		public static var ap:ApplicationProperties;
-		public static var pr:Presets;
+		public static var pr:*;
 		
 		public static var sequences:NestedPropsManager;
 		public static var playlists:NestedPropsManager;
@@ -50,7 +50,7 @@ package com.zutalor.propertyManagers
 			
 			_onComplete = onComplete;
 			_loaders = [];		
-			pr = Presets.gi();	
+			pr = Presets;	
 			ap = ApplicationProperties.gi();
 			sequences = new NestedPropsManager();
 			filters = new NestedPropsManager();
@@ -146,7 +146,7 @@ package com.zutalor.propertyManagers
 			paths.parseXML(xml.paths, "props");
 			sequences.parseXML(SequenceProperties, SequenceItemProperties, xml.sequences, "sequence", xml.sequence, "props");
 			playlists.parseXML(PlaylistProperties, PlaylistItemProperties, xml.playlists, "playlist", xml.playlist, "props");						
-			pr.parseXML(xml);		
+			Presets.parseXML(xml);		
 			translations.parseXML(TranslateProperties, TranslateItemProperties, xml.translations, "language", xml.language,"props");
 			
 			filters.parseXML(FiltersProperties, FiltersItemProperties, xml.filters, "filter", xml.filter, "props");

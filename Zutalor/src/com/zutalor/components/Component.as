@@ -14,6 +14,8 @@ package com.zutalor.components
 		private var _value:*;
 		public var vip:ViewItemProperties = new ViewItemProperties();
 		
+		public function
+		
 		public function Component(containerName:String)
 		{
 			super(containerName);

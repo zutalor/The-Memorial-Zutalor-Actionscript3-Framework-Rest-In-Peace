@@ -75,7 +75,7 @@ package com.zutalor.view.mediators
 		
 			_answers = new gDictionary();
 			_history = [];
-			_gm = new GestureMediator(Plugins);
+			_gm = GestureMediator.gi();
 			_hkm = HotKeyManager.gi();
 			_gm.addEventListener(AppGestureEvent.RECOGNIZED, onGesture);
 			_audioPlayer = new AudioPlayer("audio");				

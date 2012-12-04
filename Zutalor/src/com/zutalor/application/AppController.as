@@ -9,6 +9,7 @@
 	import com.zutalor.events.AppEvent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.fx.Wind;
+	import com.zutalor.gesture.GestureMediator;
 	import com.zutalor.motion.MotionUtils;
 	import com.zutalor.plugin.constants.PluginClasses;
 	import com.zutalor.plugin.constants.PluginMethods;
@@ -22,16 +23,13 @@
 	import com.zutalor.ui.Spinner;
 	import com.zutalor.utils.DisplayUtils;
 	import com.zutalor.utils.gDictionary;
-	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.Resources;
-	import com.zutalor.utils.Scale;
-	import com.zutalor.utils.SimpleMessage;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.properties.ViewProperties;
-	import com.zutalor.view.utils.ViewCloser;
 	import com.zutalor.view.rendering.ViewLoader;
+	import com.zutalor.view.utils.ViewCloser;
 	import com.zutalor.view.utils.ViewUtils;
 	import flash.display.Bitmap;
 	import flash.display.StageOrientation;
@@ -39,10 +37,6 @@
 	import flash.events.EventDispatcher;
 	import flash.events.StageVideoAvailabilityEvent;
 	import flash.media.StageVideoAvailability;
-	import flash.net.InterfaceAddress;
-	import flash.net.NetworkInfo;
-	import flash.net.NetworkInterface;
-	import flash.ui.Mouse;
 	
 	
 	/**
@@ -288,6 +282,7 @@
 			vpm = ViewController.views;
 			
 			ap.ip = _ip;
+			GestureMediator.initialize(Plugins);
 			StageRef.stage.addEventListener(StageVideoAvailabilityEvent.STAGE_VIDEO_AVAILABILITY, 
 																					onStageVideoAbility);	
 			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, onSWFAddressFirstBroadcast);			

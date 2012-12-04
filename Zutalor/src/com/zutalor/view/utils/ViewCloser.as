@@ -19,7 +19,7 @@ package com.zutalor.view.utils
     public class ViewCloser
     {
         private var ap:ApplicationProperties;
-        private var pr:Presets;
+        private var pr:*;
         private var _vp:ViewProperties;
         private var _onComplete:Function;
         private var _transition:Transition;
@@ -27,7 +27,7 @@ package com.zutalor.view.utils
         public function ViewCloser()
         {
             ap = ApplicationProperties.gi();
-            pr = Presets.gi();
+            pr = Presets;
         }
 
         public function close(viewId:String, onComplete:Function = null):void
