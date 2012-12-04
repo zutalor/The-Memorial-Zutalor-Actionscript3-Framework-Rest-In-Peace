@@ -53,7 +53,7 @@ package com.zutalor.components.text
 		public function set textAttributes(preset:String):void
 		{
 			_tap = _textAttributes.getPropsByName(preset);
-			if (_tap)
+			if (_tap && textField)
 				applyTextAttributes();
 		}
 

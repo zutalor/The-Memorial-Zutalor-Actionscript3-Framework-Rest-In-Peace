@@ -3,14 +3,13 @@ package com.zutalor.components.list
 	import com.zutalor.components.button.Button;
 	import com.zutalor.components.Component;
 	import com.zutalor.components.interfaces.IComponent;
-	import com.zutalor.containers.Container;
 	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.text.Translate;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.view.rendering.ViewItemFilterApplier;
 	import com.zutalor.view.rendering.ViewRenderer;
-	import flash.display.SimpleButton;
 	import flash.events.MouseEvent;
 	/**
 	 * ...
@@ -51,12 +50,12 @@ package com.zutalor.components.list
 			visible = true;
 			
 			filterApplier = new ViewItemFilterApplier(filters);
-			viewRenderer = new ViewRenderer(this, onItemRenderCallBack, filterApplier.applyFilters);
+			viewRenderer = new ViewRenderer(this, itemRender, filterApplier.applyFilters);
 
 			numItems = ViewController.views.getNumItems(_lp.listView);
-			onItemRenderCallBack();
+			itemRender();
 			
-			function onItemRenderCallBack():void
+			function itemRender():void
 			{
 				var vip:ViewItemProperties;
 			
@@ -81,32 +80,29 @@ package com.zutalor.components.list
 				
 				for (var i:int = 0; i < data.length; i++)
 				{
-					listItem = createListItem();
-					listItem.value = data[i];
+					listItem = createListItem(data[i]);
 					_scrollingContainer.push(listItem);
 				}
 				_scrollingContainer.autoArrangeContainerChildren( { padding:_lp.spacing, arrange:_lp.arrange } );
 			}
 			
-			function createListItem():Button
+			function createListItem(text:String):Button
 			{
-				var lib:Button;
+				var b:Button;
 				
-				lib = new Button(name);
-				lib.vip.tKey = vip.tKey;
-				lib.vip.presetId = _lp.itemButtonId;
-				lib.vip.width = String(_lp.itemWidth);
-				lib.vip.height = String(_lp.itemHeight);
-				lib.render();
-				return lib;
+				b = new Button(name);
+				b.vip.text = Translate.text(text);
+				b.vip.presetId = _lp.itemButtonId;
+				b.vip.width = String(_lp.itemWidth);
+				b.vip.height = String(_lp.itemHeight);
+				b.render();
+				return b;
 			}
 		}
 		
 		public function onTap(me:MouseEvent):void
 		{
-			var b:Button;
-			b = _scrollingContainer.getChildByName(me.target.name) as Button;
-			value = b.value;
+			value = me.target.name;
 			visible = !visible;
 			
 			trace(value);

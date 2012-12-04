@@ -201,11 +201,8 @@ package com.zutalor.utils
 					tX = wR - wD
 					break;
 					
-				case CENTER : 					
+				default : 					
 					tX = 0.5 * (wR - wD);
-					break;
-				default :
-					tX = 0.0;
 					break;
 			}
 			
@@ -223,11 +220,8 @@ package com.zutalor.utils
 					tY = hR - hD;
 					break;
 					
-				case CENTER : 					
+				default : 					
 					tY = 0.5 * (hR - hD);
-					break;
-				default :
-					tY = 0.0;
 					break;
 			}
 			if (hPad)

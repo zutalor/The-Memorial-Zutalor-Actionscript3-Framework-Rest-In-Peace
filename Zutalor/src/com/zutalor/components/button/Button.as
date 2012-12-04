@@ -20,7 +20,9 @@
 		private var _over:Graphic;
 		private var _down:Graphic;
 		private var _disabled:Graphic;
-		private var _buttonStates:Array;
+		private var _buttonLabels:Array;
+		private var _textAttributes:Array
+		private var _bp:ButtonProperties;;
 		
 		protected static var _presets:PropertyManager;
 		
@@ -41,92 +43,96 @@
 		{
 			var width:Number;
 			var height:Number;
-			var bp:ButtonProperties;
+			var buttonStates:Array;
 			
 			super.render(viewItemProperties);
 			
-			bp = ButtonProperties(_presets.getPropsByName(vip.presetId));
+			_bp = ButtonProperties(_presets.getPropsByName(vip.presetId));
 			
 			_up = new Graphic(name);
-			this.vip.presetId = bp.upId;
+			this.vip.presetId = _bp.upId;
 			_up.render(vip);
 	
 			_over = new Graphic(name);
-			vip.presetId = bp.overId;
+			vip.presetId = _bp.overId;
 			_over.render(vip);
 
 			_down = new Graphic(name);
-			vip.presetId = bp.downId;
+			vip.presetId = _bp.downId;
 			_down.render(vip);
 
 			_disabled = new Graphic(name);
 			
-			if (bp.disabledId)
-				vip.presetId = bp.disabledId;
+			if (_bp.disabledId)
+				vip.presetId = _bp.disabledId;
 			else
-				vip.presetId = bp.upId;
+				vip.presetId = _bp.upId;
 			
 			_disabled.render(vip);	
 				
 			_sb = new SimpleButton(_up, _over, _down, _up);
-			this.addChild(_sb);
-							
-			if (vip.text)
+			addChild(_sb);
+			_sb.name = vip.text;				
+			
+			if (!_bp.width) 
 			{
-				if (!bp.width) 
-				{
-					width = _up.width;
-					height = _up.height;	
-				}
-				else
-				{
-					width = bp.width;
-					height = bp.height;
-				}
-				
-				vip.hPad = bp.hPad;
-				vip.vPad = bp.vPad;
+				width = _up.width;
+				height = _up.height;	
+			}
+			else
+			{
+				width = _bp.width;
+				height = _bp.height;
+			}
+			
+			vip.hPad = _bp.hPad;
+			vip.vPad = _bp.vPad;
 
-				if (!bp.textAttributesDown)
-				{
-					bp.textAttributesDown = bp.textAttributesDisabled = bp.textAttributes;
-				}
-				
-				vip.textAttributes = bp.textAttributes;
+			if (!_bp.textAttributesDown)
+			{
+				_bp.textAttributesDown = _bp.textAttributesDisabled = _bp.textAttributes;
+			}
+			
+			_textAttributes = [_bp.textAttributes, _bp.textAttributes, _bp.textAttributesDown, _bp.textAttributesDisabled];
 
-				_buttonStates = [_up, _over, _down, _disabled];
-				for (var i:int = 0; i < _buttonStates.length; i++)
-				{
-					var label:Label;
-					label = new Label("label");
-					label.value = vip.tKey;
-					vip.align = bp.align;
-					vip.hPad = bp.hPad;
-					vip.vPad = bp.vPad;
-					label.render(vip);
-					_buttonStates[i].addChild(label);
-					DisplayUtils.alignInRect(label, _buttonStates[0].width, _buttonStates[0].height);
-				}
+			buttonStates = [_up, _over, _down, _disabled];
+			_buttonLabels = [new Label(name), new Label(name), new Label(name), new Label(name)];
+			
+			var label:Label;
+			for (var i:int = 0; i < 4; i++)
+			{
+				label = _buttonLabels[i];
+				vip.textAttributes = _textAttributes[i];
+				vip.align = _bp.align;
+				vip.hPad = _bp.hPad;
+				vip.vPad = _bp.vPad;
+				label.render(vip);
+				buttonStates[i].addChild(label);
+				_buttonLabels[i] = label;
+				DisplayUtils.alignInRect(label, buttonStates[0].width, buttonStates[0].height, 
+																		_bp.align, _bp.hPad, _bp.vPad);
 			}
 		}
 		
-		override public function set value(v:*):void
+		public function set labelText(text:String):void
 		{
-			super.value = v;
-			var l:Label;
-			
-			if (_buttonStates)
-				for (var i:int = 0; i < _buttonStates.length; i++)
+			var label:Label;
+			if (_buttonLabels)
+				for (var i:int = 0; i < 4; i++)
 				{
-					l = _buttonStates[i].getChildByName("label");
-					l.value = v;
-					DisplayUtils.alignInRect(l, _buttonStates[0].width, _buttonStates[0].height);
+					label = _buttonLabels[i];
+					label.value = text;
+					DisplayUtils.alignInRect(label, int(vip.height), int(vip.width),
+															_bp.align, _bp.hPad, _bp.vPad);
 				}
 		}
 		
-		override public function get value():*
+		public function get labelText():String
 		{
-			return super.value;
+			if (_buttonLabels)
+				return _buttonLabels[0].value;
+			else
+				return "";
 		}
 		
 		override public function set name(n:String):void
