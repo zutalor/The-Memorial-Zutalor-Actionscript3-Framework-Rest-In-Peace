@@ -2,7 +2,7 @@
 {
 	import com.greensock.TweenMax;
 	import com.gskinner.utils.IDisposable;
-	import com.zutalor.components.Component;
+	import com.zutalor.components.base.Component;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
@@ -13,7 +13,7 @@
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.NestedPropsManager;
-	import com.zutalor.ui.Focus;
+	import com.zutalor.widgets.Focus;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.mediators.ViewEventMediator;

@@ -6,7 +6,7 @@ package com.zutalor.propertyManagers
 	import com.zutalor.properties.FiltersItemProperties;
 	import com.zutalor.properties.FiltersProperties;
 	import com.zutalor.utils.ShowError;
-	import com.zutalor.utils.StringUtils;
+	import com.zutalor.text.StringUtils;
 
 	/**
 	 * ...

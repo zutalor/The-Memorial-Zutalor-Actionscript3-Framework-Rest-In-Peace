@@ -2,7 +2,7 @@ package com.zutalor.view.mediators
 {
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.components.button.Button;
-	import com.zutalor.components.Component;
+	import com.zutalor.components.base.Component;
 	import com.zutalor.components.group.ComponentGroup;
 	import com.zutalor.components.group.ComponentGroupProperties;
 	import com.zutalor.components.group.RadioGroup;
@@ -17,7 +17,7 @@ package com.zutalor.view.mediators
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.translate.Translate;
-	import com.zutalor.ui.Focus;
+	import com.zutalor.widgets.Focus;
 	import com.zutalor.utils.FullScreen;
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.view.controller.ViewController;

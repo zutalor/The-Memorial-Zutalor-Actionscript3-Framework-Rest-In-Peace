@@ -1,6 +1,6 @@
 package com.zutalor.view.rendering
 {
-	import com.zutalor.components.Component;
+	import com.zutalor.components.base.Component;
 	import com.zutalor.containers.Container;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.translate.Translate;

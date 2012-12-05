@@ -1,17 +1,16 @@
 package com.zutalor.components.toggle
 {
+	import com.zutalor.components.base.Component;
 	import com.zutalor.components.button.Button;
-	import com.zutalor.components.Component;
-	import com.zutalor.events.UIEvent;
-	import com.zutalor.interfaces.IViewItem;
-	import com.zutalor.view.properties.ViewItemProperties;
+	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.view.properties.ViewItemProperties;
 	import flash.events.MouseEvent;
 	/**
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class Toggle extends Component implements IViewItem
+	public class Toggle extends Component implements IComponent
 	{
 		private var _onState:Button;
 		private var _offState:Button;

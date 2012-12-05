@@ -1,12 +1,12 @@
 ﻿package com.zutalor.components.button
 {
-	import com.zutalor.components.Component;
+	import com.zutalor.components.base.Component;
 	import com.zutalor.components.graphic.Graphic;
-	import com.zutalor.components.interfaces.IComponent;
+	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.components.label.Label;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.utils.DisplayUtils;
-	import com.zutalor.utils.StringUtils;
+	import com.zutalor.text.StringUtils;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import flash.display.SimpleButton;
 	/**

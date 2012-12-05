@@ -1,10 +1,10 @@
 package com.zutalor.view.rendering 
 {
 	import adobe.utils.CustomActions;
-	import com.zutalor.components.Component;
+	import com.zutalor.components.base.Component;
 	import com.zutalor.containers.Container;
 	import com.zutalor.containers.ViewContainer;
-	import com.zutalor.containers.ViewObject;
+	import com.zutalor.containers.base.ViewObject;
 	import com.zutalor.properties.ScrollProperties;
 		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.utils.DisplayUtils;

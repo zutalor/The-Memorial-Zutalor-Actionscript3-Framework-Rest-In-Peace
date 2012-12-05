@@ -1,6 +1,6 @@
 ﻿package depreciated
 {
-	import com.zutalor.containers.ViewObject;
+	import com.zutalor.containers.base.ViewObject;
 	import com.zutalor.properties.ContainerProperties;
 	import com.zutalor.utils.Singleton;
 	/**

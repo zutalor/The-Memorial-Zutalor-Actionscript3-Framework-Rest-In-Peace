@@ -1,4 +1,4 @@
-package com.zutalor.models.wordpress
+package com.zutalor.controllers.wordpress
 {
 	/**
 	 * ...

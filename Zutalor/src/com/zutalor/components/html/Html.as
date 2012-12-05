@@ -1,6 +1,6 @@
 package com.zutalor.components.html 
 {
-	import com.zutalor.components.interfaces.IComponent;
+	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.components.text.Text;
 		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.utils.ShowError;

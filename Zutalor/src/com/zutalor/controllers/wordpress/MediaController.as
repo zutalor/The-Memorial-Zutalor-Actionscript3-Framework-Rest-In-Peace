@@ -1,14 +1,14 @@
 package com.zutalor.controllers.wordpress
 {
 	import com.zutalor.amfphp.Remoting;
-	import com.zutalor.controllers.AbstractController;
+	import com.zutalor.controllers.base.UiControllerBase;
 	import com.zutalor.interfaces.IUiController;
 	import flashpress.vo.WpAttachmentVO;
 	/**
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class MediaController extends AbstractController implements IUiController
+	public class MediaController extends UiControllerBase implements IUiController
 	{
 		private var _attachments:*;
 		private var _numAttachments:int;

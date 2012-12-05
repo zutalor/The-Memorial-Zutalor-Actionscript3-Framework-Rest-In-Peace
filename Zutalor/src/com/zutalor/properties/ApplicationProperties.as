@@ -2,9 +2,9 @@
 {
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.propertyManagers.Props;
-	import com.zutalor.ui.Focus;
+	import com.zutalor.widgets.Focus;
 	import com.zutalor.utils.Singleton;
-	import com.zutalor.utils.StringUtils;
+	import com.zutalor.text.StringUtils;
 	
 	/**
 	 * ...

@@ -1,9 +1,9 @@
 package com.zutalor.components.stepper
 {
 	import com.zutalor.components.button.Button;
-	import com.zutalor.components.Component;
+	import com.zutalor.components.base.Component;
 	import com.zutalor.components.graphic.Graphic;
-	import com.zutalor.components.interfaces.IComponent;
+	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.components.label.Label;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.view.properties.ViewItemProperties;

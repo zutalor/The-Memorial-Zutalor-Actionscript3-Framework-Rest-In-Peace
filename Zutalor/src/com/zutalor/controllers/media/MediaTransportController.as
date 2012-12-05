@@ -1,21 +1,18 @@
 package com.zutalor.controllers.media 
 {
 	import com.greensock.TweenMax;
-	import com.zutalor.controllers.AbstractController;
+	import com.zutalor.controllers.base.UiControllerBase;
 	import com.zutalor.interfaces.IUiController;
-	import com.zutalor.utils.StrUtil;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.StageRef;
-	import com.zutalor.utils.TimerRegistery;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.events.TimerEvent;
 	import flash.ui.Mouse;
 	/**
 	 * ...
 	 * @author Geoff
 	 */
-	public class MediaTransportController extends AbstractController implements IUiController
+	public class MediaTransportController extends UiControllerBase implements IUiController
 	{
 		private var _mediaTransportVO:MediaTransportVO;
 		private var _dimTime:uint;

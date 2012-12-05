@@ -1,15 +1,10 @@
 ﻿package com.zutalor.containers
 {
-	import adobe.utils.CustomActions;
 	import com.gskinner.utils.IDisposable;
-	import com.zutalor.components.Component;
+	import com.zutalor.containers.base.ViewObject;
 	import com.zutalor.events.ContainerEvent;
-	import com.zutalor.properties.ApplicationProperties;
-	import com.zutalor.propertyManagers.Presets;
-	import com.zutalor.ui.Focus;
 	import com.zutalor.utils.DisplayObjectUtils;
-	import com.zutalor.utils.ShowError;
-	import com.zutalor.view.controller.ViewController;
+	import com.zutalor.widgets.Focus;
 	import flash.display.DisplayObject;
 	/**
 	 * ...
@@ -25,6 +20,11 @@
 		public function Container(containerName:String) 
 		{
 			name = containerName;
+		}
+		
+		public function callContainerMethod(method:String, params:String):void
+		{
+			this[method](params);
 		}
 		
 		override public function recycle():void

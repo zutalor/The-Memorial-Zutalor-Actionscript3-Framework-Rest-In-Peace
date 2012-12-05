@@ -1,7 +1,7 @@
 package com.zutalor.components.group
 {
-	import com.zutalor.components.Component;
-	import com.zutalor.components.interfaces.IComponent;
+	import com.zutalor.components.base.Component;
+	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.view.properties.ViewItemProperties;

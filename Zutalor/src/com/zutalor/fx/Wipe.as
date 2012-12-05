@@ -1,7 +1,5 @@
 ﻿package com.zutalor.fx
 {
-	import com.zutalor.ui.DrawGraphics;
-	import com.zutalor.utils.Scale;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
@@ -26,7 +24,9 @@
 			_scaleX = dc.scaleX; 	
 			_scaleY = dc.scaleY; 
 						
-			DrawGraphics.box(mask, dc.width+5, dc.height+5, 0x000000, 0);
+			mask.graphics.beginFill(0x000000);
+			mask.graphics.drawRect(0, 0, dc.width + 5, dc.height + 5);
+			mask.graphics.endFill();
 
 			mask.x = _destX = dc.x;
 			mask.y = _destY = dc.y;

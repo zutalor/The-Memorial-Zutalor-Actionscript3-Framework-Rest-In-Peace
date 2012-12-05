@@ -3,7 +3,7 @@ package com.zutalor.synthesizer
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.ShowError;
-	import com.zutalor.utils.StringUtils;
+	import com.zutalor.text.StringUtils;
 	import com.noteflight.standingwave3.elements.AudioDescriptor;
 	import com.noteflight.standingwave3.elements.IAudioSource;
 	import com.noteflight.standingwave3.filters.AmpFilter;

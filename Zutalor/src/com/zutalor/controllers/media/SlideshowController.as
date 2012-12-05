@@ -1,21 +1,19 @@
 package com.zutalor.controllers.media 
 {
 	import com.greensock.TweenMax;
-	import com.zutalor.controllers.AbstractController;
+	import com.zutalor.controllers.base.UiControllerBase;
 	import com.zutalor.interfaces.IUiController;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.StageRef;
-	import com.zutalor.utils.TimerRegistery;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.events.TimerEvent;
 	import flash.ui.Mouse;
 
 	/**
 	 * ...
 	 * @author Geoff
 	 */
-	public class SlideshowController extends AbstractController implements IUiController
+	public class SlideshowController extends UiControllerBase implements IUiController
 	{		
 		public const DIM_TIME:int = 5000;
 		public const FADE_SECONDS:int = 1;

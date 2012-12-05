@@ -1,9 +1,9 @@
 package com.zutalor.synthesizer
 {
-	import com.zutalor.utils.StringUtils;
-	import com.zutalor.utils.StringUtils;
+	import com.zutalor.text.StringUtils;
+	import com.zutalor.text.StringUtils;
 	import com.zutalor.utils.gDictionary;
-	import com.zutalor.utils.StringUtils;
+	import com.zutalor.text.StringUtils;
 	/**
 	 * ...
 	 * @author Geoff Pepos

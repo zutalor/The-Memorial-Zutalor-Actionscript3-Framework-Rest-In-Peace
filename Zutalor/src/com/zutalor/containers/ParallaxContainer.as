@@ -1,12 +1,9 @@
 ﻿package com.zutalor.containers 
 {
-	import com.zutalor.events.ContainerEvent;
 	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.ui.DrawGraphics;
 	import flash.display.DisplayObject;
 	import flash.display.Shape;
-	import flash.display.Sprite;
 	import flash.events.Event;
 	/**
 	 * ...

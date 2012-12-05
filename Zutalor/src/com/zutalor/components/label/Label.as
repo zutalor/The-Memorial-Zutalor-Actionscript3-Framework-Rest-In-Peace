@@ -1,13 +1,13 @@
 package com.zutalor.components.label 
 {
-	import com.zutalor.components.interfaces.IViewObject;
+	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.components.text.Text;
-		import com.zutalor.view.properties.ViewItemProperties;
+	import com.zutalor.view.properties.ViewItemProperties;
 	/**
 	 * ...
 	 * @author Geoff
 	 */
-	public class Label extends Text implements IViewObject 
+	public class Label extends Text implements IComponent
 	{
 		public function Label(name:String)
 		{

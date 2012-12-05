@@ -3,7 +3,7 @@
 	import com.greensock.easing.Sine;
 	import com.greensock.TweenMax;
 	import com.gskinner.utils.IDisposable;
-	import com.zutalor.containers.ViewObject;
+	import com.zutalor.containers.base.ViewObject;
 	import com.zutalor.properties.ApplicationProperties;
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.utils.StrUtil;

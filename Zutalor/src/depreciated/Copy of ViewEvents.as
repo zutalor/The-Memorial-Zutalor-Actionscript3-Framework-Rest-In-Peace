@@ -4,7 +4,7 @@ package depreciated
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.media.SoundPlayer;
+	import com.zutalor.audio.SoundPlayer;
 	import com.zutalor.motion.MotionUtils;
 	import com.zutalor.plugin.constants.PluginClasses;
 	import com.zutalor.plugin.constants.PluginMethods;

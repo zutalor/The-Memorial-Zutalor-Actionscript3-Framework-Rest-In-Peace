@@ -1,15 +1,11 @@
 package com.zutalor.controllers
 {
-	import com.zutalor.air.AirStatus;
 	import com.zutalor.components.button.Button;
-	import com.zutalor.events.UIEvent;
-	import com.zutalor.propertyManagers.Props;
+	import com.zutalor.controllers.base.UiControllerBase;
 	import com.zutalor.translate.Translate;
-	import com.zutalor.ui.Dialog;
-	import flash.desktop.NativeApplication;
+	import com.zutalor.widgets.Dialog;
 
-	
-	public class DialogController extends AbstractUiController
+	public class DialogController extends UiControllerBase
 	{	
 		private var _vo:Object;
 		private var _callBack:Function;

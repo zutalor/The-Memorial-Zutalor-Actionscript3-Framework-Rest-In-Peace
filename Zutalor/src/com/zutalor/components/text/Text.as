@@ -1,7 +1,7 @@
 package com.zutalor.components.text 
 {
-	import com.zutalor.components.Component;
-	import com.zutalor.components.interfaces.IComponent;
+	import com.zutalor.components.base.Component;
+	import com.zutalor.interfaces.IComponent;
 		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.utils.ShowError;

@@ -5,7 +5,6 @@
 	import com.zutalor.components.media.video.VideoPlayer;
 	import com.zutalor.events.MediaEvent;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.media.MediaStateProperties;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Props;

@@ -1,11 +1,7 @@
 package com.zutalor.controllers.wordpress
 {
 	import com.zutalor.amfphp.Remoting;
-	import com.zutalor.models.wordpress.BlogModel;
 	import com.zutalor.utils.MasterClock;
-	import com.zutalor.utils.TimerRegistery;
-	import flash.events.Event;
-	import flashpress.vo.WpMetaVO;
 	import flashpress.vo.WpPostCountVO;
 	import flashpress.vo.WpPostVO;
 	/**

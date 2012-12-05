@@ -1,4 +1,4 @@
-package com.zutalor.models.media
+package com.zutalor.controllers.media
 {
 	/**
 	 * ...

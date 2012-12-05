@@ -1,13 +1,13 @@
 package com.zutalor.view.mediators
 {
 	import com.zutalor.air.AirStatus;
+	import com.zutalor.audio.TextToSpeech;
 	import com.zutalor.components.media.audio.AudioPlayer;
-	import com.zutalor.controllers.AbstractUiController;
+	import com.zutalor.controllers.base.UiControllerBase;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.gesture.AppGestureEvent;
 	import com.zutalor.gesture.GestureMediator;
 	import com.zutalor.gesture.UserInputProperties;
-	import com.zutalor.media.TextToSpeech;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.propertyManagers.Props;
@@ -18,7 +18,6 @@ package com.zutalor.view.mediators
 	import com.zutalor.utils.GridValues;
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.utils.MathG;
-	import com.zutalor.utils.SimpleMessage;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.properties.AnswerProperties;
 	import com.zutalor.view.properties.GenericData;
@@ -38,7 +37,7 @@ package com.zutalor.view.mediators
 		private var _curStateMeta:String;
 		private var _textToSpeech:TextToSpeech;
 		private var _audioPlayer:AudioPlayer;
-		private var _uiController:AbstractUiController;
+		private var _uiController:UiControllerBase;
 		private var _gm:GestureMediator;
 		private var _hkm:HotKeyManager;
 		private var _gestures:gDictionary;
@@ -61,7 +60,7 @@ package com.zutalor.view.mediators
 		private static const soundExt:String = ".mp3";
 		private static const letterAnswers:String = "abcdefgh";
 		
-		public function ViewStateMediator(uiController:AbstractUiController)
+		public function ViewStateMediator(uiController:UiControllerBase)
 		{
 			_uiController = uiController;
 			init();

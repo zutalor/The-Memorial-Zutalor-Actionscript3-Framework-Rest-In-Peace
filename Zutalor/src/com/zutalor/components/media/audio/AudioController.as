@@ -5,11 +5,8 @@
 	import com.zutalor.interfaces.IMediaController;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.Resources;
-	import com.zutalor.visualizers.SoundVisualizer;
-	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
-	import flash.events.ProgressEvent;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundLoaderContext;

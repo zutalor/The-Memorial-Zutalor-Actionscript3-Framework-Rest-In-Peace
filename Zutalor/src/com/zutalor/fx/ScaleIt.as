@@ -2,8 +2,6 @@
 {
 
 	import com.zutalor.containers.ViewContainer;
-	import com.zutalor.sprites.CenterSprite;
-	import flash.display.DisplayObject;
 	/**
 	 * ...
 	 * @author Geoff Pepos

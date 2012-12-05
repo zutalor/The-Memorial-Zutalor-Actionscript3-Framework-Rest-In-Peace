@@ -20,7 +20,7 @@
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.sequence.Sequence;
 	import com.zutalor.translate.Translate;
-	import com.zutalor.ui.Spinner;
+	import com.zutalor.widgets.Spinner;
 	import com.zutalor.utils.DisplayUtils;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.MasterClock;

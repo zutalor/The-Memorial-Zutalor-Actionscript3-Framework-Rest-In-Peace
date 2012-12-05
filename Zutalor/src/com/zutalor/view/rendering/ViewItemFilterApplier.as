@@ -1,6 +1,6 @@
 package com.zutalor.view.rendering 
 {
-	import com.zutalor.components.Component;
+	import com.zutalor.components.base.Component;
 	import com.zutalor.components.graphic.Graphic;
 	import com.zutalor.fx.Filters;
 		import com.zutalor.view.properties.ViewItemProperties;

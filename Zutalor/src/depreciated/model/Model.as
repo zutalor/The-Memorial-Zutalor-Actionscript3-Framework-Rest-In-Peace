@@ -8,7 +8,7 @@ package depreciated.model
 	import com.zutalor.utils.Assertions;
 	import com.zutalor.utils.Resources;
 	import com.zutalor.utils.Singleton;
-	import com.zutalor.utils.StringUtils;
+	import com.zutalor.text.StringUtils;
 	import com.zutalor.utils.XMLLoader;
 	import flash.events.Event;
 	import flash.external.ExternalInterface;

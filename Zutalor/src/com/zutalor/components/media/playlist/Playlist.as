@@ -2,16 +2,14 @@ package com.zutalor.components.media.playlist
 {
 	import com.greensock.TweenMax;
 	import com.gskinner.utils.IDisposable;
-	import com.zutalor.components.Component;
-	import com.zutalor.components.interfaces.IComponent;
+	import com.zutalor.components.base.Component;
+	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.components.media.base.MediaPlayer;
 	import com.zutalor.components.media.base.MediaProperties;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.MediaEvent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.interfaces.IMediaPlayer;
-	import com.zutalor.media.AiClipPlayer;
-	import com.zutalor.media.MediaStateProperties;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Props;

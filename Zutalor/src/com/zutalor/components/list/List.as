@@ -1,8 +1,8 @@
 package com.zutalor.components.list 
 {
 	import com.zutalor.components.button.Button;
-	import com.zutalor.components.Component;
-	import com.zutalor.components.interfaces.IComponent;
+	import com.zutalor.components.base.Component;
+	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.translate.Translate;

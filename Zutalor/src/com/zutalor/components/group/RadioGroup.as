@@ -1,6 +1,6 @@
 package com.zutalor.components.group
 {
-	import com.zutalor.components.interfaces.IComponent;
+	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.utils.ArrayUtils;
 	import flash.display.DisplayObject;

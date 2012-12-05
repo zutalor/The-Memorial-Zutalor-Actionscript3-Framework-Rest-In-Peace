@@ -1,24 +1,19 @@
 ﻿package com.zutalor.motion
 {
-	import com.zutalor.containers.ViewObject;
-	import com.zutalor.containers.ViewObject;
+	import com.zutalor.containers.base.ViewObject;
 	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.properties.ApplicationProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
-	import com.zutalor.propertyManagers.PropertyManager;
-	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.MasterClock;
-	import com.zutalor.utils.Motion;
 	import com.zutalor.utils.Scale;
+	import com.zutalor.utils.Singleton;
 	import com.zutalor.utils.StageRef;
-	import com.zutalor.utils.TimerRegistery;
 	import com.zutalor.view.controller.ViewController;
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
-	import com.zutalor.utils.Singleton;
 	/**
 	 * ...
 	 * @author Geoff Pepos

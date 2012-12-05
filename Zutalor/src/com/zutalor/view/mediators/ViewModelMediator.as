@@ -1,6 +1,6 @@
 package com.zutalor.view.mediators  
 {
-	import com.zutalor.components.Component;
+	import com.zutalor.components.base.Component;
 	import com.zutalor.components.group.ComponentGroup;
 	import com.zutalor.components.group.RadioGroup;
 	import com.zutalor.containers.ScrollingContainer;

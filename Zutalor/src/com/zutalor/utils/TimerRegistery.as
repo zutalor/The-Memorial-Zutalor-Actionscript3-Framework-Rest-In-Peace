@@ -51,7 +51,8 @@
 			return _defaultInterval;
 		}
 				
-		public function registerCallback(callback:Function, autostart:Boolean, interval:uint, fireOnce:Boolean = false, args:String = null):void
+		public function registerCallback(callback:Function, autostart:Boolean, interval:uint, 
+													fireOnce:Boolean = false, args:String = null):void
 		{
 			var i:int;
 			

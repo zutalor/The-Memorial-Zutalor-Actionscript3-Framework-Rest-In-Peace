@@ -10,7 +10,7 @@ package depreciated.preloading
 	import com.zutalor.preloading.events.AssetProgressEvent;
 	import com.zutalor.preloading.events.AssetStatusEvent;
 	import com.zutalor.preloading.workers.WorkerInstances;
-	import com.zutalor.utils.StringUtils;		
+	import com.zutalor.text.StringUtils;		
 
 	/**
 	 * The Asset class defines an asset to preload with a PreloadController.

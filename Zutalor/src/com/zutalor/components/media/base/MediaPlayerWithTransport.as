@@ -1,6 +1,6 @@
 package com.zutalor.components.media.base 
 {
-	import com.zutalor.containers.ViewObject;
+	import com.zutalor.containers.base.ViewObject;
 	import com.zutalor.containerUtils.ContainerLoader;
 	import com.zutalor.events.MediaEvent;
 	import com.zutalor.events.MediaLoadProgressEvent;

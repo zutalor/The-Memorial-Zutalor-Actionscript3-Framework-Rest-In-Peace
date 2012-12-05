@@ -1,10 +1,10 @@
 package com.zutalor.components.graphic
 {
-	import com.zutalor.components.Component;
+	import com.zutalor.components.base.Component;
 	import com.zutalor.components.embed.Embed;
-	import com.zutalor.components.interfaces.IComponent;
+	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.components.label.Label;
-	import com.zutalor.containers.ViewObject;
+	import com.zutalor.containers.base.ViewObject;
 	import com.zutalor.fx.Filters;
 	import com.zutalor.fx.Transition;
 	import com.zutalor.objectPool.ObjectPool;

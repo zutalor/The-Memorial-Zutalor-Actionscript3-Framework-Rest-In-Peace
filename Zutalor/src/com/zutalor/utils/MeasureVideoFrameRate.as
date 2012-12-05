@@ -1,9 +1,10 @@
 package com.zutalor.utils
 {
+	import com.zutalor.components.media.video.VideoController;
 	import com.zutalor.events.MediaEvent;
 	import com.zutalor.events.MediaLoadProgressEvent;
 	import com.zutalor.events.MediaPlayProgressEvent;
-	import com.zutalor.media.VideoController;
+	import com.zutalor.audio.VideoController;
 	import com.zutalor.properties.ApplicationProperties;
 	import flash.display.Sprite;
 	import flash.utils.getTimer;
@@ -90,7 +91,7 @@ package com.zutalor.utils
 		
 		private function measure(url:String):void
 		{
-			videoController = new VideoController(updateIntervalMs);
+			videoController = new VideoController();
 			videoController.addEventListener(MediaEvent.LOAD_COMPLETE, onLoaded, false, 0, true);
 			videoController.addEventListener(MediaLoadProgressEvent.PROGRESS, checkLoadProgress, false, 0, true);
 			videoController.load(view, url, 1, 1);
