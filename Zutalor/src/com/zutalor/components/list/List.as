@@ -59,7 +59,6 @@ package com.zutalor.components.list
 					for (var i:int = 0; i < data.length; i++)
 						_scrollingContainer.push(createListItem(data[i]));
 				}
-
 				_scrollingContainer.autoArrangeContainerChildren( { padding:_lp.spacing, arrange:_lp.arrange } );
 				_scrollingContainer.addEventListener(MouseEvent.CLICK, onTap, false, 0, true);
 			}

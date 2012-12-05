@@ -8,17 +8,17 @@ package com.zutalor.view.rendering
 
 	public class ViewRenderer
 	{
-		private var _onItemRenderCallback:Function;	
-		private var _applyFilters:Function;
-		private var _positionItem:Function;
-		private var _container:Container;
+		private var onItemRendered:Function;	
+		private var filterApplier:Function;
+		private var positioner:Function;
+		private var container:Container;
 
-		public function ViewRenderer(container:Container, onItemRenderCallback:Function, applyFilters:Function, positionItem:Function = null) 
+		public function ViewRenderer(c:Container, onItemRendered:Function, filterApplier:Function, positioner:Function = null) 
 		{	
-			_onItemRenderCallback = onItemRenderCallback;
-			_applyFilters = applyFilters;
-			_positionItem = positionItem;
-			_container = container;
+			this.onItemRendered = onItemRendered;
+			this.filterApplier = filterApplier;
+			this.positioner = positioner;
+			this.container = c;
 		}
 		
 		public function renderItem(vip:ViewItemProperties):void
@@ -29,22 +29,18 @@ package com.zutalor.view.rendering
 			
 			if (vip.tKey)
 				vip.text = Translate.text(vip.tKey);
-			else
-				vip.text = vip.text;
-		
+				
 			ViewItemClass = Plugins.getClass(vip.type);
 			viewItem = new ViewItemClass(vip.name);
-			viewItem.render(vip);
-	
-			if (!vip.excludeFromDisplayList) 
-				_container.push(viewItem);
-
 			viewItem.name = vip.name;
-			
-			_applyFilters(vip, viewItem);
-			
-			if (_positionItem != null)
-				_positionItem(vip);
+			viewItem.render(vip);
+			filterApplier(vip, viewItem);
+
+			if (!viewItem.isGhost) 
+				container.push(viewItem);
+
+			if (positioner != null)
+				positioner(vip);
 			
 			if (vip.tabIndex)
 			{
@@ -52,7 +48,7 @@ package com.zutalor.view.rendering
 				viewItem.tabIndex = vip.tabIndex;
 				viewItem.focusRect = true;
 			}	
-			_onItemRenderCallback();
+			onItemRendered();
 		}
 	}
 }

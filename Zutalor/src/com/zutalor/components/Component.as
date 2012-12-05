@@ -45,5 +45,10 @@ package com.zutalor.components
 			_value = value;
 			dispatchEvent(new UIEvent(UIEvent.VALUE_CHANGED, null, null, null, value));
 		}
+		
+		public function get isGhost():Boolean
+		{
+			return false;
+		}
 	}
 }

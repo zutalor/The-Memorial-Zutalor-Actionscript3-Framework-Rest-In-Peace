@@ -1,5 +1,6 @@
 ﻿package com.zutalor.components.media.audio 
 {		
+	import com.zutalor.components.media.base.MediaPlayerWithTransport;
 	import com.zutalor.constants.MediaPlayerTypes;
 	/**
 	 * ...
@@ -18,6 +19,11 @@
 		{
 			_audioController = new AudioController();
 			initialize(MediaPlayerTypes.audio, _audioController)
-		}		
+		}
+		
+		public function isGhost():Boolean
+		{
+			return true;
+		}
 	}
 }

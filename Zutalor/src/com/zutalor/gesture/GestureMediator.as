@@ -37,8 +37,7 @@ package com.zutalor.gesture
 
 			return _instance;
 		}
-		
-				
+					
 		public function activateGesture(type:String, target:DisplayObject, name:String):void 
 		{
 			var agp:ActiveGestureProperties;
@@ -52,6 +51,7 @@ package com.zutalor.gesture
 			
 			qualifiedClassName = getQualifiedClassName(gestureClass);
 			targetDictionary = _activeGestures.getByKey(target);
+			
 			if (targetDictionary)
 				agp = targetDictionary.getByKey(qualifiedClassName);
 			

@@ -20,6 +20,11 @@
 		{
 			_audioController = new AudioController();
 			initialize(MediaProperties.PLAYER_AUDIO, _audioController)
-		}		
+		}
+		
+		override public function get isGhost():Boolean
+		{
+			return true;
+		}
 	}
 }

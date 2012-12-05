@@ -6,6 +6,7 @@
 	import com.zutalor.components.label.Label;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.utils.DisplayUtils;
+	import com.zutalor.utils.StringUtils;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import flash.display.SimpleButton;
 	/**
@@ -41,46 +42,34 @@
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
 			var buttonStates:Array;
-			
+			var label:Label;
+
 			super.render(viewItemProperties);
 			
 			_bp = ButtonProperties(_presets.getPropsByName(vip.presetId));
 			
-			_up = new Graphic(name);
-			this.vip.presetId = _bp.upId;
-			_up.render(vip);
-	
-			_over = new Graphic(name);
-			vip.presetId = _bp.overId;
-			_over.render(vip);
-
-			_down = new Graphic(name);
-			vip.presetId = _bp.downId;
-			_down.render(vip);
-
-			_disabled = new Graphic(name);
+			_up = makeButtonState(_bp.upId);
+			_over = makeButtonState(_bp.overId);
+			_down = makeButtonState(_bp.downId);
 			
 			if (_bp.disabledId)
-				vip.presetId = _bp.disabledId;
+				_disabled = makeButtonState(_bp.disabledId);
 			else
-				vip.presetId = _bp.upId;
-			
-			_disabled.render(vip);	
+				_disabled = makeButtonState(_bp.upId);
 				
 			_sb = new SimpleButton(_up, _over, _down, _up);
 			addChild(_sb);
+			vip.text = StringUtils.stripLeadingSpaces(vip.text);
 			_sb.name = vip.text;				
-			
 			vip.hPad = _bp.hPad;
 			vip.vPad = _bp.vPad;
 
 			if (!_bp.textAttributesDown)
 			{
-				_bp.textAttributesDown = _bp.textAttributesDisabled = _bp.textAttributes;
+				_bp.textAttributesDown = _bp.textAttributesDisabled = _bp.textAttributesOver = _bp.textAttributesUp;
 			}
 			
-			_textAttributes = [_bp.textAttributes, _bp.textAttributes, _bp.textAttributesDown, _bp.textAttributesDisabled];
-
+			_textAttributes = [_bp.textAttributesUp, _bp.textAttributesOver, _bp.textAttributesDown, _bp.textAttributesDisabled];
 			buttonStates = [_up, _over, _down, _disabled];
 			_buttonLabels = [new Label(name), new Label(name), new Label(name), new Label(name)];
 			
@@ -90,15 +79,16 @@
 				_bp.height = int(vip.height);	
 			}
 				
-			var label:Label;
+			vip.textAttributes = _textAttributes[i];
+			vip.width = String(_bp.width);
+			vip.height = String(_bp.height);
+			vip.align = _bp.align;
+			vip.hPad = _bp.hPad;
+			vip.vPad = _bp.vPad;
 			for (var i:int = 0; i < 4; i++)
 			{
 				label = _buttonLabels[i];
-				vip.textAttributes = _textAttributes[i];
-				vip.align = _bp.align;
-				vip.hPad = _bp.hPad;
-				vip.vPad = _bp.vPad;
-				label.render();
+				label.render(vip);
 				buttonStates[i].addChild(label);
 				_buttonLabels[i] = label;
 				DisplayUtils.alignInRect(label, _bp.width, _bp.height, _bp.align, _bp.hPad, _bp.vPad);
@@ -144,6 +134,15 @@
 				_sb.upState = _disabled;
 			else
 				_sb.upState = _up;		
+		}
+		
+		private function makeButtonState(presetId:String):Graphic
+		{
+			var g:Graphic;
+			g = new Graphic(name);
+			vip.presetId = presetId;
+			g.render(vip)
+			return g;
 		}
 	}
 }

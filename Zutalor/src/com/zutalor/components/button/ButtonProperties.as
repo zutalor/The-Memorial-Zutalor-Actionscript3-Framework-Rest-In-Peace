@@ -15,7 +15,8 @@
 		
 		//the following apply to the text fields
 		
-		public var textAttributes:String;
+		public var textAttributesUp:String;
+		public var textAttributesOver:String;
 		public var textAttributesDown:String;
 		public var textAttributesDisabled:String;
 		

@@ -36,7 +36,6 @@
 	
 		public var voName:String;
 		public var hidden:Boolean;
-		public var excludeFromDisplayList:Boolean;
 		
 		public var format:String;
 		public var textAttributes:String;
