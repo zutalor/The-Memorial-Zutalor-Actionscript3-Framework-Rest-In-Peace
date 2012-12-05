@@ -15,7 +15,7 @@ package com.zutalor.components.list
 	 */
 	public class List  extends Component implements IComponent
 	{
-		private static var _presets:PropertyManager;
+
 		private var _scrollingContainer:ScrollingContainer;	
 		private var _lp:ListProperties;
 		
@@ -23,7 +23,9 @@ package com.zutalor.components.list
 		{
 			super(name);
 		}
-	
+
+		private static var _presets:PropertyManager;
+		
 		public static function registerPresets(options:Object):void
 		{	
 			if (!_presets)

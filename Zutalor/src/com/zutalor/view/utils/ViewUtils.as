@@ -35,7 +35,7 @@
 		public static const FIT_TO_STAGE:String = "fitToStage";
 		
 		private var ap:ApplicationProperties;
-		private var vpm:NestedPropsManager;
+		private var views:NestedPropsManager;
 		private var mu:MotionUtils;
 		private var pr:*;
 		
@@ -45,7 +45,7 @@
 		{
 			Singleton.assertSingle(ViewUtils);
 			ap = ApplicationProperties.gi();
-			vpm = ViewController.views;
+			views = ViewController.presets;
 			mu = MotionUtils.gi();
 			pr = Presets;
 		}
@@ -61,7 +61,7 @@
 		private function getParentContainerProps(target:DisplayObject):ViewProperties
 		{
 			var vp:ViewProperties;
-			vp = vpm.getPropsById(target.name);
+			vp = views.getPropsById(target.name);
 			if (vp)
 			{
 				return vp;
@@ -90,7 +90,7 @@
 				
 				try
 				{
-					vp = vpm.getPropsById(c.name);
+					vp = views.getPropsById(c.name);
 					if (vp)
 						positionAppContainer(vp);	
 						
@@ -150,7 +150,7 @@
 		{
 			var vp:ViewProperties;
 			
-			vp = vpm.getPropsById(viewName); //TODO Error check
+			vp = views.getPropsById(viewName); //TODO Error check
 			vp.container.callContainerMethod(method, params);
 		}
 		
@@ -158,7 +158,7 @@
 		{
 			var vp:ViewProperties;
 			
-			vp = vpm.getPropsById(viewName);
+			vp = views.getPropsById(viewName);
 			vp.container.callViewItemMethod(viewItem, method, params);			
 		}
 		
@@ -181,7 +181,7 @@
 			else
 				zType = uie.type;
 				
-			vp = vpm.getPropsById(vName);			
+			vp = views.getPropsById(vName);			
 			c = vp.container;
 			
 			if (zType == UIEvent.ZOOM_IN) 
@@ -227,7 +227,7 @@
 			spp = pr.scrollPresets.getPropsByName(scrollPreset);
 			if (spp)
 			{
-				c = vpm.getPropsById(spp.viewName).container;				
+				c = views.getPropsById(spp.viewName).container;				
 				if (c)
 				{
 					c.tweenScrollPercentX(spp.scrollPercentX, spp.scrollTimeX, Quart.easeInOut);

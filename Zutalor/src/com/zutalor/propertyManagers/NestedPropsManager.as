@@ -20,7 +20,8 @@
 
 		}
 		
-		public function parseXML(NodePropertiesClass:Class, NestedNodePropertiesClass:Class, propsXml:XMLList, propsName:String, itemPropsXml:XMLList, itemPropsName:String):void
+		public function parseXML(NodePropertiesClass:Class, NestedNodePropertiesClass:Class, propsXml:XMLList,
+											propsName:String, itemPropsXml:XMLList, itemPropsName:String = "props"):void
 		{
 			if (!_pm)
 				_pm = new PropertyManager(NodePropertiesClass);

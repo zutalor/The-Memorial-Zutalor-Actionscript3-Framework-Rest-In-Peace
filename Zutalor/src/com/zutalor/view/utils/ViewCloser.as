@@ -32,7 +32,7 @@ package com.zutalor.view.utils
 
         public function close(viewId:String, onComplete:Function = null):void
         {
-			_vp = ViewController.views.getPropsById(viewId);
+			_vp = ViewController.presets.getPropsById(viewId);
             _onComplete = onComplete;
 
             if (!_vp)

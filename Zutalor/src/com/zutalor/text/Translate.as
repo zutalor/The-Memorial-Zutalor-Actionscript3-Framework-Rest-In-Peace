@@ -1,14 +1,9 @@
 package com.zutalor.text
 {
-	import com.adobe.xml.syndication.atom.PersonTag;
-	import com.zutalor.loaders.URLLoaderG;
 	import com.zutalor.properties.TranslateItemProperties;
-	import com.zutalor.propertyManagers.Props;
-	import com.zutalor.utils.Logger;
+	import com.zutalor.properties.TranslateProperties;
+	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.utils.ShowError;
-	import flash.events.Event;
-	import flash.events.EventDispatcher;
-	import flash.events.IOErrorEvent;
 	
 	/**
 	 * ...
@@ -19,9 +14,25 @@ package com.zutalor.text
 		private static var _language:String;
 		private static var _tip:TranslateItemProperties;
 		
+		private static var _presets:NestedPropsManager;
+				
+		public static function registerPresets(options:Object):void
+		{
+			if (!_presets)
+				_presets = new NestedPropsManager();
+			
+			_presets.parseXML(TranslateProperties, TranslateItemProperties, options.xml[options.nodeId], options.childNodeId, 
+																							options.xml[options.childNodeId]);
+		}
+		
+		public static function get presets():NestedPropsManager
+		{
+			return _presets;
+		}
+		
 		public static function set language(l:String):void
 		{
-			if (Props.translations.getPropsById(l))
+			if (_presets.getPropsById(l))
 				_language = l;
 			else
 				ShowError.fail(Translate,"Language " + l + " not defined.");
@@ -34,7 +45,7 @@ package com.zutalor.text
 		
 		public static function getNumItems(id:String):int
 		{
-			return Props.translations.getNumItems(id);
+			return _presets.getNumItems(id);
 		}
 		
 		public static function text(item:String):String
@@ -43,7 +54,7 @@ package com.zutalor.text
 
 			if (item)
 			{
-				_tip = Props.translations.getItemPropsByName(_language, item);				
+				_tip = _presets.getItemPropsByName(_language, item);				
 				if (_tip)
 				{
 					if (_tip.tText)
@@ -57,7 +68,7 @@ package com.zutalor.text
 		
 		public static function getSoundName(item:String):String
 		{
-			_tip = Props.translations.getItemPropsByName(_language, item);
+			_tip = _presets.getItemPropsByName(_language, item);
 			if (_tip)
 				return _tip.sound;
 			else
@@ -66,7 +77,7 @@ package com.zutalor.text
 		
 		public static function getMetaByName(name:String):String
 		{
-			_tip = Props.translations.getItemPropsByName(_language, name);
+			_tip = _presets.getItemPropsByName(_language, name);
 			if (_tip)
 				if (_tip.tMeta)
 					return _tip.tMeta;
@@ -80,7 +91,7 @@ package com.zutalor.text
 		{
 			var tp:TranslateItemProperties;
 			
-			tp = Props.translations.getItemPropsByIndex(_language, index);
+			tp = _presets.getItemPropsByIndex(_language, index);
 			if (tp)
 				return getMetaByName(tp.name);
 			else

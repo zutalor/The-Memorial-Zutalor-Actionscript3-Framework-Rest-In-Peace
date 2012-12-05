@@ -65,8 +65,8 @@ package com.zutalor.components.graphic
 			if (!_graphics)
 				_graphics = new NestedPropsManager();
 			
-			_graphics.parseXML(GraphicProperties, GraphicItemProperties, options.xml[options.nodeId].graphics, "graphic", 
-																				options.xml[options.nodeId].graphic, "props");
+			_graphics.parseXML(GraphicProperties, GraphicItemProperties, options.xml[options.nodeId], options.childNodeId, 
+																							options.xml[options.childNodeId]);
 		}
 		
 		override public function render(viewItemProperties:ViewItemProperties = null):void

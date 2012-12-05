@@ -34,7 +34,7 @@ package com.zutalor.view.mediators
 		public function ViewModelMediator(viewController:ViewController) 
 		{
 			vc = viewController;
-			_vpm = ViewController.views;
+			_vpm = ViewController.presets;
 			_ap = ApplicationProperties.gi();
 			_pr = Presets;
 		}

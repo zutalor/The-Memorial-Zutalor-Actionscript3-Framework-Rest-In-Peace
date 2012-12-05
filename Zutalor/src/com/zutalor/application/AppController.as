@@ -85,6 +85,23 @@
 			Props.init(_bootXmlUrl, init);
 		}
 		
+		public function enableAppState(state:String):void 
+		{	
+			_curAppState = state;
+			if (_curViewProps && !_curViewProps.contentPersists)
+			{
+				if (appStateProps.viewId == _curViewProps.name)
+					closeView(_curViewProps.container.name, processStateChange);
+				else 
+				{
+					closeView(_curViewProps.container.name);
+					processStateChange();
+				}
+			}
+			else
+				processStateChange();
+		}		
+		
 		// PRIVATE METHODS		
 				
 		private function closeView(viewName:String, onComplete:Function = null):void
@@ -105,22 +122,7 @@
 			}
 		}			
 		
-		private function enableAppState(state:String):void 
-		{	
-			_curAppState = state;
-			if (_curViewProps && !_curViewProps.contentPersists)
-			{
-				if (appStateProps.viewId == _curViewProps.name)
-					closeView(_curViewProps.container.name, processStateChange);
-				else 
-				{
-					closeView(_curViewProps.container.name);
-					processStateChange();
-				}
-			}
-			else
-				processStateChange();
-		}
+		
 
 		private function showSplash():void
 		{
@@ -239,7 +241,7 @@
 				if (appStateProps.type == AppStateProperties.SEQUENCE)
 				{
 						_loadingSequence = new Sequence();
-						_loadingSequence.play(appStateProps.sequenceName, this, enableAppState, stateChangeComplete);
+						_loadingSequence.play(appStateProps.sequenceName, this, stateChangeComplete);
 				}
 				else if (appStateProps.viewId && !_appStateCallStack.getByKey(_curAppState)) 
 				{
@@ -279,7 +281,7 @@
 			ap = ApplicationProperties.gi();
 			vu = ViewUtils.gi();
 			mu = MotionUtils.gi();
-			vpm = ViewController.views;
+			vpm = ViewController.presets;
 			
 			ap.ip = _ip;
 			GestureMediator.initialize(Plugins);
@@ -319,7 +321,7 @@
 			if (ap.loadingSequenceName)
 			{
 				_loadingSequence = new Sequence();
-				_loadingSequence.play(ap.loadingSequenceName, this, enableAppState, loadFirstPage);
+				_loadingSequence.play(ap.loadingSequenceName, this, loadFirstPage);
 			}
 			else
 				loadFirstPage();

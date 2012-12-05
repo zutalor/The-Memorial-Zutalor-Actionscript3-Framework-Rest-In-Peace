@@ -32,13 +32,10 @@
 
 		public static function registerPresets(options:Object):void
 		{
-			var xml:XMLList;
-			
 			if (!_presets)
 				_presets = new PropertyManager(ButtonProperties);
 			
-			xml = options.xml[options.nodeId];
-			_presets.parseXML(xml);
+			_presets.parseXML(options.xml[options.nodeId]);
 		}
 		
 		override public function render(viewItemProperties:ViewItemProperties = null):void

@@ -32,7 +32,7 @@
 		{			
 			_onComplete = onComplete;
 
-			vp = ViewController.views.getPropsById(viewId);		
+			vp = ViewController.presets.getPropsById(viewId);		
 			
 			if (!vp.container)
 				ObjectPool.getContainer(vp);

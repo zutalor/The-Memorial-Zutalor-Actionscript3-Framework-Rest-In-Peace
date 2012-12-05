@@ -1,5 +1,6 @@
 ﻿package com.zutalor.sequence 
 {
+	import com.zutalor.application.AppController;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.properties.SequenceItemProperties;
@@ -14,31 +15,34 @@
 	{
 		private var currentSequence:String;
 		private var sequenceIndx:int;
-		private var sm:NestedPropsManager;
-		private var _controller:Function;
+		private var _controller:AppController;
 		private var _onComplete:Function;
-		private var _caller:*
 		
-		public function Sequence() 
+		private static var _presets:NestedPropsManager;
+				
+		public static function registerPresets(options:Object):void
 		{
-			sm = Props.sequences;		
+			if (!_presets)
+				_presets = new NestedPropsManager();
+			
+			_presets.parseXML(SequenceProperties, SequenceItemProperties, options.xml[options.nodeId], options.childNodeId, 
+																							options.xml[options.childNodeId]);
 		}
 		
-		public function play(sequenceName:String, caller:*, controller:Function, onComplete:Function):void
+		public function play(sequenceName:String, controller:AppController, onComplete:Function):void
 		{
 			var sp:SequenceProperties;
 
-			_caller = caller;
 			_controller = controller;
 			_onComplete = onComplete;
 			
-			sp = sm.getPropsById(sequenceName);
+			sp = _presets.getPropsById(sequenceName);
 			
 			if (sp)
 			{
 				currentSequence = sequenceName;
 				sequenceIndx = 0;
-				_caller.addEventListener(Event.COMPLETE, prepSequenceItem, false, 0, true);
+				_controller.addEventListener(Event.COMPLETE, prepSequenceItem, false, 0, true);
 				prepSequenceItem();
 			}
 		}
@@ -47,14 +51,14 @@
 		{
 			var sip:SequenceItemProperties;
 			
-			if (sequenceIndx < sm.getNumItems(currentSequence))
+			if (sequenceIndx < _presets.getNumItems(currentSequence))
 			{
-				sip = sm.getItemPropsByIndex(currentSequence, sequenceIndx);
+				sip = _presets.getItemPropsByIndex(currentSequence, sequenceIndx);
 				MasterClock.callOnce(nextSequenceItem, sip.delay);
 			}
 			else
 			{
-				_caller.removeEventListener(Event.COMPLETE, prepSequenceItem);
+				_controller.removeEventListener(Event.COMPLETE, prepSequenceItem);
 				_onComplete();
 			}
 		}
@@ -62,11 +66,11 @@
 		private function nextSequenceItem():void
 		{
 			var sip:SequenceItemProperties;
-			sip = sm.getItemPropsByIndex(currentSequence, sequenceIndx);
+			sip = _presets.getItemPropsByIndex(currentSequence, sequenceIndx);
 			if (sip)
 			{
 				sequenceIndx++
-				_controller(sip.item);
+				_controller.enableAppState(sip.item);
 			}
 		}			
 	}

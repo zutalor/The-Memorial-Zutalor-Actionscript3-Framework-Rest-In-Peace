@@ -140,7 +140,7 @@ package com.zutalor.view.mediators
 		{
 			var index:int;
 			
-			index = Props.translations.getItemIndexByName(Translate.language, id)
+			index = Translate.presets.getItemIndexByName(Translate.language, id)
 			if (index == -1)
 				trace("State not found: " + id);
 			else 
@@ -312,7 +312,7 @@ package com.zutalor.view.mediators
 			{
 				_inTransition = true;
 				stop();
-				tp = Props.translations.getItemPropsByIndex(Translate.language, index);
+				tp = Translate.presets.getItemPropsByIndex(Translate.language, index);
 				_curStateId = tp.name;
 				_curState = index;
 				_history.push(_curState);

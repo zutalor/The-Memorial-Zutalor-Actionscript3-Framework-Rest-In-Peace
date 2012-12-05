@@ -12,7 +12,6 @@
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.ui.Focus;
 	import com.zutalor.utils.ShowError;
@@ -28,8 +27,6 @@
 	import com.zutalor.view.transition.ViewItemTransition;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.events.Event;
-	import flash.sampler.getSize;
 
 	public class ViewController implements IDisposable
 	{		
@@ -52,21 +49,27 @@
 		public var onStatus:Function;		
 		public var viewModelMediator:ViewModelMediator;
 		
-		public static var views:NestedPropsManager;
-		
-		public static function register(xml:XML):void
-		{	
-			if (!views)
-				views = new NestedPropsManager();
+		private static var _presets:NestedPropsManager;
+				
+		public static function registerPresets(options:Object):void
+		{
+			if (!_presets)
+				_presets = new NestedPropsManager();
 			
-			views.parseXML(ViewProperties, ViewItemProperties, xml.views, "view", xml.view, "props");
+			_presets.parseXML(ViewProperties, ViewItemProperties, options.xml[options.nodeId], options.childNodeId, 
+																				options.xml[options.childNodeId]);
+		}
+		
+		public static function get presets():NestedPropsManager
+		{
+			return _presets;
 		}
 	
 		public function load(_viewId:String, appState:String, onComplete:Function):void
 		{			
 			
 			_onComplete = onComplete;
-			vp = views.getPropsById(_viewId);
+			vp = _presets.getPropsById(_viewId);
 			_filters = [];
 			_itemIndex = 0;			
 
@@ -83,7 +86,7 @@
 			Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.INIT, { controller:this, id:_viewId } );
 			_defaultVO = Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT);
 			
-			_numViewItems = views.getNumItems(_viewId);
+			_numViewItems = _presets.getNumItems(_viewId);
 	
 			viewModelMediator = new ViewModelMediator(this);
 			_viewItemPositioner = new ViewItemPositioner(container, vp.width, vp.height);
@@ -115,7 +118,7 @@
 		public function positionAllItems():void
 		{
 			for (var i:int; i < _numViewItems; i++)
-				_viewItemPositioner.positionItem(views.getItemPropsByIndex(_viewId, i));
+				_viewItemPositioner.positionItem(_presets.getItemPropsByIndex(_viewId, i));
 		}
 		
 		public function callUiControllerMethod(method:String, arg:*, controllerId:String = null):void
@@ -220,7 +223,7 @@
 			
 			if (itemName)
 			{
-				vip = views.getItemPropsByName(_viewId, itemName);
+				vip = _presets.getItemPropsByName(_viewId, itemName);
 			
 				if (vip)
 				{
@@ -234,7 +237,7 @@
 			else
 				for (var i:int = 0; i < _numViewItems; i++) 
 				{
-					vip = views.getItemPropsByIndex(_viewId, i);
+					vip = _presets.getItemPropsByIndex(_viewId, i);
 						
 					Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
 					if (vip.voName)
@@ -252,7 +255,7 @@
 
 			if (itemName)
 			{
-				vip = views.getItemPropsByName(_viewId, itemName);
+				vip = _presets.getItemPropsByName(_viewId, itemName);
 				if (vip)
 				{
 					item = container.getChildByName(itemName) as Component;
@@ -264,7 +267,7 @@
 			else
 				for (var i:int = 0; i < _numViewItems; i++) 
 				{
-					vip = views.getItemPropsByIndex(_viewId, i);
+					vip = _presets.getItemPropsByIndex(_viewId, i);
 					if (vip.voName)
 					{
 						item = container.getChildAt(i) as Component;
@@ -344,7 +347,7 @@
 			var vip:ViewItemProperties;
 			var item:Component;
 			
-			vip = views.getItemPropsByName(_viewId, itemName);
+			vip = _presets.getItemPropsByName(_viewId, itemName);
 			if (vip && container.numChildren)
 				item = container.getChildByName(itemName) as Component;
 
@@ -353,12 +356,12 @@
 		
 		public function getItemPropsByName(itemName:String):ViewItemProperties
 		{
-			return views.getItemPropsByName(_viewId, itemName);
+			return _presets.getItemPropsByName(_viewId, itemName);
 		}
 		
 		public function getItemPropsByIndex(index:int):ViewItemProperties
 		{
-			return views.getItemPropsByIndex(_viewId, index);
+			return _presets.getItemPropsByIndex(_viewId, index);
 		}
 		
 		
@@ -369,7 +372,7 @@
 			var vip:ViewItemProperties;
 			var item:Component;
 			
-			vip = views.getItemPropsByName(_viewId, itemName);
+			vip = _presets.getItemPropsByName(_viewId, itemName);
 			if (vip && container.numChildren)
 				item = container.getChildByName(itemName) as Component;
 				if (item)
@@ -460,7 +463,7 @@
 			
 			if (_itemIndex < _numViewItems)
 			{
-				vip = views.getItemPropsByIndex(_viewId, _itemIndex++);
+				vip = _presets.getItemPropsByIndex(_viewId, _itemIndex++);
 				if (!vip.styleSheetName)
 					vip.styleSheetName = vp.styleSheetName;
 				_viewRenderer.renderItem(vip);
@@ -486,7 +489,7 @@
 			
 			for (i = 0; i < c; i++)
 			{
-				vip = views.getItemPropsByIndex(_viewId, i);
+				vip = _presets.getItemPropsByIndex(_viewId, i);
 				if (vip && vip.transitionPreset) {
 					_viewItemTransition = new ViewItemTransition();
 					_viewItemTransition.render(vip, container, TransitionTypes.IN);

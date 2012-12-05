@@ -67,7 +67,7 @@
 		{
 			Singleton.assertSingle(Motion);
 			ap = ApplicationProperties.gi();
-			vpm = ViewController.views;
+			vpm = ViewController.presets;
 		}
 		
 		public static function gi():MotionUtils

@@ -55,7 +55,7 @@ package com.zutalor.view.mediators
 		
 		private function _init():void
 		{
-			_vpm = ViewController.views;
+			_vpm = ViewController.presets;
 			_vu = ViewUtils.gi();			
 			_pr = Presets;
 			_mu = MotionUtils.gi();
@@ -489,7 +489,7 @@ package com.zutalor.view.mediators
 								FullScreen.toggle();
 								break;
 							default: 
-								var c:ViewContainer = ViewController.views.getPropsById(containerNames[i]).container;
+								var c:ViewContainer = ViewController.presets.getPropsById(containerNames[i]).container;
 								for (i = 0; i < containerNames.length; i++)
 									c.dispatchEvent(new UIEvent(vip.tapAction, containerNames[i], vc.vp.appState));
 						}						
