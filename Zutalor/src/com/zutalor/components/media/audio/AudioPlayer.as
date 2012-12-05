@@ -22,7 +22,7 @@
 			initialize(MediaProperties.PLAYER_AUDIO, _audioController)
 		}
 		
-		override public function get isGhost():Boolean
+		override public function get isInvisible():Boolean
 		{
 			return true;
 		}

@@ -36,7 +36,7 @@ package com.zutalor.view.rendering
 			viewItem.render(vip);
 			filterApplier(vip, viewItem);
 
-			if (!viewItem.isGhost) 
+			if (!viewItem.isInvisible) 
 				container.push(viewItem);
 
 			if (positioner != null)

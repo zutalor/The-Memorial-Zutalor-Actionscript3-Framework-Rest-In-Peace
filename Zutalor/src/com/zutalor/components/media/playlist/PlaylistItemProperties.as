@@ -1,6 +1,7 @@
-﻿package com.zutalor.properties  
+﻿package com.zutalor.components.media.playlist  
 {
 	import com.zutalor.interfaces.IProperties;
+	import com.zutalor.properties.PropertiesBase;
 	/**
 	 * ...
 	 * @author Geoff Pepos

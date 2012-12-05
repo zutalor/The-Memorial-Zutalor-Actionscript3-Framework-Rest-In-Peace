@@ -1,6 +1,7 @@
 ﻿package com.zutalor.components.media.video 
 {
-	import com.zutalor.properties.MediaProperties;
+	import com.zutalor.components.media.base.MediaPlayer;
+	import com.zutalor.components.media.base.MediaProperties;
 	import flash.display.Sprite;
 	
 	/**
@@ -11,8 +12,9 @@
 	{	
 		private var _flvController:VideoController;
 		
-		public function VideoPlayer()
+		public function VideoPlayer(name:String)
 		{
+			super(name);
 			init();
 		}
 		

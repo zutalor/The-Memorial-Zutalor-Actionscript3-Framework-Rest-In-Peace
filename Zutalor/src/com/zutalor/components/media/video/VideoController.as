@@ -1,5 +1,6 @@
 ﻿package com.zutalor.components.media.video
 {
+	import com.zutalor.components.media.base.MediaController;
 	import com.zutalor.events.MediaEvent;
 	import com.zutalor.interfaces.IMediaController;
 	import com.zutalor.objectPool.ObjectPool;

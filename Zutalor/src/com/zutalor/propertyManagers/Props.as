@@ -5,8 +5,6 @@ package com.zutalor.propertyManagers
 	import com.zutalor.properties.ApplicationProperties;
 	import com.zutalor.properties.FiltersItemProperties;
 	import com.zutalor.properties.FiltersProperties;
-	import com.zutalor.properties.PlaylistItemProperties;
-	import com.zutalor.properties.PlaylistProperties;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StringUtils;
 
@@ -19,7 +17,6 @@ package com.zutalor.propertyManagers
 		public static var ap:ApplicationProperties;
 		public static var pr:*;
 		
-		public static var playlists:NestedPropsManager;
 		public static var filters:NestedPropsManager;
 
 		private static var _xmlFiles:int;
@@ -42,7 +39,6 @@ package com.zutalor.propertyManagers
 			pr = Presets;	
 			ap = ApplicationProperties.gi();
 			filters = new NestedPropsManager();
-			playlists = new NestedPropsManager();
 			loadBootXml(bootXmlUrl);
 		}
 		private static function loadBootXml(url:String):void
@@ -128,7 +124,7 @@ package com.zutalor.propertyManagers
 		private static function parseProps(xml:XML):void
 		{	
 
-			playlists.parseXML(PlaylistProperties, PlaylistItemProperties, xml.playlists, "playlist", xml.playlist, "props");						
+							
 			Presets.parseXML(xml);		
 			
 			

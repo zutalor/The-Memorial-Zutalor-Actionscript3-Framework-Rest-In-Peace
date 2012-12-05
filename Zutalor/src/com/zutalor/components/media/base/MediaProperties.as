@@ -12,6 +12,7 @@
 		public static const PLAYER_IMAGE:String = "image";
 		public static const PLAYER_AUDIO:String = "audio";
 		public static const PLAYER_YOUTUBE:String = "youTube";
+		public static const PLAYER_PLAYLIST:String = "playlist";
 		
 		public var volume:Number = 1;
 		public var bufferTime:Number = 7;

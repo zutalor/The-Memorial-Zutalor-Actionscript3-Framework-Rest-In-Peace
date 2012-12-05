@@ -1,5 +1,6 @@
 ﻿package com.zutalor.media  
 {
+	import com.zutalor.components.media.playlist.Playlist;
 	import com.zutalor.interfaces.IProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.utils.MapXML;

@@ -4,7 +4,9 @@ package com.zutalor.components.graphic
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class Paint 
+
+	 // Currently a stub
+	 public class Paint 
 	{
 		private var _frameRate:int = 60;
 		private var _bmd:BitmapData;

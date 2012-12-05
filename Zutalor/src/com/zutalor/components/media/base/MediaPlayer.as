@@ -25,26 +25,24 @@
 	{	
 		protected var mediaController:MediaController;
 		protected var _volume:Number;
-
-		private var _name:String;
 		private var _url:String;
-		private var _startDelay:Number;
-		
-		private var _viewFadeIn:Number;
-		private var _audioFadeIn:Number;
-		private var _fadeOut:Number;
-		private var _overlap:Number;
-		private var _start:Number;
-		private var _end:Number;
-		public var endVariance:Number;
-		private var _loop:int;
-		private var _loopDelay:Number;
-		private var _loopDelayTimer:Timer;
-		private var _bufferingTime:Number;	
 		private var _playerType:String;
-		private var _mpp:MediaProperties;
+		private var _bufferingTime:int;	
 		
-		protected static var _presets:PropertyManager;
+		public var startDelay:Number;
+		public var viewFadeIn:Number;
+		public var audioFadeIn:Number;
+		public var fadeOut:Number;
+		public var overlap:Number;
+		public var start:Number;
+		public var end:Number;
+		public var endVariance:Number;
+		public var loop:int;
+		public var loopDelay:Number;
+		public var bufferTime:Number;
+		public var scaleToFit:Boolean = true;
+		
+		private static var presets:PropertyManager;
 				
 		public function MediaPlayer(name:String)
 		{
@@ -53,10 +51,10 @@
 		
 		public static function registerPresets(options:Object):void
 		{	
-			if (!_presets)
-				_presets = new PropertyManager(MediaProperties);
+			if (!presets)
+				presets = new PropertyManager(MediaProperties);
 			
-			_presets.parseXML(options.xml[options.nodeId]);
+			presets.parseXML(options.xml[options.nodeId]);
 		}
 		
 		override public function render(viewItemProperties:ViewItemProperties = null):void
@@ -64,21 +62,27 @@
 			var mpp:MediaProperties;
 			
 			super.render(viewItemProperties);
-			_mpp = _presets.getPropsByName(vip.mediaPreset);
-			if (!_mpp)
+			mpp = presets.getPropsByName(vip.mediaPreset);
+			if (!mpp)
 				ShowError.fail(MediaPlayer,"No media preset " + vip.url);
 						
-			load(vip.url, _mpp.volume, int(vip.width), int(vip.height), _mpp.scaleToFit, _mpp.bufferTime);
-			if (_mpp.controlsViewId)
-				initTransport(_mpp.controlsViewId, _mpp.controlsContainerName);			
+			load(vip.url, mpp.volume);
+			if (mpp.controlsViewId)
+				initTransport(mpp.controlsViewId, mpp.controlsContainerName);			
 			
 			if (vip.url)
 			{
-				if (_mpp.hideOnPlayComplete)
+				if (mpp.hideOnPlayComplete)
 					addEventListener(MediaEvent.COMPLETE, hideMediaPlayerOnPlayComplete, false, 0, true);
 
-				if (_mpp.autoPlay)
-					play(_mpp.mediaFadeIn, _mpp.audioFadeIn, _mpp.fadeOut, 0, _mpp.startDelay);
+				if (mpp.autoPlay)
+				{
+					viewFadeIn = mpp.mediaFadeIn;
+					audioFadeIn = mpp.audioFadeIn;
+					fadeOut = mpp.fadeOut;
+					startDelay = mpp.startDelay;
+					play();
+				}
 			}
 			else
 				visible = false;	
@@ -89,10 +93,10 @@
 		protected function onLoadProgress(e:MediaLoadProgressEvent):void { }
 		protected function setPlayPauseButton(e:Event = null):void { }	
 		
-		protected function initialize(playerType:String, mediaController:MediaController):void
+		protected function initialize(_playerType:String, mediaController:MediaController):void
 		{
 			endVariance = 0;
-			_playerType = playerType;	
+			_playerType = _playerType;	
 			this.mediaController = mediaController;	
 			mediaController.view = this;
 			mediaController.addEventListener(MediaEvent.COMPLETE, onPlayComplete);
@@ -106,18 +110,18 @@
 			mediaController.removeEventListener(MediaEvent.PLAY, onPlayStarted);
 			dispatchEvent(new MediaEvent(MediaEvent.PLAY));
 			Spinner.hide();
-			if (_viewFadeIn)
+			if (viewFadeIn)
 			{
 				mediaController.view.alpha = 0;
-				TweenMax.to(mediaController.view, _viewFadeIn, { alpha:1 } );
+				TweenMax.to(mediaController.view, viewFadeIn, { alpha:1 } );
 			}
-			if (_audioFadeIn)
+			if (audioFadeIn)
 			{
 				mediaController.volume = 0;
-				TweenMax.to(mediaController, _audioFadeIn, { volume:_volume } );
+				TweenMax.to(mediaController, audioFadeIn, { volume:volume } );
 			}
 			else
-				mediaController.volume = _volume;
+				mediaController.volume = volume;
 				
 			if (mediaController.totalTime)
 				onTotalTimeFound()
@@ -129,47 +133,28 @@
 		
 		// PUBLIC METHODS
 		
-		public function load(url:String, defaultVolume:Number = 1, playerWidth:int = 0, 
-							playerHeight:int = 0, scaleToFit:Boolean = true, bufferTime:Number=0):void
+		public function load(url:String, defaultVolume:Number = 1):void
 		{				
-			_url = url;
+			url = url;
 			volume = defaultVolume;
 			mediaController.returnToZeroOnStop = true;
-			mediaController.width = playerWidth;
-			mediaController.height = playerHeight;
+		
 			mediaController.load(url, scaleToFit, bufferTime);
 		}	
 		
-		public function play(viewFadeIn:Number = 0, audioFadeIn:Number = 0, 
-									fadeOut:Number = 0, overlap:Number = 0, startDelay:Number = 0,
-									start:Number=0, end:Number = 0, loop:int=0, loopDelay:Number=0):void
+		public function play():void
 		{
-			_viewFadeIn = viewFadeIn;
-			_audioFadeIn = audioFadeIn;
-			_fadeOut = fadeOut;
-			_overlap = overlap;
-			_startDelay = startDelay;
-			_start = start;	
-			_end = end;
-			_loop = loop;
-			_loopDelay = loopDelay;
-
-			if (_playerType == MediaProperties.PLAYER_AUDIO)
-				mediaController.visible = false;
-			else
-				mediaController.visible = true;
-			
 			Spinner.show(2);
 			
-			if (!_fadeOut)
-				_fadeOut = 0;
+			if (!fadeOut)
+				fadeOut = 0;
 
 			mediaController.addEventListener(MediaEvent.PLAY, onPlayStarted);			
 			
 			if (startDelay) 
 				MasterClock.callOnce(onPlayDelayed, startDelay * 1000);
 			else	
-				mediaController.play(_start);
+				mediaController.play(start);
 				
 			setPlayPauseButton();
 		}
@@ -261,7 +246,7 @@
 		
 		public function get url():String
 		{
-			return _url;
+			return url;
 		}
 		
 		public function set framerate(fr:Number):void
@@ -291,13 +276,13 @@
 								
 		public function set volume(v:Number):void
 		{
-			_volume = v;
+			volume = v;
 			mediaController.volume = v;
 		}
 		
 		public function get volume():Number
 		{
-			return _volume;
+			return volume;
 		}
 
 		override public function dispose():void
@@ -321,14 +306,14 @@
 			if (mediaController.totalTime)
 			{
 				MasterClock.unRegisterCallback(onTotalTimeFound);
-				end = mediaController.totalTime - mediaController.currentTime - _start - _end - endVariance;
+				end = mediaController.totalTime - mediaController.currentTime - start - end - endVariance;
 	
-				if (_overlap)
+				if (overlap)
 				{
-					interval = end - _overlap; 
+					interval = end - overlap; 
 					MasterClock.registerCallback(onOverLapClip, true, interval * 1000);
 				}
-				interval = end - _fadeOut;
+				interval = end - fadeOut;
 				if (interval > mediaController.currentTime)
 					MasterClock.registerCallback(onEndClip, true, interval * 1000);
 				else
@@ -339,16 +324,16 @@
 		private function onEndClip():void
 		{
 			MasterClock.unRegisterCallback(onEndClip);
-			stop(_fadeOut);
+			stop(fadeOut);
 		}
 		
 		private function onOverLapClip():void
 		{
 			MasterClock.unRegisterCallback(onOverLapClip);
-			if (_fadeOut)
-				stop(_fadeOut)
+			if (fadeOut)
+				stop(fadeOut)
 			else
-				MasterClock.callOnce(onOverlapComplete, _overlap);
+				MasterClock.callOnce(onOverlapComplete, overlap);
 			
 			dispatchEvent(new MediaEvent(MediaEvent.OVERLAP));
 		}
@@ -361,7 +346,7 @@
 				
 		private function onPlayDelayed():void
 		{
-			mediaController.play(_start);
+			mediaController.play(start);
 		}
 					
 		private function onStopComplete():void
@@ -374,9 +359,6 @@
 		private function cleanUpAfterStop():void
 		{
 			Spinner.hide();
-			if (_playerType != MediaProperties.PLAYER_AUDIO)
-				mediaController.visible = false;
-			
 			setPlayPauseButton();							
 		}	
 		
@@ -385,30 +367,30 @@
 			cleanUpAfterStop();
 			dispatchEvent(new MediaEvent(MediaEvent.COMPLETE, 1));
 
-			if (_loop || _loop == -1)
+			if (loop || loop == -1)
 			{
-				if (_loopDelay) 
+				if (loopDelay) 
 				{
 					//TODO Looping
-					//_loopDelayTimer = new Timer(_loopDelay * 1000);
-					//_loopDelayTimer.addEventListener(TimerEvent.TIMER_COMPLETE, onLoopDelayComplete);
-					//_loopDelayTimer.start();
+					//loopDelayTimer = new Timer(loopDelay * 1000);
+					//loopDelayTimer.addEventListener(TimerEvent.TIMERCOMPLETE, onLoopDelayComplete);
+					//loopDelayTimer.start();
 				}
 				else
 				{
 					mediaController.play(0)
 				}
 			}
-			if (_loop > 0)
-				_loop--;
+			if (loop > 0)
+				loop--;
 		}
 		/*			
 		private function onLoopDelayComplete(e:TimerEvent):void 
 		{
-			_loopDelayTimer.removeEventListener(TimerEvent.TIMER_COMPLETE, onLoopDelayComplete);
-			_loopDelayTimer = null;
+			loopDelayTimer.removeEventListener(TimerEvent.TIMERCOMPLETE, onLoopDelayComplete);
+			loopDelayTimer = null;
 			
-			if (url.indexOf(_EMBEDDED) != -1)
+			if (url.indexOf(EMBEDDED) != -1)
 				play();
 			else
 				seek(0);			

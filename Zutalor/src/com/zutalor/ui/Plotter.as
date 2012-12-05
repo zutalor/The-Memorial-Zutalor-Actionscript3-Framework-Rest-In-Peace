@@ -1,8 +1,11 @@
-package com.zutalor.components
+package com.zutalor.ui
 {
 	import com.gskinner.utils.IDisposable;
+	import com.zutalor.components.Component;
+	import com.zutalor.components.interfaces.IComponent;
 	import com.zutalor.components.interfaces.IViewObject;
 	import com.zutalor.containers.ViewObject;
+	import com.zutalor.interfaces.IMediaPlayer;
 	import com.zutalor.ui.Line;
 	import com.zutalor.utils.ArrayUtils;
 	import flash.display.Graphics;
@@ -11,41 +14,21 @@ package com.zutalor.components
 	 * 
 	 * @author Geoff Pepos
 	 */
-	public class Plotter extends ViewObject implements IViewObject
+	public class Plotter extends ViewObject implements IDisposable
 	{
 		public var dotSize:int;		
 		private var _displayData:Array;
-		private var _width:Number;
-		private var _height:Number;
 		private var _line:Line;
+		private var _width:int;
+		private var _height:int;
 		
 		protected var line:Line;
 				
-		public function Plotter(width:Number, height:Number)
+		public function Plotter(width:int, height:int)
 		{
 			_width = width;
 			_height = height;
 			this.graphics.lineStyle(1, 0,1, true);
-		}
-				
-		override public function set width(n:Number):void
-		{
-			_width = n;
-		}
-		
-		override public function set height(n:Number):void
-		{
-			_height = n;
-		}
-		
-		override public function get width():Number
-		{
-			return _width
-		}
-		
-		override public function get height():Number
-		{
-			return _height
 		}
 		
 		public function get displayData():Array
@@ -59,7 +42,7 @@ package com.zutalor.components
 				_line.cancel();
 		}
 		
-		public function render(xA:Array, yA:Array = null, start:int = 0, end:int = int.MAX_VALUE, speed:Number=0, onComplete:Function = null):void
+		public function draw(xA:Array, yA:Array = null, start:int = 0, end:int = int.MAX_VALUE, speed:Number=0, onComplete:Function = null):void
 		{	
 			_line = new Line(this);
 			_displayData = [];

@@ -46,7 +46,7 @@ package com.zutalor.components
 			dispatchEvent(new UIEvent(UIEvent.VALUE_CHANGED, null, null, null, value));
 		}
 		
-		public function get isGhost():Boolean
+		public function get isInvisible():Boolean
 		{
 			return false;
 		}

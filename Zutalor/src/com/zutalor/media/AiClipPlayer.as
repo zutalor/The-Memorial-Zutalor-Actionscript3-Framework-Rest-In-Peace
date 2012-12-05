@@ -1,10 +1,12 @@
 package com.zutalor.media
 {
 	import com.gskinner.utils.IDisposable;
+	import com.zutalor.components.media.base.MediaPlayer;
+	import com.zutalor.components.media.playlist.Playlist;
+	import com.zutalor.components.media.playlist.PlaylistItemProperties;
+	import com.zutalor.components.media.playlist.PlaylistMediaState;
 	import com.zutalor.events.MediaEvent;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.media.MediaPlayer;
-	import com.zutalor.properties.PlaylistItemProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.ArrayUtils;
@@ -37,10 +39,10 @@ package com.zutalor.media
 		
 		private const TIMER_INTERVAL:int = 1000;
 		
-		public function initialize(sp:MediaStateProperties):void
+		public function initialize(sp:MediaStateProperties, playlist:Playlist):void
 		{
 			_sp = sp;
-			_ppm = Props.playlists;
+			_ppm = playlist.presets;
 			_players = new gDictionary();
 			_mediaState = new PlaylistMediaState();
 			_mediaState.initialize(sp, _players);
@@ -124,6 +126,11 @@ package com.zutalor.media
 				p.framerate = fr;
 			}
 		}		
+		
+		public function get framerate():Number
+		{
+			return _framerate;
+		}
 		
 		public function cued():int
 		{
