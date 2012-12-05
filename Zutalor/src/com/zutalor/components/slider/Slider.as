@@ -10,7 +10,7 @@ package com.zutalor.components.slider
 	import com.zutalor.scroll.HScrollBarController;
 	import com.zutalor.scroll.ScrollBarController;
 	import com.zutalor.scroll.VScrollBarController;
-	import com.zutalor.text.Translate;
+	import com.zutalor.translate.Translate;
 	import flash.display.Sprite;
 	/**
 	 * ...

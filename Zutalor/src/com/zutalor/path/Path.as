@@ -1,8 +1,6 @@
-package com.zutalor.utils 
+package com.zutalor.path 
 {
-	import com.zutalor.properties.PathProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
-	import com.zutalor.propertyManagers.Props;
 	/**
 	 * ...
 	 * @author Geoff Pepos

@@ -4,7 +4,7 @@ package com.zutalor.controllers
 	import com.zutalor.components.button.Button;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.propertyManagers.Props;
-	import com.zutalor.text.Translate;
+	import com.zutalor.translate.Translate;
 	import com.zutalor.ui.Dialog;
 	import flash.desktop.NativeApplication;
 

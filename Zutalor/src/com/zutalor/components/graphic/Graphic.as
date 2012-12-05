@@ -10,7 +10,7 @@ package com.zutalor.components.graphic
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.PropertyManager;
-	import com.zutalor.text.Translate;
+	import com.zutalor.translate.Translate;
 	import com.zutalor.utils.DisplayUtils;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.Resources;

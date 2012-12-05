@@ -16,7 +16,7 @@ package com.zutalor.view.mediators
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Presets;
-	import com.zutalor.text.Translate;
+	import com.zutalor.translate.Translate;
 	import com.zutalor.ui.Focus;
 	import com.zutalor.utils.FullScreen;
 	import com.zutalor.utils.HotKeyManager;

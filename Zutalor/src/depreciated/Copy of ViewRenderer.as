@@ -24,7 +24,7 @@ import com.zutalor.view.properties.ViewProperties;
 import com.zutalor.propertyManagers.Presets;
 import com.zutalor.propertyManagers.Props;
 import com.zutalor.text.TextUtil;
-import com.zutalor.text.Translate;
+import com.zutalor.translate.Translate;
 import com.zutalor.utils.Logger;
 import com.zutalor.utils.Resources;
 import com.zutalor.utils.ShowError;

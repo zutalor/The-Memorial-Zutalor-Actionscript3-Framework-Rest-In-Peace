@@ -3,7 +3,7 @@
 	import com.zutalor.interfaces.IProperties;
 	import com.zutalor.properties.PropertiesBase;
 	import com.zutalor.utils.MapXML;
-	import com.zutalor.utils.Path;
+	import com.zutalor.path.Path;
 	/**
 	 * ...
 	 * @author Geoff Pepos

@@ -9,11 +9,11 @@ package com.zutalor.view.mediators
 	import com.zutalor.gesture.UserInputProperties;
 	import com.zutalor.media.TextToSpeech;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.properties.TranslateItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.text.TextUtil;
-	import com.zutalor.text.Translate;
+	import com.zutalor.translate.Translate;
+	import com.zutalor.translate.TranslateItemProperties;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.GridValues;
 	import com.zutalor.utils.HotKeyManager;

@@ -3,7 +3,7 @@ package com.zutalor.view.rendering
 	import com.zutalor.components.Component;
 	import com.zutalor.containers.Container;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.text.Translate;
+	import com.zutalor.translate.Translate;
 	import com.zutalor.view.properties.ViewItemProperties;
 
 	public class ViewRenderer

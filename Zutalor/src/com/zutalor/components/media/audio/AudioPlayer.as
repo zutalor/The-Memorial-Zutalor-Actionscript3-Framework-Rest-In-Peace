@@ -1,7 +1,7 @@
 ﻿package com.zutalor.components.media.audio 
 {		
 	import com.zutalor.components.media.base.MediaPlayer;
-	import com.zutalor.properties.MediaProperties;
+	import com.zutalor.components.media.base.MediaProperties;
 	/**
 	 * ...
 	 * @author Geoff Pepos

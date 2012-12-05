@@ -1,6 +1,7 @@
-﻿package com.zutalor.properties  
+﻿package com.zutalor.sequence  
 {
 	import com.zutalor.interfaces.IProperties;
+	import com.zutalor.properties.PropertiesBase;
 
 	/**
 	 * ...

@@ -5,7 +5,7 @@ package com.zutalor.components.list
 	import com.zutalor.components.interfaces.IComponent;
 	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.propertyManagers.PropertyManager;
-	import com.zutalor.text.Translate;
+	import com.zutalor.translate.Translate;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.view.rendering.ViewLoader;
 	import flash.events.MouseEvent;

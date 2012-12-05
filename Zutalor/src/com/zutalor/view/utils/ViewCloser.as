@@ -1,13 +1,11 @@
 package com.zutalor.view.utils
 {
+	import com.zutalor.components.media.base.MediaProperties;
 	import com.zutalor.fx.Transition;
 	import com.zutalor.fx.TransitionTypes;
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.properties.ApplicationProperties;
-	import com.zutalor.properties.MediaProperties;
-	import com.zutalor.view.properties.ViewProperties;
 	import com.zutalor.propertyManagers.Presets;
-	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.controller.ViewController;
@@ -36,7 +34,7 @@ package com.zutalor.view.utils
             _onComplete = onComplete;
 
             if (!_vp)
-                ShowError.fail(ViewCloser,"View Closer: '" + viewId + "' is not a valid view name.");
+                ShowError.fail(ViewCloser, viewId + " is not a valid view name.");
             else
             {
                 if (_vp.container.visible)

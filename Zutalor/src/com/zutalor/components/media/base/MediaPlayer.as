@@ -3,15 +3,15 @@
 	import com.greensock.TweenMax;
 	import com.zutalor.components.Component;
 	import com.zutalor.components.interfaces.IComponent;
+	import com.zutalor.components.media.base.MediaProperties;
 	import com.zutalor.events.MediaEvent;
 	import com.zutalor.events.MediaLoadProgressEvent;
 	import com.zutalor.interfaces.IMediaPlayer;
-	import com.zutalor.properties.MediaProperties;
-		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.ui.Spinner;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.ShowError;
+	import com.zutalor.view.properties.ViewItemProperties;
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.utils.getTimer;

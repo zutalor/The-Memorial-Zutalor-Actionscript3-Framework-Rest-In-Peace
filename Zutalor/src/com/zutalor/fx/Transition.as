@@ -3,7 +3,6 @@
 	import com.greensock.*;
 	import com.zutalor.containers.*;
 	import com.zutalor.propertyManagers.Presets
-	import com.zutalor.properties.TransitionProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.utils.*;
 	import flash.display.*;

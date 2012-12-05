@@ -11,7 +11,7 @@ package com.zutalor.view.mediators
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.propertyManagers.Props;
-	import com.zutalor.text.Translate;
+	import com.zutalor.translate.Translate;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.view.controller.ViewController;
 	/**

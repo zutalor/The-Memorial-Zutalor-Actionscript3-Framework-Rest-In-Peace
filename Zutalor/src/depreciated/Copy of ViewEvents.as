@@ -16,7 +16,7 @@ package depreciated
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.text.TextUtil;
-	import com.zutalor.text.Translate;
+	import com.zutalor.translate.Translate;
 	import com.zutalor.ui.Button;
 	import com.zutalor.ui.ComponentGroup;
 	import com.zutalor.ui.Focus;

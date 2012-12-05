@@ -6,7 +6,7 @@ package com.zutalor.controllers.message
 	import com.zutalor.properties.ApplicationProperties;
 		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.ViewPropsManager;
-	import com.zutalor.text.Translate;
+	import com.zutalor.translate.Translate;
 	/**
 	 * ...
 	 * @author Geoff Pepos

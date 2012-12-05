@@ -1,7 +1,7 @@
 package com.zutalor.content 
 {
 	import com.zutalor.text.TextUtil;
-	import com.zutalor.text.Translate;
+	import com.zutalor.translate.Translate;
 	import com.zutalor.ui.Dialog;
 	/**
 	 * ...

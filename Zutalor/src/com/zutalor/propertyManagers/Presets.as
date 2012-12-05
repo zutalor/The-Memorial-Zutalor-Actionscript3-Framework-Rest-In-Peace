@@ -1,15 +1,5 @@
 ﻿package com.zutalor.propertyManagers
 {
-	import com.zutalor.components.button.Button;
-	import com.zutalor.components.graphic.Graphic;
-	import com.zutalor.components.group.ComponentGroup;
-	import com.zutalor.components.html.StyleSheets;
-	import com.zutalor.components.list.List;
-	import com.zutalor.components.media.base.MediaPlayer;
-	import com.zutalor.components.stepper.Stepper;
-	import com.zutalor.components.text.Text;
-	import com.zutalor.components.toggle.Toggle;
-	import com.zutalor.fx.Transition;
 	import com.zutalor.properties.AppStateProperties;
 	import com.zutalor.properties.ColorProperties;
 	import com.zutalor.properties.DropShadowFilterProperties;
@@ -19,7 +9,6 @@
 	import com.zutalor.properties.ToolTipProperties;
 	import com.zutalor.properties.UIProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
-	import com.zutalor.utils.Singleton;
 	/**
 	 * ...
 	 * @author Geoff Pepos

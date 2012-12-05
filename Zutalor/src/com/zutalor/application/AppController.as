@@ -19,7 +19,7 @@
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.sequence.Sequence;
-	import com.zutalor.text.Translate;
+	import com.zutalor.translate.Translate;
 	import com.zutalor.ui.Spinner;
 	import com.zutalor.utils.DisplayUtils;
 	import com.zutalor.utils.gDictionary;

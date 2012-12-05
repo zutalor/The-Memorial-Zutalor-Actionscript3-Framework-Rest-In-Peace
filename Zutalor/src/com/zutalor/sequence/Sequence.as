@@ -3,8 +3,6 @@
 	import com.zutalor.application.AppController;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Props;
-	import com.zutalor.properties.SequenceItemProperties;
-	import com.zutalor.properties.SequenceProperties;
 	import com.zutalor.utils.MasterClock;
 	import flash.events.Event;
 	/**
