@@ -21,7 +21,6 @@
 	import com.zutalor.sequence.Sequence;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.widgets.Spinner;
-	import com.zutalor.utils.DisplayUtils;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.Resources;
@@ -130,7 +129,8 @@
 			splash = Resources.createInstance(_splashEmbedClassName);
 			splash.name = "__splash";
 			StageRef.stage.addChild(splash);
-			DisplayUtils.alignInRect(splash, StageRef.stage.fullScreenWidth, StageRef.stage.fullScreenHeight, "center");
+			splash.x = StageRef.stage.fullScreenWidth - splash.width / 2;
+			splash.y = StageRef.stage.fullScreenHeight - splash.height / 2;
 			TweenMax.from(splash, 1, { alpha:0 } );
 		}
 	

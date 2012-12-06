@@ -2,12 +2,18 @@ package com.zutalor.components.list
 {
 	import com.zutalor.components.button.Button;
 	import com.zutalor.components.base.Component;
+	import com.zutalor.components.embed.Embed;
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.translate.Translate;
+	import com.zutalor.utils.MasterClock;
+	import com.zutalor.utils.StageRef;
+	import com.zutalor.view.controller.ViewController;
+	import com.zutalor.view.controller.ViewControllerRegistry;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.view.rendering.ViewLoader;
+	import com.zutalor.widgets.Dialog;
 	import flash.events.MouseEvent;
 	/**
 	 * ...
@@ -16,54 +22,56 @@ package com.zutalor.components.list
 	public class List  extends Component implements IComponent
 	{
 
-		private var _scrollingContainer:ScrollingContainer;	
-		private var _lp:ListProperties;
+		private var scrollingContainer:ScrollingContainer;	
+		private var lp:ListProperties;
+		private var viewLoader:ViewLoader;
 		
 		public function List(name:String)
 		{
 			super(name);
 		}
 
-		private static var _presets:PropertyManager;
+		private static var presets:PropertyManager;
 		
 		public static function registerPresets(options:Object):void
 		{	
-			if (!_presets)
-				_presets = new PropertyManager(ListProperties);
+			if (!presets)
+				presets = new PropertyManager(ListProperties);
 			
-			_presets.parseXML(options.xml[options.nodeId]);
+			presets.parseXML(options.xml[options.nodeId]);
 		}
 			
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
-			var viewLoader:ViewLoader;
 			super.render(viewItemProperties);
 			
-			_lp = _presets.getPropsByName(vip.presetId);
+			lp = presets.getPropsByName(vip.presetId);
 			viewLoader = new ViewLoader();
-			viewLoader.load(_lp.listView, null, populateList);
+			viewLoader.load(lp.listView, null, populateList);
 			visible = true;
-			
-			function populateList():void
-			{
-				var data:Array;
-				_scrollingContainer = new ScrollingContainer("list");	
-				addChild(_scrollingContainer);
-				
-				if (_lp.url)
-					loadData();
-				else
-				{
-					data = _lp.data.split(","); 
-				
-					for (var i:int = 0; i < data.length; i++)
-						_scrollingContainer.push(createListItem(data[i]));
-				}
-				_scrollingContainer.autoArrangeContainerChildren( { padding:_lp.spacing, arrange:_lp.arrange } );
-				_scrollingContainer.addEventListener(MouseEvent.CLICK, onTap, false, 0, true);
-			}
 		}
-		
+		private function populateList():void
+		{
+			var data:Array;
+			scrollingContainer = new ScrollingContainer("list");	
+			viewLoader.container.addChild(scrollingContainer);
+			
+			
+			StageRef.stage.addChild(this);
+			
+			if (lp.url)
+				loadData();
+			else
+			{
+				data = lp.data.split(","); 
+			
+				for (var i:int = 0; i < data.length; i++)
+					scrollingContainer.push(createListItem(data[i]));
+			}
+			scrollingContainer.autoArrangeContainerChildren( { padding:lp.spacing, arrange:lp.arrange } );
+			scrollingContainer.addEventListener(MouseEvent.CLICK, onTap, false, 0, true);
+		}
+
 		private function loadData():void
 		{
 			//TODO
@@ -75,9 +83,9 @@ package com.zutalor.components.list
 			
 			b = new Button(name);
 			b.vip.text = Translate.text(text);
-			b.vip.presetId = _lp.itemButtonId;
-			b.vip.width = String(_lp.itemWidth);
-			b.vip.height = String(_lp.itemHeight);
+			b.vip.presetId = lp.itemButtonId;
+			b.vip.width = String(lp.itemWidth);
+			b.vip.height = String(lp.itemHeight);
 			b.render();
 			return b;
 		}

@@ -17,34 +17,29 @@ package com.zutalor.components.web
 		
 		public function WebBridge(name:String) 
 		{
-			super(containerName, width, height);
-			init(width, height, url);
+			super(name);
 		}
 		
-		public function render(viewItemProperties:ViewItemProperties):void
+		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
-			super.render(viewItemProperties);
-			
-			// OPTIONAL BEFORE INIT OPTIONS SETTING
-			//StageWebViewDisk.setDebugMode( true ); // if we need debug mode assign it before initializaton
-
-			// StageWebViewDisk Events. First time app launches it proceses the filesystem
-			// As it can take some time, depending of the filesize of the included files
-			// we provide 2 events to know when process start/finish
-									
+			super.render(viewItemProperties);			
 			StageWebViewDisk.addEventListener(StageWebviewDiskEvent.START_DISK_PARSING, onDiskCacheStart);
 			StageWebViewDisk.addEventListener(StageWebviewDiskEvent.END_DISK_PARSING, onDiskCacheEnd);
-			StageWebViewDisk.initialize( StageRef.stage /*Stage instance. Required*/ );      
+			StageWebViewDisk.initialize( StageRef.stage);      
 
-			function onDiskCacheStart( e:StageWebviewDiskEvent ):void{ /* Do something at process start */ }
-			function onDiskCacheEnd( e:StageWebviewDiskEvent ):void
-			{
-				webView = new StageWebViewBridge(0, 0, width, height);
-				addChild(webView);
-				
-				if (vip.url)
-					webView.loadURL(url);
-			}
+			function onDiskCacheStart( e:StageWebviewDiskEvent ):void{  }
+		
+		}
+		
+		public function onDiskCacheEnd( e:StageWebviewDiskEvent ):void
+		{
+			webView = new StageWebViewBridge(0, 0, int(vip.width), int(vip.height));
+			addChild(webView);
+			
+			if (vip.path)
+				webView.loadLocalURL(vip.url);
+			else if (vip.url)
+				webView.loadURL(vip.url);
 		}
 		
 		override public function set width(n:Number):void
@@ -72,3 +67,29 @@ package com.zutalor.components.web
 		}
 	}
 }
+	
+/*
+ * 
+ * This is a mod of StageWebViewDiskBrige. Of course it would be better to extend the class...yet it's a f static.
+ * 
+		public static function getFilePath( url : String ) : String
+		{
+			var fileName : String = "";
+			switch( true )
+			{
+				case url.indexOf( PROTOCOL_APP_LINK ) != -1:
+					fileName = url.split( PROTOCOL_APP_LINK )[1];
+					return _appCacheFile.resolvePath( getWorkingDir() + '/' + fileName ).nativePath;
+					break;
+				case url.indexOf( PROTOCOL_DOC_LINK ) != -1:
+					fileName = url.split( PROTOCOL_DOC_LINK )[1];
+					return File.documentsDirectory.resolvePath( fileName ).nativePath;
+					break;
+				default: // MOD By Geoff 
+					fileName = url;
+					return File.applicationDirectory.resolvePath( fileName ).nativePath;
+					//throw new Error( "StageWebViewDisk.getFilePath( url ) :: You mus provide a valid protocol applink:/ or doclink:/" );
+					break;
+			}
+		}
+*/

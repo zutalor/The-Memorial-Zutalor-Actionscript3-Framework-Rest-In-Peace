@@ -4,6 +4,7 @@ package com.zutalor.components.base
 	import com.zutalor.containers.Container;
 	import com.zutalor.containers.base.ViewObject;
 	import com.zutalor.events.UIEvent;
+	import com.zutalor.utils.Aligner;
 	import com.zutalor.view.properties.ViewItemProperties;
 	/**
 	 * ...
@@ -12,11 +13,14 @@ package com.zutalor.components.base
 	public class Component extends Container implements IComponent
 	{
 		private var _value:*;
-		public var vip:ViewItemProperties = new ViewItemProperties();
+		public var vip:ViewItemProperties;
+		protected var aligner:Aligner;
 
 		public function Component(containerName:String)
 		{
 			super(containerName);
+			vip = new ViewItemProperties();
+			aligner = new Aligner();
 		}
 		
 		public function render(viewItemProperties:ViewItemProperties = null):void

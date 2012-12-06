@@ -11,7 +11,6 @@ package com.zutalor.components.graphic
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.translate.Translate;
-	import com.zutalor.utils.DisplayUtils;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.Resources;
 	import com.zutalor.utils.ShowError;
@@ -157,7 +156,7 @@ package com.zutalor.components.graphic
 				item.scale9Grid = getScale9GridRect(gri.scale9Data); 
 				
 			if (gri.align && (_width + _height))
-				DisplayUtils.alignInRect(item, _width, _height, gri.align, gri.hPad, gri.vPad);
+				aligner.alignObject(item, _width, _height, gri.align, gri.hPad, gri.vPad);
 			else	
 			{
 				item.x += gri.hPad;

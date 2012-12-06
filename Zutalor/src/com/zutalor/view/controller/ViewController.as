@@ -65,9 +65,9 @@
 			return _presets;
 		}
 	
-		public function load(_viewId:String, appState:String, onComplete:Function):void
+		public function load(viewId:String, appState:String, onComplete:Function):void
 		{			
-			
+			_viewId = viewId;
 			_onComplete = onComplete;
 			vp = _presets.getPropsById(_viewId);
 			_filters = [];
@@ -77,23 +77,23 @@
 				ShowError.fail(ViewController,"No view properties for viewId: " + _viewId);
 			
 			vp.appState = appState;
-			this._viewId = _viewId;
 			ViewControllerRegistry.registerController(_viewId, this);
 			ObjectPool.getContainer(vp);
 			_container = vp.container;
 			_container.viewController = this;
 
-			Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.INIT, { controller:this, id:_viewId } );
-			_defaultVO = Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT);
-			
-			_numViewItems = _presets.getNumItems(_viewId);
-	
-			viewModelMediator = new ViewModelMediator(this);
+			if (vp.uiControllerInstanceName)
+			{
+				Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.INIT, { controller:this, id:_viewId } );
+				_defaultVO = Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT);
+				viewModelMediator = new ViewModelMediator(this);
+			}
 			_viewItemPositioner = new ViewItemPositioner(container, vp.width, vp.height);
 			_viewEventMediator = new ViewEventMediator(this);
 			_viewItemFilterApplier = new ViewItemFilterApplier(_filters);
 			_viewRenderer = new ViewRenderer(_container, renderNextViewItem, _viewItemFilterApplier.applyFilters, 
 																				_viewItemPositioner.positionItem);			
+			_numViewItems = _presets.getNumItems(_viewId);	
 			renderNextViewItem();
 		}
 		
@@ -225,7 +225,7 @@
 			{
 				vip = _presets.getItemPropsByName(_viewId, itemName);
 			
-				if (vip)
+				if (vip.voName)
 				{
 					Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
 					item = container.getChildByName(itemName) as Component;
@@ -238,10 +238,9 @@
 				for (var i:int = 0; i < _numViewItems; i++) 
 				{
 					vip = _presets.getItemPropsByIndex(_viewId, i);
-						
-					Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
 					if (vip.voName)
 					{
+						Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
 						item = container.getChildAt(i) as Component;
 						viewModelMediator.copyViewItemToValueObject(vip, item);
 					}
@@ -256,7 +255,7 @@
 			if (itemName)
 			{
 				vip = _presets.getItemPropsByName(_viewId, itemName);
-				if (vip)
+				if (vip.voName)
 				{
 					item = container.getChildByName(itemName) as Component;
 					viewModelMediator.copyValueObjectToViewItem(vip, item);
@@ -503,7 +502,8 @@
 				else
 					Plugins.callMethod(vp.uiControllerInstanceName, vp.initialMethod);
 			}
-			viewModelMediator.setAllInitialValues();
+			if (viewModelMediator != null)
+				viewModelMediator.setAllInitialValues();
 		}
 	}
 }

@@ -77,7 +77,7 @@
 				}
 		}
 				
-		public function arrangeAppContainers():void
+		public function arrangeViewContainers():void
 		{
 			var c:*;
 			var vp:ViewProperties;
@@ -92,7 +92,7 @@
 				{
 					vp = views.getPropsById(c.name);
 					if (vp)
-						positionAppContainer(vp);	
+						vp.container.alignContainer();	
 						
 				} catch (e:Error) {}
 			}	
@@ -106,46 +106,9 @@
 			ap.contentLayer.width = StageRef.stage.stageWidth;
 			ap.contentLayer.height = StageRef.stage.stageHeight;
 			arrangeAppContainers();
-		}			
-		
-		public function positionAppContainer(vp:ViewProperties):void
-		{				
-			if (vp.container)
-			{
-				resizeContainer(vp);
-				positionContainer(vp);
-			}
 		}
 		
-		private function resizeContainer(vp:ViewProperties):void
-		{
-			switch (vp.resizeMode)
-			{
-				case SCALE :
-					vp.container.scaleX = vp.container.scaleY = Scale.curAppScale;						
-					break;
-				case RESIZE_TO_STAGE :
-					vp.container.width = StageRef.stage.stageWidth;				
-					vp.container.height = StageRef.stage.stageHeight;
-					break;
-				case FIT_TO_STAGE :
-					DisplayUtils.fitIntoRect(vp.container, StageRef.stage.stageWidth, StageRef.stage.stageHeight, DisplayUtils.TOP_LEFT, 0, 0, true);
-					break;
-				case KEEP :
-				default :
-					vp.container.scaleX = vp.container.scaleY = 1;
-					vp.container.width = vp.width;
-					vp.container.height = vp.height;
-					break;
-			}
-		}
-		
-		private function positionContainer(vp:ViewProperties):void
-		{
-			if (vp.align)
-				DisplayUtils.alignInRect(vp.container, StageRef.stage.stageWidth, StageRef.stage.stageHeight, vp.align);
-		}
-		
+			
 		public function callViewContainerMethod(viewName:String, method:String, params:String):void
 		{
 			var vp:ViewProperties;

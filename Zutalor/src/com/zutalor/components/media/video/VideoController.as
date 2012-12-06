@@ -5,7 +5,7 @@
 	import com.zutalor.interfaces.IMediaController;
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.propertyManagers.Props;
-	import com.zutalor.utils.DisplayUtils;
+	import com.zutalor.utils.Aligner;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.Resources;
 	import com.zutalor.utils.Scale;
@@ -400,6 +400,9 @@
 		
 		public function onMetaData(metadata:Object):void
 		{
+			var aligner:Aligner;
+			
+			aligner = new Aligner();
 			if (metadata.framerate)
 			{
 				_metadata = metadata;
@@ -418,7 +421,7 @@
 					videoDisplay.width = metadata.width;
 					videoDisplay.height = metadata.height;
 					if (_scaleToFit)
-						DisplayUtils.fitIntoRect(videoDisplay, width, height);
+						aligner.alignObject(videoDisplay, width, height, Aligner.FIT);
 				}
 
 				stream.resume();

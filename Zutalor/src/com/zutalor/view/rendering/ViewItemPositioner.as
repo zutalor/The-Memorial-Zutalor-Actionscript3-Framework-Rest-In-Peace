@@ -6,8 +6,8 @@ package com.zutalor.view.rendering
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.containers.base.ViewObject;
 	import com.zutalor.properties.ScrollProperties;
-		import com.zutalor.view.properties.ViewItemProperties;
-	import com.zutalor.utils.DisplayUtils;
+	import com.zutalor.utils.Aligner;
+	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.properties.ViewItemProperties;
 	/**
@@ -19,12 +19,14 @@ package com.zutalor.view.rendering
 		private var _c:ViewObject;
 		private var _width:int;
 		private var _height:int;
+		private var aligner:Aligner;
 		
 		public function ViewItemPositioner(c:ViewObject, width:int, height:int)
 		{
 			_c = c;
 			_width = width;
 			_height = height;
+			aligner = new Aligner();
 		}
 		
 		public function positionItem(vip:ViewItemProperties):void
@@ -60,7 +62,7 @@ package com.zutalor.view.rendering
 					viewItem.height = height;
 						
 			if (vip.align)
-				DisplayUtils.alignInRect(viewItem, _width, _height, vip.align, vip.hPad, vip.vPad);
+				aligner.alignObject(viewItem, _width, _height, vip.align, vip.hPad, vip.vPad);
 			else
 			{
 				viewItem.x = x + hPad;

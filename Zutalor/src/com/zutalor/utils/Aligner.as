@@ -6,7 +6,7 @@ package com.zutalor.utils
 	 * @version v1.0
 	 * @since May 26, 2009
 	 * 
-	 * @author Justin Windle
+	 * @author Justin Windle, Mod by Pepos (added fitInto and made this not a static class
 	 * @see http://blog.soulwire.co.uk
 	 * 
 	 * 
@@ -14,14 +14,10 @@ package com.zutalor.utils
 	 * http://creativecommons.org/licenses/by/3.0/
 	 */
 	 
-	import com.zutalor.containers.ViewContainer;
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
-	import flash.display.PixelSnapping;
 	import flash.geom.Matrix;
 
-	public class DisplayUtils 
+	public class Aligner
 	{	
 		public static const BOTTOM : String = "bottom";
 		public static const BOTTOM_LEFT : String = "bottom-left";
@@ -33,41 +29,17 @@ package com.zutalor.utils
 		public static const TOP_LEFT : String = "top-left";
 		public static const TOP_RIGHT : String = "top-right";
 		public static const KEEP : String = "keep";
-		//---------------------------------------------------------------------------
-		//------------------------------------------------------------ PUBLIC METHODS
+		public static const FIT : String = "fit";
 		
-		/**
-		 * Fits a DisplayObject into a rectangular area with several options for scale 
-		 * and  This method will return the Matrix required to duplicate the 
-		 * transformation and can optionally apply this matrix to the DisplayObject.
-		 * 
-		 * @param displayObject
-		 * 
-		 * The DisplayObject that needs to be fitted into the Rectangle.
-		 * 
-		 * @param rectangle
-		 * 
-		 * A Rectangle object representing the space which the DisplayObject should fit into.
-		 * 
-		 * @param fillRect
-		 * 
-		 * Whether the DisplayObject should fill the entire Rectangle or just fit within it. 
-		 * If true, the DisplayObject will be cropped if its aspect ratio differs to that of 
-		 * the target Rectangle.
-		 * 
-		 * @param align
-		 * 
-		 * The alignment of the DisplayObject within the target Rectangle. Use a constant from 
-		 * the DisplayUtils class.
-		 * 
-		 * @param applyTransform
-		 * 
-		 * Whether to apply the generated transformation matrix to the DisplayObject. By setting this 
-		 * to false you can leave the DisplayObject as it is but store the returned Matrix for to use 
-		 * either with a DisplayObject's transform property or with, for example, BitmapData.draw()
-		 */
-
-		public static function fitIntoRect(displayObject : DisplayObject, width:Number, height:Number, align : String = "center", hPad:int = 0, vPad:int = 0, fillRect : Boolean = false, applyTransform : Boolean = true) : Matrix
+		public function alignObject(displayObject:DisplayObject, width:Number, height:Number, align:String, hPad:int = 0, vPad:int = 0, fillRect:Boolean = false, applyTransfrom:Boolean = true): void
+		{
+			if (align == FIT)
+				fitIntoRect(displayObject, width, height, align, hPad, vPad, fillRect, applyTransfrom);
+			else
+				alignInRect(displayObject, width, height, align, hPad, vPad);
+		}
+		
+		private function fitIntoRect(displayObject : DisplayObject, width:Number, height:Number, align : String = "center", hPad:int = 0, vPad:int = 0, fillRect : Boolean = false, applyTransform : Boolean = true) : void
 		{
 			var matrix : Matrix = new Matrix();
 			
@@ -153,10 +125,9 @@ package com.zutalor.utils
 					displayObject.transform.matrix = matrix;
 				}
 			}
-			return matrix;
 		}
 		
-		public static function alignInRect(displayObject : DisplayObject, width:Number, height:Number, align : String = "center", hPad:int = 0, vPad:int = 0):void
+		private function alignInRect(displayObject : DisplayObject, width:Number, height:Number, align : String = "center", hPad:int = 0, vPad:int = 0):void
 		{
 			var scaleX:Number;
 			var scaleY:Number;

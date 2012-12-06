@@ -47,7 +47,7 @@ package com.zutalor.view.mediators
 			ViewItemClass = Plugins.getClass(vip.type);
 			item = vc.container.getChildByName(vip.name);
 			
-			if (ViewItemClass is Component && vip.voName)
+			if (vip.voName)
 			{
 				_valueObject = Plugins.callMethod(vc.vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
 				item.value = _valueObject[vip.name];
@@ -61,8 +61,11 @@ package com.zutalor.view.mediators
 			for (var i:int = 0; i < vc.numViewItems; i++)
 			{
 				vip = _vpm.getItemPropsByIndex(vc.viewId, i);
-				setItemInitialValue(vip);
-				vc.onViewChange(vip.name);
+				if (vip.voName)
+				{
+					setItemInitialValue(vip);
+					vc.onViewChange(vip.name);
+				}
 			}
 		}
 		
@@ -79,7 +82,6 @@ package com.zutalor.view.mediators
 			{
 				vip = _vpm.getItemPropsByIndex(vc.viewId, i)
 				ViewItemClass = Plugins.getClass(vip.type);
-				
 				
 				switch (ViewItemClass)
 				{

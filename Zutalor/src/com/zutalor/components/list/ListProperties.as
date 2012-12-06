@@ -1,9 +1,9 @@
 ﻿package com.zutalor.components.list 
 {
 	import com.zutalor.interfaces.IProperties;
+	import com.zutalor.path.Path;
 	import com.zutalor.properties.PropertiesBase;
 	import com.zutalor.utils.MapXML;
-	import com.zutalor.path.Path;
 	/**
 	 * ...
 	 * @author Geoff Pepos
@@ -21,7 +21,6 @@
 		public var path:String;
 		public var data:String;
 		
-			
 		override public function parseXML(xml:XML):Boolean
 		{
 			MapXML.attributesToClass(xml , this); // map the properties

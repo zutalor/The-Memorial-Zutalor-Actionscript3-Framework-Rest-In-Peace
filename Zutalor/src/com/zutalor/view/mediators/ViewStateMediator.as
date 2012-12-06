@@ -21,6 +21,7 @@ package com.zutalor.view.mediators
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.properties.AnswerProperties;
 	import com.zutalor.view.properties.GenericData;
+	import com.zutalor.widgets.Dialog;
 	import org.gestouch.gestures.Gesture;
 	import org.gestouch.gestures.SwipeGesture;
 	import org.gestouch.gestures.TapGesture;

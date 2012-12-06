@@ -5,7 +5,6 @@
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.components.label.Label;
 	import com.zutalor.propertyManagers.PropertyManager;
-	import com.zutalor.utils.DisplayUtils;
 	import com.zutalor.text.StringUtils;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import flash.display.SimpleButton;
@@ -91,7 +90,7 @@
 				label.render(vip);
 				buttonStates[i].addChild(label);
 				_buttonLabels[i] = label;
-				DisplayUtils.alignInRect(label, _bp.width, _bp.height, _bp.align, _bp.hPad, _bp.vPad);
+				aligner.alignObject(label, _bp.width, _bp.height, _bp.align, _bp.hPad, _bp.vPad);
 			}
 		}
 		
@@ -104,7 +103,7 @@
 				{
 					label = _buttonLabels[i];
 					label.value = text;
-					DisplayUtils.alignInRect(label, _bp.width, _bp.height, _bp.align, _bp.hPad, _bp.vPad);
+					aligner.alignObject(label, _bp.width, _bp.height, _bp.align, _bp.hPad, _bp.vPad);
 				}
 			}
 			name = text;

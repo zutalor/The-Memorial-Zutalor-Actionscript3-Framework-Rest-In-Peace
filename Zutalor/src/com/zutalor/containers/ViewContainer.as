@@ -1,5 +1,6 @@
 ﻿package com.zutalor.containers
 {
+	import com.zutalor.containers.utils.ViewContainerAligner;
 	import com.zutalor.interfaces.IViewObject;
 	import com.zutalor.events.ContainerEvent;
 	import com.zutalor.utils.ShowError;
@@ -11,10 +12,12 @@
 	public class ViewContainer extends Container implements IViewObject
 	{
 		public var viewController:ViewController;
+		public var viewContainerAligner:ViewContainerAligner;
 				
 		public function ViewContainer(containerName:String) 
 		{
 			super(containerName);
+			viewContainerAligner = new ViewContainerAligner();
 		}
 		
 		public function callViewItemMethod(viewItem:String, method:String, params:String):void
@@ -58,7 +61,12 @@
 		public function get scrollPercentY():Number
 		{
 			return 1;
-		}	
+		}
+		
+		public function alignContainer():void
+		{
+			viewContainerAligner.align(viewController.vp);
+		}
 		
 		public function contentChanged(ev:ContainerEvent = null):void
 		{

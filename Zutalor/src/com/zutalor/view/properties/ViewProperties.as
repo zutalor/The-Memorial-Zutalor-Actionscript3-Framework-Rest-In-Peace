@@ -23,7 +23,6 @@
 		public var initialMethodParams:String;
 		public var toolTipPreset:String;
 		public var styleSheetName:String;
-		public var visibleOnLoad:Boolean;
 		public var contentPersists:Boolean;
 		public var resizeMode:String;
 		public var containerType:String
