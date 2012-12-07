@@ -6,6 +6,7 @@
 	import com.zutalor.events.ContainerEvent;
 	import com.zutalor.events.UIEvent;
 	import flash.events.Event;
+	import flash.geom.Rectangle;
 	
 	/**
 	 * ...
@@ -25,13 +26,15 @@
 		private var _hMinThumbWidth:int;
 		private var _vMinThumbHeight:int;
 		
+		private var _scrollRect:Rectangle;
+		
 		public function ScrollingContainer(containerName:String,
 											hScrollBarSliderId:String=null, vScrollBarSliderId:String=null, autoAdjustThumbSize:Boolean = true) 
 		{
 			
 			super(containerName);
-			
-			_autoAdjustThumbSize = autoAdjustThumbSize;
+			scrollRect = new Rectangle();
+					_autoAdjustThumbSize = autoAdjustThumbSize;
 			
 			if (vScrollBarSliderId)
 			{

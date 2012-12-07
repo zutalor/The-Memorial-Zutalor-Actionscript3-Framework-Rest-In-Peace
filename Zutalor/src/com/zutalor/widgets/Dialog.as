@@ -98,13 +98,13 @@ package com.zutalor.widgets
 			sheild.graphics.drawRect(0, 0, StageRef.stage.stageWidth, StageRef.stage.stageHeight)
 			sheild.graphics.endFill();
 			sheild.name = "__Sheild";
-			Props.ap.contentLayer.addChild(sheild);
+			StageRef.stage.addChild(sheild);
 		}
 		
 		private static function hideSheild():void
 		{
-			if (Props.ap.contentLayer.getChildByName("__Sheild"))
-				Props.ap.contentLayer.removeChild(sheild);
+			if (StageRef.stage.getChildByName("__Sheild"))
+				StageRef.stage.removeChild(sheild);
 		}		
 		
 		private static function onSelection(choice:String = null):void

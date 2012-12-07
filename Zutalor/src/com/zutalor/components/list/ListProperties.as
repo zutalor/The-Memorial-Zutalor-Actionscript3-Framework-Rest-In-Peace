@@ -12,10 +12,12 @@
 	{	
 		public var listView:String;
 		public var itemButtonId:String;
-		public var itemWidth:String;
-		public var itemHeight:String;
-		public var arrange:String;
-		public var padding:Number;
+		public var scrollAreaWidth:Number;
+		public var scrollAreaHeight:Number;
+		public var orientation:String;
+		public var align:String;
+		public var hPad:Number;
+		public var vPad:Number;
 		public var spacing:Number;
 		public var url:String;
 		public var path:String;

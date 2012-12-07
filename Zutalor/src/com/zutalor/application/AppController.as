@@ -6,6 +6,7 @@
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.amfphp.Remoting;
 	import com.zutalor.containers.Container;
+	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.events.AppEvent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.fx.Wind;
@@ -291,9 +292,6 @@
 			MasterClock.initialize();
 			Remoting.gateway = ap.gateway;
 			_appStateCallStack = new gDictionary();	
-			ap.contentLayer = new Container("contentLayer");
-			
-			StageRef.stage.addChild(ap.contentLayer);			
 			Translate.language = Props.ap.language;
 
 			if (ap.spinningpresetId)
@@ -308,7 +306,7 @@
 			if (ap.googleAnalyticsAccount && AirStatus.isNativeApplication || DEBUG_ANALYTICS)
 			{
 				Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.INITIALIZE, 
-									{ display:ap.contentLayer, accountId:ap.googleAnalyticsAccount, debug:DEBUG_ANALYTICS } );
+									{ display:StageRef.stage, accountId:ap.googleAnalyticsAccount, debug:DEBUG_ANALYTICS } );
 				Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.TRACK_PAGE_VIEW, 
 									{ page:ap.appName + " " + ap.version + " started." } );
 			}

@@ -769,6 +769,9 @@ package com.zutalor.text
 		
 		public static function stripLeadingSpaces(str:String):String
 		{
+			if (!str)
+				return("");
+				
 			while (str.charAt(0) == " ")
 			{
 				str = str.substring(1, str.length);

@@ -1,26 +1,19 @@
-package com.zutalor.utils  
+package com.zutalor.containers.utils  
 {
 	import com.gskinner.utils.IDisposable;
 	import com.zutalor.objectPool.ObjectPool;
-	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Loader;
 	import flash.display.MovieClip;
-	import flash.media.Camera;
 	import flash.media.Video;
 	/**
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class DisplayObjectUtils
+	public class ObjectRemover
 	{
 		
-		public function DisplayObjectUtils() 
-		{
-			
-		}
-		
-		public static function removeAllChildren(d:DisplayObjectContainer):void		
+		public function removeAllChildren(d:DisplayObjectContainer):void		
 		{
 			if(d.numChildren<1) return;
 			
@@ -61,7 +54,7 @@ package com.zutalor.utils
 			}	
 		}
 		
-		private static function cleanUpConnection(p_conn:Object):void {
+		private function cleanUpConnection(p_conn:Object):void {
 			// because we're unsure what type of connection we have, and what it's status is, we have to use try catch:
 			try {
 				var content:Object = p_conn.content;

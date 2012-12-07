@@ -79,18 +79,16 @@
 			}
 				
 			vip.textAttributes = _textAttributes[i];
-			vip.width = String(_bp.width);
-			vip.height = String(_bp.height);
-			vip.align = _bp.align;
-			vip.hPad = _bp.hPad;
-			vip.vPad = _bp.vPad;
+			vip.width = String(width);
+			vip.height = String(height);
+			
 			for (var i:int = 0; i < 4; i++)
 			{
 				label = _buttonLabels[i];
 				label.render(vip);
 				buttonStates[i].addChild(label);
 				_buttonLabels[i] = label;
-				aligner.alignObject(label, _bp.width, _bp.height, _bp.align, _bp.hPad, _bp.vPad);
+				//aligner.alignObject(label, width, height, _bp.align, _bp.hPad, _bp.vPad);
 			}
 		}
 		
@@ -103,7 +101,9 @@
 				{
 					label = _buttonLabels[i];
 					label.value = text;
-					aligner.alignObject(label, _bp.width, _bp.height, _bp.align, _bp.hPad, _bp.vPad);
+					label.width = this.width;
+					label.height = this.height;
+					//aligner.alignObject(label, this.width, this.height, _bp.align, _bp.hPad, _bp.vPad);
 				}
 			}
 			name = text;

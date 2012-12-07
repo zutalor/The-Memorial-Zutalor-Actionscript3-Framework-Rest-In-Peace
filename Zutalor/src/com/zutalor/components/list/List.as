@@ -9,6 +9,7 @@ package com.zutalor.components.list
 	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.translate.Translate;
+	import com.zutalor.utils.Aligner;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.controller.ViewController;
@@ -44,19 +45,22 @@ package com.zutalor.components.list
 			
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
+				
 			super.render(viewItemProperties);
+			viewLoader = new ViewLoader(this);
 			lp = presets.getPropsByName(vip.presetId);
-			viewLoader = new ViewLoader();
 			viewLoader.load(lp.listView, null, populateList);
 		}
 		
 		private function populateList():void
 		{
-			var data:Array;
-			scrollingContainer = new ScrollingContainer("list");
-			addChild(viewLoader.container);
-			addChild(scrollingContainer);
-			Dialog.show(Dialog.ALERT, "Test");
+	
+			var data:Array
+			var b:Button;
+			
+			scrollingContainer = new ScrollingContainer("listItems");
+			viewLoader.container.addChild(scrollingContainer);
+			
 			if (lp.url)
 				loadData();
 			else
@@ -64,9 +68,15 @@ package com.zutalor.components.list
 				data = lp.data.split(","); 
 			
 				for (var i:int = 0; i < data.length; i++)
-					scrollingContainer.push(createListItem(data[i]));
+				{
+					b = createListItem(data[i]);
+					scrollingContainer.push(b);
+				}
 			}
-			scrollingContainer.autoArrangeContainerChildren( { padding:lp.spacing, arrange:lp.arrange } );
+			scrollingContainer.scrollRect.width = lp.scrollAreaWidth;
+			scrollingContainer.scrollRect.height = lp.scrollAreaHeight;
+			scrollingContainer.arranger.autoArrangeChildren( { padding:lp.spacing, orientation:lp.orientation } );
+			scrollingContainer.arranger.align(lp.align, int(vip.width), int(vip.height), lp.hPad, lp.vPad);
 			scrollingContainer.addEventListener(MouseEvent.CLICK, onTap, false, 0, true);
 		}
 
@@ -82,8 +92,6 @@ package com.zutalor.components.list
 			b = new Button(name);
 			b.vip.text = Translate.text(text);
 			b.vip.presetId = lp.itemButtonId;
-			b.vip.width = String(lp.itemWidth);
-			b.vip.height = String(lp.itemHeight);
 			b.render();
 			return b;
 		}

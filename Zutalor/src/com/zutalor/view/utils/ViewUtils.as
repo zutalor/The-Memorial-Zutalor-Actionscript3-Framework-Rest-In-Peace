@@ -72,37 +72,35 @@
 				}
 		}
 				
+		public function onStageResize(e:Event = null):void
+		{	
+			Mouse.show();
+			Scale.calcAppScale(StageRef.stage, ap.designWidth, ap.designHeight);
+			Scale.constrainAppScaleRatio();
+			arrangeViewContainers();
+		}
+		
 		public function arrangeViewContainers():void
 		{
 			var c:*;
 			var vp:ViewProperties;
 			var n:int;			
 			
-			n = ap.contentLayer.numChildren;
+			n = StageRef.stage.numChildren;
 			for (var i:int = 0; i < n; i++)
 			{
-				c = ap.contentLayer.getChildAt(i);
+				c = StageRef.stage.getChildAt(i);
 				
 				try
 				{
 					vp = views.getPropsById(c.name);
 					if (vp)
-						vp.container.alignContainer();	
+						vp.container.arranger.resize(vp.resizeMode);
+						vp.container.arranger.alignToStage(vp.align, vp.hPad, vp.vPad);
 						
 				} catch (e:Error) {}
 			}	
 		}
-		
-		public function onStageResize(e:Event = null):void
-		{	
-			Mouse.show();
-			Scale.calcAppScale(StageRef.stage, ap.designWidth, ap.designHeight);
-			Scale.constrainAppScaleRatio();
-			ap.contentLayer.width = StageRef.stage.stageWidth;
-			ap.contentLayer.height = StageRef.stage.stageHeight;
-			arrangeViewContainers();
-		}
-		
 			
 		public function callViewContainerMethod(viewName:String, method:String, params:String):void
 		{

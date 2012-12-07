@@ -30,6 +30,7 @@ package com.zutalor.utils
 		public static const TOP_RIGHT : String = "top-right";
 		public static const KEEP : String = "keep";
 		public static const FIT : String = "fit";
+		public static const SCALE : String = "scale";
 		
 		public function alignObject(displayObject:DisplayObject, width:Number, height:Number, align:String, hPad:int = 0, vPad:int = 0, fillRect:Boolean = false, applyTransfrom:Boolean = true): void
 		{

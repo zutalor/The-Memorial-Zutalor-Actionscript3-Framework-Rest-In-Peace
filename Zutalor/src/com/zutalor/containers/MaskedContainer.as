@@ -11,8 +11,13 @@
 		private var _scrollRect:Rectangle;
 		private var _scrollPercentX:Number;
 		private var _scrollPercentY:Number;
-		private var _scrollingLayer:Sprite;
 		
+		public function MaskedContainer(name:String)
+		{
+			super(name);
+			_scrollRect = new Rectangle(0,0,30,30);
+			scrollRect = _scrollRect;
+		}
 		
 		override public function set width(n:Number):void
 		{
@@ -34,11 +39,6 @@
 		{
 			return _scrollRect.height * scaleY;
 		}		
-	
-		public function MaskedContainer(containerName:String)
-		{
-			super(containerName);
-		}
 								
 		protected function get hScrollable():Boolean
 		{
@@ -80,7 +80,7 @@
 		{
 			_scrollPercentX = percent;
 			_scrollRect.x =  (width - _scrollRect.width) * _scrollPercentX;
-			_scrollingLayer.scrollRect = _scrollRect; // Okay, we must apply the rectangle again to make scrolling work.			
+			_scrollRect = _scrollRect; // Okay, we must apply the rectangle again to make scrolling work.			
 		}
 		
 		override public function get scrollPercentX():Number
@@ -92,7 +92,7 @@
 		{
 			_scrollPercentY = percent;
 			_scrollRect.y =  (height - _scrollRect.height) * _scrollPercentY;
-			_scrollingLayer.scrollRect = _scrollRect; // Okay, we must apply the rectangle again to make scrolling work.
+			_scrollRect = _scrollRect; // Okay, we must apply the rectangle again to make scrolling work.
 		}
 		
 		override public function get scrollPercentY():Number

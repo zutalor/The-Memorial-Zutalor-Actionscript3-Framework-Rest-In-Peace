@@ -1,15 +1,16 @@
 ﻿package com.zutalor.view.rendering
 {
+	import com.zutalor.containers.base.ViewObject;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.fx.Filters;
 	import com.zutalor.fx.TransitionTypes;
 	import com.zutalor.objectPool.ObjectPool;
+	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.properties.ViewProperties;
 	import com.zutalor.view.transition.ViewTransition;
-	import com.zutalor.view.utils.ViewUtils;
 	import flash.events.EventDispatcher;
 
 	/**
@@ -21,11 +22,12 @@
 		
 		private var vp:ViewProperties;
 		private var c:ViewContainer; 
-		private var _onComplete:Function;		
+		private var _onComplete:Function;
+		private var _parent:ViewObject;
 		
-		public function ViewLoader(c:ViewContainer = null)
+		public function ViewLoader(parent:ViewObject = null)
 		{
-			this.c = c;
+			_parent = parent;
 		}
 		
 		public function get container():ViewContainer
@@ -116,12 +118,15 @@
 			if (!vp.transitionPreset)
 				vp.transitionPreset = "fade";			
 			
+			if (_parent)
+				_parent.addChild(vp.container);
+			else
+				StageRef.stage.addChild(vp.container);
+			
+			vt = new ViewTransition();
+			vt.render(vp, TransitionTypes.IN);
 			if (_onComplete != null)
 				_onComplete();
-			
-			StageRef.stage.addChild(vp.container);		
-			vt = new ViewTransition();
-			vt.render(vp, TransitionTypes.IN);		
 		}
 	}
 }

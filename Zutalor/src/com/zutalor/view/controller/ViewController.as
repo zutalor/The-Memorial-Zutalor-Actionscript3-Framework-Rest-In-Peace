@@ -88,7 +88,7 @@
 				_defaultVO = Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT);
 				viewModelMediator = new ViewModelMediator(this);
 			}
-			_viewItemPositioner = new ViewItemPositioner(container, vp.width, vp.height);
+			_viewItemPositioner = new ViewItemPositioner(_container, vp.width, vp.height);
 			_viewEventMediator = new ViewEventMediator(this);
 			_viewItemFilterApplier = new ViewItemFilterApplier(_filters);
 			_viewRenderer = new ViewRenderer(_container, renderNextViewItem, _viewItemFilterApplier.applyFilters, 
@@ -150,7 +150,7 @@
 			{
 				itemWithFocus = getItemByName(itemName);
 				itemWithFocusIndex = getItemIndexByName(itemName);
-				Focus.show(itemWithFocus, container);
+				Focus.show(itemWithFocus, _container);
 			}
 			else	
 			{
@@ -171,7 +171,7 @@
 			if (transition)
 			{
 				bmd = new BitmapData(StageRef.stage.stageWidth, StageRef.stage.stageHeight);
-				bmd.draw(container);
+				bmd.draw(_container);
 				bm = new Bitmap(bmd);
 				bm.visible = true;
 				StageRef.stage.addChild(bm);				
@@ -195,7 +195,7 @@
 			if (transition)
 			{
 				t = new Transition();
-				t.simpleRender(container, transition, "in", onTransitionComplete);
+				t.simpleRender(_container, transition, "in", onTransitionComplete);
 			}
 			else
 				if (onTransitionComplete != null)
@@ -228,7 +228,7 @@
 				if (vip.voName)
 				{
 					Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
-					item = container.getChildByName(itemName) as Component;
+					item = _container.getChildByName(itemName) as Component;
 					viewModelMediator.copyViewItemToValueObject(vip, item);
 				}
 				else
@@ -241,7 +241,7 @@
 					if (vip.voName)
 					{
 						Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
-						item = container.getChildAt(i) as Component;
+						item = _container.getChildAt(i) as Component;
 						viewModelMediator.copyViewItemToValueObject(vip, item);
 					}
 				}
@@ -257,7 +257,7 @@
 				vip = _presets.getItemPropsByName(_viewId, itemName);
 				if (vip.voName)
 				{
-					item = container.getChildByName(itemName) as Component;
+					item = _container.getChildByName(itemName) as Component;
 					viewModelMediator.copyValueObjectToViewItem(vip, item);
 				}
 				else
@@ -269,7 +269,7 @@
 					vip = _presets.getItemPropsByIndex(_viewId, i);
 					if (vip.voName)
 					{
-						item = container.getChildAt(i) as Component;
+						item = _container.getChildAt(i) as Component;
 						viewModelMediator.copyValueObjectToViewItem(vip, item);
 					}
 				}
@@ -294,7 +294,7 @@
 			
 			for (var i:int = 0; i < _numViewItems; i++)
 			{
-				item = container.getChildAt(i) as Component;
+				item = _container.getChildAt(i) as Component;
 				if (item is IMediaPlayer)
 				{
 					item.stop(fadeSeconds);
@@ -307,7 +307,6 @@
 			var i:int;
 			var numFilters:int;
 			var l:int;
-			var c:ViewContainer;
 		
 			ViewControllerRegistry.unregisterController(_viewId);
 			
@@ -320,7 +319,7 @@
 				for (i = 0; i < numFilters; i++)
 					_filters[i].dispose();
 			}
-				
+			_container.dispose();	
 			_filters = null;
 			_numViewItems = 0;
 			_viewRenderer = null;
@@ -333,12 +332,12 @@
 		
 		public function getItemByIndex(indx:int):Component
 		{
-			return container.getChildAt(indx) as Component;
+			return _container.getChildAt(indx) as Component;
 		}
 		
 		public function getItemIndexByName(name:String):int
 		{
-			return container.getChildIndex(container.getChildByName(name));
+			return _container.getChildIndex(_container.getChildByName(name));
 		}
 		
 		public function getItemByName(itemName:String):Component
@@ -347,8 +346,8 @@
 			var item:Component;
 			
 			vip = _presets.getItemPropsByName(_viewId, itemName);
-			if (vip && container.numChildren)
-				item = container.getChildByName(itemName) as Component;
+			if (vip && _container.numChildren)
+				item = _container.getChildByName(itemName) as Component;
 
 			return item;
 		}
@@ -372,8 +371,8 @@
 			var item:Component;
 			
 			vip = _presets.getItemPropsByName(_viewId, itemName);
-			if (vip && container.numChildren)
-				item = container.getChildByName(itemName) as Component;
+			if (vip && _container.numChildren)
+				item = _container.getChildByName(itemName) as Component;
 				if (item)
 					item.alpha = a;
 		}
@@ -383,24 +382,24 @@
 			var ni:int;
 			
 			setItemVisibility(null, visible, fade, delay);
-			if (container.numChildren)
+			if (_container.numChildren)
 			{
-				ni = container.numChildren;
+				ni = _container.numChildren;
 				for (var i:int = 0; i < ni; i++)
-					ItemFX.fade(vp.name, container.getChildAt(i), visible, fade, delay);
+					ItemFX.fade(vp.name, _container.getChildAt(i), visible, fade, delay);
 			}
 		}
 		
 		public function setItemVisibility(name:String, visible:Boolean = true, fade:int = 0, delay:int = 0):void
 		{
-			ItemFX.fade(vp.name, container.getChildByName(name), visible, fade, delay);
+			ItemFX.fade(vp.name, _container.getChildByName(name), visible, fade, delay);
 		}
 		
 		public function setEnabled(itemName:String, d:Boolean):void
 		{
 			var item:Component;
 			
-			item = container.getChildByName(itemName) as Component;
+			item = _container.getChildByName(itemName) as Component;
 			if (item)
 			{
 				if(item.hasOwnProperty("enabled"))
@@ -422,23 +421,23 @@
 		public function hide(useTransition:Boolean=true):void
 		{
 			if (useTransition)
-				TweenMax.to(vp.container, 1, { alpha:0, visible:false } );
+				TweenMax.to(_container, 1, { alpha:0, visible:false } );
 			else
-				vp.container.visible = false;
+				_container.visible = false;
 		}
 		
 		public function show(useTransition:Boolean=true):void
 		{
 			if (useTransition)
 			{
-				vp.container.visible = true;
-				vp.container.alpha = 0;
-				TweenMax.to(vp.container, 1, { alpha:1 } );
+				_container.visible = true;
+				_container.alpha = 0;
+				TweenMax.to(_container, 1, { alpha:1 } );
 			}
 			else
 			{
-				vp.container.alpha = 1;
-				vp.container.visible = true;
+				_container.alpha = 1;
+				_container.visible = true;
 			}
 		}
 				
@@ -446,12 +445,12 @@
 		
 		public function dispatchStateSelection(ms:String):void
 		{
-			vp.container.dispatchEvent(new UIEvent(UIEvent.APP_STATE_SELECTED, vp.container.name, ms));
+			_container.dispatchEvent(new UIEvent(UIEvent.APP_STATE_SELECTED, _container.name, ms));
 		}
 		
 		public function dispatchUiEvent(eventType:String):void
 		{
-			vp.container.dispatchEvent(new UIEvent(eventType, vp.container.name));
+			_container.dispatchEvent(new UIEvent(eventType, _container.name));
 		}				
 		
 		// PRIVATE METHODS
@@ -480,11 +479,12 @@
 			var c:int;
 			var disabledCount:int;
 			var vip:ViewItemProperties;			
-			
+			trace("Pop Complete", vp.name);
 			c = container.numChildren;
 			_viewEventMediator.itemListenerSetup();				
 			_viewEventMediator.addListenersToContainer(_container);
-			container.alignContainer();	
+			_container.arranger.resize(vp.resizeMode);
+			_container.arranger.alignToStage(vp.align, vp.hPad, vp.vPad);
 			_onComplete();
 			
 			for (i = 0; i < c; i++)
