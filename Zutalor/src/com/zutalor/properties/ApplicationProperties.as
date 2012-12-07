@@ -1,10 +1,9 @@
 ﻿package com.zutalor.properties
 {
-	import com.zutalor.containers.ViewContainer;
-	import com.zutalor.propertyManagers.Props;
-	import com.zutalor.widgets.Focus;
-	import com.zutalor.utils.Singleton;
+	import com.zutalor.containers.Container;
 	import com.zutalor.text.StringUtils;
+	import com.zutalor.utils.Singleton;
+	import com.zutalor.widgets.Focus;
 	
 	/**
 	 * ...
@@ -41,13 +40,13 @@
 		public var stageVideoAvailable:Boolean;
 		public var useStageVideoIfAvailable:Boolean;
 		public var showFocus:Boolean;
+		public var contentLayer:Container;
 				
 		//air & phone related
 		
 		public var googleAnalyticsAccount:String;
 		public var portrait:Boolean;
 		public var targetPortable:Boolean;		
-		public var contentLayer:ViewContainer;
 		
 		private static var _applicationProperties:ApplicationProperties;
 					

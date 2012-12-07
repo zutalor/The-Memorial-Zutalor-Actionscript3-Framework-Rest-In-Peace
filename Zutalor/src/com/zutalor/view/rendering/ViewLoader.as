@@ -23,6 +23,11 @@
 		private var c:ViewContainer; 
 		private var _onComplete:Function;		
 		
+		public function ViewLoader(c:ViewContainer = null)
+		{
+			this.c = c;
+		}
+		
 		public function get container():ViewContainer
 		{
 			return vp.container;
@@ -34,7 +39,9 @@
 
 			vp = ViewController.presets.getPropsById(viewId);		
 			
-			if (!vp.container)
+			if (c)
+				vp.container = c;
+			else if (!vp.container)
 				ObjectPool.getContainer(vp);
 			
 			c = vp.container;
@@ -112,9 +119,7 @@
 			if (_onComplete != null)
 				_onComplete();
 			
-			StageRef.stage.addChild(vp.container);
-			ViewUtils.gi().positionAppContainer(vp);
-			
+			StageRef.stage.addChild(vp.container);		
 			vt = new ViewTransition();
 			vt.render(vp, TransitionTypes.IN);		
 		}

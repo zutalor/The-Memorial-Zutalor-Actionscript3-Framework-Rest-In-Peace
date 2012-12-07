@@ -1,7 +1,6 @@
 ﻿package com.zutalor.propertyManagers
 {
 	import com.zutalor.properties.AppStateProperties;
-	import com.zutalor.properties.ColorProperties;
 	import com.zutalor.properties.DropShadowFilterProperties;
 	import com.zutalor.properties.GlowFilterProperties;
 	import com.zutalor.properties.RippleProperties;
@@ -23,7 +22,6 @@
 		public static var ripplePresets:PropertyManager;
 		public static var hotkeyPresets:PropertyManager;
 		public static var appStates:PropertyManager;
-		public static var colorPresets:PropertyManager;
 		
 		private static var _registry:Vector.<PresetRegistryProperties>;
 		
@@ -69,9 +67,7 @@
 			toolTipPresets.parseXML(xml.toolTipPresets);
 			shadowPresets.parseXML(xml.shadowPresets);
 			glowPresets.parseXML(xml.glowPresets);
-			ripplePresets.parseXML(xml.ripplePresets);
-
-			colorPresets.parseXML(xml.colorPresets);			
+			ripplePresets.parseXML(xml.ripplePresets);			
 			appStates.parseXML(xml.appStates);
 		}
 			
@@ -84,7 +80,6 @@
 			glowPresets = new PropertyManager(GlowFilterProperties);
 			ripplePresets = new PropertyManager(RippleProperties);
 			appStates = new PropertyManager(AppStateProperties);
-			colorPresets = new PropertyManager(ColorProperties);
 		}
 	}
 }

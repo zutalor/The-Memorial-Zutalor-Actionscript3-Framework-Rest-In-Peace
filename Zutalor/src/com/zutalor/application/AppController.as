@@ -5,7 +5,7 @@
 	import com.greensock.TweenMax;
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.amfphp.Remoting;
-	import com.zutalor.containers.ViewContainer;
+	import com.zutalor.containers.Container;
 	import com.zutalor.events.AppEvent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.fx.Wind;
@@ -20,7 +20,6 @@
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.sequence.Sequence;
 	import com.zutalor.translate.Translate;
-	import com.zutalor.widgets.Spinner;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.Resources;
@@ -30,6 +29,7 @@
 	import com.zutalor.view.rendering.ViewLoader;
 	import com.zutalor.view.utils.ViewCloser;
 	import com.zutalor.view.utils.ViewUtils;
+	import com.zutalor.widgets.Spinner;
 	import flash.display.Bitmap;
 	import flash.display.StageOrientation;
 	import flash.events.Event;
@@ -129,8 +129,8 @@
 			splash = Resources.createInstance(_splashEmbedClassName);
 			splash.name = "__splash";
 			StageRef.stage.addChild(splash);
-			splash.x = StageRef.stage.fullScreenWidth - splash.width / 2;
-			splash.y = StageRef.stage.fullScreenHeight - splash.height / 2;
+			splash.x = (StageRef.stage.fullScreenWidth - splash.width) / 2;
+			splash.y = (StageRef.stage.fullScreenHeight - splash.height) / 2;
 			TweenMax.from(splash, 1, { alpha:0 } );
 		}
 	
@@ -291,7 +291,7 @@
 			MasterClock.initialize();
 			Remoting.gateway = ap.gateway;
 			_appStateCallStack = new gDictionary();	
-			ap.contentLayer = new ViewContainer("contentLayer");
+			ap.contentLayer = new Container("contentLayer");
 			
 			StageRef.stage.addChild(ap.contentLayer);			
 			Translate.language = Props.ap.language;

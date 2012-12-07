@@ -72,6 +72,8 @@ package com.zutalor.view.mediators
 			var l:int;
 			var gs:GraphSettings;
 			var tMeta:XML;
+			var textToSpeechUrl:String;
+			
 		
 			_answers = new gDictionary();
 			_history = [];
@@ -79,12 +81,13 @@ package com.zutalor.view.mediators
 			_hkm = HotKeyManager.gi();
 			_gm.addEventListener(AppGestureEvent.RECOGNIZED, onGesture);
 			_audioPlayer = new AudioPlayer("audio");				
-			_textToSpeech = new TextToSpeech();
 			
 			if (AirStatus.isMobile)
-				_textToSpeech.apiUrl = Props.ap.textToSpeechApiUrlMobile;
+				textToSpeechUrl = Props.ap.textToSpeechApiUrlMobile;
 			else
-				_textToSpeech.apiUrl = Props.ap.textToSpeechApiUrlPC;
+				textToSpeechUrl = Props.ap.textToSpeechApiUrlPC;
+				
+			_textToSpeech = new TextToSpeech(textToSpeechUrl);
 				
 			_textToSpeech.enabled = Props.ap.enableTextToSpeech;
 			

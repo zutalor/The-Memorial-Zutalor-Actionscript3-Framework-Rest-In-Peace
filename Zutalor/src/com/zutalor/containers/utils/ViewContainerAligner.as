@@ -13,8 +13,8 @@ package com.zutalor.containers.utils
 	{	
 		public static const SCALE:String = "scale";
 		public static const KEEP:String = "keep";
-		public static const RESIZE_TO_STAGE = "resizeToStage";
-		public static const FIT_TO_STAGE = "fitToStage";
+		public static const RESIZE_TO_STAGE:String = "resizeToStage";
+		public static const FIT_TO_STAGE:String = "fitToStage";
 		
 		private var _aligner:Aligner;
 		
@@ -45,7 +45,7 @@ package com.zutalor.containers.utils
 					vp.container.height = StageRef.stage.stageHeight;
 					break;
 				case FIT_TO_STAGE :
-					DisplayUtils.fitIntoRect(vp.container, StageRef.stage.stageWidth, StageRef.stage.stageHeight, DisplayUtils.TOP_LEFT, 0, 0, true);
+					vp.container.alignContainer();
 					break;
 				case KEEP :
 				default :

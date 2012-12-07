@@ -3,6 +3,8 @@ package com.zutalor.components.list
 	import com.zutalor.components.button.Button;
 	import com.zutalor.components.base.Component;
 	import com.zutalor.components.embed.Embed;
+	import com.zutalor.containers.ViewContainer;
+	import com.zutalor.events.UIEvent;
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.propertyManagers.PropertyManager;
@@ -19,9 +21,8 @@ package com.zutalor.components.list
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class List  extends Component implements IComponent
-	{
-
+	public class List extends Component implements IComponent
+	{	
 		private var scrollingContainer:ScrollingContainer;	
 		private var lp:ListProperties;
 		private var viewLoader:ViewLoader;
@@ -44,21 +45,18 @@ package com.zutalor.components.list
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
 			super.render(viewItemProperties);
-			
 			lp = presets.getPropsByName(vip.presetId);
 			viewLoader = new ViewLoader();
 			viewLoader.load(lp.listView, null, populateList);
-			visible = true;
 		}
+		
 		private function populateList():void
 		{
 			var data:Array;
-			scrollingContainer = new ScrollingContainer("list");	
-			viewLoader.container.addChild(scrollingContainer);
-			
-			
-			StageRef.stage.addChild(this);
-			
+			scrollingContainer = new ScrollingContainer("list");
+			addChild(viewLoader.container);
+			addChild(scrollingContainer);
+			Dialog.show(Dialog.ALERT, "Test");
 			if (lp.url)
 				loadData();
 			else

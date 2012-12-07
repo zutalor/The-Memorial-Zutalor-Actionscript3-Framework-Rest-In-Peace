@@ -484,6 +484,7 @@
 			c = container.numChildren;
 			_viewEventMediator.itemListenerSetup();				
 			_viewEventMediator.addListenersToContainer(_container);
+			container.alignContainer();	
 			_onComplete();
 			
 			for (i = 0; i < c; i++)

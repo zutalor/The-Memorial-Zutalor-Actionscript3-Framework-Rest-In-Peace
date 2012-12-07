@@ -1,7 +1,6 @@
 ﻿package com.zutalor.view.utils 
 {
 	import com.greensock.easing.Quart;
-	import com.greensock.TweenMax;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.motion.MotionUtils;
@@ -9,18 +8,14 @@
 	import com.zutalor.properties.ScrollProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Presets;
-	import com.zutalor.propertyManagers.Props;
-	import com.zutalor.utils.DisplayUtils;
 	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.Singleton;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.properties.ViewProperties;
 	import flash.display.DisplayObject;
-	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.events.MouseEvent;
 	import flash.ui.Mouse;
 
 	/**
@@ -105,7 +100,7 @@
 			Scale.constrainAppScaleRatio();
 			ap.contentLayer.width = StageRef.stage.stageWidth;
 			ap.contentLayer.height = StageRef.stage.stageHeight;
-			arrangeAppContainers();
+			arrangeViewContainers();
 		}
 		
 			

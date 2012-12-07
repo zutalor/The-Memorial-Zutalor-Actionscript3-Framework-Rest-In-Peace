@@ -1,0 +1,17 @@
+﻿package com.zutalor.color 
+{
+	import com.zutalor.interfaces.IProperties;
+	import com.zutalor.properties.PropertiesBase;
+	/**
+	 * ...
+	 * @author Geoff Pepos
+	 */
+	public class ColorThemeProperties extends PropertiesBase implements IProperties
+	{		
+		public var derivedFromTheme:String;
+		public var derivedFromItem:String;
+		public var hueShift:Number;
+		public var saturationShift:Number;
+		public var luminanceShift:Number;
+	}
+}

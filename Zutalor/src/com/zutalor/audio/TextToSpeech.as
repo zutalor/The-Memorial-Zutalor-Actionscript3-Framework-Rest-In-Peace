@@ -9,10 +9,12 @@ package com.zutalor.audio
 	{	
 		public var enabled:Boolean = true;
 		public var enableRandomVoices:Boolean = false;
+		public var wordcount:int;
 		
 		public const country:Array = ["usenglish", "ukenglish"];
 		public const gender:Array = ["female", "male"];
 		
+		public var apiUrl:String;
 		public var voice:String;
 		public var speed:String;
 		public var pitch:String; //0-200
@@ -21,14 +23,13 @@ package com.zutalor.audio
 		public var bitrate:String;
 		public var bitdepth:String;
 		
-		public var wordcount:int;
 		private var afterSpeaking:Function;
 		private var stopped:Boolean;
 		private var samplePlayer:SamplePlayer;
 		
 		public function TextToSpeech(apiUrl:String, voice:String = "usenglishfemale", speed:String = "2", 
 															pitch:String = "100", format:String = "mp3",
-															frequency:String = "44100", bitrate:String = 64, 
+															frequency:String = "44100", bitrate:String = "64", 
 															bitdepth:String="16")
 		{
 			this.apiUrl = apiUrl;
@@ -109,7 +110,7 @@ package com.zutalor.audio
 			  return;
 			} 
 			
-			while (str.charAt(0) == " ")
+			while (text.charAt(0) == " ")
 			{
 				text = text.substring(1, text.length);
 			}
@@ -121,7 +122,7 @@ package com.zutalor.audio
 			{
 				var urlLoader:URLLoader;
 				
-				if (onComplete != null)
+				if (onSayComplete != null)
 				{
 					onSayComplete();
 					onSayComplete = null;
