@@ -1,8 +1,7 @@
-﻿package com.zutalor.properties 
+﻿package com.zutalor.color 
 {
 	import com.zutalor.interfaces.IProperties;
-	import com.zutalor.utils.MapXML;
-	import flash.text.StyleSheet;
+	import com.zutalor.properties.PropertiesBase;
 	/**
 	 * ...
 	 * @author Geoff Pepos

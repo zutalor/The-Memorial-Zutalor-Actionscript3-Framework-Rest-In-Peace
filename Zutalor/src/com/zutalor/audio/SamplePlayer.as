@@ -12,22 +12,19 @@ package com.zutalor.audio
 	{
 		private const bufferSize: int = 4096; 
 		private const SAMPLERATE:Number = 44.1;	
-		
 		private var inputSound: Sound; 
 		private var outputSound: Sound = new Sound(); 
-
 		private var samplesTotal:int; 	
 		private var samplesPosition: int = 0;
-		private var enabled: Boolean = false;
 		private var onComplete:Function;
-		private var loop:Boolean;
 		private var playing:Boolean;
 		
 		public var soundLoaded:Boolean;
 		
 		/*
-			* ...
-			* @author Geoff Pepos
+			* @author inspired by MP3Loop.as by andre.michelle@audiotool.com (04/2010) 
+			* @author revised and extended by Geoff Pepos (11/2012)
+			* http://blog.andre-michelle.com/2010/playback-mp3-loop-gapless/
 		*/
 		
 		public function SamplePlayer():void
@@ -35,14 +32,14 @@ package com.zutalor.audio
 			outputSound = new Sound();
 		}
 
-		public function play(url:String, loop:Boolean = false, onComplete:Function = null): void
+		public function play(url:String, onComplete:Function = null): void
 		{
 			stopSound();
-			loop = loop;
+			soundLoaded = false;
 			onComplete = onComplete;
 			inputSound = new Sound();
-			inputSound.addEventListener(Event.COMPLETE, onLoaded);
-			inputSound.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
+			inputSound.addEventListener(Event.COMPLETE, onLoaded, false, 0, true);
+			inputSound.addEventListener(IOErrorEvent.IO_ERROR, onIOError, false, 0, true);
 			inputSound.load(new URLRequest(url));
 		}
 		
@@ -51,7 +48,6 @@ package com.zutalor.audio
 			stopSound();
 			if (onComplete != null)
 				onComplete();
-				
 		}
 		
 		private function stopSound():void
@@ -68,8 +64,7 @@ package com.zutalor.audio
 
 		private function onLoaded( e:Event ):void
 		{
-			playing = true;
-			
+			playing = true;	
 			removeInputListeners();		
 			samplesTotal = inputSound.length * SAMPLERATE;
 			
@@ -80,11 +75,14 @@ package com.zutalor.audio
 				outputSound.play();
 			}
 			else
-			{
-				soundLoaded = false;
+
 				stop();	
-			}
 		}
+		
+		private function sampleData(e:SampleDataEvent):void
+		{
+			extract(e.data, bufferSize);
+		}		
 		
 		private function removeInputListeners():void
 		{
@@ -93,11 +91,6 @@ package com.zutalor.audio
 				inputSound.removeEventListener(Event.COMPLETE, onLoaded);
 				inputSound.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
 			}
-		}
-
-		private function sampleData(e:SampleDataEvent):void
-		{
-			extract(e.data, bufferSize);
 		}
 
 		private function extract(target: ByteArray, length:int):void
@@ -113,18 +106,13 @@ package com.zutalor.audio
 				}
 				else
 				{
-					inputSound.extract( target, length, samplesPosition);
+					inputSound.extract(target, length, samplesPosition);
 					samplesPosition += length;
 					length = 0;
 				}
 
 				if (samplesPosition == samplesTotal)
-				{
-					if (!loop)
-						stop();
-					else
-						samplesPosition = 0;
-				}
+					stop();
 			}
 		}
 

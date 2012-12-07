@@ -1,40 +1,44 @@
 package com.zutalor.audio 
 { 
-	import com.zutalor.utils.MathG;
-	import com.zutalor.utils.SimpleMessage;
-	import com.zutalor.text.StringUtils;
 	import flash.events.Event;
-	import flash.media.SoundChannel;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
 	
 	public class TextToSpeech 
 	{	
+		public var enabled:Boolean = true;
+		public var enableRandomVoices:Boolean = false;
+		
 		public const country:Array = ["usenglish", "ukenglish"];
 		public const gender:Array = ["female", "male"];
 		
-		public var voice:String = "usenglishfemale";
-		public var speed:String = "2"; //-10 to 10
-		public var pitch:String = "100"; //0-200
-		public var format:String = "mp3";
-		public var frequency:String = "44100";
-		public var bitrate:String = "64";
-		public var bitdepth:String = "16";
+		public var voice:String;
+		public var speed:String;
+		public var pitch:String; //0-200
+		public var format:String;
+		public var frequency:String;
+		public var bitrate:String;
+		public var bitdepth:String;
 		
-		public var apiUrl:String;
-		public var enabled:Boolean = true;
 		public var wordcount:int;
-		
 		private var afterSpeaking:Function;
 		private var stopped:Boolean;
-		private var channel:SoundChannel;
-		private var limitSentences:Boolean;
-		
 		private var samplePlayer:SamplePlayer;
 		
-		public function TextToSpeech()
+		public function TextToSpeech(apiUrl:String, voice:String = "usenglishfemale", speed:String = "2", 
+															pitch:String = "100", format:String = "mp3",
+															frequency:String = "44100", bitrate:String = 64, 
+															bitdepth:String="16")
 		{
+			this.apiUrl = apiUrl;
+			this.voice = voice;
+			this.speed = speed; // -10 to 10
+			this.pitch = pitch; // 0-200
+			this.format = format;
+			this.frequency = frequency;
+			this.bitrate = bitrate;
+			this.bitdepth = bitdepth;
 			samplePlayer = new SamplePlayer();
 		}
 		
@@ -50,20 +54,20 @@ package com.zutalor.audio
 			var sentences:Array;
 			var l:int;
 			var i:int;
-		
-			stopped = false;
-			voice = country[MathG.rand(0, 1)] + gender[MathG.rand(0, 1)];
-			afterSpeaking = afterSpeaking;
 			
+			this.afterSpeaking = afterSpeaking;
+	
 			if (!enabled)
 			{
 				if (afterSpeaking != null)
 					afterSpeaking();
 			}
-			else if (!apiUrl)
-				trace("TextToSpeach: No ApiUrl");
 			else
 			{
+				stopped = false;
+				if (enableRandomVoices)
+					voice = country[rand(0, 1)] + gender[rand(0, 1)];
+
 				sentences = cleanString(text).split(".");
 				l = sentences.length;
 				sayNextSentence();
@@ -90,26 +94,28 @@ package com.zutalor.audio
 		
 		public function dispose():void
 		{
-			//TODO
+			samplePlayer = null;
 		}
 				
-		// private methods
+		// PRIVATE METHODS
 		
-		private function say(text:String, onComplete:Function):void 
+		private function say(text:String, onSayComplete:Function):void 
 		{	
 			var url:String;
 			
-			text = StringUtils.stripLeadingSpaces(text);
-			
 			if (!text)
 			{
-			  onComplete();
+			  onSayComplete();
 			  return;
 			} 
 			
-			url = makeURL(text);
+			while (str.charAt(0) == " ")
+			{
+				text = text.substring(1, text.length);
+			}
 			
-			samplePlayer.play(url, false, checkforError);
+			url = makeURL(text);
+			samplePlayer.play(url, checkforError);
 			
 			function checkforError():void
 			{
@@ -117,9 +123,10 @@ package com.zutalor.audio
 				
 				if (onComplete != null)
 				{
-					onComplete();
-					onComplete = null;
+					onSayComplete();
+					onSayComplete = null;
 				}
+				
 				if (!samplePlayer.soundLoaded)
 				{
 					urlLoader = new URLLoader();
@@ -139,14 +146,13 @@ package com.zutalor.audio
 					catch (e:Error) {}
 					if (result != null)
 					{
-						SimpleMessage.show(result);
 						trace(result);
 					}
 				}
 			}
 		}		
 		
-		private function cleanString(str:String):String // okay, could do this with regex, maybe also strip punctuation for smaller payload?
+		private function cleanString(str:String):String // okay, could do this with regex; maybe also strip punctuation for smaller payload?
 		{
 			var r:Array;
 
@@ -163,10 +169,19 @@ package com.zutalor.audio
 			
 			r = str.split(" ");
 			wordcount += r.length;
-			
 			trace("Words Translated: " + wordcount);
 			
 			return str;
-		}		
+		}	
+		
+		private function rand(min:Number,max:Number=NaN):int 
+		{
+			if (isNaN(max)) 
+			{ 
+				max = min; 
+				min = 0; 
+			}
+			return Math.floor(Math.random() * (1 + max - min)) + min;
+		}
 	}
 }
