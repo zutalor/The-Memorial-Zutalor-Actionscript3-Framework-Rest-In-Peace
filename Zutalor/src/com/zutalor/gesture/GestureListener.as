@@ -14,40 +14,43 @@ package com.zutalor.gesture
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class GestureMediator extends EventDispatcher implements IDisposable 
+	public class GestureListener extends EventDispatcher implements IDisposable 
 	{		
-		private static var _activeGestures:gDictionary;
-		private static var _plugins:*;
-		private static var _instance:*;
+		private var _activeGestures:gDictionary;
+		private static var _gestureClasses:gDictionary;
 		
-		public static function initialize(plugins:*):void
+		public static function register(Klass:Class, name:String = null):String
 		{
-			if (!_instance)
-			{
-				_activeGestures = new gDictionary();
-				_plugins = plugins;
-				_instance = new GestureMediator();
-			}
+			var className:String;
+			
+			if (!_gestureClasses)
+				_gestureClasses = new gDictionary();
+			
+			if (name)
+				className = name;
+			else
+				className = getClassName(Klass);		
+			
+			_gestureClasses.insert(className, Klass);
+			return className;
 		}
 		
-		public static function gi():GestureMediator
-		{	
-			if (!_instance)
-				ShowError.fail(GestureMediator, "Must be initialiazed first.");
-
-			return _instance;
+		public function GestureListener()
+		{
+			_activeGestures = new gDictionary();
+			addEventListener(AppGestureEvent.RECOGNIZED, onGesture);
 		}
 					
-		public function activateGesture(type:String, target:DisplayObject, name:String):void 
+		public function activateGesture(type:String, target:DisplayObject, listener:Function):void 
 		{
 			var agp:ActiveGestureProperties;
 			var gestureClass:Class;
 			var qualifiedClassName:String;
 			var targetDictionary:gDictionary;
 
-			gestureClass = _plugins.getClass(type);
+			gestureClass = _gestureClasses.getByKey(type);
 			if (!gestureClass)
-				ShowError.fail(GestureMediator, "Gesture type not registered: " + type);
+				ShowError.fail(GestureListener, "Gesture type not registered: " + type);
 			
 			qualifiedClassName = getQualifiedClassName(gestureClass);
 			targetDictionary = _activeGestures.getByKey(target);
@@ -59,8 +62,9 @@ package com.zutalor.gesture
 				removeActiveGesture(agp);
 				
 			agp = new ActiveGestureProperties();
+			agp.type = type;
 			agp.target = target;
-			agp.name = name;
+			agp.listener = listener;
 			agp.qualifiedClassName = qualifiedClassName;
 			agp.gesture = new gestureClass(target);
 			
@@ -107,7 +111,7 @@ package com.zutalor.gesture
 		
 		public function reflect():Class
 		{
-			return GestureMediator;
+			return GestureListener;
 		}
 		
 		// PRIVATE METHODS	
@@ -139,8 +143,25 @@ package com.zutalor.gesture
 		private function onGesture(ge:GestureEvent):void
 		{
 			var agp:ActiveGestureProperties;
+			var age:AppGestureEvent;
 			agp = gDictionary(_activeGestures.getByKey(ge.target.target)).getByKey(getQualifiedClassName(ge.target));
-			dispatchEvent(new AppGestureEvent(AppGestureEvent.RECOGNIZED, Gesture(ge.target), agp.name));
+			age = new AppGestureEvent(agp.type, Gesture(ge.target));
+			agp.listener(age);
+		}
+		
+		private static function getClassName(Klass:Class):String
+		{
+			var p:int;
+			var fullClassName:String;
+
+			fullClassName = getQualifiedClassName(Klass);		
+			
+			p = fullClassName.indexOf("::");
+			
+			if (p > 0)
+				return fullClassName.slice(p + 2); 
+			else
+				return fullClassName;
 		}
 	}
 }

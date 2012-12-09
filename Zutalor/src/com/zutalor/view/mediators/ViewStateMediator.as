@@ -6,7 +6,6 @@ package com.zutalor.view.mediators
 	import com.zutalor.controllers.base.UiControllerBase;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.gesture.AppGestureEvent;
-	import com.zutalor.gesture.GestureMediator;
 	import com.zutalor.gesture.UserInputProperties;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.PropertyManager;
@@ -39,7 +38,6 @@ package com.zutalor.view.mediators
 		private var _textToSpeech:TextToSpeech;
 		private var _audioPlayer:AudioPlayer;
 		private var _uiController:UiControllerBase;
-		private var _gm:GestureMediator;
 		private var _hkm:HotKeyManager;
 		private var _gestures:gDictionary;
 		private var _answers:gDictionary;
@@ -77,9 +75,9 @@ package com.zutalor.view.mediators
 		
 			_answers = new gDictionary();
 			_history = [];
-			_gm = GestureMediator.gi();
 			_hkm = HotKeyManager.gi();
-			_gm.addEventListener(AppGestureEvent.RECOGNIZED, onGesture);
+			//_gm.addEventListener(AppGestureEvent.RECOGNIZED, onGesture);
+			
 			_audioPlayer = new AudioPlayer("audio");				
 			
 			if (AirStatus.isMobile)
@@ -165,7 +163,7 @@ package com.zutalor.view.mediators
 			for (var i:int = 0; i < l; i++)
 			{
 				gp = _viewGestures.getPropsByIndex(i);
-				_gm.activateGesture(gp.type, StageRef.stage, gp.name);
+				// FUCK_gm.activateGesture(gp.type, StageRef.stage, gp.name);
 			}
 			
 			_hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey, false, 0, true);
@@ -187,6 +185,7 @@ package com.zutalor.view.mediators
 		
 		private function onGesture(age:AppGestureEvent):void
 		{
+			/*
 			var uip:UserInputProperties;
 			
 			uip = _viewGestures.getPropsByName(age.name);
@@ -198,7 +197,9 @@ package com.zutalor.view.mediators
 				else if (SwipeGesture(age.gesture).offsetY < 1)
 					uip.action = uip.actionLeft;
 			}
-			onUserInput(uip, age.gesture);
+			if (uip)
+				onUserInput(uip, age.gesture);
+				*/
 		}
 		
 		private function onUserInput(uip:UserInputProperties, gesture:Gesture = null):void	

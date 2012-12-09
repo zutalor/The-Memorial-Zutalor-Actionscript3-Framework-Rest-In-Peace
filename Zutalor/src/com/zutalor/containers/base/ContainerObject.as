@@ -1,11 +1,14 @@
 ﻿package com.zutalor.containers.base
 {	
-	import com.zutalor.interfaces.IViewObject;
+	import com.zutalor.gesture.AppGestureEvent;
+	import com.zutalor.gesture.GestureListener;
+	import com.zutalor.interfaces.IContainerObject;
+	import flash.events.Event;
 	/**
 	 * 
 	 * @author Geoff Pepos
 	 */
-	public class ViewObject extends CenterSprite implements IViewObject
+	public class ContainerObject extends CenterSprite implements IContainerObject
 	{
 		public var vx:Number;
 		public var vy:Number;
@@ -33,8 +36,9 @@
 		
 		private var _editable:Boolean;
 		private var _enabled:Boolean;
+		private var _gestureListener:GestureListener;
 		
-		public function ViewObject()
+		public function ContainerObject()
 		{
 			posOffsetX = 0;
 			posOffsetY = 0;
@@ -43,6 +47,14 @@
 			friction = 0;
 			windAffect = 0;
 			editable = false;
+		}
+		
+		public function addGestureListener(type:String, listener:Function):void
+		{
+			if (!_gestureListener)
+				_gestureListener = new GestureListener();
+	
+			_gestureListener.activateGesture(type, this, listener);
 		}
 		
 		public function set editable(value:Boolean):void

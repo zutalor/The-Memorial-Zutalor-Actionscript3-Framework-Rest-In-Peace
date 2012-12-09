@@ -5,12 +5,9 @@
 	import com.greensock.TweenMax;
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.amfphp.Remoting;
-	import com.zutalor.containers.Container;
-	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.events.AppEvent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.fx.Wind;
-	import com.zutalor.gesture.GestureMediator;
 	import com.zutalor.motion.MotionUtils;
 	import com.zutalor.plugin.constants.PluginClasses;
 	import com.zutalor.plugin.constants.PluginMethods;
@@ -285,7 +282,7 @@
 			vpm = ViewController.presets;
 			
 			ap.ip = _ip;
-			GestureMediator.initialize(Plugins);
+
 			StageRef.stage.addEventListener(StageVideoAvailabilityEvent.STAGE_VIDEO_AVAILABILITY, 
 																					onStageVideoAbility);	
 			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, onSWFAddressFirstBroadcast);			

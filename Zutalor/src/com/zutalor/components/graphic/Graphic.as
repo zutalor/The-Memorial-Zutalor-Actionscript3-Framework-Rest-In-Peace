@@ -4,7 +4,7 @@ package com.zutalor.components.graphic
 	import com.zutalor.components.embed.Embed;
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.components.label.Label;
-	import com.zutalor.containers.base.ViewObject;
+	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.fx.Filters;
 	import com.zutalor.fx.Transition;
 	import com.zutalor.objectPool.ObjectPool;
@@ -100,7 +100,7 @@ package com.zutalor.components.graphic
 		
 		private function renderItem():void
 		{
-			var item:ViewObject;
+			var item:ContainerObject;
 			var gri:GraphicItemProperties;
 			gri = _graphics.getItemPropsByIndex(vip.presetId, itemIndex);
 			
@@ -129,7 +129,7 @@ package com.zutalor.components.graphic
 			}
 		}
 				
-		private function onItemRenderComplete(item:ViewObject, gri:GraphicItemProperties):void 
+		private function onItemRenderComplete(item:ContainerObject, gri:GraphicItemProperties):void 
 		{
 			if (gri.rotation)
 				item.rotationAroundCenter = gri.rotation;
@@ -202,9 +202,9 @@ package com.zutalor.components.graphic
 			}
 		}		
 		
-		private function draw(gri:GraphicItemProperties):ViewObject
+		private function draw(gri:GraphicItemProperties):ContainerObject
 		{
-			var item:ViewObject = new ViewObject();
+			var item:ContainerObject = new ContainerObject();
 			var coordsStr:Array;
 			var commandsStr:Array;
 			var commands:Vector.<int>;
@@ -260,7 +260,7 @@ package com.zutalor.components.graphic
 			return item;
 		}
 		
-		private function graphic(gri:GraphicItemProperties):ViewObject
+		private function graphic(gri:GraphicItemProperties):ContainerObject
 		{
 			var gr:Graphic = new Graphic(vip.name);
 			
@@ -272,7 +272,7 @@ package com.zutalor.components.graphic
 			return gr;
 		}
 		
-		private function embed(gri:GraphicItemProperties):ViewObject
+		private function embed(gri:GraphicItemProperties):ContainerObject
 		{
 			var em:Embed;
 			
@@ -284,7 +284,7 @@ package com.zutalor.components.graphic
 			return em;
 		}
 		
-		private function label(gri:GraphicItemProperties):ViewObject
+		private function label(gri:GraphicItemProperties):ContainerObject
 		{
 			var label:Label = new Label(vip.name);
 			label.vip.text = Translate.text(gri.tKey);

@@ -1,7 +1,6 @@
 ﻿package com.zutalor.objectPool 
 {
 	import com.zutalor.components.graphic.Graphic;
-	import com.zutalor.containers.MaskedContainer;
 	import com.zutalor.containers.ParallaxContainer;
 	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.containers.ViewContainer;
@@ -75,13 +74,10 @@
 			switch (vp.containerType)
 			{
 				case ViewProperties.CONTAINER_SCROLLING :
-					vp.container = new ScrollingContainer(vp.name, vp.hScrollBarSliderId, vp.vScrollBarSliderId, vp.autoAdjustThumbSize);
-					break;
-				case ViewProperties.CONTAINER_MASKED :
-					vp.container = new MaskedContainer(vp.name);
-					break;					
+					vp.container = new ScrollingContainer(vp.name);
+					break;			
 				case ViewProperties.CONTAINER_PARALLAX :
-					vp.container = new ParallaxContainer(vp.name, vp.hScrollBarSliderId, vp.vScrollBarSliderId, vp.autoAdjustThumbSize);
+					vp.container = new ParallaxContainer(vp.name);
 					break;		
 				case ViewProperties.CONTAINER_BASIC :
 				default :

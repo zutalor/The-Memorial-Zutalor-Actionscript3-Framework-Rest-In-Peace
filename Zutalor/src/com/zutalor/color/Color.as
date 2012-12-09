@@ -1,7 +1,6 @@
 package com.zutalor.color 
 {
 	import com.zutalor.propertyManagers.NestedPropsManager;
-	import com.zutalor.utils.Enumerator;
 	import com.zutalor.utils.ShowError;
 	/**
 	 * ...
@@ -25,14 +24,30 @@ package com.zutalor.color
 			var ctp:ColorThemeProperties;
 			var ctip:ColorThemeItemProperties;
 			var color:Number;
+			var hueShift:Number;
+			var saturationShift:Number;
+			var luminanceShift:Number;
 			
 			ctp = _presets.getPropsById(themeId);
 			
 			if (!ctp)
 				ShowError.fail(Color, "No color theme found: " + themeId);
+				
+			hueShift = ctp.hueShift;
+			saturationShift = ctp.saturationShift;
+			luminanceShift = ctp.luminanceShift;				
 			
 			if (ctp.derivedFromTheme)
 				ctp = _presets.getPropsById(ctp.derivedFromTheme);
+			
+			if (!hueShift)
+				hueShift = ctp.hueShift;
+				
+			if (!saturationShift)
+				saturationShift = ctp.saturationShift;
+				
+			if (!luminanceShift)
+				luminanceShift = ctp.luminanceShift;
 				
 			if (ctp.derivedFromItem)
 				ctip = _presets.getItemPropsByName(ctp.name, ctp.derivedFromItem);
@@ -40,7 +55,7 @@ package com.zutalor.color
 				ctip = _presets.getItemPropsByName(themeId, id);
 	
 			if (ctip)
-				color = HSL.getHex(ctip.hue, ctip.saturation, ctip.luminance);
+				color = HSL.getHex(ctip.hue + hueShift, ctip.saturation + saturationShift, ctip.luminance + luminanceShift);
 			else
 				ShowError.fail(Color, "No color item for theme: " + themeId + " for " + id);
 				

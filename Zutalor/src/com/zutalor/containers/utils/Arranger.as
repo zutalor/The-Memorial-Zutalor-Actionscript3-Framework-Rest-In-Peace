@@ -1,6 +1,6 @@
 package com.zutalor.containers.utils
 {
-	import com.zutalor.containers.base.ViewObject;
+	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.Container;
 	import com.zutalor.events.ContainerEvent;
 	import com.zutalor.utils.Aligner;
@@ -23,11 +23,11 @@ package com.zutalor.containers.utils
 		public static const GRID:String = "grid";		
 		
 		private var aligner:Aligner;
-		private var obj:ViewObject;
+		private var obj:ContainerObject;
 		
-		public function Arranger(viewObject:ViewObject)
+		public function Arranger(containerObject:ContainerObject)
 		{
-			obj = viewObject;
+			obj = containerObject;
 			aligner = new Aligner();
 		}
 				

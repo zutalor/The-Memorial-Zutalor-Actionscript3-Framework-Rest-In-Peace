@@ -1,22 +1,15 @@
 package com.zutalor.components.list 
 {
-	import com.zutalor.components.button.Button;
 	import com.zutalor.components.base.Component;
-	import com.zutalor.components.embed.Embed;
-	import com.zutalor.containers.ViewContainer;
-	import com.zutalor.events.UIEvent;
-	import com.zutalor.interfaces.IComponent;
+	import com.zutalor.components.button.Button;
+	import com.zutalor.containers.Container;
 	import com.zutalor.containers.ScrollingContainer;
+	import com.zutalor.gesture.AppGestureEvent;
+	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.translate.Translate;
-	import com.zutalor.utils.Aligner;
-	import com.zutalor.utils.MasterClock;
-	import com.zutalor.utils.StageRef;
-	import com.zutalor.view.controller.ViewController;
-	import com.zutalor.view.controller.ViewControllerRegistry;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.view.rendering.ViewLoader;
-	import com.zutalor.widgets.Dialog;
 	import flash.events.MouseEvent;
 	/**
 	 * ...
@@ -24,7 +17,10 @@ package com.zutalor.components.list
 	 */
 	public class List extends Component implements IComponent
 	{	
-		private var scrollingContainer:ScrollingContainer;	
+		public static const HORIZONTAL:String = "horizontal";
+		public static const VERTICAL:String = "virtical";
+		
+		private var sc:ScrollingContainer;	
 		private var lp:ListProperties;
 		private var viewLoader:ViewLoader;
 		
@@ -52,14 +48,22 @@ package com.zutalor.components.list
 			viewLoader.load(lp.listView, null, populateList);
 		}
 		
+		override public function dispose():void
+		{
+			sc.removeEventListener(MouseEvent.CLICK, onTap);
+			sc.dispose();
+			sc = null;
+			super.dispose();
+		}
+		
+		// PRIVATE METHODS
+		
 		private function populateList():void
 		{
-	
 			var data:Array
 			var b:Button;
 			
-			scrollingContainer = new ScrollingContainer("listItems");
-			viewLoader.container.addChild(scrollingContainer);
+			sc = new ScrollingContainer();
 			
 			if (lp.url)
 				loadData();
@@ -70,19 +74,28 @@ package com.zutalor.components.list
 				for (var i:int = 0; i < data.length; i++)
 				{
 					b = createListItem(data[i]);
-					scrollingContainer.push(b);
+					sc.push(b);
 				}
 			}
-			scrollingContainer.scrollRect.width = lp.scrollAreaWidth;
-			scrollingContainer.scrollRect.height = lp.scrollAreaHeight;
-			scrollingContainer.arranger.autoArrangeChildren( { padding:lp.spacing, orientation:lp.orientation } );
-			scrollingContainer.arranger.align(lp.align, int(vip.width), int(vip.height), lp.hPad, lp.vPad);
-			scrollingContainer.addEventListener(MouseEvent.CLICK, onTap, false, 0, true);
+			viewLoader.container.addChild(sc);
+			sc.scrollWidth= lp.scrollAreaWidth;
+			sc.scrollHeight = lp.scrollAreaHeight;
+			sc.arranger.autoArrangeChildren( { padding:lp.spacing, orientation:lp.orientation } );
+			sc.addEventListener(MouseEvent.CLICK, onTap, false, 0, true);
+			addGestureListener("panGesture", onPanGesture);
+		}
+		
+		private function onPanGesture(age:*):void
+		{
+			if (lp.orientation == HORIZONTAL)
+				sc.scrollX += age.gesture.offsetX;
+			else
+				sc.scrollY += age.gesture.offsetY;	
 		}
 
 		private function loadData():void
 		{
-			//TODO
+			//TODO Ideally use a class that does this only.
 		}
 		
 		private function createListItem(text:String):Button
@@ -98,10 +111,9 @@ package com.zutalor.components.list
 		
 		private function onTap(me:MouseEvent):void
 		{
-			value = me.target.name;
-			visible = !visible;
-			
-			trace(value);
+			//value = me.target.name;
+			//visible = !visible;
+			trace(me.target.name);
 		}
 	}
 }

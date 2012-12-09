@@ -1,7 +1,7 @@
 ﻿package com.zutalor.containers
 {
 	import com.gskinner.utils.IDisposable;
-	import com.zutalor.containers.base.ViewObject;
+	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.utils.Arranger;
 	import com.zutalor.containers.utils.ObjectRemover;
 	import com.zutalor.events.ContainerEvent;
@@ -11,13 +11,14 @@
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class Container extends ViewObject implements IDisposable
+	public class Container extends ContainerObject implements IDisposable
 	{	
 		private var _arranger:Arranger;
 		
-		public function Container(containerName:String) 
+		public function Container(containerName:String = null) 
 		{
-			name = containerName;
+			if (containerName)
+				name = containerName;
 			_arranger = new Arranger(this);
 		}
 		

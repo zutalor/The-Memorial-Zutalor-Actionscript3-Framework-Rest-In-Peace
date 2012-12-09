@@ -10,7 +10,6 @@ package com.zutalor.gesture
 		
 		public static const RECOGNIZED:String = "recognized";
 		public var gesture:Gesture;
-		public var name:String;
 			
 		/**
 		* @description  Constructor.
@@ -19,10 +18,9 @@ package com.zutalor.gesture
 		* @param  pBubbles  Whether the event bubbles up through the display list.
 		* @param  pCancelable  Whether the event can be canceled as it bubbles.
 		*/
-		public function AppGestureEvent(pType:String, pGesture:Gesture, pName:String, pBubbles:Boolean=false, pCancelable:Boolean=false) {
+		public function AppGestureEvent(pType:String, pGesture:Gesture, pBubbles:Boolean=false, pCancelable:Boolean=false) {
 			super(pType, pBubbles, pCancelable);
 			gesture = pGesture;
-			name = pName;
 		}		
 	}
 }

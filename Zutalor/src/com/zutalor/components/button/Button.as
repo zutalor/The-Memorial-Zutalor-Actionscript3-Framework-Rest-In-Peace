@@ -88,7 +88,7 @@
 				label.render(vip);
 				buttonStates[i].addChild(label);
 				_buttonLabels[i] = label;
-				//aligner.alignObject(label, width, height, _bp.align, _bp.hPad, _bp.vPad);
+				aligner.alignObject(label, width, height, _bp.align, _bp.hPad, _bp.vPad);
 			}
 		}
 		

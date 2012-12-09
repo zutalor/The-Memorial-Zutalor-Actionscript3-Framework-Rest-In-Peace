@@ -1,14 +1,14 @@
 package com.zutalor.widgets
 {
-	import com.zutalor.interfaces.IViewObject;
-	import com.zutalor.containers.base.ViewObject;
+	import com.zutalor.interfaces.IContainerObject;
+	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.utils.ArrayUtils;
 	import com.zutalor.widgets.Line;
 	/**
 	 * 
 	 * @author Geoff Pepos
 	 */
-	public class Plotter extends ViewObject implements IViewObject
+	public class Plotter extends ContainerObject implements IContainerObject
 	{
 		public var dotSize:int;		
 		private var _displayData:Array;

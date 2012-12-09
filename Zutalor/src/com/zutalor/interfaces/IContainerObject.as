@@ -4,7 +4,7 @@ package com.zutalor.interfaces
 	 * ...
 	 * @author Geoff
 	 */
-	public interface IViewObject 
+	public interface IContainerObject 
 	{
 		function dispose():void
 		function recycle():void

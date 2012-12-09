@@ -27,12 +27,11 @@
 		private const DFLT_WIDTH_MULTIPLIER:Number = 1.5; 
 		private const DFLT_WIDTH_INCREMENT:Number = 2;
 		
-		public function ParallaxContainer(containerName:String,
-									vScrollBarSliderId:String, hScrollBarSliderId:String, autoAdjustThumbSize:Boolean=true) 
+		public function ParallaxContainer(containerName:String) 
 		
 		// TODO options: numLayers & reverseThumbs
 		{
-			super(containerName, hScrollBarSliderId, vScrollBarSliderId, autoAdjustThumbSize);
+			super(containerName);
 			addEventListener(Event.ADDED_TO_STAGE, addedToStage, false, 0, true);
 		}	
 		
@@ -65,14 +64,7 @@
 		{
 			for (var i:int = 1; i < NUM_LAYERS; i++)
 				_layers[i].width = n;			
-		}
-		
-		override protected function vertThumbMoved(e:UIEvent):void
-		{
-			super.vertThumbMoved(e);
-			for (var i:int = 1; i < NUM_LAYERS; i++)
-				_layers[i].setScrollPositionY(e.value);
-		}		
+		}	
 
 		override public function tweenScrollPercentY(percent:Number, tweenTime:Number=0.5, ease:Function=null):void
 		{
@@ -87,13 +79,6 @@
 			for (var i:int = 1; i < NUM_LAYERS; i++) {
 				_layers[i].setScrollPercentX(percent, tweenTime, ease);
 			}
-		}
-		
-		override protected function horzThumbMoved(e:UIEvent):void
-		{
-			super.horzThumbMoved(e);
-			for (var i:int = 1; i < NUM_LAYERS; i++)
-				_layers[i].setScrollPositionX(e.value);
 		}
 				
 		private function addedToStage(e:Event):void

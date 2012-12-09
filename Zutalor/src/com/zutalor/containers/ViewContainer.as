@@ -1,6 +1,6 @@
 ﻿package com.zutalor.containers
 {
-	import com.zutalor.interfaces.IViewObject;
+	import com.zutalor.interfaces.IContainerObject;
 	import com.zutalor.events.ContainerEvent;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.view.controller.ViewController;
@@ -8,7 +8,7 @@
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class ViewContainer extends Container implements IViewObject
+	public class ViewContainer extends Container implements IContainerObject
 	{
 		public var viewController:ViewController;
 				

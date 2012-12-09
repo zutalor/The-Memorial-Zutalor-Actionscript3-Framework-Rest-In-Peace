@@ -1,6 +1,6 @@
 package com.zutalor.components.media.base 
 {
-	import com.zutalor.containers.base.ViewObject;
+	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containerUtils.ContainerLoader;
 	import com.zutalor.events.MediaEvent;
 	import com.zutalor.events.MediaLoadProgressEvent;
@@ -24,7 +24,7 @@ package com.zutalor.components.media.base
 	 */
 	public class MediaPlayerWithTransport extends MediaPlayer
 	{	
-		private var _transport:ViewObject;
+		private var _transport:ContainerObject;
 		
 		private var _savedVolume:Number;
 		private var _savedWidth:int;
@@ -34,7 +34,7 @@ package com.zutalor.components.media.base
 		private var _savedScaleX:Number;
 		private var _savedScaleY:Number;
 		private var _savedParent:DisplayObjectContainer;
-		private var _transportLoader:ViewObjectLoader;				
+		private var _transportLoader:ContainerObjectLoader;				
 		private var _maximized:Boolean;			
 
 		private const TRANSPORT_PADDING:int = 25;

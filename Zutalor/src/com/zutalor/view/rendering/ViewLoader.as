@@ -1,6 +1,6 @@
 ﻿package com.zutalor.view.rendering
 {
-	import com.zutalor.containers.base.ViewObject;
+	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.fx.Filters;
 	import com.zutalor.fx.TransitionTypes;
@@ -23,9 +23,9 @@
 		private var vp:ViewProperties;
 		private var c:ViewContainer; 
 		private var _onComplete:Function;
-		private var _parent:ViewObject;
+		private var _parent:ContainerObject;
 		
-		public function ViewLoader(parent:ViewObject = null)
+		public function ViewLoader(parent:ContainerObject = null)
 		{
 			_parent = parent;
 		}

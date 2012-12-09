@@ -3,7 +3,7 @@
 	import adobe.utils.CustomActions;
 	import com.greensock.easing.Quint;
 	import com.greensock.TweenMax;
-	import com.zutalor.containers.base.ViewObject;
+	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.properties.ApplicationProperties;
 	import flash.display.Bitmap;
@@ -20,11 +20,11 @@
 	{	
 		public static function isContainerInMotion(c:ViewContainer):Boolean
 		{
-			var ms:ViewObject;
+			var ms:ContainerObject;
 			
 			for (var i:int = 0;  i < c.numChildren; i++)
 			{
-				ms = c.getChildAt(i) as ViewObject;
+				ms = c.getChildAt(i) as ContainerObject;
 				if (ms.inMotion)
 				{
 					return true;
@@ -33,7 +33,7 @@
 			return false;
 		}
 		
-		public static function checkMotion(ms:ViewObject, velocityTolerance:Number, maxVelocity:Number):void
+		public static function checkMotion(ms:ContainerObject, velocityTolerance:Number, maxVelocity:Number):void
 		{	
 			if (ms.vx > maxVelocity)
 				ms.vx = maxVelocity;
@@ -53,7 +53,7 @@
 			}
 		}
 		
-		public static function checkBounds(width:Number, height:Number, ms:ViewObject, overlap:Number = 75):void
+		public static function checkBounds(width:Number, height:Number, ms:ContainerObject, overlap:Number = 75):void
 		{
 			var left:Number;
 			var right:Number;
@@ -96,7 +96,7 @@
 			}
 		}
 		
-		public static function squashAndStretch(ms:ViewObject):void
+		public static function squashAndStretch(ms:ContainerObject):void
 		{
 			//TweenMax.from(ms, .5, { scaleY:ms.scaleY * .75, scaleX:ms.scaleX * .75, ease: Quint.easeOut } );
 		}		
@@ -109,17 +109,17 @@
 			
 			if (Motion.isContainerInMotion(c))
 			{
-				var ms:ViewObject;
+				var ms:ContainerObject;
 				
 				for (var i:int = 0;  i < c.numChildren - 1; i++)
 				{
-					ms = c.getChildAt(i) as ViewObject;
+					ms = c.getChildAt(i) as ContainerObject;
 					if (!ms.dragging) 
 					{
 						Motion.springTo(c.getChildAt(i), c.getChildAt(i + 1), gravity, spring, friction, springLength); 
 					}
 					
-					ms = c.getChildAt(i + 1) as ViewObject;
+					ms = c.getChildAt(i + 1) as ContainerObject;
 					if (!ms.dragging)
 					{
 						Motion.springTo(c.getChildAt(i + 1), c.getChildAt(i), gravity, spring, friction, springLength);
@@ -138,10 +138,10 @@
 			{
 				for (var i:uint = 0; i < container.numChildren - 1; i++)
 				{
-					var ms0:ViewObject = container.getChildAt(i) as ViewObject;
+					var ms0:ContainerObject = container.getChildAt(i) as ContainerObject;
 					for (var j:uint = i + 1; j < container.numChildren; j++)
 					{
-						var ms1:ViewObject = container.getChildAt(j) as ViewObject;
+						var ms1:ContainerObject = container.getChildAt(j) as ContainerObject;
 						var dx:Number = ms1.x - ms0.x;
 						var dy:Number = ms1.y - ms0.y;
 						var dist:Number = Math.sqrt(dx * dx + dy * dy);

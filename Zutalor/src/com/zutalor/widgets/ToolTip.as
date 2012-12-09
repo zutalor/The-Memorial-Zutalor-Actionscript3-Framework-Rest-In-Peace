@@ -1,8 +1,8 @@
 ﻿package com.zutalor.widgets  
 {
 	import com.greensock.TweenMax;
-	import com.zutalor.components.interfaces.IViewObject;
-	import com.zutalor.containers.base.ViewObject;
+	import com.zutalor.components.interfaces.IContainerObject;
+	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.properties.ApplicationProperties;
 	import com.zutalor.properties.ToolTipProperties;
 	import com.zutalor.propertyManagers.Presets;
@@ -18,7 +18,7 @@
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class ToolTip extends ViewObject implements IViewObject
+	public class ToolTip extends ContainerObject implements IContainerObject
 	{					
 		private static var _txt:TextField;
 		private static var _background:Sprite;

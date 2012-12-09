@@ -3,7 +3,7 @@
 	import com.greensock.easing.Sine;
 	import com.greensock.TweenMax;
 	import com.gskinner.utils.IDisposable;
-	import com.zutalor.containers.base.ViewObject;
+	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.properties.ApplicationProperties;
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.utils.StrUtil;
@@ -57,7 +57,7 @@
 		
 		private var _tweets:Array;	
 		public var status:String;
-		private var _c:ViewObject;
+		private var _c:ContainerObject;
 
 		public function TwitterLoader() 
 		{			

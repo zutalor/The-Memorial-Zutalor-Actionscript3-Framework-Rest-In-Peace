@@ -7,7 +7,7 @@ package com.zutalor.gesture
 	 */
 	public class ActiveGestureProperties
 	{
-		public var name:String;
+		public var listener:Function;
 		public var type:String;
 		public var target:*; 
 		public var gesture:Gesture;

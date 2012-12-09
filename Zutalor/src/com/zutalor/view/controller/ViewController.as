@@ -13,7 +13,6 @@
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.NestedPropsManager;
-	import com.zutalor.widgets.Focus;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.mediators.ViewEventMediator;
@@ -25,6 +24,7 @@
 	import com.zutalor.view.rendering.ViewRenderer;
 	import com.zutalor.view.transition.ItemFX;
 	import com.zutalor.view.transition.ViewItemTransition;
+	import com.zutalor.widgets.Focus;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 
@@ -479,7 +479,6 @@
 			var c:int;
 			var disabledCount:int;
 			var vip:ViewItemProperties;			
-			trace("Pop Complete", vp.name);
 			c = container.numChildren;
 			_viewEventMediator.itemListenerSetup();				
 			_viewEventMediator.addListenersToContainer(_container);
