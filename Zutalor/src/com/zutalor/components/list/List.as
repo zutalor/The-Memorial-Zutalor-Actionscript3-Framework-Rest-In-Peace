@@ -2,9 +2,7 @@ package com.zutalor.components.list
 {
 	import com.zutalor.components.base.Component;
 	import com.zutalor.components.button.Button;
-	import com.zutalor.containers.Container;
 	import com.zutalor.containers.ScrollingContainer;
-	import com.zutalor.gesture.AppGestureEvent;
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.translate.Translate;
@@ -88,9 +86,9 @@ package com.zutalor.components.list
 		private function onPanGesture(age:*):void
 		{
 			if (lp.orientation == HORIZONTAL)
-				sc.scrollX += age.gesture.offsetX;
+				sc.scrollX -= age.gesture.offsetX;
 			else
-				sc.scrollY += age.gesture.offsetY;	
+				sc.scrollY -= age.gesture.offsetY;	
 		}
 
 		private function loadData():void

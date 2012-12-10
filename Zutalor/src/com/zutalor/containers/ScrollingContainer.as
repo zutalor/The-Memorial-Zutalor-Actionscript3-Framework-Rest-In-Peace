@@ -78,6 +78,24 @@
 			tweenScrollPercentX(scrollPercentX);
 		}
 		
+		public function set scrollPercentX(percent:Number):void
+		{
+		}
+		
+		public function get scrollPercentX():Number
+		{
+			return 1;
+		}
+		
+		public function set scrollPercentY(percent:Number):void
+		{
+		}
+		
+		public function get scrollPercentY():Number
+		{
+			return 1;
+		}
+		
 		override public function contentChanged(ev:ContainerEvent = null):void
 		{
 			if (numChildren == 0)
@@ -87,7 +105,7 @@
 			}
 		}
 		
-		override public function tweenScrollPercentY(percent:Number, tweenTime:Number = 0.5, ease:Function = null):void
+		public function tweenScrollPercentY(percent:Number, tweenTime:Number = 0.5, ease:Function = null):void
 		{
 			var e:Function;
 			if (ease == null)
@@ -106,7 +124,7 @@
 				scrollPercentY = percent;
 		}
 				
-		override public function tweenScrollPercentX(percent:Number, tweenTime:Number=0.5, ease:Function=null):void
+		public function tweenScrollPercentX(percent:Number, tweenTime:Number=0.5, ease:Function=null):void
 		{
 			var e:Function;
 			
