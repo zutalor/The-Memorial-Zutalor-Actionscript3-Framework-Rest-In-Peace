@@ -26,6 +26,8 @@
 		public var contentPersists:Boolean;
 		public var resizeMode:String;
 		public var containerType:String
+		public var scrollX:Boolean;
+		public var scrollY:Boolean;
 		public var width:int;
 		public var height:int;
 		public var hPad:int;

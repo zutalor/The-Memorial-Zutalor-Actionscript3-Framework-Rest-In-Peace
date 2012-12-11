@@ -165,7 +165,7 @@ package com.zutalor.components.media.playlist
 						if (!_sp.allowRepeats)
 							if (_clipsAlreadyPlayed.count(_currentContext) == _clipsToPlay.length) // we've played each one with no repeats, so reset.
 							{
-								_clipsAlreadyPlayed.deleteByObject(_currentContext);
+								_clipsAlreadyPlayed.deleteByValue(_currentContext);
 								cueClipsToPlay("not allow repeats");		
 							}	
 						do 
@@ -302,7 +302,7 @@ package com.zutalor.components.media.playlist
 				else if (!alreadyReset)
 				{
 					if (!_sp.allowRepeats)
-						_clipsAlreadyPlayed.deleteByObject(_currentContext);
+						_clipsAlreadyPlayed.deleteByValue(_currentContext);
 										
 					cueClipsToPlay("get clip and play it");
 				}

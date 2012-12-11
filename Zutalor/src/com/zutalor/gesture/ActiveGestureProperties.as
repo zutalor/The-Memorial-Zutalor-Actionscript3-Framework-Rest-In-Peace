@@ -7,11 +7,9 @@ package com.zutalor.gesture
 	 */
 	public class ActiveGestureProperties
 	{
-		public var listener:Function;
 		public var type:String;
-		public var target:*; 
+		public var listener:Function;
 		public var gesture:Gesture;
-		public var qualifiedClassName:String;
 		public var eventTypes:Array;
 
 		public function ActiveGestureProperties()
@@ -22,7 +20,7 @@ package com.zutalor.gesture
 		public function dispose():void
 		{	
 			gesture.dispose();
-			target = null;
+			listener = null;
 			eventTypes = null;
 		}
 	}

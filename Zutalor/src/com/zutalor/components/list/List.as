@@ -3,6 +3,7 @@ package com.zutalor.components.list
 	import com.zutalor.components.base.Component;
 	import com.zutalor.components.button.Button;
 	import com.zutalor.containers.ScrollingContainer;
+	import com.zutalor.gesture.AppGestureEvent;
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.translate.Translate;
@@ -14,13 +15,12 @@ package com.zutalor.components.list
 	 * @author Geoff Pepos
 	 */
 	public class List extends Component implements IComponent
-	{	
-		public static const HORIZONTAL:String = "horizontal";
-		public static const VERTICAL:String = "virtical";
-		
+	{			
 		private var sc:ScrollingContainer;	
 		private var lp:ListProperties;
 		private var viewLoader:ViewLoader;
+		private var target:*;
+		private var tapped:Boolean;
 		
 		public function List(name:String)
 		{
@@ -48,7 +48,8 @@ package com.zutalor.components.list
 		
 		override public function dispose():void
 		{
-			sc.removeEventListener(MouseEvent.CLICK, onTap);
+			sc.removeGestureListener("tapGesture");
+			sc.removeEventListener(MouseEvent.CLICK, onClick);
 			sc.dispose();
 			sc = null;
 			super.dispose();
@@ -60,8 +61,15 @@ package com.zutalor.components.list
 		{
 			var data:Array
 			var b:Button;
+			var enableHScroll:Boolean;
+			var enableYScroll:Boolean;
 			
-			sc = new ScrollingContainer();
+			if (lp.orientation == HORIZONTAL)
+				enableHScroll = true;
+			else
+				enableYScroll = true;
+							
+			sc = new ScrollingContainer(name, enableHScroll, enableYScroll);
 			
 			if (lp.url)
 				loadData();
@@ -78,19 +86,11 @@ package com.zutalor.components.list
 			viewLoader.container.addChild(sc);
 			sc.scrollWidth= lp.scrollAreaWidth;
 			sc.scrollHeight = lp.scrollAreaHeight;
-			sc.arranger.autoArrangeChildren( { padding:lp.spacing, orientation:lp.orientation } );
-			sc.addEventListener(MouseEvent.CLICK, onTap, false, 0, true);
-			addGestureListener("panGesture", onPanGesture);
+			sc.autoArrangeChildren( { padding:lp.spacing, orientation:lp.orientation } );
+			sc.addEventListener(MouseEvent.CLICK, onClick, false, 0, true);
+			sc.addGestureListener("tapGesture", onTap);
 		}
 		
-		private function onPanGesture(age:*):void
-		{
-			if (lp.orientation == HORIZONTAL)
-				sc.scrollX -= age.gesture.offsetX;
-			else
-				sc.scrollY -= age.gesture.offsetY;	
-		}
-
 		private function loadData():void
 		{
 			//TODO Ideally use a class that does this only.
@@ -107,11 +107,19 @@ package com.zutalor.components.list
 			return b;
 		}
 		
-		private function onTap(me:MouseEvent):void
+		private function onClick(me:MouseEvent):void
 		{
-			//value = me.target.name;
-			//visible = !visible;
-			trace(me.target.name);
+			if (tapped)
+			{
+				value = me.target.name;
+				visible = !visible;
+				tapped = false;
+			}
+		}
+		
+		private function onTap(age:AppGestureEvent):void
+		{
+			tapped = true;
 		}
 	}
 }

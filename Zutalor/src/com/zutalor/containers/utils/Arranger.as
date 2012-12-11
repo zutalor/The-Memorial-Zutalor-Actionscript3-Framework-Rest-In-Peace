@@ -1,12 +1,9 @@
 package com.zutalor.containers.utils
 {
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.containers.Container;
-	import com.zutalor.events.ContainerEvent;
 	import com.zutalor.utils.Aligner;
 	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.StageRef;
-	import flash.display.DisplayObject;
 	/**
 	 * ...
 	 * @author Geoff
@@ -68,53 +65,6 @@ package com.zutalor.containers.utils
 		public function align(align:String, width:Number, height:Number, hPad:Number = 0, vPad:Number = 0, filRect:Boolean = false):void
 		{
 			aligner.alignObject(obj, width, height, align, hPad, vPad, filRect);
-		}
-
-		public function autoArrangeChildren(options:Object):void
-		{
-			var i:int = 0;
-			var width:int = 0;
-			var height:int = 0;
-			var padding:Number = 0;
-			var orientation:String = HORIZONTAL;
-			var child:DisplayObject;
-							
-			if ("padding" in options)
-				padding = options["padding"];
-				
-			if ("orientation" in options)	
-				orientation = options["orientation"];
-			
-				
-			for (i = 0; i < obj.numChildren; i++)
-			{
-				if (orientation == HORIZONTAL)
-				{
-					if (padding && padding < 1)
-						padding *= width; 
-					
-					if (i) 
-						width += padding;
-					
-					child = obj.getChildAt(i);
-					child.x = width;
-					width += child.width;
-				}
-				else
-				{
-					if (padding && padding < 1)
-						padding *= height; 
-
-					if (i) // no front padding on first entry
-						height += padding;
-					
-					child = obj.getChildAt(i);
-					child.y = height;
-					height += child.height;
-				}
-			}
-			if (obj.numChildren)
-				obj.dispatchEvent(new ContainerEvent(ContainerEvent.CONTENT_CHANGED));
 		}
 	}
 }

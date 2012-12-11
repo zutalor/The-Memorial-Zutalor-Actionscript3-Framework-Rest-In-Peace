@@ -110,6 +110,22 @@
 					return null;
 		}
 		
+		public function getByValue(value:*):*
+		{
+			
+			var i:int;
+			
+			if (!value)
+				return null;
+			else
+				i = _values.indexOf(value);
+				
+				if (i != -1)
+					return _values[i];
+				else
+					return null;	
+		}
+		
 		public function getByIndex(index:int):*
 		{
 			if (index < _keys.length && index >= 0)
@@ -155,14 +171,20 @@
 			return c;
 		}
 		
-		public function deleteByObject(obj:*):void
+		
+		public function deleteByValue(value:*):void
 		{
-			for (var i:int = 0; i < _values.length; i++)
-				if (_values[i] == obj)
-				{
-					_values[i] = null;
-					_keys[i] = null;
-				}
+			var i:int;
+			
+			i = getByValue(value);
+			
+			if (i != -1)
+			{
+				_values[i] = null;
+				_keys[i] = null;
+				_values.splice(i, 1);
+				_keys.splice(i, 1)
+			}
 		}
 	}
 }

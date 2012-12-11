@@ -1,7 +1,6 @@
 ﻿package com.zutalor.containers
 {
 	import com.zutalor.interfaces.IContainerObject;
-	import com.zutalor.events.ContainerEvent;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.view.controller.ViewController;
 	/**
@@ -34,7 +33,7 @@
 				viewController.stop();
 		}
 		
-		public function contentChanged(ev:ContainerEvent = null):void
+		override public function contentChanged():void
 		{
 		}			
 		

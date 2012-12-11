@@ -52,9 +52,25 @@
 		public function addGestureListener(type:String, listener:Function):void
 		{
 			if (!_gestureListener)
-				_gestureListener = new GestureListener();
+				_gestureListener = new GestureListener(this);
 	
-			_gestureListener.activateGesture(type, this, listener);
+			_gestureListener.activateGesture(type, listener);
+		}
+		
+		public function removeGestureListener(type:String):void
+		{
+			_gestureListener.deactivateGesture(type)
+		}
+		
+		public function removeAllGestureListeners():void
+		{
+			_gestureListener.deactivateAllGestures();
+		}
+		
+		public function dispose():void
+		{
+			if (_gestureListener)
+				_gestureListener.dispose();
 		}
 		
 		public function set editable(value:Boolean):void
@@ -76,8 +92,7 @@
 		{
 			return _enabled;
 		}
-		
-		public function dispose():void {}
+
 		public function recycle():void {}
 		public function stop(fadeSeconds:Number = 0):void {}	
 	}

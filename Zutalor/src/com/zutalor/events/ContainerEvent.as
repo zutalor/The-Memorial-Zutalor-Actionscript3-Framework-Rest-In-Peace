@@ -1,1 +1,0 @@
-﻿package com.zutalor.events{	import flash.events.*;		public class ContainerEvent extends Event	{		public static const CONTENT_CHANGED:String = "contentChanged";				public function ContainerEvent(type:String):void		{			super(type);		}	}}

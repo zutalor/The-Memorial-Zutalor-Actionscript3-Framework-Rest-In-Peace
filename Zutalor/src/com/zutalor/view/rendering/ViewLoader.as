@@ -44,7 +44,7 @@
 			if (c)
 				vp.container = c;
 			else if (!vp.container)
-				ObjectPool.getContainer(vp);
+				ObjectPool.getContainer(vp, vp.scrollX, vp.scrollY);
 			
 			c = vp.container;
 			c.x = vp.x;

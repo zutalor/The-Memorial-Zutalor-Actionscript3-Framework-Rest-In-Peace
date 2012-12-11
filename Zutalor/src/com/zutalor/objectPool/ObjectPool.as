@@ -1,6 +1,7 @@
 ﻿package com.zutalor.objectPool 
 {
 	import com.zutalor.components.graphic.Graphic;
+	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.ParallaxContainer;
 	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.containers.ViewContainer;
@@ -69,15 +70,15 @@
 			return new ViewCloser();
 		}
 		
-		public static function getContainer(vp:ViewProperties):void
+		public static function getContainer(vp:ViewProperties, scrollX:Boolean, scrollY:Boolean):void
 		{
 			switch (vp.containerType)
 			{
 				case ViewProperties.CONTAINER_SCROLLING :
-					vp.container = new ScrollingContainer(vp.name);
+					vp.container = new ScrollingContainer(vp.name, scrollX, scrollY);
 					break;			
 				case ViewProperties.CONTAINER_PARALLAX :
-					vp.container = new ParallaxContainer(vp.name);
+					vp.container = new ParallaxContainer(vp.name, scrollX, scrollY);
 					break;		
 				case ViewProperties.CONTAINER_BASIC :
 				default :

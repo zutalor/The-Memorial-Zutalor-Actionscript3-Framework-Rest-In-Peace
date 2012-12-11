@@ -1,6 +1,7 @@
 ﻿package com.zutalor.view.utils 
 {
 	import com.greensock.easing.Quart;
+	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.motion.MotionUtils;
@@ -150,41 +151,18 @@
 				c.width -= c.width * .1;
 				c.height -= c.height * .1;				
 			}
-			
-			if (c.scaleX >= 1)
-			{
-				oldScrollX = vp.container.scrollPercentX
-			}
-			else
-			{
-				oldScrollX = 0;
-			}
-			
-			if (c.scaleY >= 1)
-			{
-				oldScrollY = vp.container.scrollPercentY;
-			}
-			else
-			{
-				oldScrollY = 0;
-			}
-
 			vp.container.contentChanged();				
-			vp.container.tweenScrollPercentX(oldScrollX);
-			vp.container.tweenScrollPercentY(oldScrollY)	
-			vp.container.scrollPercentX = oldScrollX;
-			vp.container.scrollPercentY = oldScrollY;
 		}
 		
 		public function updateContainerScrollPosition(scrollPreset:String):void
 		{	
 			var spp:ScrollProperties;
-			var c:ViewContainer;
+			var c:*;
 			spp = pr.scrollPresets.getPropsByName(scrollPreset);
 			if (spp)
 			{
 				c = views.getPropsById(spp.viewName).container;				
-				if (c)
+				if (c is ScrollingContainer)
 				{
 					c.tweenScrollPercentX(spp.scrollPercentX, spp.scrollTimeX, Quart.easeInOut);
 					c.tweenScrollPercentY(spp.scrollPercentY, spp.scrollTimeY, Quart.easeInOut);

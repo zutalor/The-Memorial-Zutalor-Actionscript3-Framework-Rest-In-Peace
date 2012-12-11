@@ -1,5 +1,6 @@
 ﻿package com.zutalor.containers 
 {
+	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.events.UIEvent;
 	import flash.display.DisplayObject;
@@ -27,15 +28,15 @@
 		private const DFLT_WIDTH_MULTIPLIER:Number = 1.5; 
 		private const DFLT_WIDTH_INCREMENT:Number = 2;
 		
-		public function ParallaxContainer(containerName:String) 
+		public function ParallaxContainer(containerName:String, scrollX:Boolean, scrollY:Boolean) 
 		
 		// TODO options: numLayers & reverseThumbs
 		{
-			super(containerName);
+			super(containerName, scrollX, scrollY);
 			addEventListener(Event.ADDED_TO_STAGE, addedToStage, false, 0, true);
 		}	
 		
-		override public function push(child:DisplayObject, options:Object = null):void  //example options { layerLayer:1, destPercentX:0.5, destPercentY:0.5 }
+		override public function push(child:ContainerObject, options:Object = null):void  //example options { layerLayer:1, destPercentX:0.5, destPercentY:0.5 }
 		{	
 			
 			var c:ScrollingContainer;
@@ -134,7 +135,7 @@
 			
 				if (i) // because '0' is "this"
 				{
-					_layers[i] = new ScrollingContainer(name + String(i));
+					_layers[i] = new ScrollingContainer(name + String(i), _enableHScroll, _enableVScroll);
 					_layers[i].push(_blankShapes[i]);
 					addChild(_layers[i]);
 					_layers[i].scrollBarsVisible = false;
