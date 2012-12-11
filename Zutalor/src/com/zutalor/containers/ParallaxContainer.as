@@ -67,18 +67,18 @@
 				_layers[i].width = n;			
 		}	
 
-		override public function tweenScrollPercentY(percent:Number, tweenTime:Number=0.5, ease:Function=null):void
+		override public function tweenScrollPercentY(percent:Number, tweenTime:Number=0.5):void
 		{
-			super.tweenScrollPercentY(percent, tweenTime, ease);
+			super.tweenScrollPercentY(percent, tweenTime);
 			for (var i:int = 1; i < NUM_LAYERS; i++)
-				_layers[i].setScrollPositionY(percent, tweenTime, ease);
+				_layers[i].setScrollPositionY(percent, tweenTime);
 		}
 		
-		override public function tweenScrollPercentX(percent:Number, tweenTime:Number=0.5, ease:Function=null):void
+		override public function tweenScrollPercentX(percent:Number, tweenTime:Number=0.5):void
 		{
-			super.tweenScrollPercentX(percent, tweenTime, ease);
+			super.tweenScrollPercentX(percent, tweenTime);
 			for (var i:int = 1; i < NUM_LAYERS; i++) {
-				_layers[i].setScrollPercentX(percent, tweenTime, ease);
+				_layers[i].setScrollPercentX(percent, tweenTime);
 			}
 		}
 				

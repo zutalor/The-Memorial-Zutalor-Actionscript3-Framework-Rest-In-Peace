@@ -103,7 +103,7 @@
 					label.value = text;
 					label.width = this.width;
 					label.height = this.height;
-					//aligner.alignObject(label, this.width, this.height, _bp.align, _bp.hPad, _bp.vPad);
+					aligner.alignObject(label, this.width, this.height, _bp.align, _bp.hPad, _bp.vPad);
 				}
 			}
 			name = text;

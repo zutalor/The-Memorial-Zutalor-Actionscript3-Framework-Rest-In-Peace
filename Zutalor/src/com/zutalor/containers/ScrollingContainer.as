@@ -2,6 +2,7 @@
 {
 	import com.greensock.easing.Quad;
 	import com.greensock.easing.Quart;
+	import com.greensock.easing.Quint;
 	import com.greensock.TweenMax;
 	import flash.display.DisplayObject;
 	import flash.events.Event;
@@ -15,7 +16,9 @@
 	 * @author Geoff Pepos
 	 */
 	public class ScrollingContainer extends ViewContainer 
-	{		
+	{	
+		public var ease:Function = Quint.easeOut;
+		public var easeSeconds:Number = .75;
 		private var _width:Number;
 		private var _height:Number;
 		private var _scrollRect:Rectangle;
@@ -83,15 +86,15 @@
 		public function set scrollHeight(n:Number):void
 		{
 			_scrollRect.height = n;
-			scrollRect = _scrollRect;
-			tweenScrollPercentY(scrollPercentY);	
+			//scrollRect = _scrollRect;
+			//tweenScrollPercentY(scrollPercentY);	
 		}
 		
 		public function set scrollWidth(n:Number):void
 		{
 			_scrollRect.width = n;
-			scrollRect= _scrollRect;
-			tweenScrollPercentX(scrollPercentX);
+			//scrollRect= _scrollRect;
+			//tweenScrollPercentX(scrollPercentX);
 		}
 		
 		public function set scrollPercentX(percent:Number):void
@@ -126,41 +129,28 @@
 			}
 		}
 		
-		public function tweenScrollPercentY(percent:Number, tweenTime:Number = 0.5, ease:Function = null):void
-		{
-			var e:Function;
-			if (ease == null)
-				e = Quad.easeOut;
-			else
-				e = ease;
-			
+		public function tweenScrollPercentY(percent:Number, tweenTime:Number = 0.5):void
+		{			
 			if (percent > 1) 
 				percent = 1;
 			else if (percent < 0) 
 				percent = 0;
 				
 			if (tweenTime)	
-				TweenMax.to(this, tweenTime, { scrollPercentY:percent, ease:e} );
+				TweenMax.to(this, tweenTime, { scrollPercentY:percent, ease:ease} );
 			else if (scrollPercentY != percent)
 				scrollPercentY = percent;
 		}
 				
-		public function tweenScrollPercentX(percent:Number, tweenTime:Number=0.5, ease:Function=null):void
+		public function tweenScrollPercentX(percent:Number, tweenTime:Number=0.5):void
 		{
-			var e:Function;
-			
-			if (ease == null)
-				e = Quad.easeOut;
-			else
-				e = ease;
-	
 			if (percent > 1) 
 				percent = 1;
 			else if (percent < 0) 
 				percent  = 0;
 			
 			if (tweenTime)
-				TweenMax.to(this, tweenTime, { scrollPercentX:percent, ease:e} );
+				TweenMax.to(this, tweenTime, { scrollPercentX:percent, ease:ease} );
 			else if (scrollPercentX != percent) 
 				scrollPercentX = percent;
 		}
@@ -168,11 +158,11 @@
 		private function onSwipeGesture(age:*):void
 		{
 			if (_enableHScroll)
-				TweenMax.to(_scrollRect, .25, { x:_scrollRect.x - (age.gesture.offsetX * 20), onUpdate:onTween, 
+				TweenMax.to(_scrollRect, easeSeconds, { x:_scrollRect.x - (age.gesture.offsetX * 20), onUpdate:onTween, 
 																		onComplete:onSwipeComplete } );
 			
 			if (_enableVScroll)
-				TweenMax.to(_scrollRect, .25, { y:_scrollRect.y - (age.gesture.offsetY * 20), onUpdate:onTween,
+				TweenMax.to(_scrollRect, easeSeconds, { y:_scrollRect.y - (age.gesture.offsetY * 20), onUpdate:onTween,
 																		onComplete:onSwipeComplete } );
 																		
 			function onSwipeComplete():void
@@ -183,6 +173,7 @@
 
 		private function onPanGesture(age:*):void
 		{
+			TweenMax.killTweensOf(_scrollRect);
 			if (_enableHScroll && scrollX - age.gesture.offsetX > _scrollRect.width / 2 * -1
 								&& scrollX - age.gesture.offsetX < width)
 				scrollX -= age.gesture.offsetX;
@@ -197,23 +188,23 @@
 			if (_enableHScroll)
 			{
 				if (_scrollRect.x < 0)
-					TweenMax.to(_scrollRect, .25, { x:0, onUpdate:onTween, ease:Quart.easeInOut } );
+					TweenMax.to(_scrollRect, easeSeconds, { x:0, onUpdate:onTween, ease:ease } );
 				else if (_scrollRect.x + width > _width)
-					TweenMax.to(_scrollRect, .25, { x:_width - width, onUpdate:onTween, ease:Quart.easeInOut } );;
+					TweenMax.to(_scrollRect, easeSeconds, { x:_width - width, onUpdate:onTween, ease:Quart.easeInOut } );;
 			}
 			
 			if (_enableVScroll)
 			{
 				if (_scrollRect.y < 0)
-					TweenMax.to(_scrollRect, .25, { y:0, onUpdate:onTween, ease:Quart.easeInOut } );
+					TweenMax.to(_scrollRect, easeSeconds, { y:0, onUpdate:onTween, ease:ease } );
 				else if (_scrollRect.y + height > _height)
-					TweenMax.to(_scrollRect, .25, { y:_height - height, onUpdate:onTween, ease:Quart.easeInOut } );;
+					TweenMax.to(_scrollRect, easeSeconds, { y:_height - height, onUpdate:onTween, ease:ease } );;
 			}	
 		}
 		
 		private function onTween():void
 		{
-			scrollRect = _scrollRect;
+			//scrollRect = _scrollRect;
 		}
 		
 		private function getFullBounds ( displayObject:DisplayObject ) :Rectangle

@@ -83,12 +83,13 @@ package com.zutalor.components.list
 					sc.push(b);
 				}
 			}
+			sc.autoArrangeChildren( { padding:lp.spacing, orientation:lp.orientation } );
 			viewLoader.container.addChild(sc);
 			sc.scrollWidth= lp.scrollAreaWidth;
 			sc.scrollHeight = lp.scrollAreaHeight;
-			sc.autoArrangeChildren( { padding:lp.spacing, orientation:lp.orientation } );
 			sc.addEventListener(MouseEvent.CLICK, onClick, false, 0, true);
 			sc.addGestureListener("tapGesture", onTap);
+			sc.cacheAsBitmap = true;
 		}
 		
 		private function loadData():void
