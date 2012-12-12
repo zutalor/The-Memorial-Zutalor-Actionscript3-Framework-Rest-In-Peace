@@ -16,6 +16,8 @@
 		public var scrollAreaHeight:Number;
 		public var orientation:String;
 		public var align:String;
+		public var itemWidth:Number;
+		public var itemHeight:Number;
 		public var hPad:Number;
 		public var vPad:Number;
 		public var spacing:Number;

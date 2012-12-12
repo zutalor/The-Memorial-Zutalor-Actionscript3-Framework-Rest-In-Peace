@@ -118,8 +118,6 @@
 				_curViewProps = null;
 			}
 		}			
-		
-		
 
 		private function showSplash():void
 		{

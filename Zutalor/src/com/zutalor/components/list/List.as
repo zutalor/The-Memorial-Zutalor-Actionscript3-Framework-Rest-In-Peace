@@ -11,6 +11,7 @@ package com.zutalor.components.list
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.view.rendering.ViewLoader;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	/**
 	 * ...
@@ -41,10 +42,8 @@ package com.zutalor.components.list
 			
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
-			var c:* = this;
 			super.render(viewItemProperties);
-			
-			viewLoader = new ViewLoader(c);
+			viewLoader = new ViewLoader(this);
 			lp = presets.getPropsByName(vip.presetId);
 			viewLoader.load(lp.listView, null, populateList);
 		}
@@ -87,15 +86,18 @@ package com.zutalor.components.list
 				}
 			}
 			
-			addChild(sc);
-			sc.cacheAsBitmap = true;
-			sc.scrollWidth= lp.scrollAreaWidth;
-			sc.scrollHeight = lp.scrollAreaHeight;
-			sc.autoArrangeChildren( { padding:lp.spacing, orientation:lp.orientation } );	
-			sc.addEventListener(MouseEvent.CLICK, onClick, false, 0, true);
-			sc.addGestureListener("tapGesture", onTap);
-			StageRef.stage.addChild(sc);
-
+			MasterClock.callOnce(finish, 200); // total hack 
+			
+			function finish():void
+			{
+				sc.cacheAsBitmap = true;
+				sc.scrollWidth= lp.scrollAreaWidth;
+				sc.scrollHeight = lp.scrollAreaHeight;
+				addChild(sc);
+				sc.autoArrangeChildren( { padding:lp.spacing, orientation:lp.orientation } );
+				sc.addEventListener(MouseEvent.CLICK, onClick, false, 0, true);
+				sc.addGestureListener("tapGesture", onTap);
+			}
 		}
 		
 		private function loadData():void

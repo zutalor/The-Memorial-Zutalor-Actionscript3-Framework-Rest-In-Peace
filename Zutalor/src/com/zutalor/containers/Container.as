@@ -4,6 +4,8 @@
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.utils.Arranger;
 	import com.zutalor.containers.utils.ObjectRemover;
+	import com.zutalor.utils.Scale;
+	import com.zutalor.utils.StageRef;
 	import com.zutalor.widgets.Focus;
 	import flash.display.DisplayObject;
 	/**
@@ -44,15 +46,14 @@
 				if (orientation == HORIZONTAL)
 				{
 					if (padding && padding < 1)
-						padding *= width; 
+						padding *= w; 
 					
 					if (i) 
 						w += padding;
 					
 					child = getChildAt(i);
-					child.x = width;
+					child.x = w;
 					w += child.width;
-	
 				}
 				else
 				{
@@ -63,7 +64,7 @@
 						h += padding;
 					
 					child = getChildAt(i);
-					child.y = height;
+					child.y = h;
 					h += child.height;
 				}
 			}

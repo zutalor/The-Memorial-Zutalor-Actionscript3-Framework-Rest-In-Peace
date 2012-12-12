@@ -34,6 +34,8 @@
 			_enableVScroll = enableVScroll;
 			addEventListener(Event.ADDED_TO_STAGE, addedToStage, false, 0, true);
 		}
+		
+		
 	
 		private function addedToStage(e:Event):void
 		{
@@ -87,14 +89,14 @@
 		{
 			_scrollRect.height = n;
 			scrollRect = _scrollRect;
-			//tweenScrollPercentY(scrollPercentY);	
+			tweenScrollPercentY(scrollPercentY);	
 		}
 		
 		public function set scrollWidth(n:Number):void
 		{
 			_scrollRect.width = n;
 			scrollRect= _scrollRect;
-			//tweenScrollPercentX(scrollPercentX);
+			tweenScrollPercentX(scrollPercentX);
 		}
 		
 		public function set scrollPercentX(percent:Number):void
