@@ -5,13 +5,12 @@ package com.zutalor.components.list
 	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.gesture.AppGestureEvent;
 	import com.zutalor.interfaces.IComponent;
+	import com.zutalor.interfaces.IListItemRenderer;
+	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.PropertyManager;
-	import com.zutalor.translate.Translate;
 	import com.zutalor.utils.MasterClock;
-	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.view.rendering.ViewLoader;
-	import flash.events.Event;
 	import flash.events.MouseEvent;
 	/**
 	 * ...
@@ -24,6 +23,8 @@ package com.zutalor.components.list
 		private var viewLoader:ViewLoader;
 		private var target:*;
 		private var tapped:Boolean;
+		
+		public var itemRenderer:IListItemRenderer;
 		
 		public function List(name:String)
 		{
@@ -65,26 +66,21 @@ package com.zutalor.components.list
 			var b:Button;
 			var enableHScroll:Boolean;
 			var enableYScroll:Boolean;
+			var irClass:Class;
 			
 			if (lp.orientation == HORIZONTAL)
 				enableHScroll = true;
 			else
 				enableYScroll = true;
 							
-			sc = new ScrollingContainer(name, enableHScroll, enableYScroll);
+			sc = new ScrollingContainer(name, enableHScroll, enableYScroll);	
 			
-			if (lp.url)
-				loadData();
-			else
+			if (itemRenderer == null)
 			{
-				data = lp.data.split(","); 
-			
-				for (var i:int = 0; i < data.length; i++)
-				{
-					b = createListItem(data[i]);
-					sc.push(b);
-				}
+				irClass = Plugins.getClass(lp.itemRenderer);
+				itemRenderer = new irClass();
 			}
+			itemRenderer.render(lp, sc);
 			
 			MasterClock.callOnce(finish, 200); // total hack 
 			
@@ -98,22 +94,6 @@ package com.zutalor.components.list
 				sc.addGestureListener("tapGesture", onTap);
 				sc.cacheAsBitmap = true;
 			}
-		}
-		
-		private function loadData():void
-		{
-			//TODO Ideally use a class that does this only.
-		}
-		
-		private function createListItem(text:String):Button
-		{
-			var b:Button;
-			
-			b = new Button(name);
-			b.vip.text = Translate.text(text);
-			b.vip.presetId = lp.itemButtonId;
-			b.render();
-			return b;
 		}
 		
 		private function onClick(me:MouseEvent):void

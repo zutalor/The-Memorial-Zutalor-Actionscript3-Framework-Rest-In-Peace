@@ -24,6 +24,7 @@
 		public var url:String;
 		public var path:String;
 		public var data:String;
+		public var itemRenderer:String;
 		
 		override public function parseXML(xml:XML):Boolean
 		{
