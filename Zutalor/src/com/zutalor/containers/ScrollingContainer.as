@@ -86,14 +86,14 @@
 		public function set scrollHeight(n:Number):void
 		{
 			_scrollRect.height = n;
-			//scrollRect = _scrollRect;
+			scrollRect = _scrollRect;
 			//tweenScrollPercentY(scrollPercentY);	
 		}
 		
 		public function set scrollWidth(n:Number):void
 		{
 			_scrollRect.width = n;
-			//scrollRect= _scrollRect;
+			scrollRect= _scrollRect;
 			//tweenScrollPercentX(scrollPercentX);
 		}
 		
@@ -204,7 +204,7 @@
 		
 		private function onTween():void
 		{
-			//scrollRect = _scrollRect;
+			scrollRect = _scrollRect;
 		}
 		
 		private function getFullBounds ( displayObject:DisplayObject ) :Rectangle

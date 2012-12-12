@@ -7,6 +7,8 @@ package com.zutalor.components.list
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.translate.Translate;
+	import com.zutalor.utils.MasterClock;
+	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.view.rendering.ViewLoader;
 	import flash.events.MouseEvent;
@@ -39,9 +41,10 @@ package com.zutalor.components.list
 			
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
-				
+			var c:* = this;
 			super.render(viewItemProperties);
-			viewLoader = new ViewLoader(this);
+			
+			viewLoader = new ViewLoader(c);
 			lp = presets.getPropsByName(vip.presetId);
 			viewLoader.load(lp.listView, null, populateList);
 		}
@@ -83,13 +86,16 @@ package com.zutalor.components.list
 					sc.push(b);
 				}
 			}
-			sc.autoArrangeChildren( { padding:lp.spacing, orientation:lp.orientation } );
-			viewLoader.container.addChild(sc);
+			
+			addChild(sc);
+			sc.cacheAsBitmap = true;
 			sc.scrollWidth= lp.scrollAreaWidth;
 			sc.scrollHeight = lp.scrollAreaHeight;
+			sc.autoArrangeChildren( { padding:lp.spacing, orientation:lp.orientation } );	
 			sc.addEventListener(MouseEvent.CLICK, onClick, false, 0, true);
 			sc.addGestureListener("tapGesture", onTap);
-			sc.cacheAsBitmap = true;
+			StageRef.stage.addChild(sc);
+
 		}
 		
 		private function loadData():void

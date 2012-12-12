@@ -27,8 +27,8 @@
 		public function autoArrangeChildren(options:Object):void
 		{
 			var i:int = 0;
-			var width:int = 0;
-			var height:int = 0;
+			var w:Number = 0;
+			var h:Number = 0;
 			var padding:Number = 0;
 			var orientation:String = HORIZONTAL;
 			var child:DisplayObject;
@@ -47,25 +47,27 @@
 						padding *= width; 
 					
 					if (i) 
-						width += padding;
+						w += padding;
 					
 					child = getChildAt(i);
 					child.x = width;
-					width += child.width;
+					w += child.width;
+	
 				}
 				else
 				{
 					if (padding && padding < 1)
-						padding *= height; 
+						padding *= h; 
 
 					if (i) // no front padding on first entry
-						height += padding;
+						h += padding;
 					
 					child = getChildAt(i);
 					child.y = height;
-					height += child.height;
+					h += child.height;
 				}
 			}
+			height = h;
 			if (numChildren)
 				contentChanged();
 		}
