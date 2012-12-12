@@ -1,5 +1,6 @@
 package com.zutalor.components.graphic
 {
+	import com.zutalor.color.Color;
 	import com.zutalor.components.base.Component;
 	import com.zutalor.components.embed.Embed;
 	import com.zutalor.interfaces.IComponent;
@@ -301,6 +302,8 @@ package com.zutalor.components.graphic
 		{
 			var g:Graphics = item.graphics;
 			var grs:GraphicStyleProperties;
+			var lineColor:uint;
+			var fillColor:uint;
 			
 			grs = _stylePresets.getPropsByName(gri.graphicStyle)
 			if (!grs)
@@ -309,8 +312,19 @@ package com.zutalor.components.graphic
 				return;
 			}
 			
+			fillColor = getColor(grs.fillColor);
+			lineColor = getColor(grs.lineColor);
+				
+			function getColor(color:String):uint
+			{		
+				if (color && color.indexOf("0x") == -1)
+					return Color.getColor(Color.theme, color);
+				else
+					return uint(color);		
+			}
+			
 			if (grs.thickness)
-				g.lineStyle(grs.thickness, grs.lineColor, grs.lineAlpha, false, grs.scaleMode, grs.caps, grs.joints);
+				g.lineStyle(grs.thickness, lineColor, grs.lineAlpha, false, grs.scaleMode, grs.caps, grs.joints);
 			
 			if (grs.fillClassName)
 				g.beginBitmapFill(Resources.createInstance(grs.fillClassName).bitmapData, null, grs.fillRepeat);
@@ -325,7 +339,7 @@ package com.zutalor.components.graphic
 				}
 			}
 			else if (grs.fillAlpha)
-				g.beginFill(grs.fillColor, grs.fillAlpha);
+				g.beginFill(fillColor, grs.fillAlpha);
 			
 			if (grs.alpha)
 					item.alpha = grs.alpha;

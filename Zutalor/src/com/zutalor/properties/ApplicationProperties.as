@@ -21,6 +21,7 @@
 		public var ip:String;
 		public var designWidth:int;
 		public var designHeight:int;
+		public var colorTheme:String;
 		public var defaultStyleSheetName:String;
 		public var proxyLocationUrl:String;
 		public var enableMotionChecking:Boolean;
@@ -74,7 +75,11 @@
 				language = "English";
 			
 			proxyLocationUrl = appSettings.proxyLocation.@url;
-						
+			
+			colorTheme = appSettings.colorTheme.@value;
+			if (!colorTheme)
+				colorTheme = "default";
+			
 			firstState = appSettings.firstState.@value;
 			loadingSequenceName = appSettings.loadingSequenceName.@value;
 			

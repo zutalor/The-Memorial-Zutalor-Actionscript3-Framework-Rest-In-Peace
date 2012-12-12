@@ -6,7 +6,7 @@
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class ColorThemeItemProperties extends PropertiesBase implements IProperties
+	public class ColorItemProperties extends PropertiesBase implements IProperties
 	{		
 		public var hue:Number;
 		public var saturation:Number;

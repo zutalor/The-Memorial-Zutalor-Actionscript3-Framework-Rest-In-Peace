@@ -90,13 +90,13 @@ package com.zutalor.components.list
 			
 			function finish():void
 			{
-				sc.cacheAsBitmap = true;
 				sc.scrollWidth= lp.scrollAreaWidth;
 				sc.scrollHeight = lp.scrollAreaHeight;
 				addChild(sc);
 				sc.autoArrangeChildren( { padding:lp.spacing, orientation:lp.orientation } );
 				sc.addEventListener(MouseEvent.CLICK, onClick, false, 0, true);
 				sc.addGestureListener("tapGesture", onTap);
+				sc.cacheAsBitmap = true;
 			}
 		}
 		

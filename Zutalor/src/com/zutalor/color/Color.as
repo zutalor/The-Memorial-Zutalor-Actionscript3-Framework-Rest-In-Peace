@@ -8,21 +8,36 @@ package com.zutalor.color
 	 */
 	public class Color 
 	{			
-		public static var _presets:NestedPropsManager;
+		private static var _presets:NestedPropsManager;
+		private static var _theme:String;
 		
 		public static function registerPresets(options:Object):void
 		{
 			if (!_presets)
 				_presets = new NestedPropsManager();
 			
-			_presets.parseXML(ColorThemeProperties, ColorThemeItemProperties, options.xml[options.nodeId],
+			_presets.parseXML(ColorProperties, ColorItemProperties, options.xml[options.nodeId],
 																options.childNodeId, options.xml[options.childNodeId]);
 		}
 		
-		public static function getColor(themeId:String, id:String):Number
+		public static function set theme(t:String):void
 		{
-			var ctp:ColorThemeProperties;
-			var ctip:ColorThemeItemProperties;
+			if (_presets.getPropsById(t))
+				_theme = t;
+			else
+				ShowError.fail(Color,"Theme " + t + " not defined.");
+		}
+		
+		public static function get theme():String
+		{
+			return _theme;
+		}
+		
+		
+		public static function getColor(themeId:String, id:String):uint
+		{
+			var ctp:ColorProperties;
+			var ctip:ColorItemProperties;
 			var color:Number;
 			var hueShift:Number;
 			var saturationShift:Number;
@@ -37,8 +52,8 @@ package com.zutalor.color
 			saturationShift = ctp.saturationShift;
 			luminanceShift = ctp.luminanceShift;				
 			
-			if (ctp.derivedFromTheme)
-				ctp = _presets.getPropsById(ctp.derivedFromTheme);
+			if (ctp.basedOnTheme)
+				ctp = _presets.getPropsById(ctp.basedOnTheme);
 			
 			if (!hueShift)
 				hueShift = ctp.hueShift;
@@ -49,11 +64,20 @@ package com.zutalor.color
 			if (!luminanceShift)
 				luminanceShift = ctp.luminanceShift;
 				
-			if (ctp.derivedFromItem)
-				ctip = _presets.getItemPropsByName(ctp.name, ctp.derivedFromItem);
+			if (ctp.basedOnItem)
+				ctip = _presets.getItemPropsByName(ctp.name, ctp.basedOnItem);
 			else
 				ctip = _presets.getItemPropsByName(themeId, id);
 	
+			if (!hueShift)
+				hueShift = 0;
+				
+			if (!saturationShift)
+				saturationShift = 0;
+				
+			if (!luminanceShift)
+				luminanceShift = 0;
+				
 			if (ctip)
 				color = HSL.getHex(ctip.hue + hueShift, ctip.saturation + saturationShift, ctip.luminance + luminanceShift);
 			else

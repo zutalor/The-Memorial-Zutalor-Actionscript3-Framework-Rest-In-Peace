@@ -81,6 +81,7 @@
 			ObjectPool.getContainer(vp, vp.scrollX, vp.scrollY);
 			_container = vp.container;
 			_container.viewController = this;
+			StageRef.stage.addChild(vp.container);	
 
 			if (vp.uiControllerInstanceName)
 			{

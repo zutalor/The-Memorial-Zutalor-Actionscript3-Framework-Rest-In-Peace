@@ -5,6 +5,7 @@
 	import com.greensock.TweenMax;
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.amfphp.Remoting;
+	import com.zutalor.color.Color;
 	import com.zutalor.events.AppEvent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.fx.Wind;
@@ -288,6 +289,7 @@
 			Remoting.gateway = ap.gateway;
 			_appStateCallStack = new gDictionary();	
 			Translate.language = Props.ap.language;
+			Color.theme = Props.ap.colorTheme;
 
 			if (ap.spinningpresetId)
 				Spinner.init(ap.spinningpresetId, ap.spinningGraphicCyclesPerSecond);

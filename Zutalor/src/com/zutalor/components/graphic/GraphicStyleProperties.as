@@ -11,10 +11,10 @@
 	public class GraphicStyleProperties extends PropertiesBase implements IProperties
 	{		
 		public var alpha:Number;
-		public var lineColor:uint;
+		public var lineColor:String;
 		public var thickness:int;
 		public var lineAlpha:Number;
-		public var fillColor:uint;
+		public var fillColor:String;
 		public var fillLibraryName:String;
 		public var fillClassName:String;
 		public var fillRepeat:Boolean;
@@ -50,7 +50,7 @@
 				ratiosArray = ratios.split(",");
 			
 			if (!scaleMode)
-				scaleMode = LineScaleMode.NORMAL;				
+				scaleMode = LineScaleMode.NORMAL;
 			
 			return true;
 		}

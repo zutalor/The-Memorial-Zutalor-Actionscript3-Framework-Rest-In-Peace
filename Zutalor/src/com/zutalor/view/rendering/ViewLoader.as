@@ -45,7 +45,8 @@
 				vp.container = c;
 			else if (!vp.container)
 				ObjectPool.getContainer(vp, vp.scrollX, vp.scrollY);
-			
+		
+				
 			c = vp.container;
 			c.x = vp.x;
 			c.y = vp.y;
@@ -101,6 +102,9 @@
 					
 			if (!c.viewController)
 				c.viewController = new ViewController();
+			
+					
+		
 						
 			c.viewController.load(viewId, appState, viewLoadComplete);					
 		}	
@@ -114,14 +118,12 @@
 				vp.width = vp.container.width;
 				vp.height = vp.container.height;
 			}	
-		
-			if (!vp.transitionPreset)
-				vp.transitionPreset = "fade";			
-			
 			if (_parent)
 				_parent.addChild(vp.container);
-			else
-				StageRef.stage.addChild(vp.container);
+				
+		
+			if (!vp.transitionPreset)
+				vp.transitionPreset = "fade";
 			
 			vt = new ViewTransition();
 			vt.render(vp, TransitionTypes.IN);
