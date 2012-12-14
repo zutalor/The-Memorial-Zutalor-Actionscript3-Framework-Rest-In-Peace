@@ -4,6 +4,7 @@
 	import com.greensock.easing.Quart;
 	import com.greensock.easing.Quint;
 	import com.greensock.TweenMax;
+	import com.zutalor.utils.Scale;
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -19,7 +20,7 @@
 	public class ScrollingContainer extends ViewContainer 
 	{	
 		public var ease:Function = Quint.easeOut;
-		public var swipeEaseSeconds:Number = .5;
+		public var swipeEaseSeconds:Number = 1;
 		public var overShootEaseSeconds:Number = .75;
 		public var swipeOffsetMultiplier:Number = 25;
 	
@@ -29,10 +30,10 @@
 		private var _mouseIsDown:Boolean;
 		protected var _enableHScroll:Boolean;
 		protected var _enableVScroll:Boolean;
-		protected var _oldMouseX:Number;
-		protected var _oldMouseY:Number;
-		protected var _velocityX:Number;
-		protected var _velocityY:Number;
+		protected var _downMouseX:Number;
+		protected var _downMouseY:Number;
+		protected var _curMouseX:Number;
+		protected var _curMouseY:Number;
 		
 		public function ScrollingContainer(containerName:String, enableHScroll:Boolean, enableVScroll:Boolean) 
 		{
@@ -49,11 +50,11 @@
 			//addGestureListener("panGesture", onPanGesture);
 			//addGestureListener("swipeGesture", onSwipeGesture);
 			//addGestureListener("flickGesture", onSwipeGesture);
-			addEventListener(MouseEvent.MOUSE_UP, onMouseUp, false, 0, true);
-			addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown, false, 0, true);
-			addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove, false, 0, true);
-			addEventListener(MouseEvent.ROLL_OUT, onRollOut, false, 0, true);
-			addEventListener(MouseEvent.ROLL_OVER, onMouseMove, false, 0, true);
+			stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp, false, 0, true);
+			parent.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown, false, 0, true);
+			stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove, false, 0, true);
+			//addEventListener(MouseEvent.ROLL_OUT, onRollOut, false, 0, true);
+			//addEventListener(MouseEvent.ROLL_OVER, onMouseMove, false, 0, true);
 			
 		}
 		
@@ -217,13 +218,10 @@
 			var newY:Number;
 			var midY:Number;
 			
-			if (!_enableVScroll)
-				scrollY;
-			
 			midY = _scrollRect.height / 2;
 			minY = midY * -1;
 			maxY = _height - midY;
-			newY = scrollY - offset;
+			newY = _scrollRect.y - offset;
 			
 			if (newY < maxY && newY > minY)
 				return newY;
@@ -234,38 +232,41 @@
 		private function onMouseDown(me:MouseEvent):void
 		{
 			_mouseIsDown = true;
-			_oldMouseX = mouseX;
-			_oldMouseY = mouseY;
+			_downMouseX = mouseX;
+			_downMouseY = mouseY;
 		}
 		
 		private function onMouseMove(me:MouseEvent):void
 		{
 			if (_mouseIsDown)
 			{
+				scrollX = getX(mouseX - _downMouseX);
+				scrollY = getY(mouseY - _downMouseY);
 				me.updateAfterEvent();
-				scrollX = getX(mouseX - _oldMouseX);
-				scrollY = getY(mouseY - _oldMouseY);
 			}
+			_curMouseX = mouseX;
+			_curMouseY = mouseY;
 		}
-		
-		private function onRollOut(me:MouseEvent):void
-		{
-			if (stage.mouseX >= x || stage.mouseX >= y + width)
-			{
-				trace("on roll out", me.target);
-				onMouseUp(me);
-			}
-		}
-		
+				
 		private function onMouseUp(me:MouseEvent = null):void
 		{
 			_mouseIsDown = false;
+			if (_enableVScroll)
+			{
+				_downMouseY = mouseY;
+				TweenMax.to(_scrollRect, swipeEaseSeconds, { y:_scrollRect.y + _curMouseY - mouseY, onUpdate:onTween, ease:ease, onComplete:conformScrollBounds } );
+			}
+			
+		}
+		
+		private function conformScrollBounds():void
+		{
 			if (_enableHScroll)
 			{
 				if (_scrollRect.x < 0)
 					TweenMax.to(_scrollRect, overShootEaseSeconds, { x:0, onUpdate:onTween, ease:ease } );
 				else if (_scrollRect.x + width > _width)
-					TweenMax.to(_scrollRect, overShootEaseSeconds, { x:_width - width, onUpdate:onTween, ease:ease } );;
+					TweenMax.to(_scrollRect, overShootEaseSeconds, { x:_width - width, onUpdate:onTween, ease:ease } );
 			}
 			
 			if (_enableVScroll)
@@ -273,7 +274,7 @@
 				if (_scrollRect.y < 0)
 					TweenMax.to(_scrollRect, overShootEaseSeconds, { y:0, onUpdate:onTween, ease:ease } );
 				else if (_scrollRect.y + height > _height)
-					TweenMax.to(_scrollRect, overShootEaseSeconds, { y:_height - height, onUpdate:onTween, ease:ease } );;
+					TweenMax.to(_scrollRect, overShootEaseSeconds, { y:_height - height, onUpdate:onTween, ease:ease } );
 			}	
 		}
 		
