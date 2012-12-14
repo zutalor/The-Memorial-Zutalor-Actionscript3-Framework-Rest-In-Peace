@@ -46,7 +46,6 @@
 			else if (!vp.container)
 				ObjectPool.getContainer(vp, vp.scrollX, vp.scrollY);
 		
-				
 			c = vp.container;
 			c.x = vp.x;
 			c.y = vp.y;
@@ -102,9 +101,6 @@
 					
 			if (!c.viewController)
 				c.viewController = new ViewController();
-			
-					
-		
 						
 			c.viewController.load(viewId, appState, viewLoadComplete);					
 		}	

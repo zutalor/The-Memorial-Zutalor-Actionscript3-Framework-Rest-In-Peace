@@ -12,12 +12,16 @@ package com.zutalor.components.list
 	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.view.rendering.ViewLoader;
 	import flash.events.MouseEvent;
+	import flash.utils.getTimer;
 	/**
 	 * ...
 	 * @author Geoff Pepos
 	 */
 	public class List extends Component implements IComponent
 	{			
+		public var mouseDownTimeout:int = 1000;
+
+		private var mouseDownTime:int;
 		private var sc:ScrollingContainer;	
 		private var lp:ListProperties;
 		private var viewLoader:ViewLoader;
@@ -52,7 +56,8 @@ package com.zutalor.components.list
 		override public function dispose():void
 		{
 			sc.removeGestureListener("tapGesture");
-			sc.removeEventListener(MouseEvent.CLICK, onClick);
+			sc.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+			sc.removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			sc.dispose();
 			sc = null;
 			super.dispose();
@@ -62,8 +67,6 @@ package com.zutalor.components.list
 		
 		private function populateList():void
 		{
-			var data:Array
-			var b:Button;
 			var enableHScroll:Boolean;
 			var enableYScroll:Boolean;
 			var irClass:Class;
@@ -82,7 +85,7 @@ package com.zutalor.components.list
 			}
 			itemRenderer.render(lp, sc);
 			
-			MasterClock.callOnce(finish, 200); // total hack 
+			MasterClock.callOnce(finish, 200);
 			
 			function finish():void
 			{
@@ -90,24 +93,32 @@ package com.zutalor.components.list
 				sc.scrollHeight = lp.scrollAreaHeight;
 				addChild(sc);
 				sc.autoArrangeChildren( { padding:lp.spacing, orientation:lp.orientation } );
-				sc.addEventListener(MouseEvent.CLICK, onClick, false, 0, true);
+				sc.addEventListener(MouseEvent.MOUSE_UP, onMouseUp, false, 0, true);
+				sc.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown, false, 0, true);
 				sc.addGestureListener("tapGesture", onTap);
 				sc.cacheAsBitmap = true;
 			}
 		}
 		
-		private function onClick(me:MouseEvent):void
+		private function onMouseUp(me:MouseEvent):void
 		{
-			if (tapped)
+			trace("click");
+			if (tapped && getTimer() - mouseDownTime < mouseDownTimeout)
 			{
 				value = me.target.name;
 				visible = !visible;
-				tapped = false;
 			}
+			tapped = false;
+		}
+		
+		private function onMouseDown(me:MouseEvent):void
+		{
+			mouseDownTime = getTimer();
 		}
 		
 		private function onTap(age:AppGestureEvent):void
 		{
+			trace("tap");
 			tapped = true;
 		}
 	}

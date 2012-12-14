@@ -2,7 +2,6 @@
 {
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.ScrollingContainer;
-	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.properties.ApplicationProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.utils.MasterClock;
@@ -296,14 +295,14 @@
 		
 		private function trackMouseVelocity(event:Event):void
 		{
-			var ms:ViewContainer;
+			var ms:ContainerObject;
 			var xDistance:Number;
 			var yDistance:Number;		
 
 			_checkMotion = true;
 			MasterClock.start(onMotionTimer);
 			
-			ms = event.target as ViewContainer;
+			ms = event.target as ContainerObject;
 			if (ms.dragType != "drag")
 			{	
 				xDistance = ((StageRef.stage.mouseX - _mouseDownX) / StageRef.stage.stageWidth) *  Scale.curAppScale * .17 * (1 / ms.scaleX);
