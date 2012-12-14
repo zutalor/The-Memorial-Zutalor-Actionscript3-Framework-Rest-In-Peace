@@ -251,9 +251,8 @@
 		private function onMouseUp(me:MouseEvent = null):void
 		{
 			_mouseIsDown = false;
-			if (_enableVScroll)
+			if (_enableVScroll && _curMouseX - )
 			{
-				_downMouseY = mouseY;
 				TweenMax.to(_scrollRect, swipeEaseSeconds, { y:_scrollRect.y + _curMouseY - mouseY, onUpdate:onTween, ease:ease, onComplete:conformScrollBounds } );
 			}
 			
