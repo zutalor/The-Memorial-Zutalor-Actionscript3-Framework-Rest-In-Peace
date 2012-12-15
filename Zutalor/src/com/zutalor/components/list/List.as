@@ -2,7 +2,7 @@ package com.zutalor.components.list
 {
 	import com.zutalor.components.base.Component;
 	import com.zutalor.components.button.Button;
-	import com.zutalor.containers.ScrollingContainer;
+	import com.zutalor.containers.scrolling.ScrollingContainer;
 	import com.zutalor.gesture.AppGestureEvent;
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.interfaces.IListItemRenderer;
@@ -92,7 +92,7 @@ package com.zutalor.components.list
 				sc.scrollWidth= lp.scrollAreaWidth;
 				sc.scrollHeight = lp.scrollAreaHeight;
 				addChild(sc);
-				sc.autoArrangeChildren( { padding:lp.spacing, orientation:lp.orientation } );
+				sc.autoArrangeChildren( { padding:0, orientation:lp.orientation } );
 				sc.addEventListener(MouseEvent.MOUSE_UP, onMouseUp, false, 0, true);
 				sc.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown, false, 0, true);
 				sc.addGestureListener("tapGesture", onTap);
@@ -106,7 +106,7 @@ package com.zutalor.components.list
 			if (tapped && getTimer() - mouseDownTime < mouseDownTimeout)
 			{
 				value = me.target.name;
-				visible = !visible;
+				//visible = !visible;
 			}
 			tapped = false;
 		}

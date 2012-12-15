@@ -3,7 +3,7 @@ package com.zutalor.view.mediators
 	import com.zutalor.components.base.Component;
 	import com.zutalor.components.group.ComponentGroup;
 	import com.zutalor.components.group.RadioGroup;
-	import com.zutalor.containers.ScrollingContainer;
+	import com.zutalor.containers.scrolling.ScrollingContainer;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.ApplicationProperties;

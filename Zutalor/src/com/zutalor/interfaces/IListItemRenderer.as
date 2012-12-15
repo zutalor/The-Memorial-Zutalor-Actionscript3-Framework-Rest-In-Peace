@@ -1,7 +1,7 @@
 package com.zutalor.interfaces 
 {
 	import com.zutalor.components.list.ListProperties;
-	import com.zutalor.containers.ScrollingContainer;
+	import com.zutalor.containers.scrolling.ScrollingContainer;
 	
 	/**
 	 * ...

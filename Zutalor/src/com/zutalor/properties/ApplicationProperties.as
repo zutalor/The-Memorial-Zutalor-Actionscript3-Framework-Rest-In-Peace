@@ -1,7 +1,5 @@
 ﻿package com.zutalor.properties
 {
-	import com.zutalor.containers.Container;
-	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.text.StringUtils;
 	import com.zutalor.utils.Singleton;
 	import com.zutalor.widgets.Focus;

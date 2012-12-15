@@ -1,7 +1,7 @@
 ﻿package com.zutalor.containers 
 {
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.containers.ScrollingContainer;
+	import com.zutalor.containers.scrolling.ScrollingContainer;
 	import com.zutalor.events.UIEvent;
 	import flash.display.DisplayObject;
 	import flash.display.Shape;

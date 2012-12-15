@@ -3,7 +3,7 @@
 	import com.zutalor.components.graphic.Graphic;
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.ParallaxContainer;
-	import com.zutalor.containers.ScrollingContainer;
+	import com.zutalor.containers.scrolling.ScrollingContainer;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.fx.Transition;
 	import com.zutalor.view.properties.ViewProperties;

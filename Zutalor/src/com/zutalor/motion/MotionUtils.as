@@ -1,7 +1,7 @@
 ﻿package com.zutalor.motion
 {
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.containers.ScrollingContainer;
+	import com.zutalor.containers.scrolling.ScrollingContainer;
 	import com.zutalor.properties.ApplicationProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.utils.MasterClock;

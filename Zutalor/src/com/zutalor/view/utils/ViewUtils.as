@@ -1,7 +1,7 @@
 ﻿package com.zutalor.view.utils 
 {
 	import com.greensock.easing.Quart;
-	import com.zutalor.containers.ScrollingContainer;
+	import com.zutalor.containers.scrolling.ScrollingContainer;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.motion.MotionUtils;
