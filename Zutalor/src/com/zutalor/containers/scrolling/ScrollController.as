@@ -2,6 +2,8 @@ package com.zutalor.containers.scrolling
 {
 	import com.greensock.easing.Quint;
 	import com.greensock.TweenMax;
+	import com.zutalor.containers.base.ContainerObject;
+	import com.zutalor.events.UIEvent;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.StageRef;
 	import flash.display.DisplayObject;
@@ -17,19 +19,16 @@ package com.zutalor.containers.scrolling
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class ScrollController extends EventDispatcher 
+	public class ScrollController extends EventDispatcher
 	{	
 		public var ease:Function = Quint.easeOut;
-		public var swipeEaseSeconds:Number = .5;
+		public var flickEaseSeconds:Number = .5;
 		public var OverEdgeEaseSeconds:Number = .75;
-		public var movementTolerance:int = Capabilities.screenDPI / 6;
-		public var velocityMultiplier:Number = 2;
+		public var minFlickVelocity:int = Capabilities.screenDPI / 4;
 	
-		protected var _fullBoundsWidth:Number;
-		protected var _fullBoundsHeight:Number;
-		protected var _motionObject:*;
-		protected var _isDown:Boolean;
-		protected var _scrollRect:Rectangle;
+		protected var fullBoundsWidth:Number;
+		protected var fullBoundsHeight:Number;
+		protected var scrollRect:Rectangle;
 		protected var sc:ScrollingContainer;
 		
 		public var spX:ScrollProperties;
@@ -41,13 +40,12 @@ package com.zutalor.containers.scrolling
 			init();
 		}
 		
-		private function init():void
+		protected function init():void
 		{
 			StageRef.stage.addEventListener(MouseEvent.MOUSE_UP, onUp, false, 0, true);
-			StageRef.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMove, false, 0, true);	
 			sc.addEventListener(MouseEvent.MOUSE_DOWN, onDown, false, 0, true);
 
-			_scrollRect = new Rectangle();
+			scrollRect = new Rectangle();
 			spX = new ScrollProperties;
 			spY = new ScrollProperties;
 			
@@ -59,42 +57,57 @@ package com.zutalor.containers.scrolling
 		
 		public function set scrollWidth(w:int):void
 		{
-			_scrollRect.width = w;
+			scrollRect.width = w;
 		}
 		
 		public function set scrollHeight(h:int):void
 		{
-			_scrollRect.height = h;
+			scrollRect.height = h;
 		}
 		
-		private function initializeSettings():void
+		public function contentChanged():void
 		{
 			var r:Rectangle;
-				
+			var listItem:ContainerObject;
+			
+			if (sc.numChildren == 0)
+			{
+				scrollPercentX = 0;
+				scrollPercentY = 0;
+			}
+			
 			r = getFullBounds(sc);
-			_fullBoundsWidth = r.width;
-			_fullBoundsHeight = r.height;
+			fullBoundsWidth = r.width;
+			fullBoundsHeight = r.height;
 			
-			spX.midPos = _scrollRect.width / 2;
+			listItem = sc.getChildAt(0) as ContainerObject;
+			
+			spX.midPos = scrollRect.width / 2;
 			spX.minPos = spX.midPos * -1;
-			spX.maxPos = _fullBoundsWidth - spX.midPos;
+			spX.maxPos = fullBoundsWidth - spX.midPos;
+			spX.range = fullBoundsWidth;
+			spX.itemSize = listItem.width;
+			spX.itemsPerPage = sc.width / spX.itemSize;
 
-			spY.midPos = _scrollRect.height / 2;
+			spY.midPos = scrollRect.height / 2;
 			spY.minPos = spY.midPos * -1;
-			spY.maxPos = _fullBoundsHeight - spY.midPos;
+			spY.maxPos = fullBoundsHeight - spY.midPos;
+			spY.range = fullBoundsHeight;
+			spY.itemSize = listItem.height;
+			spY.itemsPerPage = sc.height / listItem.height;
 			
-			if (_fullBoundsWidth > sc.width)
+			if (fullBoundsWidth > sc.width)
 				spX.scrollEnabled = true;
 			else
 				spX.scrollEnabled = true;
 			
-			if (_fullBoundsHeight > sc.height)
+			if (fullBoundsHeight > sc.height)
 				spY.scrollEnabled = true;
 			else
 				spY.scrollEnabled = true;
 				
-			_scrollRect.height = sc.height;
-			_scrollRect.width = sc.width;
+			scrollRect.height = sc.height;
+			scrollRect.width = sc.width;
 		}
 		
 		public function dispose():void
@@ -104,61 +117,75 @@ package com.zutalor.containers.scrolling
 			sc.removeEventListener(MouseEvent.MOUSE_DOWN, onDown);
 		}
 		
-		private function onDown(me:Event):void
+		protected function onDown(me:Event):void
 		{
-			_isDown = true;
 		    spX.downPos = sc.mouseX;
 			spY.downPos = sc.mouseY;
 			addEventListener(Event.ENTER_FRAME, measureVelocity, false, 0, true);
+			StageRef.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMove, false, 0, true);	
 		}
 		
-		private function onMove(me:MouseEvent):void
+		protected function onMove(me:MouseEvent):void
 		{
-			if (_isDown)
-			{
-				spX.setPos(adjustEdge(sc.mouseX, spX)); 
-				spY.setPos(adjustEdge(sc.mouseY, spY)); 
-				me.updateAfterEvent();
-			}
+			spX.setPos(adjustEdge(sc.mouseX, spX)); 
+			spY.setPos(adjustEdge(sc.mouseY, spY)); 
+			me.updateAfterEvent();
 		}
 		
 		protected function measureVelocity(e:Event):void
 		{
 			spX.velocity = StageRef.stage.mouseX - spX.lastPos; 
 			spY.velocity = StageRef.stage.mouseY - spY.lastPos; 
-	
 			spX.lastPos = StageRef.stage.mouseX;
 			spY.lastPos = StageRef.stage.mouseY;
 		}
 				
 		protected function onUp(me:Event = null):void
-		{
+		{			
 			removeEventListener(Event.ENTER_FRAME, measureVelocity);
-			_isDown = false;
-			onUpForX();
-			onUpForY();
-			MasterClock.callOnce(conformBounds, swipeEaseSeconds * 1000);
+			StageRef.stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMove);	
+			if (spX.velocity < minFlickVelocity && spY.velocity < minFlickVelocity)
+				dispatchEvent(new UIEvent(UIEvent.TAP));
+			else
+				flick();
 		}
 		
-		private function onUpForX():void
-		{	
-			var destinationPos:int;
-			destinationPos = spX.getPos() - spX.velocity - (25 * spX.direction);
-			destinationPos += destinationPos / 50;
-			destinationPos -= destinationPos % (sc.width / 8);
-
-			if (spX.scrollEnabled && !spX.overEdge)	
-				TweenMax.to(_scrollRect, swipeEaseSeconds, { x:destinationPos, onUpdate:onTween, ease:ease } );	
+		protected function flick():void
+		{			
+			if (spX.scrollEnabled && !spX.overEdge && spX.velocity > minFlickVelocity)
+			{	
+				spX.tweenObject = new Object();
+				spX.tweenObject.onUpdate = onTween;
+				spX.tweenObject.x = getFlickPos(spX);
+				spX.tweenObject.ease = ease;
+				tweenFlick(spX)
+			}
+			
+			if (spY.scrollEnabled && !spY.overEdge && spY.velocity > minFlickVelocity)
+			{
+				spY.tweenObject = new Object();
+				spY.tweenObject.onUpdate = onTween;
+				spY.tweenObject.y = getFlickPos(spY);
+				spY.tweenObject.ease = ease;
+				spY.tweenObject.onComplete = conformBounds;
+				tweenFlick(spY);
+			}
+			MasterClock.callOnce(conformBounds, flickEaseSeconds * 1000);
 		}
 		
-		private function onUpForY():void
+		protected function getFlickPos(sp:ScrollProperties):int
 		{
-			var destinationPos:int;
-			destinationPos = spY.getPos() - spY.velocity - (25 * spY.direction);
-			destinationPos += destinationPos / 50;
-			destinationPos -= destinationPos % (sc.height / 8);
-			if (spY.scrollEnabled && !spY.overEdge)	
-				TweenMax.to(_scrollRect, swipeEaseSeconds, { y:destinationPos, onUpdate:onTween, ease:ease } );
+			var newPos:int;
+			
+			newPos = sp.getPos() - sp.velocity - (sp.itemSize * 0.5  * sp.direction);
+			newPos += newPos / sp.itemSize;
+			newPos -= newPos % (sp.range / sp.itemsPerPage);
+			return newPos;
+		}
+		
+		protected function tweenFlick(sp:ScrollProperties):void
+		{	
+			TweenMax.to(scrollRect, flickEaseSeconds, sp.tweenObject );	
 		}
 		
 		protected function adjustEdge(mousePos:int, sp:ScrollProperties):int
@@ -166,7 +193,6 @@ package com.zutalor.containers.scrolling
 			var newPos:Number;
 			
 			newPos = sp.getPos() - mousePos - sp.downPos;
-			
 			if (newPos < sp.maxPos && newPos > sp.minPos)
 				sp.overEdge = false;
 			else
@@ -181,46 +207,46 @@ package com.zutalor.containers.scrolling
 		{
 			if (spX.scrollEnabled)
 			{
-				if (_scrollRect.x < 0)
-					TweenMax.to(_scrollRect, OverEdgeEaseSeconds, { x:0, onUpdate:onTween, ease:ease } );
-				else if (_scrollRect.x + sc.width > _fullBoundsWidth)
-					TweenMax.to(_scrollRect, OverEdgeEaseSeconds, { x:_fullBoundsWidth - sc.width, onUpdate:onTween, ease:ease } );
+				if (scrollRect.x < 0)
+					TweenMax.to(scrollRect, OverEdgeEaseSeconds, { x:0, onUpdate:onTween, ease:ease } );
+				else if (scrollRect.x + sc.width > fullBoundsWidth)
+					TweenMax.to(scrollRect, OverEdgeEaseSeconds, { x:fullBoundsWidth - sc.width, onUpdate:onTween, ease:ease } );
 			}
 			
 			if (spY.scrollEnabled)
 			{
-				if (_scrollRect.y < 0)
-					TweenMax.to(_scrollRect, OverEdgeEaseSeconds, { y:0, onUpdate:onTween, ease:ease } );
-				else if (_scrollRect.y + sc.height > _fullBoundsHeight)
-					TweenMax.to(_scrollRect, OverEdgeEaseSeconds, { y:_fullBoundsHeight - sc.height, onUpdate:onTween, ease:ease } );
+				if (scrollRect.y < 0)
+					TweenMax.to(scrollRect, OverEdgeEaseSeconds, { y:0, onUpdate:onTween, ease:ease } );
+				else if (scrollRect.y + sc.height > fullBoundsHeight)
+					TweenMax.to(scrollRect, OverEdgeEaseSeconds, { y:fullBoundsHeight - sc.height, onUpdate:onTween, ease:ease } );
 			}	
 		}
 		
 		protected function onTween():void
 		{
-			sc.scrollRect = _scrollRect;
+			sc.scrollRect = scrollRect;
 		}
 		
 		public function getScrollX():Number
 		{
-			return _scrollRect.x;
+			return scrollRect.x;
 		}
 		
 		public function setScrollX(n:Number):void
 		{
-			_scrollRect.x = n;
-			sc.scrollRect = _scrollRect;
+			scrollRect.x = n;
+			sc.scrollRect = scrollRect;
 		}
 		
 		public function getScrollY():Number
 		{
-			return _scrollRect.y;
+			return scrollRect.y;
 		}
 		
 		public function setScrollY(n:Number):void
 		{
-			_scrollRect.y = n;
-			sc.scrollRect = _scrollRect;
+			scrollRect.y = n;
+			sc.scrollRect = scrollRect;
 		}
 						
 		public function set scrollPercentX(percent:Number):void
@@ -239,16 +265,6 @@ package com.zutalor.containers.scrolling
 		public function get scrollPercentY():Number
 		{
 			return 1;
-		}
-		
-		public function contentChanged():void
-		{
-			initializeSettings();
-			if (sc.numChildren == 0)
-			{
-				scrollPercentX = 0;
-				scrollPercentY = 0;
-			}
 		}
 		
 		protected function getFullBounds (displayObject:DisplayObject) :Rectangle

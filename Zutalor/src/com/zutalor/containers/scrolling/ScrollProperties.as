@@ -16,6 +16,10 @@ package com.zutalor.containers.scrolling
 		public var midPos:int;
 		public var minPos:int;
 		public var maxPos:int;
+		public var range:int;
+		public var itemSize:int;
+		public var itemsPerPage:int;
+		public var tweenObject:Object;
 		
 		public function get direction():int
 		{

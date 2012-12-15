@@ -38,6 +38,7 @@ package com.zutalor.events
 		public static const VOLUME:String = "volume";
 		public static const MUTE_TOGGLE:String = "muteToggle";
 		public static const VALUE_CHANGED:String = "value_changed";
+		public static const TAP:String = "tap";
 		
 		public static const NATIVE_WINDOW_CLOSE:String = "native_window_close";
 		public static const NATIVE_APPLICATION_EXIT:String = "native_application_exit";

@@ -21,6 +21,12 @@ package com.zutalor.containers.scrolling
 			scrollController.contentChanged();
 		}
 		
+		override public function dispose():void
+		{
+			super.dispose();
+			scrollController.dispose();
+		}
+		
 		public function contentInitialized():void
 		{
 			contentChanged();
