@@ -2,9 +2,7 @@
 {
 	import com.greensock.easing.Quart;
 	import com.zutalor.containers.scrolling.ScrollingContainer;
-	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.motion.MotionUtils;
 	import com.zutalor.properties.ApplicationProperties;
 	import com.zutalor.properties.ScrollProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
@@ -19,6 +17,7 @@
 	import flash.events.EventDispatcher;
 	import flash.ui.Mouse;
 
+
 	/**
 	 * ...
 	 * @author Geoff Pepos
@@ -32,7 +31,6 @@
 		
 		private var ap:ApplicationProperties;
 		private var views:NestedPropsManager;
-		private var mu:MotionUtils;
 		private var pr:*;
 		
 		private static var _viewUtils:ViewUtils;
@@ -42,7 +40,6 @@
 			Singleton.assertSingle(ViewUtils);
 			ap = ApplicationProperties.gi();
 			views = ViewController.presets;
-			mu = MotionUtils.gi();
 			pr = Presets;
 		}
 		

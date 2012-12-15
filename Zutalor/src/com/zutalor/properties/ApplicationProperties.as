@@ -22,8 +22,6 @@
 		public var colorTheme:String;
 		public var defaultStyleSheetName:String;
 		public var proxyLocationUrl:String;
-		public var enableMotionChecking:Boolean;
-		public var enableWind:Boolean;
 		public var loadingSequenceName:String;
 		public var firstState:String;
 		public var language:String;
@@ -80,9 +78,6 @@
 			
 			firstState = appSettings.firstState.@value;
 			loadingSequenceName = appSettings.loadingSequenceName.@value;
-			
-			enableWind = StringUtils.toBoolean(appSettings.enableWind.@value);
-			enableMotionChecking = StringUtils.toBoolean(appSettings.motionChecking.@value);
 						
 			defaultStyleSheetName = appSettings.defaultStyleSheetName.@value;
 			

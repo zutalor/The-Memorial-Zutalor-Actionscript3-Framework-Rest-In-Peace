@@ -70,15 +70,15 @@
 			return new ViewCloser();
 		}
 		
-		public static function getContainer(vp:ViewProperties, scrollX:Boolean, scrollY:Boolean):void
+		public static function getContainer(vp:ViewProperties):void
 		{
 			switch (vp.containerType)
 			{
 				case ViewProperties.CONTAINER_SCROLLING :
-					vp.container = new ScrollingContainer(vp.name, scrollX, scrollY);
+					vp.container = new ScrollingContainer(vp.name);
 					break;			
 				case ViewProperties.CONTAINER_PARALLAX :
-					vp.container = new ParallaxContainer(vp.name, scrollX, scrollY);
+					vp.container = new ParallaxContainer(vp.name);
 					break;		
 				case ViewProperties.CONTAINER_BASIC :
 				default :

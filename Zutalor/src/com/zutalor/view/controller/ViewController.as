@@ -78,7 +78,7 @@
 			
 			vp.appState = appState;
 			ViewControllerRegistry.registerController(_viewId, this);
-			ObjectPool.getContainer(vp, vp.scrollX, vp.scrollY);
+			ObjectPool.getContainer(vp);
 			_container = vp.container;
 			_container.viewController = this;
 			StageRef.stage.addChild(vp.container);	

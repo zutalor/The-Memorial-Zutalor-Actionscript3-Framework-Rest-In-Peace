@@ -8,8 +8,6 @@
 	import com.zutalor.color.Color;
 	import com.zutalor.events.AppEvent;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.fx.Wind;
-	import com.zutalor.motion.MotionUtils;
 	import com.zutalor.plugin.constants.PluginClasses;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
@@ -45,7 +43,6 @@
 	public class AppController extends EventDispatcher
 	{	
 		private var vu:ViewUtils;
-		private var mu:MotionUtils;
 		
 		private var appStateProps:AppStateProperties;
 		private var curContainerLoading:String;	
@@ -64,7 +61,6 @@
 		private var _ip:String;
 
 		private const DEBUG_ANALYTICS:Boolean =  false;
-		
 		
 		public function AppController(bootXmlUrl:String, ip:String, splashClassName:String=null)
 		{
@@ -277,7 +273,6 @@
 		{
 			ap = ApplicationProperties.gi();
 			vu = ViewUtils.gi();
-			mu = MotionUtils.gi();
 			vpm = ViewController.presets;
 			
 			ap.ip = _ip;
@@ -293,12 +288,6 @@
 
 			if (ap.spinningpresetId)
 				Spinner.init(ap.spinningpresetId, ap.spinningGraphicCyclesPerSecond);
-				
-			if (ap.enableWind)
-				Wind.start();
-			
-			if (ap.enableMotionChecking)
-				mu.enableMotionChecking();
 			
 			if (ap.googleAnalyticsAccount && AirStatus.isNativeApplication || DEBUG_ANALYTICS)
 			{

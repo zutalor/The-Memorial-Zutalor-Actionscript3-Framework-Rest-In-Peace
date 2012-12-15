@@ -1,8 +1,8 @@
 package com.zutalor.view.mediators
 {
 	import com.zutalor.air.AirStatus;
-	import com.zutalor.components.button.Button;
 	import com.zutalor.components.base.Component;
+	import com.zutalor.components.button.Button;
 	import com.zutalor.components.group.ComponentGroup;
 	import com.zutalor.components.group.ComponentGroupProperties;
 	import com.zutalor.components.group.RadioGroup;
@@ -10,19 +10,18 @@ package com.zutalor.view.mediators
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.motion.MotionUtils;
 	import com.zutalor.plugin.constants.PluginClasses;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.translate.Translate;
-	import com.zutalor.widgets.Focus;
 	import com.zutalor.utils.FullScreen;
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.view.utils.ViewUtils;
+	import com.zutalor.widgets.Focus;
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.events.MouseEvent;
@@ -40,7 +39,6 @@ package com.zutalor.view.mediators
 		private var _vpm:NestedPropsManager;
 		private var _vu:ViewUtils;
 		private var _pr:*;
-		private var _mu:MotionUtils;
 		private var _hkm:HotKeyManager;
 		private var _itemsSkipped:int;
 		private var _numItems:int;
@@ -58,7 +56,6 @@ package com.zutalor.view.mediators
 			_vpm = ViewController.presets;
 			_vu = ViewUtils.gi();			
 			_pr = Presets;
-			_mu = MotionUtils.gi();
 			_hkm = HotKeyManager.gi();
 		}
 		
@@ -198,7 +195,6 @@ package com.zutalor.view.mediators
 						item.removeEventListener(FocusEvent.FOCUS_IN, onItemFocusIn);
 					
 					item.removeEventListener(UIEvent.VALUE_CHANGED, onValueChange);
-					item.removeEventListener(MouseEvent.MOUSE_DOWN, _mu.onMouseDown);
 				}
 			}
 		}

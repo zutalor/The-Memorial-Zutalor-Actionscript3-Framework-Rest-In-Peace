@@ -67,21 +67,14 @@ package com.zutalor.components.list
 		
 		private function populateList():void
 		{
-			var enableHScroll:Boolean;
-			var enableYScroll:Boolean;
-			var irClass:Class;
-			
-			if (lp.orientation == HORIZONTAL)
-				enableHScroll = true;
-			else
-				enableYScroll = true;
-							
-			sc = new ScrollingContainer(name, enableHScroll, enableYScroll);	
+			var itemRendererClass:Class;
+									
+			sc = new ScrollingContainer(name);	
 			
 			if (itemRenderer == null)
 			{
-				irClass = Plugins.getClass(lp.itemRenderer);
-				itemRenderer = new irClass();
+				itemRendererClass = Plugins.getClass(lp.itemRenderer);
+				itemRenderer = new itemRendererClass();
 			}
 			itemRenderer.render(lp, sc);
 			
@@ -89,8 +82,8 @@ package com.zutalor.components.list
 			
 			function finish():void
 			{
-				sc.scrollWidth= lp.scrollAreaWidth;
-				sc.scrollHeight = lp.scrollAreaHeight;
+				sc.scrollController.scrollWidth = lp.scrollAreaWidth;
+				sc.scrollController.scrollHeight = lp.scrollAreaHeight;
 				addChild(sc);
 				sc.autoArrangeChildren( { padding:0, orientation:lp.orientation } );
 				sc.addEventListener(MouseEvent.MOUSE_UP, onMouseUp, false, 0, true);

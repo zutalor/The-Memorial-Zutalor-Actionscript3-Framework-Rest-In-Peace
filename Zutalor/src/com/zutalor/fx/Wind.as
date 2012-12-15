@@ -10,7 +10,7 @@
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class Wind
+	public class ind
 	{
 		public static const CALM:String = "calm";
 		public static const BREEZY:String = "breezy";

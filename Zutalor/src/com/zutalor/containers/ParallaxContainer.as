@@ -28,11 +28,11 @@
 		private const DFLT_WIDTH_MULTIPLIER:Number = 1.5; 
 		private const DFLT_WIDTH_INCREMENT:Number = 2;
 		
-		public function ParallaxContainer(containerName:String, scrollX:Boolean, scrollY:Boolean) 
+		public function ParallaxContainer(containerName:String) 
 		
 		// TODO options: numLayers & reverseThumbs
 		{
-			super(containerName, scrollX, scrollY);
+			super(containerName);
 			addEventListener(Event.ADDED_TO_STAGE, addedToStage, false, 0, true);
 		}	
 		
@@ -67,6 +67,7 @@
 				_layers[i].width = n;			
 		}	
 
+		/* TODO FIX THIS LEGACY CODE
 		override public function tweenScrollPercentY(percent:Number, tweenTime:Number=0.5):void
 		{
 			super.tweenScrollPercentY(percent, tweenTime);
@@ -81,6 +82,8 @@
 				_layers[i].setScrollPercentX(percent, tweenTime);
 			}
 		}
+		
+		*/
 				
 		private function addedToStage(e:Event):void
 		{
@@ -135,7 +138,7 @@
 			
 				if (i) // because '0' is "this"
 				{
-					_layers[i] = new ScrollingContainer(name + String(i), _enableHScroll, _enableVScroll);
+					_layers[i] = new ScrollingContainer(name + String(i));
 					_layers[i].push(_blankShapes[i]);
 					addChild(_layers[i]);
 					_layers[i].scrollBarsVisible = false;

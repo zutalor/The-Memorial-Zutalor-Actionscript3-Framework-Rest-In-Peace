@@ -1,4 +1,4 @@
-﻿package com.zutalor.motion
+﻿package depreciated
 {
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.scrolling.ScrollingContainer;
@@ -64,7 +64,7 @@
 			vpm = ViewController.presets;
 		}
 		
-		public static function gi():MotionUtils
+		public static function i():MotionUtils
 		{
 			if (!_motionUtils)
 				_motionUtils = new MotionUtils();

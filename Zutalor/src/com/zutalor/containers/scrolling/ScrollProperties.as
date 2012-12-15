@@ -8,7 +8,7 @@ package com.zutalor.containers.scrolling
 	{
 		public var setPos:Function;
 		public var getPos:Function;
-		public var enableScroll:Boolean;
+		public var scrollEnabled:Boolean;
 		public var downPos:int;
 		public var velocity:int;
 		public var lastPos:int;
@@ -19,10 +19,14 @@ package com.zutalor.containers.scrolling
 		
 		public function get direction():int
 		{
+			var dir:int;
+			
 			if (velocity <= 0)
-				return -1;
+				dir = -1;
 			else if (velocity)
-				return 1;
+				dir = 1;
+				
+			return dir;	
 		}
 	}	
 }
