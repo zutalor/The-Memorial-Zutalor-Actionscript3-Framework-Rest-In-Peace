@@ -18,6 +18,8 @@
 		public var align:String;
 		public var itemWidth:Number;
 		public var itemHeight:Number;
+		public var quantizeHPosition:Boolean;
+		public var quantizeVPosition:Boolean;
 		public var hPad:Number;
 		public var vPad:Number;
 		public var url:String;

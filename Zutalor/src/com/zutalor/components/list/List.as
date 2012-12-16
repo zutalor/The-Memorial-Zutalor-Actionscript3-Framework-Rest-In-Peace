@@ -76,6 +76,8 @@ package com.zutalor.components.list
 				sc.cacheAsBitmap = true;
 				sc.scrollController.width = lp.panAreaWidth;
 				sc.scrollController.height = lp.panAreaHeight;
+				sc.scrollController.quantizeHPosition = lp.quantizeHPosition;
+				sc.scrollController.quantizeVPosition = lp.quantizeVPosition;
 				sc.scrollController.contentChanged();
 				sc.scrollController.addEventListener(UIEvent.TAP, onTap);
 			}

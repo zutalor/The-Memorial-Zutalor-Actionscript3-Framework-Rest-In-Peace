@@ -20,6 +20,7 @@ package com.zutalor.containers.scrolling
 		public var scrollSize:int;
 		public var itemSize:int;
 		public var itemsPerPage:int;
+		public var quantizePosition:Boolean;
 		
 		public function get direction():int
 		{

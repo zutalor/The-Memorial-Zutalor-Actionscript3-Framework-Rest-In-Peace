@@ -18,12 +18,13 @@ package com.zutalor.containers.scrolling
 	public class ScrollController extends EventDispatcher implements IDisposable
 	{	
 		public var ease:Function = Quint.easeOut;
-		public var quantizeEaseSeconds:Number = .5;
+		public var positionEaseSeconds:Number = .5;
 		public var resetEaseSeconds:Number = .75;
+		public var quantizeHPosition:Boolean;
+		public var quantizeVPosition:Boolean;
 		
-		protected var scrollRect:Rectangle;
-		protected var sc:ScrollingContainer;
-		
+		private var scrollRect:Rectangle;
+		private var sc:ScrollingContainer;
 		private var spX:ScrollProperties;
 		private var spY:ScrollProperties;
 		private var tweenObject:Object;
@@ -53,28 +54,8 @@ package com.zutalor.containers.scrolling
 						
 			r = FullBounds.get(sc);
 			listItem = sc.getChildAt(0) as ContainerObject;
-			setScrollProperties(spX, r.width, scrollRect.width, listItem.width);
-			setScrollProperties(spY, r.height, scrollRect.height, listItem.height);	
-		}
-		
-		private function setScrollProperties(sp:ScrollProperties, fullBoundsSize:int, scrollSize:int, itemSize:int):void
-		{
-			if (fullBoundsSize > scrollSize)
-			{
-				sp.scrollingEnabled = true;
-				sp.midPos = scrollSize / 2;
-				sp.minPos = sp.midPos * -1;
-				sp.maxPos = fullBoundsSize - sp.midPos;
-				sp.fullBoundsSize = fullBoundsSize;
-				sp.scrollSize = scrollSize;
-				sp.itemSize = itemSize;
-				sp.itemsPerPage = scrollSize / sp.itemSize;
-			}
-			else
-			{
-				sp.atScrollLimit = true;
-				sp.scrollingEnabled = false;
-			}
+			setScrollProperties(spX, r.width, scrollRect.width, listItem.width, quantizeHPosition);
+			setScrollProperties(spY, r.height, scrollRect.height, listItem.height, quantizeVPosition);	
 		}
 	
 		public function get scrollX():Number
@@ -133,6 +114,28 @@ package com.zutalor.containers.scrolling
 			spY.setCurPos = function(n:Number):void { scrollY = n } 
 			spY.getCurPos = function():Number { return scrollY }
 			addListeners();
+		}
+		
+		protected function setScrollProperties(sp:ScrollProperties, 
+									fullBoundsSize:int, scrollSize:int, itemSize:int, quantizePosition:Boolean):void
+		{
+			if (fullBoundsSize > scrollSize)
+			{
+				sp.scrollingEnabled = true;
+				sp.midPos = scrollSize / 2;
+				sp.minPos = sp.midPos * -1;
+				sp.maxPos = fullBoundsSize - sp.midPos;
+				sp.fullBoundsSize = fullBoundsSize;
+				sp.scrollSize = scrollSize;
+				sp.itemSize = itemSize;
+				sp.itemsPerPage = scrollSize / sp.itemSize;
+				sp.quantizePosition = quantizePosition;
+			}
+			else
+			{
+				sp.atScrollLimit = true;
+				sp.scrollingEnabled = false;
+			}
 		}
 		
 		protected function addListeners():void
@@ -196,7 +199,7 @@ package com.zutalor.containers.scrolling
 		{			
 			sc.removeEventListener(Event.ENTER_FRAME, measureVelocity);
 			StageRef.stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMove);	
-			positionQuantizer();
+			positioner();
 		}
 		
 		protected function doTween(seconds:Number):void
@@ -209,34 +212,36 @@ package com.zutalor.containers.scrolling
 			sc.scrollRect = scrollRect;
 		}
 		
-		protected function positionQuantizer():void
+		protected function positioner():void
 		{
 			if (!spX.atScrollLimit || !spY.atScrollLimit)
 			{
-				tweenObject.x = getQuantizePosition(spX);
-				tweenObject.y = getQuantizePosition(spY);
+				tweenObject.x = getUpdatedPosition(spX);
+				tweenObject.y = getUpdatedPosition(spY);
 				tweenObject.ease = ease;
 				tweenObject.onUpdate = onTween;
 				tweenObject.onComplete = positionResetter;
-				doTween(quantizeEaseSeconds);
+				doTween(positionEaseSeconds);
 			}
 			else
 				positionResetter();
 		}
 		
-		protected function getQuantizePosition(sp:ScrollProperties):int
+		protected function getUpdatedPosition(sp:ScrollProperties):int
 		{
-			var quantizedPos:Number;
+			var updatedPos:Number;
 			
 			if (sp.atScrollLimit)
-				quantizedPos = sp.getCurPos();
-			else
+				updatedPos = sp.getCurPos();
+			else if (!sp.quantizePosition)
+				updatedPos = sp.getCurPos() - sp.velocity;
+			else	
 			{
-				quantizedPos = sp.getCurPos() - sp.velocity - (sp.itemSize * 0.5  * sp.direction);
-				quantizedPos += quantizedPos / sp.itemSize;
-				quantizedPos -= quantizedPos % (sp.scrollSize / sp.itemsPerPage);
+				updatedPos = sp.getCurPos() - sp.velocity - ((sp.itemSize * 0.5)  * (sp.direction* -1));
+				updatedPos += updatedPos / sp.itemSize;
+				updatedPos -= updatedPos % (sp.scrollSize / sp.itemsPerPage);
 			}
-			return quantizedPos;
+			return updatedPos;
 		}
 		
 		protected function positionResetter():void
