@@ -1,10 +1,8 @@
 package com.zutalor.components.list 
 {
 	import com.zutalor.components.base.Component;
-	import com.zutalor.components.button.Button;
 	import com.zutalor.containers.scrolling.ScrollingContainer;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.gesture.AppGestureEvent;
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.interfaces.IListItemRenderer;
 	import com.zutalor.plugin.Plugins;
@@ -13,8 +11,6 @@ package com.zutalor.components.list
 	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.view.rendering.ViewLoader;
 	import flash.events.Event;
-	import flash.events.MouseEvent;
-	import flash.utils.getTimer;
 	/**
 	 * ...
 	 * @author Geoff Pepos
@@ -75,20 +71,20 @@ package com.zutalor.components.list
 			
 			function finish():void
 			{
-				sc.scrollController.scrollWidth = lp.scrollAreaWidth;
-				sc.scrollController.scrollHeight = lp.scrollAreaHeight;
 				addChild(sc);
 				sc.autoArrangeChildren( { padding:0, orientation:lp.orientation } );
 				sc.cacheAsBitmap = true;
+				sc.scrollController.width = lp.panAreaWidth;
+				sc.scrollController.height = lp.panAreaHeight;
 				sc.scrollController.contentChanged();
-				sc.addEventListener(UIEvent.TAP, onTap);
+				sc.scrollController.addEventListener(UIEvent.TAP, onTap);
 			}
 		}
 		
 		private function onTap(e:Event):void
 		{
 			trace("click");
-			value = e.target.name;
+			//value = e.target.name;
 				//visible = !visible;
 		}
 	}

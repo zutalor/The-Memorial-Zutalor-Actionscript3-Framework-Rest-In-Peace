@@ -30,7 +30,7 @@ package com.zutalor.components.list
 				
 				b = new Button(text);
 				b.vip.text = Translate.text(text);
-				b.vip.presetId = lp.itemButtonId;
+				b.vip.presetId = lp.itemPresetId;
 				b.render();
 				return b;
 			}

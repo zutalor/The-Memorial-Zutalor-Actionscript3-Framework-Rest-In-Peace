@@ -20,7 +20,7 @@ package com.zutalor.containers.scrolling
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class ScrollingContainer extends ViewContainer 
+	public class ScrollingContainerBeforeRefactoring extends ViewContainer 
 	{	
 		public var ease:Function = Quint.easeOut;
 		public var swipeEaseSeconds:Number = .5;
@@ -45,12 +45,11 @@ package com.zutalor.containers.scrolling
 		private var _dirY:int;
 		private var _dirX:int;
 		
-		public function ScrollingContainer(containerName:String, enableHScroll:Boolean, enableVScroll:Boolean) 
+		public function ScrollingContainer(containerName:String) 
 		{
 			super(containerName);
 			_scrollRect = new Rectangle();
-			_enableHScroll =  enableHScroll;
-			_enableVScroll = enableVScroll;
+			_enableVScroll = true;
 			addEventListener(Event.ADDED_TO_STAGE, addedToStage, false, 0, true);
 		}
 		

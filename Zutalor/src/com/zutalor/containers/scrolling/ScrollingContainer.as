@@ -15,21 +15,12 @@ package com.zutalor.containers.scrolling
 			super(containerName);
 			scrollController = new ScrollController(this);
 		}
-				
-		override public function contentChanged():void
-		{
-			scrollController.contentChanged();
-		}
 		
 		override public function dispose():void
 		{
 			super.dispose();
 			scrollController.dispose();
-		}
-		
-		public function contentInitialized():void
-		{
-			contentChanged();
+			scrollController = null;
 		}
 	}
 }

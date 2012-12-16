@@ -11,16 +11,15 @@
 	public class ListProperties extends PropertiesBase implements IProperties
 	{	
 		public var listView:String;
-		public var itemButtonId:String;
-		public var scrollAreaWidth:Number;
-		public var scrollAreaHeight:Number;
+		public var itemPresetId:String;
+		public var panAreaWidth:Number;
+		public var panAreaHeight:Number;
 		public var orientation:String;
 		public var align:String;
 		public var itemWidth:Number;
 		public var itemHeight:Number;
 		public var hPad:Number;
 		public var vPad:Number;
-		public var spacing:Number;
 		public var url:String;
 		public var path:String;
 		public var data:String;
