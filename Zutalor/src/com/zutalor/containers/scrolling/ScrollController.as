@@ -177,6 +177,15 @@ package com.zutalor.containers.scrolling
 			var scrollToPos:Number;
 			
 			scrollToPos = sp.getCurPos() - (mousePos - sp.downPos);
+			
+			if (scrollToPos > sp.maxPos)
+				sp.overScrollLimit = sp.maxPos - scrollToPos;
+			else if (scrollToPos > sp.minPos)
+				sp.overScrollLimit = sp.minPos - Math.abs(scrollToPos);
+			else
+				sp.overScrollLimit = 0;
+			
+			trace(sp.overScrollLimit, scrollToPos, sp.maxPos, sp.minPos);	
 			if (scrollToPos < sp.maxPos && scrollToPos > sp.minPos)
 				sp.atScrollLimit = false;
 			else
@@ -199,7 +208,7 @@ package com.zutalor.containers.scrolling
 		{			
 			sc.removeEventListener(Event.ENTER_FRAME, measureVelocity);
 			StageRef.stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMove);	
-			positioner();
+			adjustPosition();
 		}
 		
 		protected function doTween(seconds:Number):void
@@ -212,7 +221,7 @@ package com.zutalor.containers.scrolling
 			sc.scrollRect = scrollRect;
 		}
 		
-		protected function positioner():void
+		protected function adjustPosition():void
 		{
 			if (!spX.atScrollLimit || !spY.atScrollLimit)
 			{
@@ -220,16 +229,17 @@ package com.zutalor.containers.scrolling
 				tweenObject.y = getUpdatedPosition(spY);
 				tweenObject.ease = ease;
 				tweenObject.onUpdate = onTween;
-				tweenObject.onComplete = positionResetter;
+				tweenObject.onComplete = resetPositionIfOverScrollBounds;
 				doTween(positionEaseSeconds);
 			}
 			else
-				positionResetter();
+				resetPositionIfOverScrollBounds();
 		}
 		
 		protected function getUpdatedPosition(sp:ScrollProperties):int
 		{
 			var updatedPos:Number;
+			var dir:Number;
 			
 			if (sp.atScrollLimit)
 				updatedPos = sp.getCurPos();
@@ -237,22 +247,33 @@ package com.zutalor.containers.scrolling
 				updatedPos = sp.getCurPos() - sp.velocity;
 			else	
 			{
-				updatedPos = sp.getCurPos() - sp.velocity - ((sp.itemSize * 0.5)  * (sp.direction* -1));
+				dir = sp.direction * -1;
+				updatedPos = sp.getCurPos() - sp.velocity - (sp.itemSize * 0.5  * sp.direction * dir);
 				updatedPos += updatedPos / sp.itemSize;
 				updatedPos -= updatedPos % (sp.scrollSize / sp.itemsPerPage);
 			}
 			return updatedPos;
 		}
 		
-		protected function positionResetter():void
+		protected function resetPositionIfOverScrollBounds():void
 		{
-			TweenMax.killTweensOf(scrollRect);
+			var oldX:int;
+			var oldY:int;
+
+			oldX = spX.getCurPos();
+			oldY = spY.getCurPos();
+			
 			tweenObject.x = getResetPosition(spX);
 			tweenObject.y = getResetPosition(spY);
-			tweenObject.onUpdate = onTween;
-			tweenObject.ease = ease;
-			tweenObject.onComplete = null;
-			doTween(resetEaseSeconds);
+			
+			if (tweenObject.x != oldX || tweenObject.y != oldY)
+			{		
+				TweenMax.killTweensOf(scrollRect);
+				tweenObject.onUpdate = onTween;
+				tweenObject.ease = ease;
+				tweenObject.onComplete = null;
+				doTween(resetEaseSeconds);
+			}
 		}			
 		
 		protected function getResetPosition(sp:ScrollProperties):Number

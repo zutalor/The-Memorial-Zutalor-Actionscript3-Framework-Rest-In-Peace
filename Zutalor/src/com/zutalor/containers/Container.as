@@ -68,7 +68,6 @@
 					h += child.height;
 				}
 			}
-			height = h;
 			if (numChildren)
 				contentChanged();
 		}

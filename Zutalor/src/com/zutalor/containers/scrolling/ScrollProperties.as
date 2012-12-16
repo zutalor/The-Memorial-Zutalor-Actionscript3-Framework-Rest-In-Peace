@@ -10,9 +10,10 @@ package com.zutalor.containers.scrolling
 		public var getCurPos:Function;
 		public var scrollingEnabled:Boolean;
 		public var downPos:int;
-		public var velocity:Number;
 		public var lastPos:int;
+		public var velocity:Number;
 		public var atScrollLimit:Boolean;
+		public var overScrollLimit:int;
 		public var midPos:int;
 		public var minPos:int;
 		public var maxPos:int;
