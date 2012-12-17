@@ -214,7 +214,6 @@ package com.zutalor.components.graphic
 						
 			coords = new Vector.<Number>;
 			
-			
 			if (!gri.data)
 				return item;
 				
@@ -264,10 +263,7 @@ package com.zutalor.components.graphic
 		private function graphic(gri:GraphicItemProperties):ContainerObject
 		{
 			var gr:Graphic = new Graphic(vip.name);
-			
-			if (!gri.data)
-				ShowError.fail(Graphic, "data null for " + vip.presetId);
-			
+
 			gr.vip.presetId = gri.presetId;
 			gr.render();	
 			return gr;

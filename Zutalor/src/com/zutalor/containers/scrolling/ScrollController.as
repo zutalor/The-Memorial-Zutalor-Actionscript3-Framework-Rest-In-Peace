@@ -21,7 +21,7 @@ package com.zutalor.containers.scrolling
 		public var positionEaseSeconds:Number = .5;
 		public var resetEaseSeconds:Number = .75;
 		public var slipFactor:Number = .3;
-		public var scrollLimitMultiplier:Number = .8;
+		public var edgeElastisity:Number = .8;
 		public var quantizeHPosition:Boolean;
 		public var quantizeVPosition:Boolean;
 		
@@ -123,16 +123,17 @@ package com.zutalor.containers.scrolling
 		protected function setScrollProperties(sp:ScrollProperties, 
 							fullBoundsSize:int, scrollSize:int, itemSize:int, quantizePosition:Boolean):void
 		{
-			if (fullBoundsSize > scrollSize)
+			if (fullBoundsSize >= scrollSize)
 			{
 				sp.scrollingEnabled = true;
-				sp.elasticMinPos = scrollSize * scrollLimitMultiplier * -1;
-				sp.elasticMaxPos = fullBoundsSize - (scrollSize * (1 - scrollLimitMultiplier));
+				sp.elasticMinPos = scrollSize * edgeElastisity * -1;
+				sp.elasticMaxPos = fullBoundsSize - (scrollSize * (1 - edgeElastisity));
 				sp.fullBoundsSize = fullBoundsSize;
 				sp.scrollSize = scrollSize;
 				sp.itemSize = itemSize;
 				sp.itemsPerPage = scrollSize / sp.itemSize;
-				sp.quantizePosition = quantizePosition;
+				if (sp.itemSize <= sp.scrollSize)
+					sp.quantizePosition = quantizePosition;
 			}
 			else
 			{
@@ -202,8 +203,8 @@ package com.zutalor.containers.scrolling
 			
 			if (scrollToPos < 0)
 				sp.overScroll = Math.abs(scrollToPos);
-			else if (scrollToPos + sp.scrollSize > sp.fullBoundsSize)
-				sp.overScroll =  sp.elasticMaxPos + sp.scrollSize - scrollToPos;
+			else if (scrollToPos > sp.fullBoundsSize)
+				sp.overScroll = sp.fullBoundsSize - scrollToPos;
 
 			overScroll += sp.overScroll * slipFactor;
 			sp.overScroll = overScroll;
