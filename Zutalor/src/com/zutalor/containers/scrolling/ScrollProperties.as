@@ -12,27 +12,27 @@ package com.zutalor.containers.scrolling
 		public var downPos:int;
 		public var lastPos:int;
 		public var velocity:Number;
-		public var atScrollLimit:Boolean;
-		public var overScrollLimit:int;
-		public var midPos:int;
-		public var minPos:int;
-		public var maxPos:int;
-		public var fullBoundsSize:int;
 		public var scrollSize:int;
 		public var itemSize:int;
 		public var itemsPerPage:int;
-		public var quantizePosition:Boolean;
+		public var quantizePosition:Boolean;		
+		public var overScroll:int;
+		public var atScrollLimit:Boolean;
+		public var elasticMinPos:int;
+		public var elasticMaxPos:int;
+		public var fullBoundsSize:int;
+
+		
+		private static var dir:int;
 		
 		public function get direction():int
 		{
-			var dir:int;
-			
 			if (velocity < 0)
 				dir = -1;
-			else
+			else if (velocity)
 				dir = 1;	
 				
 			return dir;	
-		}
+		}		
 	}	
 }

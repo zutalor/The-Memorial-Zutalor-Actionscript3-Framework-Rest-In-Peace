@@ -20,6 +20,8 @@ package com.zutalor.containers.scrolling
 		public var ease:Function = Quint.easeOut;
 		public var positionEaseSeconds:Number = .5;
 		public var resetEaseSeconds:Number = .75;
+		public var slipFactor:Number = .3;
+		public var scrollLimitMultiplier:Number = .8;
 		public var quantizeHPosition:Boolean;
 		public var quantizeVPosition:Boolean;
 		
@@ -28,6 +30,8 @@ package com.zutalor.containers.scrolling
 		private var spX:ScrollProperties;
 		private var spY:ScrollProperties;
 		private var tweenObject:Object;
+		
+		public static const FORWARD:int = 1;
 		
 		public function ScrollController(scrollingContainer:ScrollingContainer) 
 		{
@@ -117,14 +121,13 @@ package com.zutalor.containers.scrolling
 		}
 		
 		protected function setScrollProperties(sp:ScrollProperties, 
-									fullBoundsSize:int, scrollSize:int, itemSize:int, quantizePosition:Boolean):void
+							fullBoundsSize:int, scrollSize:int, itemSize:int, quantizePosition:Boolean):void
 		{
 			if (fullBoundsSize > scrollSize)
 			{
 				sp.scrollingEnabled = true;
-				sp.midPos = scrollSize / 2;
-				sp.minPos = sp.midPos * -1;
-				sp.maxPos = fullBoundsSize - sp.midPos;
+				sp.elasticMinPos = scrollSize * scrollLimitMultiplier * -1;
+				sp.elasticMaxPos = fullBoundsSize - (scrollSize * (1 - scrollLimitMultiplier));
 				sp.fullBoundsSize = fullBoundsSize;
 				sp.scrollSize = scrollSize;
 				sp.itemSize = itemSize;
@@ -175,19 +178,16 @@ package com.zutalor.containers.scrolling
 		protected function scroll(mousePos:Number, sp:ScrollProperties):int
 		{
 			var scrollToPos:Number;
+			var offset:Number;
 			
-			scrollToPos = sp.getCurPos() - (mousePos - sp.downPos);
+			offset = mousePos - sp.downPos;
+			scrollToPos = sp.getCurPos() - offset;
 			
-			if (scrollToPos > sp.maxPos)
-				sp.overScrollLimit = sp.maxPos - scrollToPos;
-			else if (scrollToPos > sp.minPos)
-				sp.overScrollLimit = sp.minPos - Math.abs(scrollToPos);
-			else
-				sp.overScrollLimit = 0;
-			
-			trace(sp.overScrollLimit, scrollToPos, sp.maxPos, sp.minPos);	
-			if (scrollToPos < sp.maxPos && scrollToPos > sp.minPos)
+			if (scrollToPos - sp.overScroll < sp.elasticMaxPos && scrollToPos + sp.overScroll > sp.elasticMinPos)
+			{	
 				sp.atScrollLimit = false;
+				scrollToPos += calcSlip(sp, scrollToPos);
+			}
 			else
 			{
 				sp.atScrollLimit = true;
@@ -195,6 +195,21 @@ package com.zutalor.containers.scrolling
 			}
 			return scrollToPos;
 		}
+		
+		protected function calcSlip(sp:ScrollProperties, scrollToPos:Number):Number
+		{
+			var overScroll:int;
+			
+			if (scrollToPos < 0)
+				sp.overScroll = Math.abs(scrollToPos);
+			else if (scrollToPos + sp.scrollSize > sp.fullBoundsSize)
+				sp.overScroll =  sp.elasticMaxPos + sp.scrollSize - scrollToPos;
+
+			overScroll += sp.overScroll * slipFactor;
+			sp.overScroll = overScroll;
+			return overScroll;
+		}
+		
 				
 		protected function measureVelocity(e:Event):void
 		{
@@ -207,7 +222,8 @@ package com.zutalor.containers.scrolling
 		protected function onUp(me:Event = null):void
 		{			
 			sc.removeEventListener(Event.ENTER_FRAME, measureVelocity);
-			StageRef.stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMove);	
+			StageRef.stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMove);
+			spX.overScroll = spY.overScroll = 0;
 			adjustPosition();
 		}
 		
