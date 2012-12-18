@@ -101,7 +101,7 @@ package be.nascom.flash.display
 		private var image:MovieClip;
 		private var imageDuplicate:MovieClip;
 		private var fileUploader:FileUploader;
-		private var myPreviewLoader:Loader;
+		private var myPreviewCreator:Loader;
 		private var _loader:Loader;
 		private var loaderContext:LoaderContext;
 		private var disabledZone:Sprite;
@@ -244,10 +244,10 @@ package be.nascom.flash.display
 			
 			addChild(workspace);
 			
-			myPreviewLoader = new Loader();
-			myPreviewLoader.x = this.wspW/2-this.cropperW/2;
-			myPreviewLoader.y = this.wspH/2-this.cropperH/2;
-			addChild(myPreviewLoader);
+			myPreviewCreator = new Loader();
+			myPreviewCreator.x = this.wspW/2-this.cropperW/2;
+			myPreviewCreator.y = this.wspH/2-this.cropperH/2;
+			addChild(myPreviewCreator);
 		}
 		
 		private function destroyAllPrevious():void
@@ -260,9 +260,9 @@ package be.nascom.flash.display
 			workspace.removeChild(imageDuplicate);
 			imageDuplicate = null;
 			
-			myPreviewLoader.unload()			
-			removeChild(myPreviewLoader)
-			myPreviewLoader = null;
+			myPreviewCreator.unload()			
+			removeChild(myPreviewCreator)
+			myPreviewCreator = null;
 			
 			workspace.removeChild(disabledZone);
 			workspace.removeEventListener(MouseEvent.MOUSE_DOWN, dragImageHandler);
@@ -411,7 +411,7 @@ package be.nascom.flash.display
 			
 			var encoder:JPGEncoder = new JPGEncoder( 100 );
 		    var aBA:ByteArray = encoder.encode(myBitmapSource);
-		    myPreviewLoader.loadBytes(aBA);
+		    myPreviewCreator.createBytes(aBA);
 		    image.alpha = .5;
 		    
 			if(is_amf){	

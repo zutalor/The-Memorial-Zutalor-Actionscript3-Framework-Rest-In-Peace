@@ -23,7 +23,7 @@
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.properties.ViewProperties;
-	import com.zutalor.view.rendering.ViewLoader;
+	import com.zutalor.view.rendering.ViewCreator;
 	import com.zutalor.view.utils.ViewCloser;
 	import com.zutalor.view.utils.ViewUtils;
 	import com.zutalor.widgets.Spinner;
@@ -219,7 +219,7 @@
 		
 		private function processStateChange():void
 		{
-			var viewLoader:ViewLoader;
+			var viewCreator:ViewCreator;
 			
 			appStateProps = Props.pr.appStates.getPropsByName(_curAppState);
 
@@ -241,12 +241,12 @@
 					_appStateCallStack.insert(_curAppState, appStateProps);
 					_curViewProps = vpm.getPropsById(appStateProps.viewId);		
 					curContainerLoading = _curViewProps.name;
-					viewLoader = new ViewLoader();
+					viewCreator = new ViewCreator();
 					if (appStateProps.transitionPreset)
 						_curViewProps.transitionPreset = appStateProps.transitionPreset;
 					
 					_curViewProps.mediaPreset = appStateProps.mediaPreset;
-					viewLoader.load(appStateProps.viewId, appStateProps.name, onAppContainerLoadComplete);							
+					viewCreator.create(appStateProps.viewId, appStateProps.name, onAppContainerLoadComplete);							
 				}
 			}
 		}

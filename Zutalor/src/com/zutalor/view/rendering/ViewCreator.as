@@ -1,6 +1,7 @@
 ﻿package com.zutalor.view.rendering
 {
 	import com.zutalor.containers.base.ContainerObject;
+	import com.zutalor.containers.Container;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.fx.Filters;
 	import com.zutalor.fx.TransitionTypes;
@@ -17,15 +18,15 @@
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class ViewLoader extends EventDispatcher
+	public class ViewCreator extends EventDispatcher
 	{
 		
 		private var vp:ViewProperties;
-		private var c:ViewContainer; 
+		private var c:ViewContainer;
 		private var _onComplete:Function;
 		private var _parent:ContainerObject;
 		
-		public function ViewLoader(parent:ContainerObject = null)
+		public function ViewCreator(parent:ContainerObject = null)
 		{
 			_parent = parent;
 		}
@@ -35,18 +36,16 @@
 			return vp.container;
 		}
 				
-		public function load(viewId:String, appState:String = null, onComplete:Function=null):void
+		public function create(viewId:String, appState:String = null, onComplete:Function=null):void
 		{			
-			_onComplete = onComplete;
+			if (!viewId)
+				ShowError.fail(ViewCreator,"View Id cannot be null: " + viewId);
 
+			_onComplete = onComplete;
 			vp = ViewController.presets.getPropsById(viewId);		
 			
-			if (c)
-				vp.container = c;
-			else if (!vp.container)
-				ObjectPool.getContainer(vp);
+			vp.container = c = ObjectPool.getViewContainer(vp);
 		
-			c = vp.container;
 			c.x = vp.x;
 			c.y = vp.y;
 			c.rotation = vp.rotation;
@@ -95,17 +94,19 @@
 				var filters:Filters = new Filters();
 				filters.add(vp.container, vp.filterPreset);
 			}
-			
-			if (!viewId)
-				ShowError.fail(ViewLoader,"View Id cannot be null: " + viewId);
 					
 			if (!c.viewController)
 				c.viewController = new ViewController();
+			
+			if (_parent)
+				_parent.addChild(vp.container);
+			else
+				StageRef.stage.addChild(vp.container);		
 						
-			c.viewController.load(viewId, appState, viewLoadComplete);					
+			c.viewController.load(c, viewId, appState, viewCreateComplete);					
 		}	
 		
-		private function viewLoadComplete():void
+		protected function viewCreateComplete():void
 		{
 			var vt:ViewTransition;	
 			
@@ -114,10 +115,7 @@
 				vp.width = vp.container.width;
 				vp.height = vp.container.height;
 			}	
-			if (_parent)
-				_parent.addChild(vp.container);
-				
-		
+			
 			if (!vp.transitionPreset)
 				vp.transitionPreset = "fade";
 			

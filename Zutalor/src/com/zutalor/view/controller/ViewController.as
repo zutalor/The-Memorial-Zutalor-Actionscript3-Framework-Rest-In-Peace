@@ -9,7 +9,6 @@
 	import com.zutalor.fx.Transition;
 	import com.zutalor.fx.TransitionTypes;
 	import com.zutalor.interfaces.IMediaPlayer;
-	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.NestedPropsManager;
@@ -33,7 +32,6 @@
 		private var _onComplete:Function;
 		private var _itemIndex:int;
 		private var _viewEventMediator:ViewEventMediator;
-		private var _container:ViewContainer;
 		private var _defaultVO:*;
 		private var _viewId:String;	
 		private var _viewItemFilterApplier:ViewItemFilterApplier;
@@ -65,8 +63,8 @@
 			return _presets;
 		}
 	
-		public function load(viewId:String, appState:String, onComplete:Function):void
-		{			
+		public function load(vc:ViewContainer, viewId:String, appState:String, onComplete:Function):void
+		{	
 			_viewId = viewId;
 			_onComplete = onComplete;
 			vp = _presets.getPropsById(_viewId);
@@ -78,10 +76,8 @@
 			
 			vp.appState = appState;
 			ViewControllerRegistry.registerController(_viewId, this);
-			ObjectPool.getContainer(vp);
-			_container = vp.container;
-			_container.viewController = this;
-			StageRef.stage.addChild(vp.container);	
+			vp.container = vc;
+			vp.container.viewController = this;
 
 			if (vp.uiControllerInstanceName)
 			{
@@ -89,10 +85,10 @@
 				_defaultVO = Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT);
 				viewModelMediator = new ViewModelMediator(this);
 			}
-			_viewItemPositioner = new ViewItemPositioner(_container, vp.width, vp.height);
+			_viewItemPositioner = new ViewItemPositioner(vp.container, vp.width, vp.height);
 			_viewEventMediator = new ViewEventMediator(this);
 			_viewItemFilterApplier = new ViewItemFilterApplier(_filters);
-			_viewRenderer = new ViewRenderer(_container, renderNextViewItem, _viewItemFilterApplier.applyFilters, 
+			_viewRenderer = new ViewRenderer(vp.container, renderNextViewItem, _viewItemFilterApplier.applyFilters, 
 																				_viewItemPositioner.positionItem);			
 			_numViewItems = _presets.getNumItems(_viewId);	
 			renderNextViewItem();
@@ -113,7 +109,7 @@
 		
 		public function get container():ViewContainer
 		{
-			return _container;
+			return vp.container;
 		}
 					
 		public function positionAllItems():void
@@ -151,7 +147,7 @@
 			{
 				itemWithFocus = getItemByName(itemName);
 				itemWithFocusIndex = getItemIndexByName(itemName);
-				Focus.show(itemWithFocus, _container);
+				Focus.show(itemWithFocus, vp.container);
 			}
 			else	
 			{
@@ -172,7 +168,7 @@
 			if (transition)
 			{
 				bmd = new BitmapData(StageRef.stage.stageWidth, StageRef.stage.stageHeight);
-				bmd.draw(_container);
+				bmd.draw(vp.container);
 				bm = new Bitmap(bmd);
 				bm.visible = true;
 				StageRef.stage.addChild(bm);				
@@ -196,7 +192,7 @@
 			if (transition)
 			{
 				t = new Transition();
-				t.simpleRender(_container, transition, "in", onTransitionComplete);
+				t.simpleRender(vp.container, transition, "in", onTransitionComplete);
 			}
 			else
 				if (onTransitionComplete != null)
@@ -229,7 +225,7 @@
 				if (vip.voName)
 				{
 					Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
-					item = _container.getChildByName(itemName) as Component;
+					item = vp.container.getChildByName(itemName) as Component;
 					viewModelMediator.copyViewItemToValueObject(vip, item);
 				}
 				else
@@ -242,7 +238,7 @@
 					if (vip.voName)
 					{
 						Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
-						item = _container.getChildAt(i) as Component;
+						item = vp.container.getChildAt(i) as Component;
 						viewModelMediator.copyViewItemToValueObject(vip, item);
 					}
 				}
@@ -258,7 +254,7 @@
 				vip = _presets.getItemPropsByName(_viewId, itemName);
 				if (vip.voName)
 				{
-					item = _container.getChildByName(itemName) as Component;
+					item = vp.container.getChildByName(itemName) as Component;
 					viewModelMediator.copyValueObjectToViewItem(vip, item);
 				}
 				else
@@ -270,7 +266,7 @@
 					vip = _presets.getItemPropsByIndex(_viewId, i);
 					if (vip.voName)
 					{
-						item = _container.getChildAt(i) as Component;
+						item = vp.container.getChildAt(i) as Component;
 						viewModelMediator.copyValueObjectToViewItem(vip, item);
 					}
 				}
@@ -295,7 +291,7 @@
 			
 			for (var i:int = 0; i < _numViewItems; i++)
 			{
-				item = _container.getChildAt(i) as Component;
+				item = vp.container.getChildAt(i) as Component;
 				if (item is IMediaPlayer)
 				{
 					item.stop(fadeSeconds);
@@ -320,7 +316,7 @@
 				for (i = 0; i < numFilters; i++)
 					_filters[i].dispose();
 			}
-			_container.dispose();	
+			vp.container.dispose();	
 			_filters = null;
 			_numViewItems = 0;
 			_viewRenderer = null;
@@ -333,12 +329,12 @@
 		
 		public function getItemByIndex(indx:int):Component
 		{
-			return _container.getChildAt(indx) as Component;
+			return vp.container.getChildAt(indx) as Component;
 		}
 		
 		public function getItemIndexByName(name:String):int
 		{
-			return _container.getChildIndex(_container.getChildByName(name));
+			return vp.container.getChildIndex(vp.container.getChildByName(name));
 		}
 		
 		public function getItemByName(itemName:String):Component
@@ -347,8 +343,8 @@
 			var item:Component;
 			
 			vip = _presets.getItemPropsByName(_viewId, itemName);
-			if (vip && _container.numChildren)
-				item = _container.getChildByName(itemName) as Component;
+			if (vip && vp.container.numChildren)
+				item = vp.container.getChildByName(itemName) as Component;
 
 			return item;
 		}
@@ -372,8 +368,8 @@
 			var item:Component;
 			
 			vip = _presets.getItemPropsByName(_viewId, itemName);
-			if (vip && _container.numChildren)
-				item = _container.getChildByName(itemName) as Component;
+			if (vip && vp.container.numChildren)
+				item = vp.container.getChildByName(itemName) as Component;
 				if (item)
 					item.alpha = a;
 		}
@@ -383,24 +379,24 @@
 			var ni:int;
 			
 			setItemVisibility(null, visible, fade, delay);
-			if (_container.numChildren)
+			if (vp.container.numChildren)
 			{
-				ni = _container.numChildren;
+				ni = vp.container.numChildren;
 				for (var i:int = 0; i < ni; i++)
-					ItemFX.fade(vp.name, _container.getChildAt(i), visible, fade, delay);
+					ItemFX.fade(vp.name, vp.container.getChildAt(i), visible, fade, delay);
 			}
 		}
 		
 		public function setItemVisibility(name:String, visible:Boolean = true, fade:int = 0, delay:int = 0):void
 		{
-			ItemFX.fade(vp.name, _container.getChildByName(name), visible, fade, delay);
+			ItemFX.fade(vp.name, vp.container.getChildByName(name), visible, fade, delay);
 		}
 		
 		public function setEnabled(itemName:String, d:Boolean):void
 		{
 			var item:Component;
 			
-			item = _container.getChildByName(itemName) as Component;
+			item = vp.container.getChildByName(itemName) as Component;
 			if (item)
 			{
 				if(item.hasOwnProperty("enabled"))
@@ -422,23 +418,23 @@
 		public function hide(useTransition:Boolean=true):void
 		{
 			if (useTransition)
-				TweenMax.to(_container, 1, { alpha:0, visible:false } );
+				TweenMax.to(vp.container, 1, { alpha:0, visible:false } );
 			else
-				_container.visible = false;
+				vp.container.visible = false;
 		}
 		
 		public function show(useTransition:Boolean=true):void
 		{
 			if (useTransition)
 			{
-				_container.visible = true;
-				_container.alpha = 0;
-				TweenMax.to(_container, 1, { alpha:1 } );
+				vp.container.visible = true;
+				vp.container.alpha = 0;
+				TweenMax.to(vp.container, 1, { alpha:1 } );
 			}
 			else
 			{
-				_container.alpha = 1;
-				_container.visible = true;
+				vp.container.alpha = 1;
+				vp.container.visible = true;
 			}
 		}
 				
@@ -446,12 +442,12 @@
 		
 		public function dispatchStateSelection(ms:String):void
 		{
-			_container.dispatchEvent(new UIEvent(UIEvent.APP_STATE_SELECTED, _container.name, ms));
+			vp.container.dispatchEvent(new UIEvent(UIEvent.APP_STATE_SELECTED, vp.container.name, ms));
 		}
 		
 		public function dispatchUiEvent(eventType:String):void
 		{
-			_container.dispatchEvent(new UIEvent(eventType, _container.name));
+			vp.container.dispatchEvent(new UIEvent(eventType, vp.container.name));
 		}				
 		
 		// PRIVATE METHODS
@@ -478,13 +474,13 @@
 			var i:int;
 			var l:int;
 			var c:int;
-			var disabledCount:int;
+
 			var vip:ViewItemProperties;			
 			c = container.numChildren;
 			_viewEventMediator.itemListenerSetup();				
-			_viewEventMediator.addListenersToContainer(_container);
-			_container.arranger.resize(vp.resizeMode);
-			_container.arranger.alignToStage(vp.align, vp.hPad, vp.vPad);
+			_viewEventMediator.addListenersToContainer(vp.container);
+			vp.container.arranger.resize(vp.resizeMode);
+			vp.container.arranger.alignToStage(vp.align, vp.hPad, vp.vPad);
 			_onComplete();
 			
 			for (i = 0; i < c; i++)

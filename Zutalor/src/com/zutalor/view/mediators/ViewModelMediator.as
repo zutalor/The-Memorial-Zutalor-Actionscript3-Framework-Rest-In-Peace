@@ -3,17 +3,16 @@ package com.zutalor.view.mediators
 	import com.zutalor.components.base.Component;
 	import com.zutalor.components.group.ComponentGroup;
 	import com.zutalor.components.group.RadioGroup;
-	import com.zutalor.containers.scrolling.ScrollingContainer;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.ApplicationProperties;
-		import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Presets;
-	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.view.controller.ViewController;
+	import com.zutalor.view.properties.ViewItemProperties;
 	/**
 	 * ...
 	 * @author Geoff Pepos
@@ -168,7 +167,7 @@ package com.zutalor.view.mediators
 		
 		public function copyValueObjectToViewItem(vip:ViewItemProperties, item:Component):void
 		{
-			var c:ScrollingContainer;
+			var c:ViewContainer;
 			var dataProvider:Array;
 			var ViewItemClass:Class;
 			

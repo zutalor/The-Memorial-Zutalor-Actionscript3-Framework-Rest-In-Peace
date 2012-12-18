@@ -2,49 +2,42 @@
 {
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.scrolling.ScrollingContainer;
-	import com.zutalor.events.UIEvent;
-	import flash.display.DisplayObject;
-	import flash.display.Shape;
-	import flash.events.Event;
 	/**
 	 * ...
 	 * @author Geoff Pepos
 	 */
 	public class ParallaxContainer extends ScrollingContainer
 	{	
-		private var _layers:Array;		
-		private var _virtualWidth:Array;
-		private var _virtualHeight:Array;
-		private var _blankShapes:Array;
-		private var _trackColor:uint;
-		private var _thumbColor:uint;
-		private var _closeButtonColor:uint;
+		private var _layers:Vector.<Container>;
 		
-		private const NUM_LAYERS:int = 5;
-		
-		private const DFLT_HEIGHT_MULTIPLIER:Number = 1; 
-		private const DFLT_HEIGHT_INCREMENT:Number = 1.25;
-	
-		private const DFLT_WIDTH_MULTIPLIER:Number = 1.5; 
-		private const DFLT_WIDTH_INCREMENT:Number = 2;
-		
-		public function ParallaxContainer(containerName:String) 
-		
-		// TODO options: numLayers & reverseThumbs
+		public function ParallaxContainer(containerName:String, numLayers:int = 5)
 		{
 			super(containerName);
-			addEventListener(Event.ADDED_TO_STAGE, addedToStage, false, 0, true);
+			init(numLayers);
 		}	
-		
-		override public function push(child:ContainerObject, options:Object = null):void  //example options { layerLayer:1, destPercentX:0.5, destPercentY:0.5 }
-		{	
 			
-			var c:ScrollingContainer;
+		protected function init(numLayers:int):void
+		{
+			_layers = new Vector.<Container>();
+			for (var i:int = 0; i < numLayers; i++)
+				_layers.push(new Container(String(i)));
+		}
+		
+		override public function push(child:ContainerObject, options:Object = null):void
+		{	
+			var c:Container;
 				
 			if (options) 
 			{
-				child.x = _virtualWidth[options.layerNum] * options.destPercentX;
-				child.y = _virtualHeight[options.layerNum] * options.destPercentY;
+				if (options.x < 1 && options.x > 0)
+					child.x = width * options.x;
+				else
+					child.x = x;
+				
+				if (options.y < 1 && options.y > 0)
+					child.y = width * options.y;
+				else
+					child.y = x;
 				
 				if (options.layerNum == 0)
 					super.push(child);
@@ -53,103 +46,6 @@
 			}
 			else
 				super.push(child);
-		}
-		
-		override public function set height(n:Number):void
-		{		
-			for (var i:int = 1; i < NUM_LAYERS; i++)
-				_layers[i].height = n;			
-		}
-		
-		override public function set width(n:Number):void
-		{
-			for (var i:int = 1; i < NUM_LAYERS; i++)
-				_layers[i].width = n;			
-		}	
-
-		/* TODO FIX THIS LEGACY CODE
-		override public function tweenScrollPercentY(percent:Number, tweenTime:Number=0.5):void
-		{
-			super.tweenScrollPercentY(percent, tweenTime);
-			for (var i:int = 1; i < NUM_LAYERS; i++)
-				_layers[i].setScrollPositionY(percent, tweenTime);
-		}
-		
-		override public function tweenScrollPercentX(percent:Number, tweenTime:Number=0.5):void
-		{
-			super.tweenScrollPercentX(percent, tweenTime);
-			for (var i:int = 1; i < NUM_LAYERS; i++) {
-				_layers[i].setScrollPercentX(percent, tweenTime);
-			}
-		}
-		
-		*/
-				
-		private function addedToStage(e:Event):void
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, addedToStage);
-			_layers = [];
-			_virtualHeight = [];
-			_virtualWidth = [];
-			_blankShapes = [];	
-			initLayers();
-		}
-		
-		private function reinitializeLayers():void
-		{
-			for (var i:int = NUM_LAYERS - 1; i > -1; i--)
-			{
-				if (i) // because '0' is "this"
-				{
-					_layers[i].push(_blankShapes[i]);
-				}
-				else
-				{
-					push(_blankShapes[i]);
-				}
-			}
-		}
-		
-		private function initLayers():void
-		{
-			var heightMultiplier:Number;
-			var widthMultiplier:Number;
-			var heightIncrement:Number;
-			var widthIncrement:Number;
-	
-			widthMultiplier = DFLT_WIDTH_MULTIPLIER; 
-			widthIncrement = DFLT_WIDTH_INCREMENT;
-
-			heightMultiplier = DFLT_HEIGHT_MULTIPLIER;
-			heightIncrement = DFLT_HEIGHT_INCREMENT;
-			
-			for (var i:int = NUM_LAYERS - 1; i > -1; i--)
-			{
-				_virtualWidth[i] = Math.floor(width * widthMultiplier);
-				_virtualHeight[i] = Math.floor(height * heightMultiplier);
-				
-				trace("vH", _virtualHeight[i], "vW",_virtualWidth[i])
-				
-				_blankShapes[i] = new Shape();
-				_blankShapes[i].graphics.beginFill(0, 0);
-				_blankShapes[i].graphics.drawRect(_virtualWidth[i]-1, 0, 1, 1);
-				_blankShapes[i].graphics.drawRect(0, _virtualHeight[i] - 1, 1, 1);
-				_blankShapes[i].graphics.endFill();
-			
-				if (i) // because '0' is "this"
-				{
-					_layers[i] = new ScrollingContainer(name + String(i));
-					_layers[i].push(_blankShapes[i]);
-					addChild(_layers[i]);
-					_layers[i].scrollBarsVisible = false;
-				}
-				else
-				{
-					push(_blankShapes[i]);
-				}
-				widthMultiplier *= widthIncrement;
-				heightMultiplier *= heightIncrement;
-			}
 		}
 	}
 }

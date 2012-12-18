@@ -10,7 +10,7 @@
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.properties.ViewProperties;
 	import com.zutalor.view.utils.ViewCloser;
-	import com.zutalor.view.rendering.ViewLoader;
+	import com.zutalor.view.rendering.ViewCreator;
 	import flash.display.Sprite;
 	import flash.media.StageVideo;
 	import flash.text.TextField;
@@ -60,9 +60,9 @@
 			return new Transition();
 		}
 		
-		public static function getViewLoader():ViewLoader
+		public static function getViewCreator():ViewCreator
 		{
-			return new ViewLoader();
+			return new ViewCreator();
 		}
 		
 		public static function getViewCloser():ViewCloser
@@ -70,21 +70,9 @@
 			return new ViewCloser();
 		}
 		
-		public static function getContainer(vp:ViewProperties):void
+		public static function getViewContainer(vp:ViewProperties):ViewContainer
 		{
-			switch (vp.containerType)
-			{
-				case ViewProperties.CONTAINER_SCROLLING :
-					vp.container = new ScrollingContainer(vp.name);
-					break;			
-				case ViewProperties.CONTAINER_PARALLAX :
-					vp.container = new ParallaxContainer(vp.name);
-					break;		
-				case ViewProperties.CONTAINER_BASIC :
-				default :
-					vp.container = new ViewContainer(vp.name);
-					break;
-			}
+			return new ViewContainer(vp.name);
 		}				
 	}
 }

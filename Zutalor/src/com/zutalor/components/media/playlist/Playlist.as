@@ -20,7 +20,7 @@ package com.zutalor.components.media.playlist
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.properties.ViewItemProperties;
-	import com.zutalor.view.rendering.ViewLoader;
+	import com.zutalor.view.rendering.ViewCreator;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -63,7 +63,7 @@ package com.zutalor.components.media.playlist
 		private var _startTimeMs:Number;
 		private var _totalTimeMs:Number;		
 
-		private var _toolsLoader:ViewLoader;
+		private var _toolsCreator:ViewCreator;
 		
 		// ai properties
 		private var _minClips:int;
@@ -412,15 +412,15 @@ package com.zutalor.components.media.playlist
 		private function initTools():void
 		{			
 
-			_toolsLoader = new ViewLoader();
-			_toolsLoader.load(_pp.toolsView);
-			_toolsLoader.container.addEventListener(UIEvent.PLAY, play);
-			_toolsLoader.container.addEventListener(UIEvent.PLAY_TOGGLE, play);
-			_toolsLoader.container.addEventListener(UIEvent.NEXT, next);
-			_toolsLoader.container.addEventListener(UIEvent.PREVIOUS, prev);		
+			_toolsCreator = new ViewCreator();
+			_toolsCreator.create(_pp.toolsView);
+			_toolsCreator.container.addEventListener(UIEvent.PLAY, play);
+			_toolsCreator.container.addEventListener(UIEvent.PLAY_TOGGLE, play);
+			_toolsCreator.container.addEventListener(UIEvent.NEXT, next);
+			_toolsCreator.container.addEventListener(UIEvent.PREVIOUS, prev);		
 				
 			if (_pp.toolsAttached)
-				toolsLayer.addChild(_toolsLoader.container);
+				toolsLayer.addChild(_toolsCreator.container);
 		
 		}
 		
@@ -472,14 +472,14 @@ package com.zutalor.components.media.playlist
 				}
 			}
 			if (_currentPlaylistIndex > 1)
-				_toolsLoader.container.viewController.callUiControllerMethod(PluginMethods.SET_PREV_BUTTON_VISIBILITY, true);
+				_toolsCreator.container.viewController.callUiControllerMethod(PluginMethods.SET_PREV_BUTTON_VISIBILITY, true);
 			else	
-				_toolsLoader.container.viewController.callUiControllerMethod(PluginMethods.SET_PREV_BUTTON_VISIBILITY, false);
+				_toolsCreator.container.viewController.callUiControllerMethod(PluginMethods.SET_PREV_BUTTON_VISIBILITY, false);
 				
 			if (_currentPlaylistIndex < _endIndex)	
-				_toolsLoader.container.viewController.callUiControllerMethod(PluginMethods.SET_NEXT_BUTTON_VISIBILITY, true);
+				_toolsCreator.container.viewController.callUiControllerMethod(PluginMethods.SET_NEXT_BUTTON_VISIBILITY, true);
 			else	
-				_toolsLoader.container.viewController.callUiControllerMethod(PluginMethods.SET_NEXT_BUTTON_VISIBILITY, false);
+				_toolsCreator.container.viewController.callUiControllerMethod(PluginMethods.SET_NEXT_BUTTON_VISIBILITY, false);
 		}
 		
 		public function onHotKey(hke:HotKeyEvent):void

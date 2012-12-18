@@ -7,7 +7,7 @@ package com.zutalor.components.media.slideshow
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.utils.DisplayUtils;
 	import com.zutalor.utils.Path;
-	import com.zutalor.view.rendering.ViewLoader;
+	import com.zutalor.view.rendering.ViewCreator;
 	import flash.display.Bitmap;
 	import flash.display.Loader;
 	import flash.display.Shape;
@@ -37,7 +37,7 @@ package com.zutalor.components.media.slideshow
 		private var _fadeTimeSecs:int;
 		private var _playing:Boolean;
 		private var _buttons:ViewContainer;
-		private var _buttonsLoader:ViewLoader;
+		private var _buttonsLoader:ViewCreator;
 		private var _path:String;
 		private var _buttonsInitialized:Boolean;
 		private var _buttonsViewId:String;
@@ -64,7 +64,7 @@ package com.zutalor.components.media.slideshow
 		
 		private function initButtons(buttonsViewId:String):void
 		{
-			_buttonsLoader = ObjectPool.getViewLoader();
+			_buttonsLoader = ObjectPool.getViewCreator();
 			_buttonsLoader.load(buttonsViewId);
 			_buttons = _buttonsLoader.container;
 			_buttons.addEventListener(UIEvent.PLAY_TOGGLE, onButtonClick);

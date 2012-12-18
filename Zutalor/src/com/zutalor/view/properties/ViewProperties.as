@@ -1,5 +1,6 @@
 ﻿package com.zutalor.view.properties 
 {
+	import com.zutalor.containers.Container;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.interfaces.IProperties;
 	import com.zutalor.properties.PropertiesBase;
@@ -25,7 +26,6 @@
 		public var styleSheetName:String;
 		public var contentPersists:Boolean;
 		public var resizeMode:String;
-		public var containerType:String
 		public var width:int;
 		public var height:int;
 		public var hPad:int;

@@ -2,6 +2,7 @@
 {
 	import com.gskinner.utils.IDisposable;
 	import com.zutalor.containers.base.ContainerObject;
+	import com.zutalor.containers.scrolling.ScrollController;
 	import com.zutalor.containers.utils.Arranger;
 	import com.zutalor.containers.utils.ObjectRemover;
 	import com.zutalor.utils.Scale;
@@ -18,11 +19,10 @@
 		public const VERTICAL:String = "vertical";
 		private var _arranger:Arranger;
 		
-		public function Container(containerName:String = null) 
+		public function Container(containerName:String) 
 		{
 			if (containerName)
 				name = containerName;
-				
 			_arranger = new Arranger(this);
 		}
 		

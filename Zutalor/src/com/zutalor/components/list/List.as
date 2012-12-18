@@ -8,8 +8,9 @@ package com.zutalor.components.list
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.utils.MasterClock;
+	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.properties.ViewItemProperties;
-	import com.zutalor.view.rendering.ViewLoader;
+	import com.zutalor.view.rendering.ViewCreator;
 	import flash.events.Event;
 	/**
 	 * ...
@@ -19,7 +20,7 @@ package com.zutalor.components.list
 	{			
 		private var sc:ScrollingContainer;	
 		private var lp:ListProperties;
-		private var viewLoader:ViewLoader;
+		private var viewCreator:ViewCreator;
 		public var itemRenderer:IListItemRenderer;
 		
 		public function List(name:String)
@@ -40,9 +41,9 @@ package com.zutalor.components.list
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
 			super.render(viewItemProperties);
-			viewLoader = new ViewLoader(this);
+			viewCreator = new ViewCreator(this);
 			lp = presets.getPropsByName(vip.presetId);
-			viewLoader.load(lp.listView, null, populateList);
+			viewCreator.create(lp.listView, null, populateList);
 		}
 		
 		override public function dispose():void
@@ -67,20 +68,21 @@ package com.zutalor.components.list
 			}
 			itemRenderer.render(lp, sc);
 			
-			MasterClock.callOnce(finish, 200);
-			
-			function finish():void
-			{
-				addChild(sc);
-				sc.autoArrangeChildren( { padding:0, orientation:lp.orientation } );
-				sc.cacheAsBitmap = true;
-				sc.scrollController.width = lp.panAreaWidth;
-				sc.scrollController.height = lp.panAreaHeight;
-				sc.scrollController.quantizeHPosition = lp.quantizeHPosition;
-				sc.scrollController.quantizeVPosition = lp.quantizeVPosition;
-				sc.scrollController.contentChanged();
-				sc.scrollController.addEventListener(UIEvent.TAP, onTap);
-			}
+			MasterClock.callOnce(finish,1000);
+		}	
+
+		private function finish():void
+		{
+			addChild(sc);
+			sc.autoArrangeChildren( { padding:0, orientation:lp.orientation } );
+			sc.cacheAsBitmap = true;
+			sc.scrollController.width = lp.panAreaWidth;
+			sc.scrollController.height = lp.panAreaHeight;
+			sc.scrollController.quantizeHPosition = lp.quantizeHPosition;
+			sc.scrollController.quantizeVPosition = lp.quantizeVPosition;
+			sc.scrollController.contentChanged();
+			sc.scrollController.addEventListener(UIEvent.TAP, onTap);
+			trace(this.visible, sc.visible, this.parent.width, this.parent.visible, this.alpha, sc.width);
 		}
 		
 		private function onTap(e:Event):void

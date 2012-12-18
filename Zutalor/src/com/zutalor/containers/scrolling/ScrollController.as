@@ -21,7 +21,8 @@ package com.zutalor.containers.scrolling
 		public var positionEaseSeconds:Number = .5;
 		public var resetEaseSeconds:Number = .75;
 		public var slipFactor:Number = .3;
-		public var edgeElastisity:Number = .8;
+		public var edgeElastisityH:Number = .8;
+		public var edgeElastisityV:Number = 0.5;
 		public var quantizeHPosition:Boolean;
 		public var quantizeVPosition:Boolean;
 		
@@ -43,6 +44,7 @@ package com.zutalor.containers.scrolling
 		{
 			scrollRect.width = n;
 			sc.scrollRect = scrollRect;
+			trace(scrollRect.width);
 		}
 		
 		public function set height(n:Number):void
@@ -58,8 +60,8 @@ package com.zutalor.containers.scrolling
 						
 			r = FullBounds.get(sc);
 			listItem = sc.getChildAt(0) as ContainerObject;
-			setScrollProperties(spX, r.width, scrollRect.width, listItem.width, quantizeHPosition);
-			setScrollProperties(spY, r.height, scrollRect.height, listItem.height, quantizeVPosition);	
+			setScrollProperties(spX, r.width, scrollRect.width, listItem.width, quantizeHPosition, edgeElastisityH);
+			setScrollProperties(spY, r.height, scrollRect.height, listItem.height, quantizeVPosition, edgeElastisityV);	
 		}
 	
 		public function get scrollX():Number
@@ -109,19 +111,19 @@ package com.zutalor.containers.scrolling
 		
 		protected function init(e:Event):void
 		{
-			tweenObject = new Object();
 			scrollRect = new Rectangle();
+			tweenObject = new Object();
 			spX = new ScrollProperties;
 			spY = new ScrollProperties;
-			spX.setCurPos = function(n:Number):void { scrollX = n } 
-			spX.getCurPos = function():Number { return scrollX }
-			spY.setCurPos = function(n:Number):void { scrollY = n } 
-			spY.getCurPos = function():Number { return scrollY }
+			spX.setCurPos = function(n:Number):void { scrollX = n; } 
+			spX.getCurPos = function():Number { return scrollX; }
+			spY.setCurPos = function(n:Number):void { scrollY = n; } 
+			spY.getCurPos = function():Number { return scrollY; }
 			addListeners();
 		}
 		
 		protected function setScrollProperties(sp:ScrollProperties, 
-							fullBoundsSize:int, scrollSize:int, itemSize:int, quantizePosition:Boolean):void
+							fullBoundsSize:int, scrollSize:int, itemSize:int, quantizePosition:Boolean, edgeElastisity:Number):void
 		{
 			if (fullBoundsSize >= scrollSize)
 			{
@@ -200,12 +202,14 @@ package com.zutalor.containers.scrolling
 		protected function calcSlip(sp:ScrollProperties, scrollToPos:Number):Number
 		{
 			var overScroll:int;
-			
+
 			if (scrollToPos < 0)
 				sp.overScroll = Math.abs(scrollToPos);
-			else if (scrollToPos > sp.fullBoundsSize)
-				sp.overScroll = sp.fullBoundsSize - scrollToPos;
 
+			else if (scrollToPos + sp.scrollSize > sp.fullBoundsSize)
+			{
+				sp.overScroll = sp.fullBoundsSize - sp.scrollSize - scrollToPos;
+			}
 			overScroll += sp.overScroll * slipFactor;
 			sp.overScroll = overScroll;
 			return overScroll;

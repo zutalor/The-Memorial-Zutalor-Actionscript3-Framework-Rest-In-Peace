@@ -10,7 +10,7 @@ package com.zutalor.components.media.flipbook
 	import com.zutalor.utils.DisplayUtils;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.MathG;
-	import com.zutalor.view.rendering.ViewLoader;
+	import com.zutalor.view.rendering.ViewCreator;
 	import flash.display.Bitmap;
 	import flash.display.Loader;
 	import flash.display.Shape;
@@ -45,7 +45,7 @@ package com.zutalor.components.media.flipbook
 		private var _buttonsInitialized:Boolean;
 		private var _buttonsViewId:String;
 		private var _buttonsContainer:String;
-		private var _buttonsLoader:ViewLoader;
+		private var _buttonsLoader:ViewCreator;
 		private var _backgroundColor:uint;
 		private var _buttons:ViewContainer;
 		
@@ -150,7 +150,7 @@ package com.zutalor.components.media.flipbook
 		
 		private function initButtons(buttonsViewId:String):void
 		{
-			_buttonsLoader = new ViewLoader();
+			_buttonsLoader = new ViewCreator();
 			_buttonsLoader.load(buttonsViewId);
 			_buttons = _buttonsLoader.container;
 			_buttons.addEventListener(UIEvent.PLAY_TOGGLE, onButtonClick);				

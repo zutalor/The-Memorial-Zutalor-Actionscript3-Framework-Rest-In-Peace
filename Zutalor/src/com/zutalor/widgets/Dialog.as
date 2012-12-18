@@ -5,7 +5,7 @@ package com.zutalor.widgets
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.controller.ViewControllerRegistry;
-	import com.zutalor.view.rendering.ViewLoader;
+	import com.zutalor.view.rendering.ViewCreator;
 	import flash.display.Sprite;
 	/**
 	 * ...
@@ -34,7 +34,7 @@ package com.zutalor.widgets
 			
 		public static function show(type:String, tMessage:String, callBack:Function = null, percentage:Number = 0):void
 		{	
-			var viewLoader:ViewLoader;
+			var viewCreator:ViewCreator;
 			
 			_callback = callBack;
 		
@@ -43,8 +43,8 @@ package com.zutalor.widgets
 				if (!_vc)
 				{
 					Plugins.callMethod("dialogController", "setOnSelectionCallback", onSelection);
-					viewLoader = new ViewLoader();
-					viewLoader.load("dialog", null, onViewLoaded);
+					viewCreator = new ViewCreator();
+					viewCreator.create("dialog", null, onViewLoaded);
 					
 					function onViewLoaded():void
 					{
