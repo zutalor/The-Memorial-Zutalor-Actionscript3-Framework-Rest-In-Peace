@@ -1,10 +1,7 @@
 ﻿package com.zutalor.view.utils 
 {
-	import com.greensock.easing.Quart;
-	import com.zutalor.containers.scrolling.ScrollingContainer;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.properties.ApplicationProperties;
-	import com.zutalor.properties.ScrollProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.utils.Scale;
@@ -150,21 +147,5 @@
 			}
 			vp.container.contentChanged();				
 		}
-		
-		public function updateContainerScrollPosition(scrollPreset:String):void
-		{	
-			var spp:ScrollProperties;
-			var c:*;
-			spp = pr.scrollPresets.getPropsByName(scrollPreset);
-			if (spp)
-			{
-				c = views.getPropsById(spp.viewName).container;				
-				if (c is ScrollingContainer)
-				{
-					c.tweenScrollPercentX(spp.scrollPercentX, spp.scrollTimeX, Quart.easeInOut);
-					c.tweenScrollPercentY(spp.scrollPercentY, spp.scrollTimeY, Quart.easeInOut);
-				}
-			}
-		}			
 	}
 }

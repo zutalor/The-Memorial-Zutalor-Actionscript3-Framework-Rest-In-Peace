@@ -1,16 +1,12 @@
 ﻿package com.zutalor.objectPool 
 {
 	import com.zutalor.components.graphic.Graphic;
-	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.containers.ParallaxContainer;
-	import com.zutalor.containers.scrolling.ScrollingContainer;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.fx.Transition;
-	import com.zutalor.view.properties.ViewProperties;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.properties.ViewProperties;
-	import com.zutalor.view.utils.ViewCloser;
 	import com.zutalor.view.rendering.ViewCreator;
+	import com.zutalor.view.utils.ViewCloser;
 	import flash.display.Sprite;
 	import flash.media.StageVideo;
 	import flash.text.TextField;

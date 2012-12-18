@@ -1,7 +1,7 @@
 package com.zutalor.components.list 
 {
 	import com.zutalor.components.button.Button;
-	import com.zutalor.containers.scrolling.ScrollingContainer;
+	import com.zutalor.containers.Container;
 	import com.zutalor.interfaces.IListItemRenderer;
 	import com.zutalor.translate.Translate;
 	/**
@@ -10,7 +10,7 @@ package com.zutalor.components.list
 	 */
 	public class BasicItemRenderer implements IListItemRenderer
 	{
-		public function render(lp:ListProperties, sc:ScrollingContainer):void
+		public function render(lp:ListProperties, c:Container):void
 		{
 			var data:Array;
 
@@ -21,7 +21,7 @@ package com.zutalor.components.list
 				data = lp.data.split(","); 
 			
 				for (var i:int = 0; i < data.length; i++)
-					sc.push(createListItem(data[i]));
+					c.push(createListItem(data[i]));
 			}
 			
 			function createListItem(text:String):Button

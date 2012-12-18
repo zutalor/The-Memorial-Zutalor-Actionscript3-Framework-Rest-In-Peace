@@ -1,23 +1,23 @@
-package com.zutalor.containers.scrolling 
+package com.zutalor.drag 
 {
 	/**
 	 * ...
 	 * @author Geoff
 	 */
-	public class ScrollProperties 
+	public class DragProperties 
 	{
 		public var setCurPos:Function;
 		public var getCurPos:Function;
-		public var scrollingEnabled:Boolean;
+		public var dragingEnabled:Boolean;
 		public var downPos:int;
 		public var lastPos:int;
 		public var velocity:Number;
-		public var scrollSize:int;
+		public var dragSize:int;
 		public var itemSize:int;
 		public var itemsPerPage:int;
 		public var quantizePosition:Boolean;		
-		public var overScroll:int;
-		public var atScrollLimit:Boolean;
+		public var overDragLimit:int;
+		public var atDragLimit:Boolean;
 		public var elasticMinPos:int;
 		public var elasticMaxPos:int;
 		public var fullBoundsSize:int;

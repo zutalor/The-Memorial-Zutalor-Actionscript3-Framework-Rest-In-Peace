@@ -253,7 +253,6 @@
 		
 		private function stateChangeComplete():void
 		{
-			vu.updateContainerScrollPosition(appStateProps.scrollPreset);
 			appStateProps = null;
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
@@ -264,7 +263,6 @@
 			{
 				_curViewProps = vpm.getPropsById(curContainerLoading);
 				curContainerLoading = "";	
-				vu.updateContainerScrollPosition(appStateProps.scrollPreset);
 				dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}

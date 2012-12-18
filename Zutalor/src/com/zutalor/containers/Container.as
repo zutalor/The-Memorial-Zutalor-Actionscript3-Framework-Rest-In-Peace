@@ -2,7 +2,6 @@
 {
 	import com.gskinner.utils.IDisposable;
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.containers.scrolling.ScrollController;
 	import com.zutalor.containers.utils.Arranger;
 	import com.zutalor.containers.utils.ObjectRemover;
 	import com.zutalor.utils.Scale;

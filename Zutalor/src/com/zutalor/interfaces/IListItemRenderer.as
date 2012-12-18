@@ -1,7 +1,7 @@
 package com.zutalor.interfaces 
 {
 	import com.zutalor.components.list.ListProperties;
-	import com.zutalor.containers.scrolling.ScrollingContainer;
+	import com.zutalor.containers.Container;
 	
 	/**
 	 * ...
@@ -9,7 +9,7 @@ package com.zutalor.interfaces
 	 */
 	public interface IListItemRenderer 
 	{
-		function render(lp:ListProperties, sc:ScrollingContainer):void
+		function render(lp:ListProperties, c:Container):void
 	}
 	
 }
