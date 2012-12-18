@@ -43,7 +43,7 @@ package com.zutalor.scroll
 			init();
 		}
 		
-		public function initialize(fullBoundsWidth:int, fullBoundsHeight:int, scrollAreaWidth:int, scrollAreaHeight:int, itemHeight:int = 1, itemWidth:int = 1):void
+		public function initialize(fullBoundsWidth:int, fullBoundsHeight:int, scrollAreaWidth:int, scrollAreaHeight:int, itemWidth:int, itemHeight:int):void
 		{
 			setScrollProperties(spX, fullBoundsWidth, scrollAreaWidth, itemWidth, quantizeHPosition, edgeElastisityH);
 			setScrollProperties(spY, fullBoundsHeight, scrollAreaHeight, itemHeight, quantizeVPosition, edgeElastisityV);	
@@ -114,7 +114,7 @@ package com.zutalor.scroll
 			{
 				sp.scrollingEnabled = true;
 				sp.elasticMinPos = scrollSize * edgeElastisity * -1;
-				sp.elasticMaxPos = fullBoundsSize - (scrollSize * (1 - edgeElastisity));
+				sp.elasticMaxPos = fullBoundsSize - (scrollSize * (1  - edgeElastisity));
 				sp.fullBoundsSize = fullBoundsSize;
 				sp.scrollSize = scrollSize;
 				sp.itemSize = itemSize;
@@ -147,7 +147,6 @@ package com.zutalor.scroll
 			TweenMax.killTweensOf(scrollPoint);
 			spX.downPos = co.mouseX;
 			spY.downPos = co.mouseY;
-			objectScrolling = me.target;
 			co.addEventListener(Event.ENTER_FRAME, measureVelocity);
 			StageRef.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMove);	
 		}
@@ -169,6 +168,7 @@ package com.zutalor.scroll
 			var offset:Number;
 			
 			offset = mousePos - sp.downPos;
+
 			scrollToPos = sp.getCurPos() - offset;
 			
 			if (scrollToPos + sp.overScrollLimit > sp.elasticMaxPos)
@@ -191,7 +191,7 @@ package com.zutalor.scroll
 		
 		protected function calcSlip(sp:ScrollProperties, scrollToPos:Number):Number
 		{
-			var overScrollLimit:int;
+			var scrollSlip:int;
 
 			if (scrollToPos < 0)
 				sp.overScrollLimit = Math.abs(scrollToPos);
@@ -200,11 +200,12 @@ package com.zutalor.scroll
 			{
 				sp.overScrollLimit = sp.fullBoundsSize - sp.scrollSize - scrollToPos;
 			}
-			overScrollLimit += sp.overScrollLimit * slipFactor;
-			sp.overScrollLimit = overScrollLimit;
-			return overScrollLimit;
+			scrollSlip += sp.overScrollLimit * slipFactor;
+			sp.overScrollLimit = scrollSlip;
+			return scrollSlip;
 		}
-			
+		
+				
 		protected function measureVelocity(e:Event):void
 		{
 			spX.velocity = StageRef.stage.mouseX - spX.lastPos; 
@@ -228,7 +229,7 @@ package com.zutalor.scroll
 		
 		protected function onTweenUpdate():void
 		{
-			onPositionUpdate(scrollPoint, objectScrolling);
+			onPositionUpdate(scrollPoint);
 		}
 		
 		protected function adjustPosition():void

@@ -28,7 +28,8 @@ package com.zutalor.scroll
 		{
 			if (velocity < 0)
 				dir = -1;
-			else if (velocity)
+			//else if (velocity)
+			else
 				dir = 1;	
 				
 			return dir;	
