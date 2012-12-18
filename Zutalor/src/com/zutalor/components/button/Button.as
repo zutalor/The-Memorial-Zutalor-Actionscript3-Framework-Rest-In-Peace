@@ -72,15 +72,17 @@
 			buttonStates = [_up, _over, _down, _disabled];
 			_buttonLabels = [new Label(name), new Label(name), new Label(name), new Label(name)];
 			
-			if (!_bp.width) 
-			{
-				_bp.width = int(vip.width);
-				_bp.height = int(vip.height);	
-			}
+			if (vip.width)
+				width = int(vip.width);
+			else
+				width = _bp.width;
+
+			if (vip.height)
+				height = int(vip.height);
+			else
+				height = _bp.height;
 				
 			vip.textAttributes = _textAttributes[i];
-			vip.width = String(width);
-			vip.height = String(height);
 			
 			for (var i:int = 0; i < 4; i++)
 			{
@@ -103,7 +105,7 @@
 					label.value = text;
 					label.width = this.width;
 					label.height = this.height;
-					aligner.alignObject(label, this.width, this.height, _bp.align, _bp.hPad, _bp.vPad);
+					aligner.alignObject(label, width, height, _bp.align, _bp.hPad, _bp.vPad);
 				}
 			}
 			name = text;

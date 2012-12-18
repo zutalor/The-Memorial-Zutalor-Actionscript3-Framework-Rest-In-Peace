@@ -45,7 +45,43 @@
 			vp = ViewController.presets.getPropsById(viewId);		
 			
 			vp.container = c = ObjectPool.getViewContainer(vp);
+			
+			if (!c.viewController)
+				c.viewController = new ViewController();
+			
+			if (_parent)
+				_parent.addChild(vp.container);
+			else
+				StageRef.stage.addChild(vp.container);		
 		
+			c.viewController.load(c, viewId, appState, viewCreateComplete);					
+		}	
+		
+		protected function viewCreateComplete():void
+		{
+			var vt:ViewTransition;	
+			
+
+			if (!vp.width  || !vp.height)
+			{
+				vp.width = vp.container.width;
+				vp.height = vp.container.height;
+			}	
+			
+			applySettings();
+			
+			if (!vp.transitionPreset)
+				vp.transitionPreset = "fade";
+			
+			vt = new ViewTransition();
+			vt.render(vp, TransitionTypes.IN);
+			if (_onComplete != null)
+				_onComplete();
+		}
+		
+		private function applySettings():void
+		{
+			
 			c.x = vp.x;
 			c.y = vp.y;
 			c.rotation = vp.rotation;
@@ -58,71 +94,34 @@
 				c.scaleX = c.scaleY = vp.scale;
 				c.scaleY = c.scaleY = vp.scale;
 			}
-								
-			if (vp.width)
-				c.width = vp.width;
-				
-			if (vp.height)
-				c.height = vp.height;
-
+			
 			if (vp.z)
 				c.z = vp.z
-			
-			if (vp.rotX)
-				c.rotationX = vp.rotX;
 
+			if (vp.rotX)	
+				c.rotationX = vp.rotX;
 			if (vp.rotY)
-				c.rotationY = vp.rotY;
-						
+				c.rotationY = vp.rotY;	
 			if (vp.rotZ)
 				c.rotationZ = vp.rotZ;
-			
+				
 			c.vx = vp.vx;
 			c.vy = vp.vy;
 			
 			if (vp.vz)
 				c.vz = vp.vz;
 			
-			vp.container.posOffsetX = vp.hPad;
-			vp.container.posOffsetY = vp.vPad;
+			c.posOffsetX = vp.hPad;
+			c.posOffsetY = vp.vPad;
 			
 			if (vp.alpha)
-				vp.container.alpha = vp.alpha;
+				c.alpha = vp.alpha;
 			
 			if (vp.filterPreset)
 			{
 				var filters:Filters = new Filters();
-				filters.add(vp.container, vp.filterPreset);
+				filters.add(c, vp.filterPreset);
 			}
-					
-			if (!c.viewController)
-				c.viewController = new ViewController();
-			
-			if (_parent)
-				_parent.addChild(vp.container);
-			else
-				StageRef.stage.addChild(vp.container);		
-						
-			c.viewController.load(c, viewId, appState, viewCreateComplete);					
-		}	
-		
-		protected function viewCreateComplete():void
-		{
-			var vt:ViewTransition;	
-			
-			if (!vp.width  || !vp.height)
-			{
-				vp.width = vp.container.width;
-				vp.height = vp.container.height;
-			}	
-			
-			if (!vp.transitionPreset)
-				vp.transitionPreset = "fade";
-			
-			vt = new ViewTransition();
-			vt.render(vp, TransitionTypes.IN);
-			if (_onComplete != null)
-				_onComplete();
 		}
 	}
 }

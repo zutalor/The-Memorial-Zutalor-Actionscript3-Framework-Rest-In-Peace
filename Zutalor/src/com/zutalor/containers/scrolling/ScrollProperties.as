@@ -21,7 +21,6 @@ package com.zutalor.containers.scrolling
 		public var elasticMinPos:int;
 		public var elasticMaxPos:int;
 		public var fullBoundsSize:int;
-
 		
 		private static var dir:int;
 		

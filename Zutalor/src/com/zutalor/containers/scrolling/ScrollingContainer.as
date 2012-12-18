@@ -14,5 +14,12 @@ package com.zutalor.containers.scrolling
 			super(name);
 			scrollController = new ScrollController(this);
 		}
+		
+		override public function dispose():void
+		{
+			super.dispose();
+			scrollController.dispose();
+			scrollController = null;
+		}
 	}
 }

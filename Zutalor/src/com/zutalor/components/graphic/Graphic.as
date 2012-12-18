@@ -230,8 +230,10 @@ package com.zutalor.components.graphic
 					{
 						coords.push(0);
 						coords.push(0);
-					}	
+					}							
 					item.graphics.drawRoundRect(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+					if (!gri.scale9Data)
+						item.scale9Grid = createScale9Grid(coords);
 					break;
 				case Graphic.ELIPSE :
 					item.graphics.drawEllipse(coords[0], coords[1], coords[2], coords[3]);
@@ -258,6 +260,21 @@ package com.zutalor.components.graphic
 					break;
 			}
 			return item;
+		}
+		
+		private function createScale9Grid(coords:Vector.<Number>):Rectangle
+		{
+			var adjustWidth:Number;
+			var adjustHeight:Number;
+			var width:Number;
+			var height:Number;
+			
+			adjustWidth = coords[2] * .2;
+			adjustHeight = coords[3] * .2;
+			width = coords[2];
+			height = coords[3];
+		
+			return new Rectangle(adjustWidth, adjustHeight, width - (adjustWidth * 2), height - (adjustHeight * 2));
 		}
 		
 		private function graphic(gri:GraphicItemProperties):ContainerObject

@@ -31,20 +31,20 @@
 		public var hPad:int;
 		public var vPad:int;
 		public var align:String;
-		public var x:Number;
-		public var y:Number;
-		public var z:Number;
-		public var vx:Number;
-		public var vy:Number;
-		public var vz:Number;
-		public var rotation:Number;
-		public var rotX:Number;
-		public var rotY:Number;
-		public var rotZ:Number;
-		public var rotVx:Number;
-		public var rotVy:Number;
-		public var gravity:Number;
-		public var scale:Number
+		public var x:Number = 0;
+		public var y:Number = 0;
+		public var z:Number = 0;
+		public var vx:Number = 0;
+		public var vy:Number = 0;
+		public var vz:Number = 0;
+		public var rotation:Number = 0;
+		public var rotX:Number = 0;
+		public var rotY:Number = 0;
+		public var rotZ:Number = 0;
+		public var rotVx:Number = 0;
+		public var rotVy:Number = 0;
+		public var gravity:Number = 0;
+		public var scale:Number = 0
 		public var alpha:Number = 1;
 		public var blendMode:String;	
 		public var transitionPreset:String;

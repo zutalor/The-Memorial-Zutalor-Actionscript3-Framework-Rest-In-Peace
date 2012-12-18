@@ -31,6 +31,7 @@ package com.zutalor.containers.scrolling
 		private var spX:ScrollProperties;
 		private var spY:ScrollProperties;
 		private var tweenObject:Object;
+		private var mouseIsDown:Boolean;
 		
 		public static const FORWARD:int = 1;
 		
@@ -44,7 +45,6 @@ package com.zutalor.containers.scrolling
 		{
 			scrollRect.width = n;
 			sc.scrollRect = scrollRect;
-			trace(scrollRect.width);
 		}
 		
 		public function set height(n:Number):void
@@ -125,7 +125,7 @@ package com.zutalor.containers.scrolling
 		protected function setScrollProperties(sp:ScrollProperties, 
 							fullBoundsSize:int, scrollSize:int, itemSize:int, quantizePosition:Boolean, edgeElastisity:Number):void
 		{
-			if (fullBoundsSize >= scrollSize)
+			if (fullBoundsSize > scrollSize)
 			{
 				sp.scrollingEnabled = true;
 				sp.elasticMinPos = scrollSize * edgeElastisity * -1;
@@ -161,6 +161,7 @@ package com.zutalor.containers.scrolling
 		protected function onDown(me:Event):void
 		{
 			TweenMax.killTweensOf(scrollRect);
+			mouseIsDown = true;
 			spX.downPos = sc.mouseX;
 			spY.downPos = sc.mouseY;
 			sc.addEventListener(Event.ENTER_FRAME, measureVelocity);
@@ -186,7 +187,7 @@ package com.zutalor.containers.scrolling
 			offset = mousePos - sp.downPos;
 			scrollToPos = sp.getCurPos() - offset;
 			
-			if (scrollToPos - sp.overScroll < sp.elasticMaxPos && scrollToPos + sp.overScroll > sp.elasticMinPos)
+			if (scrollToPos + sp.overScroll < sp.elasticMaxPos && scrollToPos + sp.overScroll > sp.elasticMinPos)
 			{	
 				sp.atScrollLimit = false;
 				scrollToPos += calcSlip(sp, scrollToPos);
@@ -225,7 +226,8 @@ package com.zutalor.containers.scrolling
 		}
 				
 		protected function onUp(me:Event = null):void
-		{			
+		{	
+			mouseIsDown = false;
 			sc.removeEventListener(Event.ENTER_FRAME, measureVelocity);
 			StageRef.stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMove);
 			spX.overScroll = spY.overScroll = 0;
@@ -250,11 +252,11 @@ package com.zutalor.containers.scrolling
 				tweenObject.y = getUpdatedPosition(spY);
 				tweenObject.ease = ease;
 				tweenObject.onUpdate = onTween;
-				tweenObject.onComplete = resetPositionIfOverScrollBounds;
+				tweenObject.onComplete = resetPositionIfStretchingEdge;
 				doTween(positionEaseSeconds);
 			}
 			else
-				resetPositionIfOverScrollBounds();
+				resetPositionIfStretchingEdge();
 		}
 		
 		protected function getUpdatedPosition(sp:ScrollProperties):int
@@ -267,7 +269,10 @@ package com.zutalor.containers.scrolling
 			else if (!sp.quantizePosition)
 				updatedPos = sp.getCurPos() - sp.velocity;
 			else	
-			{
+			{				
+				if (mouseIsDown)
+					return sp.getCurPos(); //TODO THis isn't working
+					
 				dir = sp.direction * -1;
 				updatedPos = sp.getCurPos() - sp.velocity - (sp.itemSize * 0.5  * sp.direction * dir);
 				updatedPos += updatedPos / sp.itemSize;
@@ -276,7 +281,7 @@ package com.zutalor.containers.scrolling
 			return updatedPos;
 		}
 		
-		protected function resetPositionIfOverScrollBounds():void
+		protected function resetPositionIfStretchingEdge():void
 		{
 			var oldX:int;
 			var oldY:int;
@@ -284,8 +289,8 @@ package com.zutalor.containers.scrolling
 			oldX = spX.getCurPos();
 			oldY = spY.getCurPos();
 			
-			tweenObject.x = getResetPosition(spX);
-			tweenObject.y = getResetPosition(spY);
+			tweenObject.x = getResetPositionIfStretchingEdge(spX);
+			tweenObject.y = getResetPositionIfStretchingEdge(spY);
 			
 			if (tweenObject.x != oldX || tweenObject.y != oldY)
 			{		
@@ -297,7 +302,7 @@ package com.zutalor.containers.scrolling
 			}
 		}			
 		
-		protected function getResetPosition(sp:ScrollProperties):Number
+		protected function getResetPositionIfStretchingEdge(sp:ScrollProperties):Number
 		{
 			var resetPos:Number;
 			var curPos:Number;

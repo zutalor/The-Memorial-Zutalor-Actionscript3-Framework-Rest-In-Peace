@@ -34,13 +34,15 @@ package com.zutalor.view.rendering
 			viewItem = new ViewItemClass(vip.name);
 			if (!viewItem.isInvisible) 
 				container.push(viewItem);
+				
 			viewItem.name = vip.name;
 			viewItem.render(vip);
+				
 			filterApplier(vip, viewItem);
 
 			if (positioner != null)
 				positioner(vip);
-			
+
 			if (vip.tabIndex)
 			{
 				viewItem.tabEnabled = true;

@@ -68,7 +68,7 @@ package com.zutalor.components.list
 			}
 			itemRenderer.render(lp, sc);
 			
-			MasterClock.callOnce(finish,1000);
+			MasterClock.callOnce(finish, 200);
 		}	
 
 		private function finish():void
@@ -82,7 +82,6 @@ package com.zutalor.components.list
 			sc.scrollController.quantizeVPosition = lp.quantizeVPosition;
 			sc.scrollController.contentChanged();
 			sc.scrollController.addEventListener(UIEvent.TAP, onTap);
-			trace(this.visible, sc.visible, this.parent.width, this.parent.visible, this.alpha, sc.width);
 		}
 		
 		private function onTap(e:Event):void
