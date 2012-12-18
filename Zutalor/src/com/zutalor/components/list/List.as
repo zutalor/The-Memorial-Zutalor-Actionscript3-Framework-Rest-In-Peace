@@ -92,7 +92,7 @@ package com.zutalor.components.list
 			_scrollRect.width = lp.scrollAreaWidth;
 			_scrollRect.height = lp.scrollAreaHeight;
 			scrollController.slipFactor = .3;
-			scrollController.onPositionUpdate(onPositionUpdate);
+			scrollController.onPositionUpdate = onPositionUpdate;
 			c.scrollRect = _scrollRect;
 			child = c.getChildAt(0) as ContainerObject;
 			r = FullBounds.get(c);
