@@ -1,6 +1,7 @@
 package com.zutalor.view.rendering
 {
 	import com.zutalor.components.base.Component;
+	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.Container;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.translate.Translate;
@@ -13,7 +14,7 @@ package com.zutalor.view.rendering
 		private var positioner:Function;
 		private var container:Container;
 
-		public function ViewRenderer(c:Container, onItemRendered:Function, filterApplier:Function, positioner:Function = null) 
+		public function ViewRenderer(c:Container, filterApplier:Function, positioner:Function = null) 
 		{	
 			this.onItemRendered = onItemRendered;
 			this.filterApplier = filterApplier;
@@ -21,7 +22,7 @@ package com.zutalor.view.rendering
 			this.container = c;
 		}
 		
-		public function renderItem(vip:ViewItemProperties):void
+		public function renderItem(vip:ViewItemProperties):ContainerObject
 		{
 			var viewItem:Component;
 			var ViewItemClass:Class;
@@ -49,7 +50,7 @@ package com.zutalor.view.rendering
 				viewItem.tabIndex = vip.tabIndex;
 				viewItem.focusRect = true;
 			}	
-			onItemRendered();
+			return viewItem;
 		}
 	}
 }

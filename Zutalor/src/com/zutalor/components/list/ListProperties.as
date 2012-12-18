@@ -12,8 +12,8 @@
 	{	
 		public var listView:String;
 		public var itemPresetId:String;
-		public var panAreaWidth:Number;
-		public var panAreaHeight:Number;
+		public var scrollAreaWidth:Number;
+		public var scrollAreaHeight:Number;
 		public var orientation:String;
 		public var align:String;
 		public var itemWidth:Number;

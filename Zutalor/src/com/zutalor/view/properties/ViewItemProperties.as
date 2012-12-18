@@ -64,6 +64,7 @@
 		public var validate:String;
 		public var required:Boolean;
 		public var tError:String;
+		public var draggable:Boolean;
 
 		public var onTap:String;
 		public var tapTarget:String;

@@ -3,12 +3,12 @@ package com.zutalor.components.list
 	import com.zutalor.components.base.Component;
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.Container;
-	import com.zutalor.drag.DragController;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.interfaces.IListItemRenderer;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.scroll.ScrollController;
 	import com.zutalor.utils.FullBounds;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.view.properties.ViewItemProperties;
@@ -26,7 +26,7 @@ package com.zutalor.components.list
 		private var lp:ListProperties;
 		private var viewCreator:ViewCreator;
 		private var _scrollRect:Rectangle;
-		private var dragController:DragController;
+		private var scrollController:ScrollController;
 		
 		public var itemRenderer:IListItemRenderer;
 		
@@ -48,7 +48,6 @@ package com.zutalor.components.list
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
 			super.render(viewItemProperties);
-			
 			_scrollRect = new Rectangle();
 			viewCreator = new ViewCreator(this);
 			lp = presets.getPropsByName(vip.presetId);
@@ -67,10 +66,9 @@ package com.zutalor.components.list
 		private function populateList():void
 		{
 			var itemRendererClass:Class;
-			
 			c = new Container(name);	
-			dragController = new DragController(c);
-			
+			scrollController = new ScrollController(c);
+
 			if (itemRenderer == null)
 			{
 				itemRendererClass = Plugins.getClass(lp.itemRenderer);
@@ -83,19 +81,26 @@ package com.zutalor.components.list
 
 		private function finish():void
 		{
+			var child:ContainerObject;
+			var r:Rectangle;
+			
 			addChild(c);
 			c.autoArrangeChildren( { padding:0, orientation:lp.orientation } );
 			c.cacheAsBitmap = true;		
-			dragController.quantizeHPosition = lp.quantizeHPosition;
-			dragController.quantizeVPosition = lp.quantizeVPosition;
-			dragController.width = _scrollRect.width = lp.panAreaWidth;
-			dragController.height = _scrollRect.height = lp.panAreaHeight;
-			c.scrollRect= _scrollRect;
-			dragController.contentChanged(c.getChildAt(0) as ContainerObject, FullBounds.get(c), onPositionUpdate);
-			dragController.addEventListener(UIEvent.TAP, onTap);
+			scrollController.quantizeHPosition = lp.quantizeHPosition;
+			scrollController.quantizeVPosition = lp.quantizeVPosition;
+			_scrollRect.width = lp.scrollAreaWidth;
+			_scrollRect.height = lp.scrollAreaHeight;
+			scrollController.slipFactor = .3;
+			scrollController.onPositionUpdate(onPositionUpdate);
+			c.scrollRect = _scrollRect;
+			child = c.getChildAt(0) as ContainerObject;
+			r = FullBounds.get(c);
+			scrollController.initialize(r.width, r.height, lp.scrollAreaWidth, lp.scrollAreaHeight, child.width, child.height);
+			scrollController.addEventListener(UIEvent.TAP, onTap);
 		}
 		
-		protected function onPositionUpdate(p:Point):void
+		protected function onPositionUpdate(p:Point, o:*):void
 		{
 			_scrollRect.x = p.x;
 			_scrollRect.y = p.y;
