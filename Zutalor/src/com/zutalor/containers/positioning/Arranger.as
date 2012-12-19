@@ -1,4 +1,4 @@
-package com.zutalor.containers.utils
+package com.zutalor.containers.positioning
 {
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.utils.Aligner;

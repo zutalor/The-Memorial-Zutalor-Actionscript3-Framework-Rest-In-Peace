@@ -1,26 +1,32 @@
-package com.zutalor.containers.scrolling 
+package com.zutalor.containers.positioning.base 
 {
 	/**
 	 * ...
 	 * @author Geoff
 	 */
-	public class ScrollProperties 
+	public class PositionProperties 
 	{
 		public var setCurPos:Function;
 		public var getCurPos:Function;
-		public var scrollingEnabled:Boolean;
+		public var positioningEnabled:Boolean;
 		public var downPos:int;
 		public var lastPos:int;
+		public var targetPos:int;
+		public var offset:int;
 		public var velocity:Number;
-		public var scrollSize:int;
+		public var ViewportSize:int;
 		public var itemSize:int;
-		public var itemsPerPage:int;
+		
+		
 		public var quantizePosition:Boolean;		
-		public var overScrollLimit:int;
-		public var atScrollLimit:Boolean;
+		public var overViewportEdge:int;
+		public var atViewportEdge:Boolean;
 		public var elasticMinPos:int;
 		public var elasticMaxPos:int;
 		public var fullBoundsSize:int;
+		
+		public var reverseDirection:Boolean;
+		public var itemsPerPage:int;
 		
 		private static var dir:int;
 		
@@ -30,6 +36,9 @@ package com.zutalor.containers.scrolling
 				dir = -1;
 			else if (velocity)
 				dir = 1;	
+				
+			if (reverseDirection)
+				dir *= -1;
 				
 			return dir;	
 		}		

@@ -1,4 +1,4 @@
-package com.zutalor.containers.scrolling 
+package com.zutalor.containers 
 {
 	import com.greensock.easing.Quad;
 	import com.greensock.easing.Quart;

@@ -4,7 +4,6 @@
 	import com.zutalor.properties.DropShadowFilterProperties;
 	import com.zutalor.properties.GlowFilterProperties;
 	import com.zutalor.properties.RippleProperties;
-	import com.zutalor.properties.ScrollProperties;
 	import com.zutalor.properties.ToolTipProperties;
 	import com.zutalor.properties.UIProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
@@ -14,7 +13,6 @@
 	 */
 	public class Presets
 	{
-		public static var scrollPresets:PropertyManager;
 		public static var uiPresets:PropertyManager;
 		public static var toolTipPresets:PropertyManager;
 		public static var shadowPresets:PropertyManager;
@@ -61,8 +59,6 @@
 			
 				func( { xml:xml, nodeId:p.nodeId, childNodeId:p.childNodeId } );
 			}
-
-			scrollPresets.parseXML(xml.scrollPresets);
 			uiPresets.parseXML(xml.uiPresets);
 			toolTipPresets.parseXML(xml.toolTipPresets);
 			shadowPresets.parseXML(xml.shadowPresets);
@@ -73,7 +69,6 @@
 			
 		private static function init():void
 		{
-			scrollPresets = new PropertyManager(ScrollProperties);
 			uiPresets = new PropertyManager(UIProperties);
 			toolTipPresets = new PropertyManager(ToolTipProperties);
 			shadowPresets = new PropertyManager(DropShadowFilterProperties);

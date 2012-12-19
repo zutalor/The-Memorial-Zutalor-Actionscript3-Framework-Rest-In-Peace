@@ -1,6 +1,7 @@
-package com.zutalor.containers.scrolling 
+package com.zutalor.containers 
 {
 	import com.zutalor.containers.Container;
+	import com.zutalor.containers.positioning.Scroller;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	/**
@@ -9,17 +10,16 @@ package com.zutalor.containers.scrolling
 	 */
 	public class ScrollingContainer extends Container
 	{
-		public var scrollController:ScrollController;
-		
+		public var scroller:Scroller;
 		private var _scrollRect:Rectangle;
 		
 		public function ScrollingContainer(name:String) 
 		{
 			super(name);
 			_scrollRect = new Rectangle;
-			scrollRect = _scrollRect
-			scrollController = new ScrollController(this);
-			scrollController.onPositionUpdate = onPositionUpdate;
+			scrollRect = _scrollRect;
+
+			scroller = new Scroller(this, onPositionUpdate);
 		}
 		
 		override public function set width(n:Number):void
@@ -37,7 +37,7 @@ package com.zutalor.containers.scrolling
 		override public function dispose():void
 		{
 			super.dispose();
-			scrollController.dispose();
+			scroller.dispose();
 		}
 		
 		protected function onPositionUpdate(p:Point, o:*):void

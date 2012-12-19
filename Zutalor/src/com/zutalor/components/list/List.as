@@ -2,7 +2,7 @@ package com.zutalor.components.list
 {
 	import com.zutalor.components.base.Component;
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.containers.scrolling.ScrollingContainer;
+	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.interfaces.IListItemRenderer;
@@ -81,15 +81,15 @@ package com.zutalor.components.list
 			addChild(c);
 			c.autoArrangeChildren( { padding:0, orientation:lp.orientation } );
 			c.cacheAsBitmap = true;		
-			c.scrollController.quantizeHPosition = lp.quantizeHPosition;
-			c.scrollController.quantizeVPosition = lp.quantizeVPosition;
+			c.scroller.quantizeHPosition = lp.quantizeHPosition;
+			c.scroller.quantizeVPosition = lp.quantizeVPosition;
 			c.width = lp.scrollAreaWidth;
 			c.height = lp.scrollAreaHeight;
-			c.scrollController.slipFactor = .3;
+			c.scroller.slipFactor = .3;
 			child = c.getChildAt(0) as ContainerObject;
 			r = FullBounds.get(c);
-			c.scrollController.initialize(r.width, r.height, lp.scrollAreaWidth, lp.scrollAreaHeight, child.width, child.height);
-			c.scrollController.addEventListener(UIEvent.TAP, onTap);
+			c.scroller.initialize(r.width, r.height, lp.scrollAreaWidth, lp.scrollAreaHeight, child.width, child.height);
+			c.scroller.addEventListener(UIEvent.TAP, onTap);
 		}
 		
 		private function onTap(e:Event):void

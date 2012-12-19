@@ -6,7 +6,7 @@
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class ScrollProperties extends PropertiesBase implements IProperties
+	public class MotionProperties extends PropertiesBase implements IProperties
 	{
 		public var viewName:String;
 		public var scrollPercentX:Number;

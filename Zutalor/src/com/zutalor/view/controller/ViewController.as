@@ -4,8 +4,8 @@
 	import com.gskinner.utils.IDisposable;
 	import com.zutalor.components.base.Component;
 	import com.zutalor.containers.base.ContainerObject;
+	import com.zutalor.containers.positioning.Dragger;
 	import com.zutalor.containers.ViewContainer;
-	import com.zutalor.drag.DragMediator;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.fx.Transition;
@@ -28,6 +28,7 @@
 	import com.zutalor.widgets.Focus;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.geom.Point;
 
 	public class ViewController implements IDisposable
 	{		
@@ -50,7 +51,7 @@
 		public var itemWithFocusIndex:int;		
 		public var onStatus:Function;		
 		public var viewModelMediator:ViewModelMediator;
-		public var dragMediator:DragMediator;
+		public var dragger:Dragger;
 		
 		private static var _presets:NestedPropsManager;
 				
@@ -468,15 +469,20 @@
 				viewPopulateComplete();
 		}
 	
-		
-		// FINISH UP VIEW RENDER
-		
 		private function registerDraggableObject(co:ContainerObject):void
 		{
-			if (!dragMediator)
-				dragMediator = new DragMediator(vp.container, vp.width, vp.height);
+			if (!dragger)
+				dragger = new Dragger(vp.container, onPositionUpdate);
 			
-			dragMediator.registerObject(co);
+			dragger.initialize(vp.width, vp.height, vp.width, vp.height);
+		}
+		
+		private function onPositionUpdate(p:Point, co:*):void
+		{
+			var xOffset:Number;
+			
+			co.x  = p.x;
+			co.y  = p.y;
 		}
 		
 		private function viewPopulateComplete():void

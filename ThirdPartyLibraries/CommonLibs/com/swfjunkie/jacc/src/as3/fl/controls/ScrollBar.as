@@ -32,7 +32,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
 	 *  
-	 *  @playerversion AIR 1.0
+	 *  @playerversion AIR 1.0
+
 	 *  @productversion Flash CS3
 	 */
 	[Event(name="scroll", type="fl.events.ScrollEvent") ]
@@ -52,7 +53,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
      *  
-     *  @playerversion AIR 1.0
+     *  @playerversion AIR 1.0
+
      *  @productversion Flash CS3
      */
     [Style(name="downArrowDisabledSkin", type="Class")]
@@ -68,7 +70,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
      *  
-     *  @playerversion AIR 1.0
+     *  @playerversion AIR 1.0
+
      *  @productversion Flash CS3
      */
     [Style(name="downArrowDownSkin", type="Class")]
@@ -84,7 +87,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
      *  
-     *  @playerversion AIR 1.0
+     *  @playerversion AIR 1.0
+
      *  @productversion Flash CS3
      */
     [Style(name="downArrowOverSkin", type="Class")]
@@ -100,7 +104,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
      *  
-     *  @playerversion AIR 1.0
+     *  @playerversion AIR 1.0
+
      *  @productversion Flash CS3
      */
     [Style(name="downArrowUpSkin", type="Class")]
@@ -113,7 +118,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
      *  
-     *  @playerversion AIR 1.0
+     *  @playerversion AIR 1.0
+
      *  @productversion Flash CS3
      */
     [Style(name="thumbDisabledSkin", type="Class")]
@@ -127,7 +133,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
      *  
-     *  @playerversion AIR 1.0
+     *  @playerversion AIR 1.0
+
      *  @productversion Flash CS3
      */
     [Style(name="thumbDownSkin", type="Class")]
@@ -141,7 +148,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
      *  
-     *  @playerversion AIR 1.0
+     *  @playerversion AIR 1.0
+
      *  @productversion Flash CS3
      */
     [Style(name="thumbOverSkin", type="Class")]
@@ -155,7 +163,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
      *  
-     *  @playerversion AIR 1.0
+     *  @playerversion AIR 1.0
+
      *  @productversion Flash CS3
      */
     [Style(name="thumbUpSkin", type="Class")]
@@ -168,7 +177,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
      *  
-     *  @playerversion AIR 1.0
+     *  @playerversion AIR 1.0
+
      *  @productversion Flash CS3
      */
     [Style(name="trackDisabledSkin", type="Class")]
@@ -181,7 +191,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
      *  
-     *  @playerversion AIR 1.0
+     *  @playerversion AIR 1.0
+
      *  @productversion Flash CS3
      */
     [Style(name="trackDownSkin", type="Class")]
@@ -194,7 +205,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
      *  
-     *  @playerversion AIR 1.0
+     *  @playerversion AIR 1.0
+
      *  @productversion Flash CS3
      */
     [Style(name="trackOverSkin", type="Class")]
@@ -207,7 +219,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
      *  
-     *  @playerversion AIR 1.0
+     *  @playerversion AIR 1.0
+
      *  @productversion Flash CS3
      */
     [Style(name="trackUpSkin", type="Class")]
@@ -223,7 +236,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
      *  
-     *  @playerversion AIR 1.0
+     *  @playerversion AIR 1.0
+
      *  @productversion Flash CS3
      */
     [Style(name="upArrowDisabledSkin", type="Class")]
@@ -239,7 +253,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
      *  
-     *  @playerversion AIR 1.0
+     *  @playerversion AIR 1.0
+
      *  @productversion Flash CS3
      */
     [Style(name="upArrowDownSkin", type="Class")]
@@ -255,7 +270,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
      *  
-     *  @playerversion AIR 1.0
+     *  @playerversion AIR 1.0
+
      *  @productversion Flash CS3
      */
     [Style(name="upArrowOverSkin", type="Class")]
@@ -271,7 +287,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
      *  
-     *  @playerversion AIR 1.0
+     *  @playerversion AIR 1.0
+
      *  @productversion Flash CS3
      */
     [Style(name="upArrowUpSkin", type="Class")]
@@ -284,7 +301,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
      *  
-     *  @playerversion AIR 1.0
+     *  @playerversion AIR 1.0
+
      *  @productversion Flash CS3
      */
     [Style(name="thumbIcon", type="Class")]
@@ -297,7 +315,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
      *  
-     *  @playerversion AIR 1.0
+     *  @playerversion AIR 1.0
+
      *  @productversion Flash CS3
      */
     [Style(name="repeatDelay", type="Number", format="Time")]
@@ -310,7 +329,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
      *  
-     *  @playerversion AIR 1.0
+     *  @playerversion AIR 1.0
+
      *  @productversion Flash CS3
      */
     [Style(name="repeatInterval", type="Number", format="Time")]
@@ -335,7 +355,8 @@ package fl.controls {
      * @langversion 3.0
      * @playerversion Flash 9.0.28.0
 	 *  
-	 *  @playerversion AIR 1.0
+	 *  @playerversion AIR 1.0
+
 	 *  @productversion Flash CS3
 	 */
 	public class ScrollBar extends UIComponent {
@@ -465,7 +486,8 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
          *  
-         *  @playerversion AIR 1.0
+         *  @playerversion AIR 1.0
+
          *  @productversion Flash CS3
          */
 		public static function getStyleDefinition():Object { 
@@ -537,7 +559,8 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 *  
-		 *  @playerversion AIR 1.0
+		 *  @playerversion AIR 1.0
+
 		 *  @productversion Flash CS3
 		 */
 		public function ScrollBar() {
@@ -555,7 +578,8 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 *  
-		 *  @playerversion AIR 1.0
+		 *  @playerversion AIR 1.0
+
 		 *  @productversion Flash CS3
 		 */
 		override public function setSize(width:Number, height:Number):void {
@@ -575,7 +599,8 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 *  
-		 *  @playerversion AIR 1.0
+		 *  @playerversion AIR 1.0
+
 		 *  @productversion Flash CS3
 		 */
 		override public function get width():Number {
@@ -591,7 +616,8 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 *  
-		 *  @playerversion AIR 1.0
+		 *  @playerversion AIR 1.0
+
 		 *  @productversion Flash CS3
 		 */
 		override public function get height():Number {
@@ -608,7 +634,8 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 *  
-		 *  @playerversion AIR 1.0
+		 *  @playerversion AIR 1.0
+
 		 *  @productversion Flash CS3
 		 */
 		override public function get enabled():Boolean {
@@ -646,7 +673,8 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 *  
-		 *  @playerversion AIR 1.0
+		 *  @playerversion AIR 1.0
+
 		 *  @productversion Flash CS3
 		 */
 		public function setScrollProperties(pageSize:Number,minScrollPosition:Number,maxScrollPosition:Number,pageScrollSize:Number=0):void {
@@ -674,7 +702,8 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 *  
-		 *  @playerversion AIR 1.0
+		 *  @playerversion AIR 1.0
+
 		 *  @productversion Flash CS3
 		 */
 		public function get scrollPosition():Number { return _scrollPosition; }
@@ -706,7 +735,8 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 *  
-		 *  @playerversion AIR 1.0
+		 *  @playerversion AIR 1.0
+
 		 *  @productversion Flash CS3
 		 */
 		public function get minScrollPosition():Number {
@@ -745,7 +775,8 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 *  
-		 *  @playerversion AIR 1.0
+		 *  @playerversion AIR 1.0
+
 		 *  @productversion Flash CS3
 		 */
 		public function get maxScrollPosition():Number {
@@ -778,7 +809,8 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 *  
-		 *  @playerversion AIR 1.0
+		 *  @playerversion AIR 1.0
+
 		 *  @productversion Flash CS3
 		 */
 		public function get pageSize():Number {
@@ -811,7 +843,8 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 *  
-		 *  @playerversion AIR 1.0
+		 *  @playerversion AIR 1.0
+
 		 *  @productversion Flash CS3
 		 */
 		public function get pageScrollSize():Number {
@@ -843,7 +876,8 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 *  
-		 *  @playerversion AIR 1.0
+		 *  @playerversion AIR 1.0
+
 		 *  @productversion Flash CS3
 		 */
 		public function get lineScrollSize():Number {
@@ -872,7 +906,8 @@ package fl.controls {
          * @langversion 3.0
          * @playerversion Flash 9.0.28.0
 		 *  
-		 *  @playerversion AIR 1.0
+		 *  @playerversion AIR 1.0
+
 		 *  @productversion Flash CS3
 		 */
 		public function get direction():String {

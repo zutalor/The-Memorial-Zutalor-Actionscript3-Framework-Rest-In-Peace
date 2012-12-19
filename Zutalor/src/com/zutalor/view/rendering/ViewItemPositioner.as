@@ -5,7 +5,6 @@ package com.zutalor.view.rendering
 	import com.zutalor.containers.Container;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.properties.ScrollProperties;
 	import com.zutalor.utils.Aligner;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.view.controller.ViewController;
@@ -31,7 +30,6 @@ package com.zutalor.view.rendering
 		
 		public function positionItem(vip:ViewItemProperties):void
 		{
-			var scrollProperties:ScrollProperties;
 			var viewItem:Component;
 			var width:int;
 			var height:int;
