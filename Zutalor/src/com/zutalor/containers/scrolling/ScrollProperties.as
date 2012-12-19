@@ -1,4 +1,4 @@
-package com.zutalor.scroll 
+package com.zutalor.containers.scrolling 
 {
 	/**
 	 * ...
@@ -28,8 +28,7 @@ package com.zutalor.scroll
 		{
 			if (velocity < 0)
 				dir = -1;
-			//else if (velocity)
-			else
+			else if (velocity)
 				dir = 1;	
 				
 			return dir;	

@@ -1,4 +1,4 @@
-package com.zutalor.scroll
+package com.zutalor.containers.scrolling
 {
 	import com.greensock.easing.Quint;
 	import com.greensock.TweenMax;

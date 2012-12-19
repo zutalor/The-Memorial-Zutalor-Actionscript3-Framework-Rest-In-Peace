@@ -2,19 +2,17 @@ package com.zutalor.components.list
 {
 	import com.zutalor.components.base.Component;
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.containers.Container;
+	import com.zutalor.containers.scrolling.ScrollingContainer;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.interfaces.IListItemRenderer;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.PropertyManager;
-	import com.zutalor.scroll.ScrollController;
 	import com.zutalor.utils.FullBounds;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.view.rendering.ViewCreator;
 	import flash.events.Event;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	/**
 	 * ...
@@ -22,11 +20,9 @@ package com.zutalor.components.list
 	 */
 	public class List extends Component implements IComponent
 	{			
-		private var c:Container;	
+		private var c:ScrollingContainer;	
 		private var lp:ListProperties;
 		private var viewCreator:ViewCreator;
-		private var _scrollRect:Rectangle;
-		private var scrollController:ScrollController;
 		
 		public var itemRenderer:IListItemRenderer;
 		
@@ -48,7 +44,6 @@ package com.zutalor.components.list
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
 			super.render(viewItemProperties);
-			_scrollRect = new Rectangle();
 			viewCreator = new ViewCreator(this);
 			lp = presets.getPropsByName(vip.presetId);
 			viewCreator.create(lp.listView, null, populateList);
@@ -66,8 +61,7 @@ package com.zutalor.components.list
 		private function populateList():void
 		{
 			var itemRendererClass:Class;
-			c = new Container(name);	
-			scrollController = new ScrollController(c);
+			c = new ScrollingContainer(name);	
 
 			if (itemRenderer == null)
 			{
@@ -87,24 +81,15 @@ package com.zutalor.components.list
 			addChild(c);
 			c.autoArrangeChildren( { padding:0, orientation:lp.orientation } );
 			c.cacheAsBitmap = true;		
-			scrollController.quantizeHPosition = lp.quantizeHPosition;
-			scrollController.quantizeVPosition = lp.quantizeVPosition;
-			_scrollRect.width = lp.scrollAreaWidth;
-			_scrollRect.height = lp.scrollAreaHeight;
-			scrollController.slipFactor = .3;
-			scrollController.onPositionUpdate = onPositionUpdate;
-			c.scrollRect = _scrollRect;
+			c.scrollController.quantizeHPosition = lp.quantizeHPosition;
+			c.scrollController.quantizeVPosition = lp.quantizeVPosition;
+			c.width = lp.scrollAreaWidth;
+			c.height = lp.scrollAreaHeight;
+			c.scrollController.slipFactor = .3;
 			child = c.getChildAt(0) as ContainerObject;
 			r = FullBounds.get(c);
-			scrollController.initialize(r.width, r.height, lp.scrollAreaWidth, lp.scrollAreaHeight, child.width, child.height);
-			scrollController.addEventListener(UIEvent.TAP, onTap);
-		}
-		
-		protected function onPositionUpdate(p:Point, o:*):void
-		{
-			_scrollRect.x = p.x;
-			_scrollRect.y = p.y;
-			c.scrollRect = _scrollRect;
+			c.scrollController.initialize(r.width, r.height, lp.scrollAreaWidth, lp.scrollAreaHeight, child.width, child.height);
+			c.scrollController.addEventListener(UIEvent.TAP, onTap);
 		}
 		
 		private function onTap(e:Event):void

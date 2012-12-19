@@ -5,6 +5,7 @@
 	import com.zutalor.components.base.Component;
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.ViewContainer;
+	import com.zutalor.drag.DragMediator;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.fx.Transition;
@@ -13,7 +14,6 @@
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.NestedPropsManager;
-	import com.zutalor.scroll.DragMediator;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.mediators.ViewEventMediator;
@@ -28,8 +28,6 @@
 	import com.zutalor.widgets.Focus;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	
-	
 
 	public class ViewController implements IDisposable
 	{		
