@@ -60,7 +60,7 @@
 			if (!_presets)
 				_presets = new NestedPropsManager();
 			
-			presets.parseXML(ViewProperties, ViewItemProperties, options.xml[options.nodeId], options.childNodeId, 
+			_presets.parseXML(ViewProperties, ViewItemProperties, options.xml[options.nodeId], options.childNodeId, 
 																				options.xml[options.childNodeId]);
 		}
 		

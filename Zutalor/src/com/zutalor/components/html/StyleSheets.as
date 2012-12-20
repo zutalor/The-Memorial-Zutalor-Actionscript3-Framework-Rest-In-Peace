@@ -43,7 +43,7 @@ package com.zutalor.components.html
 				textField.width = width;
 		}
 		
-		public static function loadCss(onComplete:Function):void
+		public static function loadCss(onComplete:Function = null):void
 		{	
 			_onComplete = onComplete;
 			_numLoaded = 0;
@@ -69,7 +69,8 @@ package com.zutalor.components.html
 					{
 						loader.dispose();
 						loader = null;
-						_onComplete();
+						if (_onComplete != null)
+							_onComplete();
 					}
 				}
 				

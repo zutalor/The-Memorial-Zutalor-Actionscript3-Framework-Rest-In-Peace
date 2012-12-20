@@ -3,9 +3,9 @@ package com.zutalor.view.rendering
 	import adobe.utils.CustomActions;
 	import com.zutalor.components.base.Component;
 	import com.zutalor.containers.Container;
+	import com.zutalor.containers.positioning.Aligner;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.utils.Aligner;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.properties.ViewItemProperties;

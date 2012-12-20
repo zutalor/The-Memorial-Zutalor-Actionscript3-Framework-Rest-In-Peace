@@ -1,4 +1,4 @@
-package com.zutalor.gesture 
+package com.zutalor.utils 
 {
 	/**
 	 * ...

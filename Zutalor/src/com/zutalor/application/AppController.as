@@ -6,14 +6,15 @@
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.amfphp.Remoting;
 	import com.zutalor.color.Color;
+	import com.zutalor.components.html.StyleSheets;
 	import com.zutalor.events.AppEvent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.plugin.constants.PluginClasses;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.ApplicationProperties;
-	import com.zutalor.properties.AppStateProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
+	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.sequence.Sequence;
 	import com.zutalor.translate.Translate;
@@ -61,6 +62,16 @@
 		private var _ip:String;
 
 		private const DEBUG_ANALYTICS:Boolean =  false;
+		
+		private static var _presets:PropertyManager;
+		
+		public static function registerPresets(options:Object):void
+		{
+			if (!_presets)
+				_presets = new PropertyManager(AppStateProperties);
+			
+			_presets.parseXML(options.xml[options.nodeId]);
+		}
 		
 		public function AppController(bootXmlUrl:String, ip:String, splashClassName:String=null)
 		{
@@ -221,7 +232,7 @@
 		{
 			var viewCreator:ViewCreator;
 			
-			appStateProps = Props.pr.appStates.getPropsByName(_curAppState);
+			appStateProps = _presets.getPropsByName(_curAppState);
 
 			if (!appStateProps)
 			{
@@ -283,6 +294,7 @@
 			_appStateCallStack = new gDictionary();	
 			Translate.language = Props.ap.language;
 			Color.theme = Props.ap.colorTheme;
+			
 
 			if (ap.spinningpresetId)
 				Spinner.init(ap.spinningpresetId, ap.spinningGraphicCyclesPerSecond);
@@ -299,7 +311,11 @@
 			StageRef.stage.addEventListener(Event.RESIZE, vu.onStageResize);
 			MasterClock.registerCallback(checkOrientation, true, 500);	
 			vu.onStageResize();
-						
+			StyleSheets.loadCss(onInitComplete);			
+		}	
+		
+		private function onInitComplete():void
+		{
 			if (ap.loadingSequenceName)
 			{
 				_loadingSequence = new Sequence();
@@ -307,6 +323,6 @@
 			}
 			else
 				loadFirstPage();
-		}		
+		}
 	}
 }

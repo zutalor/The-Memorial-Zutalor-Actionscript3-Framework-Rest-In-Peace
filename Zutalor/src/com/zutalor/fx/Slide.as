@@ -1,7 +1,6 @@
 ﻿package com.zutalor.fx 
 {
 	import com.zutalor.properties.ApplicationProperties;
-	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.StageRef;
 	import flash.display.DisplayObject;
 	/**

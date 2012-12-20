@@ -1,11 +1,11 @@
 ﻿package com.zutalor.components.media.video
 {
 	import com.zutalor.components.media.base.MediaController;
+	import com.zutalor.containers.positioning.Aligner;
 	import com.zutalor.events.MediaEvent;
 	import com.zutalor.interfaces.IMediaController;
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.propertyManagers.Props;
-	import com.zutalor.utils.Aligner;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.Resources;
 	import com.zutalor.utils.Scale;

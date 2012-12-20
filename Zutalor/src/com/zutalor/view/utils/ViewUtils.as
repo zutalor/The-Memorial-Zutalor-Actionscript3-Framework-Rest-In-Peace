@@ -48,24 +48,6 @@
 			return _viewUtils;
 		}
 		
-		private function getParentContainerProps(target:DisplayObject):ViewProperties
-		{
-			var vp:ViewProperties;
-			vp = views.getPropsById(target.name);
-			if (vp)
-			{
-				return vp;
-			}
-			else
-				if (target.parent == null)
-				{
-					return null;
-				}
-				else
-				{
-					return getParentContainerProps(target.parent);
-				}
-		}
 				
 		public function onStageResize(e:Event = null):void
 		{	

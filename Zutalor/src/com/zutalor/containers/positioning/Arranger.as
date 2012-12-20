@@ -1,7 +1,6 @@
 package com.zutalor.containers.positioning
 {
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.utils.Aligner;
 	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.StageRef;
 	/**

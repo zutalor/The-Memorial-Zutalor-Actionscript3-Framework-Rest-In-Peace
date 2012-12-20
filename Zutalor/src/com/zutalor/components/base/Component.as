@@ -1,10 +1,10 @@
 package com.zutalor.components.base 
 {
+	import com.zutalor.containers.positioning.Aligner;
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.containers.Container;
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.utils.Aligner;
 	import com.zutalor.view.properties.ViewItemProperties;
 	/**
 	 * ...

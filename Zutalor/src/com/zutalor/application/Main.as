@@ -23,6 +23,7 @@
 	import com.zutalor.components.text.Text;
 	import com.zutalor.components.toggle.Toggle;
 	import com.zutalor.components.web.WebBridge;
+	import com.zutalor.fx.Filters;
 	import com.zutalor.fx.Transition;
 	import com.zutalor.gesture.DoubleTapGesture;
 	import com.zutalor.gesture.FlickGesture;
@@ -93,11 +94,13 @@
 			Plugins.registerClass(WebBridge);
 			Plugins.registerClass(BasicItemRenderer);
 			
+			Presets.register(AppController, "appStates");
 			Presets.register(ViewController, "views", "view");
 			Presets.register(Translate, "translations", "language");
 			Presets.register(Sequence, "sequences", "sequence");			
 			Presets.register(Graphic, "graphicStylePresets", null, Graphic.registerStylePresets);
 			Presets.register(Graphic, "graphics", "graphic", Graphic.registerGraphicPresets);
+			Presets.register(Filters, "filters", "filter");
 			Presets.register(Transition, "transitionPresets");
 			Presets.register(Button, "buttonPresets");
 			Presets.register(Toggle, "togglePresets");

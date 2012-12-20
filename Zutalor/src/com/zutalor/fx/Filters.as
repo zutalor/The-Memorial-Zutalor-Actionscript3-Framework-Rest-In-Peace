@@ -30,7 +30,6 @@ package com.zutalor.fx
 		public static const REFLECTION_PRESET:String = "reflectionPreset";
 		public static const LIQUIFY_PRESET:String = "liquifyPreset";
 		
-		private var _fpm:NestedPropsManager;
 		private var _pr:*;
 		private var _gRippler:gRippler;
 		private var _d:DisplayObject;
@@ -38,9 +37,20 @@ package com.zutalor.fx
 		private var _ds:DropShadowFilter;
 		private var _gf:GlowFilter;
 		
+		private static var _filterPresets:NestedPropsManager;
+				
+		public static function registerPresets(options:Object):void
+		{
+			if (!_filterPresets)
+				_filterPresets = new NestedPropsManager();
+			
+			_filterPresets.parseXML(FiltersProperties, FiltersItemProperties, options.xml[options.nodeId], options.childNodeId, 
+																				options.xml[options.childNodeId]);
+		}
+		
 		public function Filters()
 		{
-			_fpm = Props.filters;
+			_filterPresets = Props.filters;
 			_pr = Presets;
 		}
 		
@@ -69,13 +79,13 @@ package com.zutalor.fx
 			var filters:Array = [];
 
 			_d = d;
-			fp = _fpm.getPropsById(preset);
+			fp = _filterPresets.getPropsById(preset);
 			
-			numFilters = _fpm.getNumItems(preset);
+			numFilters = _filterPresets.getNumItems(preset);
 			
 			for (var i:int = 0; i < numFilters; i++)
 			{
-				fip = _fpm.getItemPropsByIndex(preset, i);
+				fip = _filterPresets.getItemPropsByIndex(preset, i);
 				switch (fip.type)
 				{
 					case SHADOW_PRESET :

@@ -1,11 +1,9 @@
 ﻿package com.zutalor.propertyManagers
 {
-	import com.zutalor.properties.AppStateProperties;
 	import com.zutalor.properties.DropShadowFilterProperties;
 	import com.zutalor.properties.GlowFilterProperties;
 	import com.zutalor.properties.RippleProperties;
 	import com.zutalor.properties.ToolTipProperties;
-	import com.zutalor.properties.UIProperties;
 	import com.zutalor.propertyManagers.PropertyManager;
 	/**
 	 * ...
@@ -13,14 +11,12 @@
 	 */
 	public class Presets
 	{
-		public static var uiPresets:PropertyManager;
 		public static var toolTipPresets:PropertyManager;
 		public static var shadowPresets:PropertyManager;
 		public static var glowPresets:PropertyManager;
 		public static var ripplePresets:PropertyManager;
 		public static var hotkeyPresets:PropertyManager;
-		public static var appStates:PropertyManager;
-		
+	
 		private static var _registry:Vector.<PresetRegistryProperties>;
 		
 		public static function register(presetClass:*, nodeId:String, childNodeId:String = null, alternateFunction:Function = null):void
@@ -59,22 +55,18 @@
 			
 				func( { xml:xml, nodeId:p.nodeId, childNodeId:p.childNodeId } );
 			}
-			uiPresets.parseXML(xml.uiPresets);
 			toolTipPresets.parseXML(xml.toolTipPresets);
 			shadowPresets.parseXML(xml.shadowPresets);
 			glowPresets.parseXML(xml.glowPresets);
 			ripplePresets.parseXML(xml.ripplePresets);			
-			appStates.parseXML(xml.appStates);
 		}
 			
 		private static function init():void
 		{
-			uiPresets = new PropertyManager(UIProperties);
 			toolTipPresets = new PropertyManager(ToolTipProperties);
 			shadowPresets = new PropertyManager(DropShadowFilterProperties);
 			glowPresets = new PropertyManager(GlowFilterProperties);
 			ripplePresets = new PropertyManager(RippleProperties);
-			appStates = new PropertyManager(AppStateProperties);
 		}
 	}
 }

@@ -5,8 +5,8 @@ package com.zutalor.propertyManagers
 	import com.zutalor.properties.ApplicationProperties;
 	import com.zutalor.properties.FiltersItemProperties;
 	import com.zutalor.properties.FiltersProperties;
-	import com.zutalor.utils.ShowError;
 	import com.zutalor.text.StringUtils;
+	import com.zutalor.utils.ShowError;
 
 	/**
 	 * ...
@@ -112,12 +112,7 @@ package com.zutalor.propertyManagers
 				}
 				 _loaders = null;
 
-				StyleSheets.loadCss(onCssLoaded);
-				
-				function onCssLoaded():void
-				{
 					_onComplete();
-				}
 			}
 		}
 		
@@ -125,10 +120,7 @@ package com.zutalor.propertyManagers
 		{	
 
 							
-			Presets.parseXML(xml);		
-			
-			
-			filters.parseXML(FiltersProperties, FiltersItemProperties, xml.filters, "filter", xml.filter, "props");
+			Presets.parseXML(xml);
 		}
 	}
 }

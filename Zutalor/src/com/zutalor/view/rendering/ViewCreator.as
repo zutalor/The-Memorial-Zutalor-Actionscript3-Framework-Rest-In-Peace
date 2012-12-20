@@ -1,12 +1,10 @@
 ﻿package com.zutalor.view.rendering
 {
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.containers.Container;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.fx.Filters;
 	import com.zutalor.fx.TransitionTypes;
 	import com.zutalor.objectPool.ObjectPool;
-	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.controller.ViewController;
@@ -81,10 +79,13 @@
 		
 		private function applySettings():void
 		{
+			if (vp.x)
+				c.x = vp.x;
+			if (vp.y)
+				c.y = vp.y;
 			
-			c.x = vp.x;
-			c.y = vp.y;
-			c.rotation = vp.rotation;
+			if (c.rotation)
+				c.rotation = vp.rotation;
 			
 			if (vp.blendMode)
 				c.blendMode = vp.blendMode;
