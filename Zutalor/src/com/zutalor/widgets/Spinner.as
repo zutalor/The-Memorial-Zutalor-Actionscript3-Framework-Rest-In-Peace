@@ -2,7 +2,7 @@ package com.zutalor.widgets
 {
 	import com.greensock.TweenMax;
 	import com.zutalor.components.graphic.Graphic;
-		import com.zutalor.view.properties.ViewItemProperties;
+	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.rendering.ViewItemFilterApplier;
 	import flash.display.Sprite;

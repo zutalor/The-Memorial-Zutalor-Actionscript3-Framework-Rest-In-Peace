@@ -1,11 +1,11 @@
 ﻿package com.zutalor.components.media.video
 {
+	import com.zutalor.application.Application;
 	import com.zutalor.components.media.base.MediaController;
 	import com.zutalor.containers.positioning.Aligner;
 	import com.zutalor.events.MediaEvent;
 	import com.zutalor.interfaces.IMediaController;
 	import com.zutalor.objectPool.ObjectPool;
-	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.Resources;
 	import com.zutalor.utils.Scale;
@@ -128,10 +128,9 @@
 			stream.bufferTime = bufferSecs;
 			
 			s = StageRef.stage;
-			if (Props.ap.stageVideoAvailable && Props.ap.useStageVideoIfAvailable)
+			if (Application.settings.stageVideoAvailable && Application.settings.useStageVideoIfAvailable)
 			{
-				//Alert.init(StageRef.stage);
-				//Alert.show("using stage video");
+				trace("using stage video");
 				sv = ObjectPool.getStageVideo();
 				sv.addEventListener(StageVideoEvent.RENDER_STATE, onStageVideoStateChange);
 				sv.attachNetStream(stream);

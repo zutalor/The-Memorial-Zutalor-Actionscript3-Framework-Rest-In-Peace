@@ -2,7 +2,7 @@ package com.zutalor.components.embed
 {
 	import com.zutalor.components.base.Component;
 	import com.zutalor.interfaces.IComponent;
-		import com.zutalor.view.properties.ViewItemProperties;
+	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.utils.Resources;
 	import flash.display.Bitmap;
 	/**

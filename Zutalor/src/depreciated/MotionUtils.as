@@ -2,7 +2,7 @@
 {
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.scrolling.ScrollingContainer;
-	import com.zutalor.properties.ApplicationProperties;
+	import com.zutalor.application.ApplicationProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.Scale;

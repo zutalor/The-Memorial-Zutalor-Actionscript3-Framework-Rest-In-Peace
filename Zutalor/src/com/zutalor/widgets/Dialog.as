@@ -1,7 +1,6 @@
 package com.zutalor.widgets 
 {
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.controller.ViewControllerRegistry;

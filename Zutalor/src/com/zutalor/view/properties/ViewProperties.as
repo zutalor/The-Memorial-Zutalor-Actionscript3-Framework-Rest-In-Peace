@@ -1,13 +1,10 @@
 ﻿package com.zutalor.view.properties 
 {
-	import com.zutalor.containers.Container;
+	import com.zutalor.application.Application;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.interfaces.IProperties;
 	import com.zutalor.properties.PropertiesBase;
-	import com.zutalor.propertyManagers.PropertyManager;
-	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.MapXML;
-	import flash.display.DisplayObject;
 	/**
 	 * ...
 	 * @author Geoff Pepos
@@ -51,9 +48,6 @@
 		public var mediaPreset:String;
 		public var appState:String;
 		public var filterPreset:String;		
-		public var hScrollBarSliderId:String;
-		public var vScrollBarSliderId:String;
-		public var autoAdjustThumbSize:Boolean;
 		public var container:ViewContainer;
 		
 		override public function parseXML(xml:XML):Boolean
@@ -61,7 +55,7 @@
 			MapXML.attributesToClass(xml , this); // map the properties
 			name = name.toLowerCase();
 			if (!styleSheetName)
-				styleSheetName = Props.ap.defaultStyleSheetName;
+				styleSheetName = Application.settings.defaultStyleSheetName;
 				
 			return true;
 		}

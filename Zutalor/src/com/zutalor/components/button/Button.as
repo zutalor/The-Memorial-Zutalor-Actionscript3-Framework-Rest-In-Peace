@@ -25,17 +25,17 @@
 		
 		protected static var _presets:PropertyManager;
 		
-		public function Button(name:String)
-		{
-			super(name);
-		}
-
 		public static function registerPresets(options:Object):void
 		{
 			if (!_presets)
 				_presets = new PropertyManager(ButtonProperties);
 			
 			_presets.parseXML(options.xml[options.nodeId]);
+		}
+		
+		public function Button(name:String)
+		{
+			super(name);
 		}
 		
 		override public function render(viewItemProperties:ViewItemProperties = null):void

@@ -9,7 +9,7 @@
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class Presets
+	public class Properties
 	{
 		public static var toolTipPresets:PropertyManager;
 		public static var shadowPresets:PropertyManager;
@@ -19,7 +19,7 @@
 	
 		private static var _registry:Vector.<PresetRegistryProperties>;
 		
-		public static function register(presetClass:*, nodeId:String, childNodeId:String = null, alternateFunction:Function = null):void
+		public static function register(propertyClass:*, nodeId:String, childNodeId:String = null, alternateFunction:Function = null):void
 		{
 			if (!_registry)
 			{
@@ -28,7 +28,7 @@
 			}
 			var p:PresetRegistryProperties = new PresetRegistryProperties();
 			
-			p.presetClass = presetClass;
+			p.propertyClass = propertyClass;
 			p.nodeId = nodeId;
 			p.childNodeId = childNodeId;
 			p.alternateFunction = alternateFunction;
@@ -51,7 +51,7 @@
 				if (p.alternateFunction != null)
 					func = p.alternateFunction;
 				else
-					func = p.presetClass.registerPresets;
+					func = p.propertyClass.registerPresets;
 			
 				func( { xml:xml, nodeId:p.nodeId, childNodeId:p.childNodeId } );
 			}

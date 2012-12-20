@@ -1,4 +1,4 @@
-package com.zutalor.fx 
+package com.zutalor.filters 
 {
 	import com.gskinner.utils.IDisposable;
 	import com.gskinner.utils.Janitor;
@@ -50,7 +50,6 @@ package com.zutalor.fx
 		
 		public function Filters()
 		{
-			_filterPresets = Props.filters;
 			_pr = Presets;
 		}
 		

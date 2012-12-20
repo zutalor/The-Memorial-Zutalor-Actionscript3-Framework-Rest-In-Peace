@@ -16,7 +16,7 @@ import com.zutalor.audio.SlideShow;
 import com.zutalor.objectPool.ObjectPool;
 import com.zutalor.plugin.constants.PluginClassNames;
 import com.zutalor.plugin.Plugins;
-import com.zutalor.properties.ApplicationProperties;
+import com.zutalor.application.ApplicationProperties;
 import com.zutalor.properties.MediaProperties;
 import com.zutalor.properties.TextAttributeProperties;
 	import com.zutalor.view.properties.ViewItemProperties;

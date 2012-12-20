@@ -2,8 +2,8 @@ package com.zutalor.view.rendering
 {
 	import com.zutalor.components.base.Component;
 	import com.zutalor.components.graphic.Graphic;
-	import com.zutalor.fx.Filters;
-		import com.zutalor.view.properties.ViewItemProperties;
+	import com.zutalor.filters.Filters;
+	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.view.controller.ViewController;
 	/**

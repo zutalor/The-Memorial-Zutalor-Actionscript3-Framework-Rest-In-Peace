@@ -7,7 +7,6 @@
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.NestedPropsManager;
-	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.ShowError;

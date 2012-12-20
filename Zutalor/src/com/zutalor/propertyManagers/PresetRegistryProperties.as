@@ -6,7 +6,7 @@ package com.zutalor.propertyManagers
 	 */
 	public class PresetRegistryProperties 
 	{
-		public var presetClass:*;
+		public var propertyClass:*;
 		public var nodeId:String;
 		public var childNodeId:String;
 		public var alternateFunction:Function;

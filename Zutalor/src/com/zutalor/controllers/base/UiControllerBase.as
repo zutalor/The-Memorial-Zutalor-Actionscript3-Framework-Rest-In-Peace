@@ -6,7 +6,6 @@ package com.zutalor.controllers.base
 	import com.zutalor.plugin.constants.PluginClasses;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.Logger;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.controller.ViewControllerRegistry;

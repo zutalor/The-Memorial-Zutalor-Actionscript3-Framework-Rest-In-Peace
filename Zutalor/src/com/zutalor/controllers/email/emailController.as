@@ -3,7 +3,7 @@ package com.zutalor.controllers.email
 	import com.zutalor.amfphp.Remoting;
 
 	import com.zutalor.interfaces.IUiController;
-	import com.zutalor.properties.ApplicationProperties;
+	import com.zutalor.application.ApplicationProperties;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.propertyManagers.ViewPropsManager;
 	import com.zutalor.translate.Translate;

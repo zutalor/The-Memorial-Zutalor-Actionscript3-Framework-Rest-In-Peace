@@ -1,19 +1,16 @@
 ﻿package com.zutalor.view.utils 
 {
+	import com.zutalor.application.Application;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.properties.ApplicationProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
-	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.Singleton;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.properties.ViewProperties;
-	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.ui.Mouse;
-
 
 	/**
 	 * ...
@@ -26,18 +23,13 @@
 		public static const RESIZE_TO_STAGE:String = "resizeToStage";
 		public static const FIT_TO_STAGE:String = "fitToStage";
 		
-		private var ap:ApplicationProperties;
 		private var views:NestedPropsManager;
-		private var pr:*;
-		
 		private static var _viewUtils:ViewUtils;
 
 		public function ViewUtils() 
 		{
 			Singleton.assertSingle(ViewUtils);
-			ap = ApplicationProperties.gi();
 			views = ViewController.presets;
-			pr = Presets;
 		}
 		
 		public static function gi():ViewUtils
@@ -47,12 +39,11 @@
 			
 			return _viewUtils;
 		}
-		
 				
 		public function onStageResize(e:Event = null):void
 		{	
 			Mouse.show();
-			Scale.calcAppScale(StageRef.stage, ap.designWidth, ap.designHeight);
+			Scale.calcAppScale(StageRef.stage, Application.settings.designWidth, Application.settings.designHeight);
 			Scale.constrainAppScaleRatio();
 			arrangeViewContainers();
 		}

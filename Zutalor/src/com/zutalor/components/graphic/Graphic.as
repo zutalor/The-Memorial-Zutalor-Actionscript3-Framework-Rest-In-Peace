@@ -3,6 +3,7 @@ package com.zutalor.components.graphic
 	import com.zutalor.color.Color;
 	import com.zutalor.components.base.Component;
 	import com.zutalor.components.embed.Embed;
+	import com.zutalor.filters.Filters;
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.components.label.Label;
 	import com.zutalor.containers.base.ContainerObject;

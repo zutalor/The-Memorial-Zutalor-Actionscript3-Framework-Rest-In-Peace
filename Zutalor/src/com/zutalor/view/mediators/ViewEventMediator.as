@@ -14,7 +14,6 @@ package com.zutalor.view.mediators
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.NestedPropsManager;
-	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.utils.FullScreen;
 	import com.zutalor.utils.HotKeyManager;
@@ -38,7 +37,6 @@ package com.zutalor.view.mediators
 		
 		private var _vpm:NestedPropsManager;
 		private var _vu:ViewUtils;
-		private var _pr:*;
 		private var _hkm:HotKeyManager;
 		private var _itemsSkipped:int;
 		private var _numItems:int;
@@ -55,7 +53,6 @@ package com.zutalor.view.mediators
 		{
 			_vpm = ViewController.presets;
 			_vu = ViewUtils.gi();			
-			_pr = Presets;
 			_hkm = HotKeyManager.gi();
 		}
 		

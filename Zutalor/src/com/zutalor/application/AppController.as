@@ -5,6 +5,7 @@
 	import com.greensock.TweenMax;
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.amfphp.Remoting;
+	import com.zutalor.application.ApplicationProperties;
 	import com.zutalor.color.Color;
 	import com.zutalor.components.html.StyleSheets;
 	import com.zutalor.events.AppEvent;
@@ -12,10 +13,8 @@
 	import com.zutalor.plugin.constants.PluginClasses;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.properties.ApplicationProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.PropertyManager;
-	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.sequence.Sequence;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.utils.gDictionary;
@@ -87,7 +86,7 @@
 				
 			MasterClock.initialize();
 			MasterClock.defaultInterval = 1000 / StageRef.stage.frameRate;
-			Props.init(_bootXmlUrl, init);
+			Boot.init(_bootXmlUrl, init);
 		}
 		
 		public function enableAppState(state:String):void 
@@ -169,7 +168,7 @@
 			if (page != "/")		
 				page = page.substring(1);
 			
-			if (page || int(page) < Props.pr.appStates.length)
+			if (page || int(page) < _presets.length)
 				enableAppState(page);
 		}
 		
@@ -280,7 +279,7 @@
 		 	
 		private function init():void
 		{
-			ap = ApplicationProperties.gi();
+			ap = Application.settings;
 			vu = ViewUtils.gi();
 			vpm = ViewController.presets;
 			
@@ -292,8 +291,8 @@
 			MasterClock.initialize();
 			Remoting.gateway = ap.gateway;
 			_appStateCallStack = new gDictionary();	
-			Translate.language = Props.ap.language;
-			Color.theme = Props.ap.colorTheme;
+			Translate.language = ap.language;
+			Color.theme = ap.colorTheme;
 			
 
 			if (ap.spinningpresetId)

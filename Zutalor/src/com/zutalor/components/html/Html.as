@@ -2,7 +2,7 @@ package com.zutalor.components.html
 {
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.components.text.Text;
-		import com.zutalor.view.properties.ViewItemProperties;
+	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.utils.ShowError;
 	import flash.display.Bitmap;
 	import flash.display.Loader;

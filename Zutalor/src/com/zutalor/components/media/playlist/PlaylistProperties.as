@@ -2,7 +2,6 @@
 {
 	import com.zutalor.interfaces.IProperties;
 	import com.zutalor.properties.PropertiesBase;
-	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.path.Path;
 	import com.zutalor.utils.MapXML;
 	/**

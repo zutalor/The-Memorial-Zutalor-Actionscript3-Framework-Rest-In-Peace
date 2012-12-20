@@ -1,6 +1,5 @@
 ﻿package com.zutalor.fx 
 {
-	import com.zutalor.properties.ApplicationProperties;
 	import com.zutalor.utils.StageRef;
 	import flash.display.DisplayObject;
 	/**
@@ -11,13 +10,9 @@
 	{
 		private static var _destX:int;
 		private static var _destY:int;
-		private static var _ap:ApplicationProperties;
 				
 		public static function tweenParams(dc:DisplayObject, fxType:String, inOut:String):Object
 		{
-			if (!_ap)
-				_ap = ApplicationProperties.gi();
-
 			_destX = dc.x;
 			_destY = dc.y;				
 

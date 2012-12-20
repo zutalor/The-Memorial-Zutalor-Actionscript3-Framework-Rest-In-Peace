@@ -4,7 +4,7 @@
 	import com.greensock.TweenMax;
 	import com.gskinner.utils.IDisposable;
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.properties.ApplicationProperties;
+	import com.zutalor.application.ApplicationProperties;
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.utils.StrUtil;
 	import com.zutalor.utils.DisplayObjectUtils;

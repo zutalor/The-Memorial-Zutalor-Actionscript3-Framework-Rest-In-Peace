@@ -6,9 +6,8 @@ package com.zutalor.view.mediators
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.properties.ApplicationProperties;
+	import com.zutalor.application.ApplicationProperties;
 	import com.zutalor.propertyManagers.NestedPropsManager;
-	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.view.controller.ViewController;
@@ -22,11 +21,7 @@ package com.zutalor.view.mediators
 		public static const FORMAT_TIME:String = "time";
 		
 		public var vc:ViewController;
-		
 		private var _vpm:NestedPropsManager;
-		private var _ap:ApplicationProperties;
-		private var _pr:*;
-		
 		private static var _cachedVOName:String;
 		private static var _valueObject:*;
 		
@@ -34,8 +29,6 @@ package com.zutalor.view.mediators
 		{
 			vc = viewController;
 			_vpm = ViewController.presets;
-			_ap = ApplicationProperties.gi();
-			_pr = Presets;
 		}
 
 		public function setItemInitialValue(vip:ViewItemProperties):void

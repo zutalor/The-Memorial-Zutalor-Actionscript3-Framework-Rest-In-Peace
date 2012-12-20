@@ -5,7 +5,7 @@ package com.zutalor.utils
 	import com.zutalor.events.MediaLoadProgressEvent;
 	import com.zutalor.events.MediaPlayProgressEvent;
 	import com.zutalor.audio.VideoController;
-	import com.zutalor.properties.ApplicationProperties;
+	import com.zutalor.application.ApplicationProperties;
 	import flash.display.Sprite;
 	import flash.utils.getTimer;
 	import net.guttershark.support.preloading.events.PreloadProgressEvent;

@@ -1,7 +1,6 @@
 package com.zutalor.view.transition 
 {
 	import com.greensock.TweenMax;
-	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import flash.display.DisplayObject;
 	/**

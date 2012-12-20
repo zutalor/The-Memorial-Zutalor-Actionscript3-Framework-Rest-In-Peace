@@ -3,7 +3,7 @@
 	import com.greensock.TweenMax;
 	import com.zutalor.components.interfaces.IContainerObject;
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.properties.ApplicationProperties;
+	import com.zutalor.application.ApplicationProperties;
 	import com.zutalor.properties.ToolTipProperties;
 	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.text.TextUtil;

@@ -5,6 +5,7 @@ package com.zutalor.application
 	import com.zutalor.events.AppEvent;
 	import com.zutalor.loaders.URL;
 	import com.zutalor.plugin.Plugins;
+	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.widgets.Dialog;
 	import flash.desktop.NativeApplication;
@@ -23,6 +24,21 @@ package com.zutalor.application
 	public class Application extends Sprite
 	{		
 		private var _appController:AppController;
+		
+		protected static var _presets:PropertyManager;
+		
+		public static function registerPresets(options:Object):void
+		{
+			if (!_presets)
+				_presets = new PropertyManager(ApplicationProperties);
+			
+			_presets.parseXML(options.xml[options.nodeId]);
+		}
+
+		public static function get settings():ApplicationProperties
+		{
+			return _presets.getPropsByIndex(0);
+		}
 		
 		public function Application()
 		{

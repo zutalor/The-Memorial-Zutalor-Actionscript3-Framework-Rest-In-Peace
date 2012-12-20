@@ -23,17 +23,16 @@
 	import com.zutalor.components.text.Text;
 	import com.zutalor.components.toggle.Toggle;
 	import com.zutalor.components.web.WebBridge;
-	import com.zutalor.fx.Filters;
+	import com.zutalor.filters.Filters;
 	import com.zutalor.fx.Transition;
 	import com.zutalor.gesture.DoubleTapGesture;
 	import com.zutalor.gesture.FlickGesture;
 	import com.zutalor.gesture.GestureListener;
 	import com.zutalor.path.Path;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.propertyManagers.Presets;
+	import com.zutalor.propertyManagers.Properties;
 	import com.zutalor.sequence.Sequence;
 	import com.zutalor.translate.Translate;
-	import com.zutalor.utils.Resources;
 	import com.zutalor.view.controller.ViewController;
 	import org.gestouch.gestures.LongPressGesture;
 	import org.gestouch.gestures.PanGesture;
@@ -60,7 +59,7 @@
 				
 		protected function initialize():void
 		{
-			Presets.register(Path, "paths");
+			Properties.register(Path, "paths");
 			
 			Plugins.registerClassAndCreateCachedInstance(AirPlugin);
 			Plugins.registerClassAndCreateCachedInstance(SoundScienceUiController);
@@ -94,25 +93,26 @@
 			Plugins.registerClass(WebBridge);
 			Plugins.registerClass(BasicItemRenderer);
 			
-			Presets.register(AppController, "appStates");
-			Presets.register(ViewController, "views", "view");
-			Presets.register(Translate, "translations", "language");
-			Presets.register(Sequence, "sequences", "sequence");			
-			Presets.register(Graphic, "graphicStylePresets", null, Graphic.registerStylePresets);
-			Presets.register(Graphic, "graphics", "graphic", Graphic.registerGraphicPresets);
-			Presets.register(Filters, "filters", "filter");
-			Presets.register(Transition, "transitionPresets");
-			Presets.register(Button, "buttonPresets");
-			Presets.register(Toggle, "togglePresets");
-			Presets.register(Stepper, "stepperPresets");
-			Presets.register(ComponentGroup, "componentGroupPresets");
-			Presets.register(Text, "textAttributePresets", null, Text.registerTextAttributes);
-			Presets.register(Text, "textFormatPresets", null, Text.registerTextFormats);
-			Presets.register(StyleSheets, "cssPresets");
-			Presets.register(MediaPlayer, "mediaPresets");
-			Presets.register(Playlist, "playlists" , "playlist");
-			Presets.register(List, "listPresets");
-			Presets.register(Color, "colorThemes", "theme");
+			Properties.register(Application, "appSettings");
+			Properties.register(AppController, "appStates");
+			Properties.register(ViewController, "views", "view");
+			Properties.register(Translate, "translations", "language");
+			Properties.register(Sequence, "sequences", "sequence");			
+			Properties.register(Graphic, "graphicStylePresets", null, Graphic.registerStylePresets);
+			Properties.register(Graphic, "graphics", "graphic", Graphic.registerGraphicPresets);
+			Properties.register(Filters, "filters", "filter");
+			Properties.register(Transition, "transitionPresets");
+			Properties.register(Button, "buttonPresets");
+			Properties.register(Toggle, "togglePresets");
+			Properties.register(Stepper, "stepperPresets");
+			Properties.register(ComponentGroup, "componentGroupPresets");
+			Properties.register(Text, "textAttributePresets", null, Text.registerTextAttributes);
+			Properties.register(Text, "textFormatPresets", null, Text.registerTextFormats);
+			Properties.register(StyleSheets, "cssPresets");
+			Properties.register(MediaPlayer, "mediaPresets");
+			Properties.register(Playlist, "playlists" , "playlist");
+			Properties.register(List, "listPresets");
+			Properties.register(Color, "colorThemes", "theme");
 			
 			super.start(bootXMLUrl, splashClassName);
 		}

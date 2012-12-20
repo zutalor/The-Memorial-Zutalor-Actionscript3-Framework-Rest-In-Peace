@@ -8,7 +8,6 @@ package com.zutalor.components.media.playlist
 	import com.zutalor.events.MediaEvent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.propertyManagers.NestedPropsManager;
-	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.ArrayUtils;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.MasterClock;

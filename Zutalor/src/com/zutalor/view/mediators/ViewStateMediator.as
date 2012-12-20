@@ -1,6 +1,7 @@
 package com.zutalor.view.mediators
 {
 	import com.zutalor.air.AirStatus;
+	import com.zutalor.application.Application;
 	import com.zutalor.audio.TextToSpeech;
 	import com.zutalor.components.media.audio.AudioPlayer;
 	import com.zutalor.controllers.base.UiControllerBase;
@@ -9,7 +10,6 @@ package com.zutalor.view.mediators
 	import com.zutalor.gesture.UserInputProperties;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.PropertyManager;
-	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.translate.TranslateItemProperties;
@@ -81,13 +81,13 @@ package com.zutalor.view.mediators
 			_audioPlayer = new AudioPlayer("audio");				
 			
 			if (AirStatus.isMobile)
-				textToSpeechUrl = Props.ap.textToSpeechApiUrlMobile;
+				textToSpeechUrl = Application.settings.textToSpeechApiUrlMobile;
 			else
-				textToSpeechUrl = Props.ap.textToSpeechApiUrlPC;
+				textToSpeechUrl = Application.settings.textToSpeechApiUrlPC;
 				
 			_textToSpeech = new TextToSpeech(textToSpeechUrl);
 				
-			_textToSpeech.enabled = Props.ap.enableTextToSpeech;
+			_textToSpeech.enabled = Application.settings.enableTextToSpeech;
 			
 			initUserInput();
 			tMeta = XML(Translate.getMetaByName("settings"));

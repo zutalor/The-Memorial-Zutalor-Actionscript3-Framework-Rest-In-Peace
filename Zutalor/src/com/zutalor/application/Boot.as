@@ -1,10 +1,11 @@
-package com.zutalor.propertyManagers 
+package com.zutalor.application 
 {
 	import com.zutalor.components.html.StyleSheets;
 	import com.zutalor.loaders.URLLoaderG;
-	import com.zutalor.properties.ApplicationProperties;
+	import com.zutalor.application.ApplicationProperties;
 	import com.zutalor.properties.FiltersItemProperties;
 	import com.zutalor.properties.FiltersProperties;
+	import com.zutalor.propertyManagers.Properties;
 	import com.zutalor.text.StringUtils;
 	import com.zutalor.utils.ShowError;
 
@@ -12,13 +13,10 @@ package com.zutalor.propertyManagers
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class Props
+	public class Boot
 	{
-		public static var ap:ApplicationProperties;
 		public static var pr:*;
 		
-		public static var filters:NestedPropsManager;
-
 		private static var _xmlFiles:int;
 		private static var _xmlFilesProcessed:int;
 		private static var _loaders:Array;
@@ -36,11 +34,9 @@ package com.zutalor.propertyManagers
 			
 			_onComplete = onComplete;
 			_loaders = [];		
-			pr = Presets;	
-			ap = ApplicationProperties.gi();
-			filters = new NestedPropsManager();
 			loadBootXml(bootXmlUrl);
 		}
+	
 		private static function loadBootXml(url:String):void
 		{
 			var loaderG:URLLoaderG = new URLLoaderG();
@@ -52,9 +48,8 @@ package com.zutalor.propertyManagers
 			var xml:XML = XML(lg.data);
 			
 			if (lg.error)
-				ShowError.fail(Props, "Could not load: " + lg.url);
+				ShowError.fail(Boot, "Could not load: " + lg.url);
 			
-			ap.parseXML(xml.appSettings);
 			parseProps(xml);
 			lg.dispose();
 			loadXml();
@@ -65,17 +60,17 @@ package com.zutalor.propertyManagers
 			var urls:Array = [];
 			var path:String;
 			
-			if (ap.systemXmlUrls)
+			if (Application.settings.systemXmlUrls)
 			{
-				urls = ap.systemXmlUrls.split(",");
-				path = ap.systemXmlPath;
+				urls = Application.settings.systemXmlUrls.split(",");
+				path = Application.settings.systemXmlPath;
 				addPath(path, urls);
 			}	
 			
-			if (ap.appXmlUrls)
+			if (Application.settings.appXmlUrls)
 			{
-				path = ap.appXmlPath;
-				urls = urls.concat(addPath(path, ap.appXmlUrls.split(",")));
+				path = Application.settings.appXmlPath;
+				urls = urls.concat(addPath(path, Application.settings.appXmlUrls.split(",")));
 			}
 			
 			_xmlFiles = urls.length;
@@ -101,7 +96,7 @@ package com.zutalor.propertyManagers
 			_xmlFilesProcessed++;
 			parseProps(XML(lg.data));
 			if (lg.error)
-				ShowError.fail(Props,"Could not load " + lg.url);
+				ShowError.fail(Boot,"Could not load " + lg.url);
 			
 			if (_xmlFilesProcessed == _xmlFiles)
 			{
@@ -118,9 +113,7 @@ package com.zutalor.propertyManagers
 		
 		private static function parseProps(xml:XML):void
 		{	
-
-							
-			Presets.parseXML(xml);
+			Properties.parseXML(xml);
 		}
 	}
 }

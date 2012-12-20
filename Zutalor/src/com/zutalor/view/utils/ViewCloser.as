@@ -4,8 +4,6 @@ package com.zutalor.view.utils
 	import com.zutalor.fx.Transition;
 	import com.zutalor.fx.TransitionTypes;
 	import com.zutalor.objectPool.ObjectPool;
-	import com.zutalor.properties.ApplicationProperties;
-	import com.zutalor.propertyManagers.Presets;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.controller.ViewController;
@@ -16,16 +14,12 @@ package com.zutalor.view.utils
      */
     public class ViewCloser
     {
-        private var ap:ApplicationProperties;
-        private var pr:*;
         private var _vp:ViewProperties;
         private var _onComplete:Function;
         private var _transition:Transition;
 
         public function ViewCloser()
         {
-            ap = ApplicationProperties.gi();
-            pr = Presets;
         }
 
         public function close(viewId:String, onComplete:Function = null):void

@@ -5,7 +5,7 @@
 	import com.greensock.TweenMax;
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.ViewContainer;
-	import com.zutalor.properties.ApplicationProperties;
+	import com.zutalor.application.ApplicationProperties;
 	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
