@@ -24,7 +24,9 @@
 	import com.zutalor.components.toggle.Toggle;
 	import com.zutalor.components.web.WebBridge;
 	import com.zutalor.filters.Filters;
-	import com.zutalor.fx.Transition;
+	import com.zutalor.filters.Glow;
+	import com.zutalor.filters.Shadow;
+	import com.zutalor.transition.Transition;
 	import com.zutalor.gesture.DoubleTapGesture;
 	import com.zutalor.gesture.FlickGesture;
 	import com.zutalor.gesture.GestureListener;
@@ -92,6 +94,8 @@
 			Plugins.registerClass(Playlist);
 			Plugins.registerClass(WebBridge);
 			Plugins.registerClass(BasicItemRenderer);
+			Plugins.registerClass(Shadow);
+			Plugins.registerClass(Glow);
 			
 			Properties.register(Application, "appSettings");
 			Properties.register(AppController, "appStates");
@@ -113,6 +117,9 @@
 			Properties.register(Playlist, "playlists" , "playlist");
 			Properties.register(List, "listPresets");
 			Properties.register(Color, "colorThemes", "theme");
+			Properties.register(Filters, "filters", "filter");
+			Properties.register(Glow, "glowPresets");
+			Properties.register(Shadow, "shadowPresets");
 			
 			super.start(bootXMLUrl, splashClassName);
 		}

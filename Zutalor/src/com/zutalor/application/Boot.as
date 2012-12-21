@@ -1,10 +1,6 @@
 package com.zutalor.application 
 {
-	import com.zutalor.components.html.StyleSheets;
 	import com.zutalor.loaders.URLLoaderG;
-	import com.zutalor.application.ApplicationProperties;
-	import com.zutalor.properties.FiltersItemProperties;
-	import com.zutalor.properties.FiltersProperties;
 	import com.zutalor.propertyManagers.Properties;
 	import com.zutalor.text.StringUtils;
 	import com.zutalor.utils.ShowError;

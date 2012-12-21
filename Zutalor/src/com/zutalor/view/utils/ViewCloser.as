@@ -1,8 +1,8 @@
 package com.zutalor.view.utils
 {
 	import com.zutalor.components.media.base.MediaProperties;
-	import com.zutalor.fx.Transition;
-	import com.zutalor.fx.TransitionTypes;
+	import com.zutalor.transition.Transition;
+	import com.zutalor.transition.TransitionTypes;
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;

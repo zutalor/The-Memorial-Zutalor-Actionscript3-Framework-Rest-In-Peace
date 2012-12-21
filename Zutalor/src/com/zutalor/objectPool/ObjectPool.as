@@ -2,7 +2,7 @@
 {
 	import com.zutalor.components.graphic.Graphic;
 	import com.zutalor.containers.ViewContainer;
-	import com.zutalor.fx.Transition;
+	import com.zutalor.transition.Transition;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.properties.ViewProperties;
 	import com.zutalor.view.rendering.ViewCreator;

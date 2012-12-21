@@ -154,7 +154,7 @@
 			
 			if (_firstState != "/") 
 				_firstState = _firstState.substring(1); 
-			else
+			else if (ap.firstState)
 				_firstState = ap.firstState.toLowerCase();
 				
 			SWFAddress.setTitle(ap.appName + " - " + _firstState);

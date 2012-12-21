@@ -7,8 +7,7 @@ package com.zutalor.components.graphic
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.components.label.Label;
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.fx.Filters;
-	import com.zutalor.fx.Transition;
+	import com.zutalor.transition.Transition;
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.propertyManagers.NestedPropsManager;
 	import com.zutalor.propertyManagers.PropertyManager;

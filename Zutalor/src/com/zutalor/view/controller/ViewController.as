@@ -8,8 +8,8 @@
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.fx.Transition;
-	import com.zutalor.fx.TransitionTypes;
+	import com.zutalor.transition.Transition;
+	import com.zutalor.transition.TransitionTypes;
 	import com.zutalor.interfaces.IMediaPlayer;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;

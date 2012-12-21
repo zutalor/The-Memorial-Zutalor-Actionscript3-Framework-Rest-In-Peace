@@ -1,4 +1,4 @@
-﻿package com.zutalor.fx 
+﻿package com.zutalor.transition 
 {
 	import com.zutalor.utils.StageRef;
 	import flash.display.DisplayObject;

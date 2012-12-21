@@ -55,7 +55,7 @@ package com.zutalor.plugin
 			return Klass;	
 		}
 		
-		public static function getInstance(classInstanceName:String):*
+		public static function getCachedInstance(classInstanceName:String):*
 		{
 			var instance:*;
 			

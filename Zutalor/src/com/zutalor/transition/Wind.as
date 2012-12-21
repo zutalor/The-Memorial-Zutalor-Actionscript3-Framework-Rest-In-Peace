@@ -1,4 +1,4 @@
-﻿package com.zutalor.fx
+﻿package com.zutalor.transition
 {
 	import com.zutalor.motion.MotionUtils;
 	import com.zutalor.utils.MasterClock;

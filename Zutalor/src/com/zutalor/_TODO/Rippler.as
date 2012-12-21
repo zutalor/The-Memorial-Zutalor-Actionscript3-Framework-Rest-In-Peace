@@ -21,7 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-package com.zutalor.filters
+package com.zutalor._TODO
 {
     import flash.display.BitmapData;
     import flash.display.BitmapDataChannel;

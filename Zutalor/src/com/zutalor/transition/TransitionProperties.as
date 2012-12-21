@@ -1,7 +1,7 @@
-﻿package com.zutalor.fx  
+﻿package com.zutalor.transition  
 {
 	import com.greensock.easing.Quint;
-	import com.zutalor.fx.Easing;
+	import com.zutalor.transition.Easing;
 	import com.zutalor.interfaces.IProperties;
 	import com.zutalor.properties.PropertiesBase;
 	import com.zutalor.utils.MapXML;

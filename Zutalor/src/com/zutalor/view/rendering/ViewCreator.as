@@ -3,7 +3,7 @@
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.filters.Filters;
-	import com.zutalor.fx.TransitionTypes;
+	import com.zutalor.transition.TransitionTypes;
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
