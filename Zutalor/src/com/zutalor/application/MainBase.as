@@ -23,6 +23,10 @@
 	import com.zutalor.components.text.Text;
 	import com.zutalor.components.toggle.Toggle;
 	import com.zutalor.components.web.WebBridge;
+	import com.zutalor.containers.Container;
+	import com.zutalor.containers.ParallaxContainer;
+	import com.zutalor.containers.ScrollingContainer;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.filters.Filters;
 	import com.zutalor.filters.Glow;
 	import com.zutalor.filters.Shadow;
@@ -49,12 +53,12 @@
 	 * @author Geoff Pepos
 	 */
 	
-	public class Main extends Application
+	public class MainBase extends Application
 	{		
 		public var bootXMLUrl:String;
 		public var splashClassName:String;
 		
-		public function Main()
+		public function MainBase()
 		{
 			initialize();
 		}
@@ -64,7 +68,6 @@
 			Properties.register(Path, "paths");
 			
 			Plugins.registerClassAndCreateCachedInstance(AirPlugin);
-			Plugins.registerClassAndCreateCachedInstance(SoundScienceUiController);
 			Plugins.registerClassAndCreateCachedInstance(Analytics);
 
 			GestureListener.register(PanGesture);
@@ -76,6 +79,11 @@
 			GestureListener.register(TransformGesture);
 			GestureListener.register(ZoomGesture);
 			GestureListener.register(FlickGesture);
+			
+			Plugins.registerClass(ViewContainer);
+			Plugins.registerClass(ScrollingContainer);
+			Plugins.registerClass(ParallaxContainer);
+			Plugins.registerClass(Container);
 			
 			Plugins.registerClass(Button);
 			Plugins.registerClass(Html);

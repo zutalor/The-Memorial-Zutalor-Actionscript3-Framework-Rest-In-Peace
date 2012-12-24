@@ -1,7 +1,7 @@
 ﻿package com.zutalor.containers 
 {
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.containers.scrolling.ScrollingContainer;
+	import com.zutalor.containers.ScrollingContainer;
 	/**
 	 * ...
 	 * @author Geoff Pepos

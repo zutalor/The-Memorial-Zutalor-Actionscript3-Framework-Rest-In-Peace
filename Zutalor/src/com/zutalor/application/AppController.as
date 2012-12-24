@@ -19,7 +19,7 @@
 	import com.zutalor.translate.Translate;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.MasterClock;
-	import com.zutalor.utils.Resources;
+	import com.zutalor.utils.EmbeddedResources;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.properties.ViewProperties;
@@ -129,7 +129,7 @@
 		private function showSplash():void
 		{
 			var splash:Bitmap;
-			splash = Resources.createInstance(_splashEmbedClassName);
+			splash = EmbeddedResources.createInstance(_splashEmbedClassName);
 			splash.name = "__splash";
 			StageRef.stage.addChild(splash);
 			splash.x = (StageRef.stage.fullScreenWidth - splash.width) / 2;

@@ -11,11 +11,6 @@
 	 */
 	public class ViewProperties extends PropertiesBase implements IProperties
 	{
-		public static const CONTAINER_SCROLLING:String = "scrolling";
-		public static const CONTAINER_BASIC:String = "basic";
-		public static const CONTAINER_MASKED:String = "masked";
-		public static const CONTAINER_PARALLAX:String = "parallax";
-		
 		public var uiControllerInstanceName:String;
 		public var initialMethod:String;
 		public var initialMethodParams:String;

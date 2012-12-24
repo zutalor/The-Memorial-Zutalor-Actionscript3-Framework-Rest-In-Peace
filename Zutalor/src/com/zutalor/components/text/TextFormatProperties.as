@@ -3,7 +3,7 @@
 	import com.zutalor.interfaces.IProperties;
 	import com.zutalor.properties.PropertiesBase;
 	import com.zutalor.utils.MapXML;
-	import com.zutalor.utils.Resources;
+	import com.zutalor.utils.EmbeddedResources;
 	import flash.text.Font;
 	import flash.text.TextFormat;
 	
@@ -51,7 +51,7 @@
 				var klass:Class;
 				var fontInstance:Font;
 				
-				klass = Resources.getClass(font);
+				klass = EmbeddedResources.getClass(font);
 				fontInstance = new klass();
 				tf.font = fontInstance.fontName;
 			}

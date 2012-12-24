@@ -9,7 +9,6 @@ package com.zutalor.plugin
 	 */
 	public class Plugins
 	{	
-		
 		private static var _classes:gDictionary;
 		private static var _instances:gDictionary;
 		private static var _initialized:Boolean;

@@ -15,43 +15,21 @@ package com.zutalor.containers.positioning
 	 */
 	public class Dragger extends Positioner
 	{
-		private var objects:gDictionary;
-		private var co:ContainerObject;
+		
+		
 		
 		public function Dragger(co:ContainerObject, onPositionUpdate:Function)
 		{
+			velocityMultiplier = 5;
 			super(co, onPositionUpdate);
 		}
-		
-		public function registerObject(co:ContainerObject):void
-		{
-		}
-		
+			
 		override protected function getPosition(mousePos:Number, pp:PositionProperties):int
 		{
 			if (!pp.offset)
 				pp.offset = pp.targetPos;
 
-			return mousePos - pp.offset;	
-		}
-		
-		override protected function onUp(me:Event):void
-		{
-			ppX.offset = ppY.offset = 0;
-			super.onUp(me);
-		}
-		
-		override protected function applyBalistics(pp:PositionProperties):int
-		{
-			return pp.getCurPos() + pp.velocity;;
-		}
-		
-		override public function dispose():void
-		{
-			if (objects)
-				objects.dispose();
-				
-			objects = null;
-		}
+			return mousePos - pp.offset * pp.targetScale;	
+		}		
 	}
 }

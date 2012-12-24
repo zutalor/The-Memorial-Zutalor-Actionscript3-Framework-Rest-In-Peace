@@ -7,7 +7,7 @@ package depreciated
 	import com.zutalor.propertyManagers.Props;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.Logger;
-	import com.zutalor.utils.Resources;
+	import com.zutalor.utils.EmbeddedResources;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.geom.Point;
@@ -60,7 +60,7 @@ package depreciated
 					a = _bitmapCache.getByName(ssp.className);
 					if (!a)
 					{
-						a = Resources.createInstance(ssp.className);
+						a = EmbeddedResources.createInstance(ssp.className);
 						_bitmapCache.addOrReplace(ssp.className, a);
 					}
 				}

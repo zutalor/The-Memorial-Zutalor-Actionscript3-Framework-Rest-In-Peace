@@ -292,7 +292,7 @@ package com.swfjunkie.tweetr
         /**
          * Returns the 20 most recent statuses from non-protected users who have set a custom user icon.  
          * Does not require authentication.  Note that the public timeline is cached for 60 seconds so 
-         * requesting it more often than that is a waste of resources.
+         * requesting it more often than that is a waste of EmbeddedResources.
          */
         public function getPublicTimeLine():void
         {

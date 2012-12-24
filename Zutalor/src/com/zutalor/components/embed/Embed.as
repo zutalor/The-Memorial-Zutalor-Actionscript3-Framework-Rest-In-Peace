@@ -3,7 +3,7 @@ package com.zutalor.components.embed
 	import com.zutalor.components.base.Component;
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.view.properties.ViewItemProperties;
-	import com.zutalor.utils.Resources;
+	import com.zutalor.utils.EmbeddedResources;
 	import flash.display.Bitmap;
 	/**
 	 * ...
@@ -20,7 +20,7 @@ package com.zutalor.components.embed
 		{
 			super.render(viewItemProperties);
 			
-			var e:* = Resources.createInstance(vip.className);
+			var e:* = EmbeddedResources.createInstance(vip.className);
 			if (e is Bitmap)
 				e.smoothing = true;
 				

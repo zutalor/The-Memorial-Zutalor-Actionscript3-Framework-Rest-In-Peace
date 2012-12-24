@@ -4,7 +4,7 @@
 	import com.zutalor.events.MediaEvent;
 	import com.zutalor.interfaces.IMediaController;
 	import com.zutalor.utils.MasterClock;
-	import com.zutalor.utils.Resources;
+	import com.zutalor.utils.EmbeddedResources;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.media.Sound;
@@ -51,7 +51,7 @@
 			if (url.indexOf(".embedded") != -1)
 			{
 				className = url.split(".");
-				_sound = Resources.createInstance(className[0]);
+				_sound = EmbeddedResources.createInstance(className[0]);
 			}
 			else if (url != _url)
 			{

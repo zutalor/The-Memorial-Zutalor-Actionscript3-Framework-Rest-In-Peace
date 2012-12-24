@@ -7,7 +7,7 @@
 	import com.zutalor.interfaces.IMediaController;
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.utils.MasterClock;
-	import com.zutalor.utils.Resources;
+	import com.zutalor.utils.EmbeddedResources;
 	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.StageRef;
 	import flash.display.Stage;
@@ -219,7 +219,7 @@
 					{
 						stream.close();
 						className = _url.split(".");
-						var ba:ByteArray = Resources.createInstance(className[0]);
+						var ba:ByteArray = EmbeddedResources.createInstance(className[0]);
 						stream.play(null);
 						stream.appendBytes(ba);
 						stream.appendBytesAction(NetStreamAppendBytesAction.RESET_BEGIN);

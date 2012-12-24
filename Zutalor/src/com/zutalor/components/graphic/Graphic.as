@@ -13,7 +13,7 @@ package com.zutalor.components.graphic
 	import com.zutalor.propertyManagers.PropertyManager;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.utils.MasterClock;
-	import com.zutalor.utils.Resources;
+	import com.zutalor.utils.EmbeddedResources;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import flash.display.Graphics;
@@ -340,7 +340,7 @@ package com.zutalor.components.graphic
 				g.lineStyle(grs.thickness, lineColor, grs.lineAlpha, false, grs.scaleMode, grs.caps, grs.joints);
 			
 			if (grs.fillClassName)
-				g.beginBitmapFill(Resources.createInstance(grs.fillClassName).bitmapData, null, grs.fillRepeat);
+				g.beginBitmapFill(EmbeddedResources.createInstance(grs.fillClassName).bitmapData, null, grs.fillRepeat);
 			else if (grs.fillType)
 			{
 				var matrix:Matrix = new Matrix();

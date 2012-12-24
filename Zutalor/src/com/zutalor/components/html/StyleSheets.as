@@ -2,7 +2,7 @@ package com.zutalor.components.html
 {
 	import com.zutalor.loaders.URLLoaderG;
 	import com.zutalor.propertyManagers.PropertyManager;
-	import com.zutalor.utils.Resources;
+	import com.zutalor.utils.EmbeddedResources;
 	import com.zutalor.utils.ShowError;
 	import flash.events.Event;
 	import flash.text.AntiAliasType;
@@ -120,7 +120,7 @@ package com.zutalor.components.html
 				{
 					if(key=="font")
 					{
-						fc = Resources.getClass(so[key]);
+						fc = EmbeddedResources.getClass(so[key]);
 						f=new fc();
 						delete so[key];
 						finalFontFamily=f.fontName;

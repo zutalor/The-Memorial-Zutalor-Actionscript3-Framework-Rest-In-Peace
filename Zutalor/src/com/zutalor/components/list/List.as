@@ -89,7 +89,7 @@ package com.zutalor.components.list
 			child = c.getChildAt(0) as ContainerObject;
 			r = FullBounds.get(c);
 			c.scroller.initialize(r.width, r.height, lp.scrollAreaWidth, lp.scrollAreaHeight, child.width, child.height);
-			c.scroller.addEventListener(UIEvent.TAP, onTap);
+			c.addEventListener(UIEvent.TAP, onTap);
 		}
 		
 		private function onTap(e:Event):void

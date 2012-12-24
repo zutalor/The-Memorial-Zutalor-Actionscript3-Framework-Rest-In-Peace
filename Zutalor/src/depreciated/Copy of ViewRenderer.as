@@ -26,7 +26,7 @@ import com.zutalor.propertyManagers.Props;
 import com.zutalor.text.TextUtil;
 import com.zutalor.translate.Translate;
 import com.zutalor.utils.Logger;
-import com.zutalor.utils.Resources;
+import com.zutalor.utils.EmbeddedResources;
 import com.zutalor.utils.ShowError;
 import com.zutalor.view.controller.ViewController;
 import com.zutalor.view.utils.ViewUtils;
@@ -193,7 +193,7 @@ import flash.text.TextField;
 					break;
 					
 				case ViewItemProperties.EMBED :	
-					var e:* = Resources.createInstance(vip.className);
+					var e:* = EmbeddedResources.createInstance(vip.className);
 					if (e is Bitmap)
 					{
 						e.smoothing = true;

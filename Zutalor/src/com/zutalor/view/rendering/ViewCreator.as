@@ -1,8 +1,10 @@
 ﻿package com.zutalor.view.rendering
 {
 	import com.zutalor.containers.base.ContainerObject;
+	import com.zutalor.containers.Container;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.filters.Filters;
+	import com.zutalor.plugin.Plugins;
 	import com.zutalor.transition.TransitionTypes;
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.utils.ShowError;
@@ -35,14 +37,17 @@
 		}
 				
 		public function create(viewId:String, appState:String = null, onComplete:Function=null):void
-		{			
+		{	
+			var Klass:Class;
+			
 			if (!viewId)
 				ShowError.fail(ViewCreator,"View Id cannot be null: " + viewId);
 
 			_onComplete = onComplete;
 			vp = ViewController.presets.getPropsById(viewId);		
 			
-			vp.container = c = ObjectPool.getViewContainer(vp);
+			Klass = Plugins.getClass(Container.VIEW_CONTAINER);
+			vp.container = c = new Klass(vp.name);
 			
 			if (!c.viewController)
 				c.viewController = new ViewController();

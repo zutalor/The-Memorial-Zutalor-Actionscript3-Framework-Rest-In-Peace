@@ -18,7 +18,9 @@ package com.zutalor.containers.positioning.base
 		
 		public static const FORWARD:int = 1;
 		public static const BACKWARD:int = -1;
-		
+
+		public var velocityMultiplier:Number = 1;
+		public var tapPossible:Boolean = true;
 		public var ease:Function = Quint.easeOut;
 		public var easeSeconds:Number = .5;
 		public var resetEaseSeconds:Number = .75;
@@ -28,16 +30,18 @@ package com.zutalor.containers.positioning.base
 		public var quantizeHPosition:Boolean;
 		public var quantizeVPosition:Boolean;
 		public var onPositionUpdate:Function;
-		
-		private var co:ContainerObject;
+		public var target:*;
+				
 		protected var ppX:PositionProperties;
 		protected var ppY:PositionProperties;
+		
+		public var co:ContainerObject;
+		
 		private var tweenObject:Object;
 		private var _width:Number;
 		private var _height:Number;
 		private var _direction:int;
-		private var position:Point;
-		public var target:*;
+		private var position:Point;		
 		
 		public function Positioner(containerObject:ContainerObject, onPositionUpdate:Function)
 		{
@@ -137,13 +141,14 @@ package com.zutalor.containers.positioning.base
 		
 		protected function addListeners():void
 		{
-			StageRef.stage.addEventListener(MouseEvent.MOUSE_UP, onUp);
+			co.addEventListener(MouseEvent.MOUSE_UP, onUp);
 			co.addEventListener(MouseEvent.MOUSE_DOWN, onDown);
 		}
 		
 		protected function removeListeners():void
 		{
-			StageRef.stage.removeEventListener(MouseEvent.MOUSE_UP, onUp);
+			co.removeEventListener(MouseEvent.MOUSE_UP, onUp);
+			co.removeEventListener(MouseEvent.MOUSE_OUT, onUp);
 			StageRef.stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMove);
 			co.removeEventListener(MouseEvent.MOUSE_DOWN, onDown);
 		}
@@ -151,9 +156,12 @@ package com.zutalor.containers.positioning.base
 		protected function onDown(me:MouseEvent):void
 		{
 			TweenMax.killTweensOf(position);
+			tapPossible = true;
 			ppX.downPos = co.mouseX;
 			ppY.downPos = co.mouseY;
 			target = me.target;
+			ppY.targetScale = me.target.scaleY;
+			ppX.targetScale = me.target.scaleX;
 			ppX.targetPos = me.target.mouseX;
 			ppY.targetPos = me.target.mouseY;
 			co.addEventListener(Event.ENTER_FRAME, measureVelocity);
@@ -162,6 +170,7 @@ package com.zutalor.containers.positioning.base
 		
 		protected function onMove(me:MouseEvent):void
 		{
+			tapPossible = false;
 			if (ppX.positioningEnabled)
 				ppX.setCurPos(getPosition(co.mouseX, ppX));
 			
@@ -171,12 +180,26 @@ package com.zutalor.containers.positioning.base
 			me.updateAfterEvent();
 		}
 		
-		protected function onUp(me:Event):void
+		protected function onUp(me:MouseEvent):void
 		{
 			co.removeEventListener(Event.ENTER_FRAME, measureVelocity);
+			co.removeEventListener(MouseEvent.MOUSE_OUT, onUp);
 			StageRef.stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMove);
 			ppX.overViewportEdge = ppY.overViewportEdge = 0;
-			moveToPosition();
+			ppX.offset = ppY.offset = 0;
+			checkForTap();
+		}
+		
+		protected function checkForTap():void
+		{
+			if (tapPossible && !ppX.velocity && !ppY.velocity)
+			{
+	
+				//dispatchEvent( new UIEvent(UIEvent.TAP));
+				trace("click", target);
+			}
+			else
+				moveToPosition();
 		}
 		
 		protected function moveToPosition():void
@@ -224,7 +247,7 @@ package com.zutalor.containers.positioning.base
 		
 		protected function applyBalistics(pp:PositionProperties):int
 		{
-			return pp.getCurPos() + pp.velocity;;
+			return pp.getCurPos() + pp.velocity * velocityMultiplier;
 		}
 		
 		protected function getResetPosition(pp:PositionProperties):Number

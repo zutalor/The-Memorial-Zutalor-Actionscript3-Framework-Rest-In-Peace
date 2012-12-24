@@ -1,5 +1,6 @@
 package com.zutalor.sensors 
 {
+	import flash.events.GeolocationEvent;
 	import flash.geom.Point;
 	import flash.sensors.Geolocation;
 	/**
@@ -8,18 +9,24 @@ package com.zutalor.sensors
 	 */
 	public class Location 
 	{
+		public var geoLocation:Geolocation;
 		
 		public function Location() 
 		{
-			
+			geoLocation = new Geolocation;
 		}
 		
-		public static function get location():Point
+		public function get location():Point
 		{
 			trace(Geolocation.isSupported);
+			geoLocation.addEventListener(GeolocationEvent.UPDATE, onGeolocationUpdate);
 			return new Point();
 		}
 		
+		private function onGeolocationUpdate(ge:GeolocationEvent):void
+		{
+			
+		}
 	}
 
 }

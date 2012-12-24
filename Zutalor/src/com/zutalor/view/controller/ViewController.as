@@ -14,6 +14,7 @@
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.propertyManagers.NestedPropsManager;
+	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.mediators.ViewEventMediator;
@@ -22,7 +23,7 @@
 	import com.zutalor.view.properties.ViewProperties;
 	import com.zutalor.view.rendering.ViewItemFilterApplier;
 	import com.zutalor.view.rendering.ViewItemPositioner;
-	import com.zutalor.view.rendering.ViewRenderer;
+	import com.zutalor.view.rendering.ViewItemRenderer;
 	import com.zutalor.view.transition.ItemFX;
 	import com.zutalor.view.transition.ViewItemTransition;
 	import com.zutalor.widgets.Focus;
@@ -39,7 +40,7 @@
 		
 		private var viewItemFilterApplier:ViewItemFilterApplier;
 		private var viewItemPositioner:ViewItemPositioner;
-		private var viewRenderer:ViewRenderer;
+		private var viewItemRenderer:ViewItemRenderer;
 		
 		private var filters:Array;
 		private var viewItemTransition:ViewItemTransition;
@@ -52,6 +53,7 @@
 		public var onStatus:Function;		
 		public var viewModelMediator:ViewModelMediator;
 		public var dragger:Dragger;
+		public var draggableDict:gDictionary;
 		
 		private static var _presets:NestedPropsManager;
 				
@@ -94,7 +96,7 @@
 			viewItemPositioner = new ViewItemPositioner(vp.container, vp.width, vp.height);
 			viewEventMediator = new ViewEventMediator(this);
 			viewItemFilterApplier = new ViewItemFilterApplier(filters);
-			viewRenderer = new ViewRenderer(vp.container, viewItemFilterApplier.applyFilters, 
+			viewItemRenderer = new ViewItemRenderer(vp.container, viewItemFilterApplier.applyFilters, 
 																				viewItemPositioner.positionItem);			
 			numViewItems = presets.getNumItems(viewId);	
 			renderNextViewItem();
@@ -300,7 +302,14 @@
 			var i:int;
 			var numFilters:int;
 			var l:int;
-		
+			
+			if (dragger)
+			{
+				dragger.dispose()
+				draggableDict.dispose();
+				dragger = null;
+				draggableDict = null;
+			}
 			ViewControllerRegistry.unregisterController(viewId);
 			
 			viewEventMediator.itemListenerCleanup();
@@ -315,7 +324,7 @@
 			vp.container.dispose();	
 			filters = null;
 			numViewItems = 0;
-			viewRenderer = null;
+			viewItemRenderer = null;
 			viewModelMediator = null;
 			viewEventMediator = null;		
 			Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.DISPOSE)			
@@ -459,7 +468,7 @@
 				if (!vip.styleSheetName)
 					vip.styleSheetName = vp.styleSheetName;
 				
-				viewItem = viewRenderer.renderItem(vip);
+				viewItem = viewItemRenderer.renderItem(vip);
 				if (vip.draggable)
 					registerDraggableObject(viewItem);		
 					
@@ -472,17 +481,21 @@
 		private function registerDraggableObject(co:ContainerObject):void
 		{
 			if (!dragger)
+			{
 				dragger = new Dragger(vp.container, onPositionUpdate);
-			
-			dragger.initialize(vp.width, vp.height, vp.width, vp.height);
+				draggableDict = new gDictionary();
+				dragger.initialize(vp.width, vp.height, vp.width, vp.height);
+			}	
+			draggableDict.insert(co, true);
 		}
 		
 		private function onPositionUpdate(p:Point, co:*):void
 		{
-			var xOffset:Number;
-			
-			co.x  = p.x;
-			co.y  = p.y;
+			if (draggableDict.getByKey(co))
+			{
+				co.x  = p.x;
+				co.y  = p.y;
+			}
 		}
 		
 		private function viewPopulateComplete():void

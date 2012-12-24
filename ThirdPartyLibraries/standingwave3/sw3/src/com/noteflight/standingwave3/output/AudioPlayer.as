@@ -200,7 +200,7 @@ package com.noteflight.standingwave3.output
         }
 
         /**
-         * The estimated percentage of CPU resources being consumed by sound synthesis. 
+         * The estimated percentage of CPU EmbeddedResources being consumed by sound synthesis. 
          */
         [Bindable("positionChange")]
         public function get cpuPercentage():Number

@@ -13,7 +13,12 @@
 	 * @author Geoff Pepos
 	 */
 	public class Container extends ContainerObject implements IDisposable
-	{	
+	{
+		public static const SCROLLING_CONTAINER:String = "scrollingContainer";
+		public static const CONTAINER:String = "container";
+		public static const PARALLAX_CONTAINER:String = "parallaxContainer";
+		public static const VIEW_CONTAINER:String = "viewContainer";
+		
 		public const HORIZONTAL:String = "horizontal";
 		public const VERTICAL:String = "vertical";
 		private var _arranger:Arranger;

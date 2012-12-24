@@ -3,6 +3,8 @@ package com.zutalor.containers.positioning
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.positioning.base.Positioner;
 	import com.zutalor.containers.positioning.base.PositionProperties;
+	import flash.events.Event;
+	import flash.events.MouseEvent;
 	
 	/**
 	 * ...
@@ -10,8 +12,10 @@ package com.zutalor.containers.positioning
 	 */
 	public class Scroller extends Positioner
 	{
+		
 		public function Scroller(containerObject:ContainerObject, onPositionUpdate:Function)
 		{
+			slipFactor = .3;
 			super(containerObject, onPositionUpdate);
 		}
 		
@@ -35,6 +39,18 @@ package com.zutalor.containers.positioning
 				pp.atViewportEdge = true;
 				pp.positioningEnabled = false;
 			}
+		}
+		
+		override protected function onDown(me:MouseEvent):void
+		{
+			super.onDown(me);
+			co.addEventListener(MouseEvent.MOUSE_OUT, onUp);
+		}
+		
+		override protected function onUp(me:MouseEvent):void
+		{
+			super.onUp(me);
+			co.removeEventListener(MouseEvent.MOUSE_OUT, onUp);
 		}
 		
 		//Position Adjusters	

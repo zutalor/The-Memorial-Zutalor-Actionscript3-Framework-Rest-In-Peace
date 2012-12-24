@@ -7,14 +7,14 @@ package com.zutalor.view.rendering
 	import com.zutalor.translate.Translate;
 	import com.zutalor.view.properties.ViewItemProperties;
 
-	public class ViewRenderer
+	public class ViewItemRenderer
 	{
 		private var onItemRendered:Function;	
 		private var filterApplier:Function;
 		private var positioner:Function;
 		private var container:Container;
 
-		public function ViewRenderer(c:Container, filterApplier:Function, positioner:Function = null) 
+		public function ViewItemRenderer(c:Container, filterApplier:Function, positioner:Function = null) 
 		{	
 			this.onItemRendered = onItemRendered;
 			this.filterApplier = filterApplier;

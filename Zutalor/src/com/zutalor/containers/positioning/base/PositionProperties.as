@@ -13,10 +13,10 @@ package com.zutalor.containers.positioning.base
 		public var lastPos:int;
 		public var targetPos:int;
 		public var offset:int;
+		public var targetScale:Number;
 		public var velocity:Number;
 		public var ViewportSize:int;
 		public var itemSize:int;
-		
 		
 		public var quantizePosition:Boolean;		
 		public var overViewportEdge:int;
