@@ -46,7 +46,7 @@
 		{
 			var path:String;
 			
-			MapXML.attributesToClass(xml , this); // map the properties
+			MapXML.attributesToClass(xml , this);
 			name = name.toLowerCase();
 
 			if (!language)

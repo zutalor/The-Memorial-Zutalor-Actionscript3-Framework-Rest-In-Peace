@@ -4,7 +4,7 @@
 	import com.gskinner.utils.IDisposable;
 	import com.zutalor.components.base.Component;
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.containers.positioning.Dragger;
+	import com.zutalor.positioning.Dragger;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
@@ -13,7 +13,7 @@
 	import com.zutalor.interfaces.IMediaPlayer;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.propertyManagers.NestedPropsManager;
+	import com.zutalor.properties.NestedPropsManager;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;

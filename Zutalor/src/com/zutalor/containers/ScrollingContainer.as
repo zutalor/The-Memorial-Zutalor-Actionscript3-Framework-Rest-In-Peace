@@ -1,7 +1,7 @@
 package com.zutalor.containers 
 {
 	import com.zutalor.containers.Container;
-	import com.zutalor.containers.positioning.Scroller;
+	import com.zutalor.positioning.Scroller;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	/**

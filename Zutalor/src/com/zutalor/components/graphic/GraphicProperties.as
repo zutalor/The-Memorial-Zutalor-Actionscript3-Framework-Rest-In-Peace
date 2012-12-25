@@ -2,7 +2,7 @@
 {
 	import com.zutalor.interfaces.IProperties;
 	import com.zutalor.properties.PropertiesBase;
-	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.properties.PropertyManager;
 	/**
 	 * ...
 	 * @author Geoff Pepos

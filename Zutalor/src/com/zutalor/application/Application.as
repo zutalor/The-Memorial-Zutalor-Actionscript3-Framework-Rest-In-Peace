@@ -5,7 +5,7 @@ package com.zutalor.application
 	import com.zutalor.events.AppEvent;
 	import com.zutalor.loaders.URL;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.widgets.Dialog;
 	import flash.desktop.NativeApplication;

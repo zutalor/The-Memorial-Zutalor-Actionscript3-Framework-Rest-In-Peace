@@ -2,7 +2,7 @@ package com.zutalor.translate
 {
 	import com.zutalor.translate.TranslateItemProperties;
 	import com.zutalor.translate.TranslateProperties;
-	import com.zutalor.propertyManagers.NestedPropsManager;
+	import com.zutalor.properties.NestedPropsManager;
 	import com.zutalor.utils.ShowError;
 	
 	/**

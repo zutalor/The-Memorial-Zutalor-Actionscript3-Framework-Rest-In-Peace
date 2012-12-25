@@ -7,7 +7,7 @@ package com.zutalor.components.list
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.interfaces.IListItemRenderer;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.utils.FullBounds;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.view.properties.ViewItemProperties;

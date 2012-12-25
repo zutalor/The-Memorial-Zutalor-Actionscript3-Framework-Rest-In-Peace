@@ -1,8 +1,8 @@
-package com.zutalor.containers.positioning
+package com.zutalor.positioning
 {
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.containers.positioning.base.Positioner;
-	import com.zutalor.containers.positioning.base.PositionProperties;
+	import com.zutalor.positioning.base.Positioner;
+	import com.zutalor.positioning.base.PositionProperties;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	

@@ -13,7 +13,7 @@ package com.zutalor.view.mediators
 	import com.zutalor.plugin.constants.PluginClasses;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.propertyManagers.NestedPropsManager;
+	import com.zutalor.properties.NestedPropsManager;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.utils.FullScreen;
 	import com.zutalor.utils.HotKeyManager;

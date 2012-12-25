@@ -1,7 +1,7 @@
 package com.zutalor.components.html 
 {
 	import com.zutalor.loaders.URLLoaderG;
-	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.utils.EmbeddedResources;
 	import com.zutalor.utils.ShowError;
 	import flash.events.Event;

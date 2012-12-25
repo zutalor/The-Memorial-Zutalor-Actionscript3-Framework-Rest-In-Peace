@@ -9,8 +9,8 @@ package com.zutalor.components.graphic
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.transition.Transition;
 	import com.zutalor.objectPool.ObjectPool;
-	import com.zutalor.propertyManagers.NestedPropsManager;
-	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.properties.NestedPropsManager;
+	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.EmbeddedResources;

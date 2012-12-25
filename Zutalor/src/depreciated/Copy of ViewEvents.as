@@ -12,9 +12,9 @@ package depreciated
 	import com.zutalor.properties.ComponentGroupProperties;
 	import com.zutalor.properties.SoundFxProperties;
 	import com.zutalor.view.properties.ViewItemProperties;
-	import com.zutalor.propertyManagers.NestedPropsManager;
-	import com.zutalor.propertyManagers.Presets;
-	import com.zutalor.propertyManagers.Props;
+	import com.zutalor.properties.NestedPropsManager;
+	import com.zutalor.properties.Presets;
+	import com.zutalor.properties.Props;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.ui.Button;

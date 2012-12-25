@@ -1,9 +1,9 @@
-﻿package depreciated
+﻿package com.zutalor.widgets
 {
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.scrolling.ScrollingContainer;
 	import com.zutalor.application.ApplicationProperties;
-	import com.zutalor.propertyManagers.NestedPropsManager;
+	import com.zutalor.properties.NestedPropsManager;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.Singleton;

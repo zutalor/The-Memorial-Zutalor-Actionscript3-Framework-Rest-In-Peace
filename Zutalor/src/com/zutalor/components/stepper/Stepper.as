@@ -7,7 +7,7 @@ package com.zutalor.components.stepper
 	import com.zutalor.components.label.Label;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.view.properties.ViewItemProperties;
-	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.text.TextUtil;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;

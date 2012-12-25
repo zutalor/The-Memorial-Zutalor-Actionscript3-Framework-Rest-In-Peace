@@ -1,7 +1,7 @@
 ﻿package com.zutalor.properties 
 {
 	import com.zutalor.interfaces.IProperties;
-	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.utils.MapXML;
 	/**
 	 * ...
@@ -14,7 +14,7 @@
 		
 		public function parseXML(xml:XML):Boolean
 		{	
-			MapXML.attributesToClass(xml , this); // map the properties
+			MapXML.attributesToClass(xml , this);
 			name = name.toLowerCase();
 			return true;
 		}

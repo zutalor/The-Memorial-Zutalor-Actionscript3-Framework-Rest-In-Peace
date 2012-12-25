@@ -3,8 +3,8 @@ package depreciated
 	import com.zutalor.loaders.AssetManager;
 	import com.zutalor.properties.SpriteSheetItemProperties;
 	import com.zutalor.properties.SpriteSheetProperties;
-	import com.zutalor.propertyManagers.NestedPropsManager;
-	import com.zutalor.propertyManagers.Props;
+	import com.zutalor.properties.NestedPropsManager;
+	import com.zutalor.properties.Props;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.Logger;
 	import com.zutalor.utils.EmbeddedResources;

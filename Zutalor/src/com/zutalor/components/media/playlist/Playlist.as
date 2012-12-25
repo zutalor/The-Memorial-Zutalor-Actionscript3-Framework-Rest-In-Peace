@@ -9,7 +9,7 @@ package com.zutalor.components.media.playlist
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.interfaces.IMediaPlayer;
 	import com.zutalor.plugin.constants.PluginMethods;
-	import com.zutalor.propertyManagers.NestedPropsManager;
+	import com.zutalor.properties.NestedPropsManager;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.utils.MasterClock;

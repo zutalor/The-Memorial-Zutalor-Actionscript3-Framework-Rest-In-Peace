@@ -5,7 +5,7 @@ package com.zutalor.components.media.base
 	import com.zutalor.events.MediaEvent;
 	import com.zutalor.events.MediaLoadProgressEvent;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.propertyManagers.AppContainerPropsManager;
+	import com.zutalor.properties.AppContainerPropsManager;
 	import com.zutalor.ui.DrawGraphics;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.StageRef;

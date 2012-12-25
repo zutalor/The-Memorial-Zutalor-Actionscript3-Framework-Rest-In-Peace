@@ -2,7 +2,7 @@
 {
 	import com.gskinner.utils.IDisposable;
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.containers.positioning.Arranger;
+	import com.zutalor.positioning.Arranger;
 	import com.zutalor.containers.utils.ObjectRemover;
 	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.StageRef;

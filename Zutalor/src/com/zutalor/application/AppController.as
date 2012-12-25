@@ -13,8 +13,8 @@
 	import com.zutalor.plugin.constants.PluginClasses;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.propertyManagers.NestedPropsManager;
-	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.properties.NestedPropsManager;
+	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.sequence.Sequence;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.utils.gDictionary;

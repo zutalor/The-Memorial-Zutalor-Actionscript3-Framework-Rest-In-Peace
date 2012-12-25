@@ -2,7 +2,7 @@ package com.zutalor.filters
 {
 	import com.gskinner.utils.IDisposable;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.propertyManagers.NestedPropsManager;
+	import com.zutalor.properties.NestedPropsManager;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	/**

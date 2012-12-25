@@ -35,8 +35,6 @@ package com.zutalor.synthesizer
 		public var bendStartValue:Number = 0;
 		public var bendEndValue:Number = 0;
 		
-		public var metadata:String;		
-		
 		public var humanize:Boolean; 	// affects below
 		public var pvUp:Number 			// pitch variation
 		public var pvDown:Number

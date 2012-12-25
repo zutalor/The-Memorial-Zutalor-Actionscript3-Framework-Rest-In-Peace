@@ -5,7 +5,7 @@ package com.zutalor.controllers.email
 	import com.zutalor.interfaces.IUiController;
 	import com.zutalor.application.ApplicationProperties;
 	import com.zutalor.view.properties.ViewItemProperties;
-	import com.zutalor.propertyManagers.ViewPropsManager;
+	import com.zutalor.properties.ViewPropsManager;
 	import com.zutalor.translate.Translate;
 	/**
 	 * ...

@@ -1,9 +1,9 @@
-package com.zutalor.containers.positioning 
+package com.zutalor.positioning 
 {
 	import com.greensock.TweenMax;
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.containers.positioning.base.Positioner;
-	import com.zutalor.containers.positioning.base.PositionProperties;
+	import com.zutalor.positioning.base.Positioner;
+	import com.zutalor.positioning.base.PositionProperties;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.StageRef;
 	import flash.events.Event;
@@ -20,8 +20,8 @@ package com.zutalor.containers.positioning
 		
 		public function Dragger(co:ContainerObject, onPositionUpdate:Function)
 		{
-			velocityMultiplier = 5;
 			super(co, onPositionUpdate);
+			velocityMultiplier = 2;
 		}
 			
 		override protected function getPosition(mousePos:Number, pp:PositionProperties):int
@@ -30,6 +30,6 @@ package com.zutalor.containers.positioning
 				pp.offset = pp.targetPos;
 
 			return mousePos - pp.offset * pp.targetScale;	
-		}		
+		}
 	}
 }

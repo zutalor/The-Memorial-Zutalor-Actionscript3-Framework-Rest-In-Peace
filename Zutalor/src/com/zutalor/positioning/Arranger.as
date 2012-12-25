@@ -1,4 +1,4 @@
-package com.zutalor.containers.positioning
+package com.zutalor.positioning
 {
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.utils.Scale;

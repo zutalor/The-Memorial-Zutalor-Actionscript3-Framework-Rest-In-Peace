@@ -7,30 +7,19 @@ package com.zutalor.audio
 	import com.zutalor.synthesizer.SynthPreset;
 	import com.zutalor.synthesizer.Track;
 	import com.zutalor.text.TextUtil;
-	import com.zutalor.widgets.Plotter;
-	import com.zutalor.widgets.Spinner;
 	import com.zutalor.utils.ArrayUtils;
 	import com.zutalor.utils.MathG;
-	import flash.display.Sprite;
-	import flash.events.Event;
-	import flash.events.IOErrorEvent;
-	import flash.events.MouseEvent;
-	import flash.utils.getTimer;
+	import com.zutalor.widgets.Spinner;
 	
-	public class GraphPlayer extends Sprite
+	public class GraphPlayer
 	{
 		public var functionNames:Array = ["linear", "exponential", "logistic", "sine wave", "sine + logistic", "linear + noise", "random"];
 		public var functions:Array = [ calcLinear, calcExp, calcLogistic1, calcSin ];
 		
 		public static const MAX_GRAPHS:int = 3;
-		public static const TOUCH_TOLERANCE:int = 5;
-		public static const VIBRATE_MS:int = 20;
-		
 		public var synthesizer:Synthesizer;
-		
 		public var xmlUrl:String;
 		public var assetPath:String;
-		public var graphCollection:Vector.<GraphSettings>;
 		public var data:Vector.<Array>;
 
 		public var expScaling:Number = 0.0303;
@@ -43,13 +32,9 @@ package com.zutalor.audio
 		
 		private var _intitialized:Boolean;
 		private var _isPlaying:Boolean;
-
 		private var _curData:Array;
-		private var _lastPlayTime:uint;
-		private var _lastNote:Number;
-		private var _lastGraphPlayed:int;
-		private var _chart:Sprite;
 		private var _onComplete:Function;
+		private var _numTracks:int;
 		
 		public function initialize(p:String = null, onComplete:Function = null):void
 		{
@@ -57,42 +42,13 @@ package com.zutalor.audio
 			var gs:GraphSettings;				
 
 			if (!_intitialized)
-			{
+			{	
 				_onComplete = onComplete;
-				Spinner.show();
 				_intitialized = true;				
-				
-				graphCollection = new Vector.<GraphSettings>(MAX_GRAPHS);
-				synthesizer = new Synthesizer(AudioDescriptor.RATE_44100, 8192);
-				
-				//if (AirStatus.isPortable)
-				//	_vibration = new Vibration();
-
 				params = p.split(",");
-				x = int(params[0]);
-				y = int(params[1]);
-				width = int(params[2]);
-				height = int(params[3]);
-				xmlUrl = TextUtil.strip(params[4]);
-				assetPath = TextUtil.strip(params[5]);
-				initSynth(); 
-				
-				for (var i:int = 0; i < MAX_GRAPHS; i++)
-				{
-					graphCollection[i] = new GraphSettings();
-					gs = graphCollection[i];
-					gs.mute = false;
-					gs.trackName = String(i);
-					gs.graphType = i;
-					gs.pan = i;
-					gs.sound = 0;
-					gs.soundName = "1";
-					synthesizer.tracks.insert(String(i), new Track());
-					gs.plotter = new Plotter(width-2, height);
-					gs.plotter.x = x;
-					gs.plotter.y = y;
-					addChild(gs.plotter);
-				}		
+				xmlUrl = TextUtil.strip(params[0]);
+				assetPath = TextUtil.strip(params[1]);
+				initSynth(MAX_GRAPHS); 
 				prepareData();	
 			}
 		}
@@ -104,7 +60,7 @@ package com.zutalor.audio
 			_isPlaying = false;
 		}
 						
-		public function play(numTracks:int):void
+		public function play(graphCollection:Array, onComplete:Function):void
 		{
 			var gs:GraphSettings;
 			var max:Array;
@@ -113,36 +69,19 @@ package com.zutalor.audio
 			var temp:Array;
 			var note:Note;
 
+			_onComplete = onComplete;
 			synthesizer.sequencer.stop();
 			max = [];
 			_curData = [];
 			_isPlaying = true;
-			for (var i:int = 0; i < numTracks; i++)
+			
+			_numTracks = graphCollection.length;
+			for (var i:int = 0; i < _numTracks; i++)
 			{
 				gs = graphCollection[i];
 				gs.noteScaling = 1;
-				gs.preset = makePreset(gs);
-				gs.plotter.graphics.clear();
-				gs.plotter.cancel();
-				switch(i)
-				{
-					case 0 :
-						gs.color = 0x4499FF;
-						break;
-					case 1 :
-						gs.color = 0x8D6FCE;
-						break;
-					case 2 :
-						gs.color = 0x78CDB6;
-						break;	
-					default :
-						gs.color = 0x0080C0;
-				}
-
-				gs.plotter.graphics.lineStyle(1, gs.color);
-				gs.plotter.dotSize = 2;
-				
-				_curData[i] = data[ functionNames.indexOf(gs.preset.metadata) ]; 							
+				gs.preset = makeSynthPreset(gs);
+				_curData[i] = data[ gs.graph ]; 							
 				max[i] = ArrayUtils.getMax(_curData[i]);
 				if (max[i] > curMax)
 				{
@@ -151,9 +90,9 @@ package com.zutalor.audio
 				}	
 			}
 			
-			// adjust audio data to scale properly in relation to other data.
+			// adjust audio data to scale properly in relation to graph data.
 		
-			for (i = 0; i < numTracks; i++)
+			for (i = 0; i < _numTracks; i++)
 			{
 				if (maxIndx != i)
 				{
@@ -165,11 +104,12 @@ package com.zutalor.audio
 			// now render graphs and play
 			var t:Track;
 			
-			for (i = 0; i < numTracks; i++)
+			for (i = 0; i < _numTracks; i++)
 			{
 				gs = graphCollection[i];
 				t = synthesizer.tracks.getByIndex(i);
 				temp = ArrayUtils.compress(_curData[i], 0, ArrayUtils.getMax(data[i]), gs.preset.lowNote, gs.preset.highNote, gs.noteScaling);
+				
 				for (var x:int = 0; x < temp.length; x++)
 				{
 					t.notes[x] = new Note();
@@ -185,30 +125,24 @@ package com.zutalor.audio
 				t.preset = gs.preset;
 				t.mute = gs.mute;
 			}
-			synthesizer.sequencer.renderTracks(numTracks);
+			synthesizer.sequencer.renderTracks(_numTracks);
 			synthesizer.sequencer.play(playbackComplete);
-		}
-		
-		private function playbackComplete():void
-		{
-			if (_isPlaying)
+			
+			function playbackComplete():void
 			{
-				stop();
-				synthesizer.sequencer.reset();
-
-				//StageRef.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-				
-				for (var i:int = 0; i < MAX_GRAPHS; i++)
-					if (!graphCollection[i].mute)
-						graphCollection[i].plotter.draw(_curData[i], null, 0, samples, 2);
+				if (_isPlaying)
+				{
+					stop();
+					synthesizer.sequencer.reset();
+				}	
+				_onComplete();
 			}		
-		}		
-				
-		private function makePreset(gs:GraphSettings):SynthPreset
+		}
+						
+		private function makeSynthPreset(gs:GraphSettings):SynthPreset
 		{
 			var sp:SynthPreset = new SynthPreset();
 			
-			sp.name = gs.trackName;
 			sp.soundName = gs.soundName;
 			sp.midiNoteNumbers = true;
 			sp.rounding = false;
@@ -229,7 +163,7 @@ package com.zutalor.audio
 			{
 				sp.dataIsPitchBend = true;
 				sp.loopStart = .6;
-				sp.loopEnd = 2;
+				sp.loopEnd = 1;
 			}
 			else
 				sp.hold = gs.noteOverlap;
@@ -238,8 +172,6 @@ package com.zutalor.audio
 			sp.release = .03;
 			sp.attack = .25
 			sp.sustain = 1;
-			
-			sp.metadata = functionNames[gs.graphType];
 			return sp;
 		}
 		
@@ -270,10 +202,16 @@ package com.zutalor.audio
 			calculate(data[i], samples, calcRandom)
 		}
 				
-		private function initSynth():void
+		private function initSynth(numTracks:int=3):void
 		{
 			var xml:XML;
 			var loader:URLLoaderG = new URLLoaderG();
+			
+			synthesizer = new Synthesizer(AudioDescriptor.RATE_44100, 8192);			
+			for (var i:int = 0; i < MAX_GRAPHS; i++)
+			{
+				synthesizer.tracks.insert(String(i), new Track());
+			}	
 			loader.load(xmlUrl, onXMLLoadComplete);
 		
 			function onXMLLoadComplete(lg:URLLoaderG):void
@@ -286,74 +224,11 @@ package com.zutalor.audio
 			function finishSetup():void
 			{
 				synthesizer.presets.parseXml(xml);
-				Spinner.hide();
-				
 				if (_onComplete != null)
 					_onComplete();
 			}
 		}	
-		
-		private function onMouseMove(me:MouseEvent):void
-		{
-			soundOnMove(_chart.mouseX, _chart.mouseY);
-		}
-		
-		private function soundOnMove(mouseX:int, mouseY:int):void
-		{	
-			var sp:SynthPreset;
-			var gs:GraphSettings;
-			
-			var x:int;
-			var y:int;
-			var t:Track;
-			var note:Number;
-			
-			if (!_lastPlayTime || (getTimer() - _lastPlayTime > 20)) 
-			{
-				for (var i:int = 0; i < MAX_GRAPHS; i++)
-				{
-					gs = graphCollection[i];
-				
-					if (!gs.mute)
-					{
-						// first find the index into the array which, with the offset, we'll get us the Y we're testing for.
-						x = MathG.linearConversion(mouseX - gs.plotter.x, 0, width, 0, gs.plotter.displayData.length / 2);
-						y = mouseY;
-						x *= 2;
-						
-						if (!(x % 2))
-							x++;
 
-						if (Math.abs(y - gs.plotter.displayData[x] - gs.plotter.y ) < TOUCH_TOLERANCE)
-						{
-							t = synthesizer.tracks.getByIndex(i);
-							var w:int = MathG.linearConversion(x, 0, gs.plotter.displayData.length, 0, t.notes.length);
-							note = t.notes[w].note;
-						
-							_lastPlayTime = getTimer();
-						
-							sp = makePreset(gs);
-							
-							_lastNote = note;
-							_lastGraphPlayed = i;
-
-							sp.attack = .01;
-							sp.hold = .2;
-							sp.loopStart = .05;
-							sp.loopEnd = .5;
-							sp.release = .01;
-							sp.monophonic = false;
-							sp.name = String(i);
-
-							synthesizer.playNote(note, sp );
-								
-							//if (AirStatus.isPortable)
-							//	_vibration.vibrate(VIBRATE_MS);
-						}
-					}
-				}
-			}
-		}
 		
 		// PLOTTING FUNCTIONS
 		

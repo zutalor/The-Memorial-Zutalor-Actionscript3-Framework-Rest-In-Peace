@@ -3,7 +3,7 @@ package com.zutalor.components.toggle
 	import com.zutalor.components.base.Component;
 	import com.zutalor.components.button.Button;
 	import com.zutalor.interfaces.IComponent;
-	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import flash.events.MouseEvent;
 	/**

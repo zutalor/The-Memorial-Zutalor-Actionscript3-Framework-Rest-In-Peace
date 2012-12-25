@@ -5,7 +5,7 @@
 	import com.gskinner.utils.IDisposable;
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.application.ApplicationProperties;
-	import com.zutalor.propertyManagers.Presets;
+	import com.zutalor.properties.Presets;
 	import com.zutalor.utils.StrUtil;
 	import com.zutalor.utils.DisplayObjectUtils;
 	import com.zutalor.utils.MasterClock;

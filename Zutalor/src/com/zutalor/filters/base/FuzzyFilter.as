@@ -2,7 +2,7 @@ package com.zutalor.filters.base
 {
 	import adobe.utils.CustomActions;
 	import com.zutalor.filters.base.FuzzyFilterProperties;
-	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.properties.PropertyManager;
 	import flash.net.getClassByAlias;
 	/**
 	 * ...

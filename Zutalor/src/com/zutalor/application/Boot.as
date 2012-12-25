@@ -1,7 +1,7 @@
 package com.zutalor.application 
 {
 	import com.zutalor.loaders.URLLoaderG;
-	import com.zutalor.propertyManagers.Properties;
+	import com.zutalor.properties.Properties;
 	import com.zutalor.text.StringUtils;
 	import com.zutalor.utils.ShowError;
 

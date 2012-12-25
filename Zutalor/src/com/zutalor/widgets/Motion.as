@@ -1,4 +1,4 @@
-﻿package com.zutalor.motion 
+﻿package com.zutalor.widgets 
 {
 	import adobe.utils.CustomActions;
 	import com.greensock.easing.Quint;

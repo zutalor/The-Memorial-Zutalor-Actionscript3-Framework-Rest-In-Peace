@@ -2,7 +2,7 @@
 {
 	import com.zutalor.application.Application;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.propertyManagers.NestedPropsManager;
+	import com.zutalor.properties.NestedPropsManager;
 	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.Singleton;
 	import com.zutalor.utils.StageRef;

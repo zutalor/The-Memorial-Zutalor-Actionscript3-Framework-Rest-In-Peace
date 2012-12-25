@@ -1,4 +1,4 @@
-package com.zutalor.utils
+package com.zutalor.positioning
 {
 	import com.zutalor.constants.Position;
 	import flash.display.DisplayObjectContainer;

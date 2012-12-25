@@ -1,6 +1,6 @@
 package com.zutalor.color 
 {
-	import com.zutalor.propertyManagers.NestedPropsManager;
+	import com.zutalor.properties.NestedPropsManager;
 	import com.zutalor.utils.ShowError;
 	/**
 	 * ...
@@ -24,8 +24,6 @@ package com.zutalor.color
 		{
 			if (_presets.getPropsById(t))
 				_theme = t;
-			else
-				ShowError.fail(Color,"Theme " + t + " not defined.");
 		}
 		
 		public static function get theme():String

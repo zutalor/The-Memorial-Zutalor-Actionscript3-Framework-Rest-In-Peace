@@ -2,7 +2,7 @@
 {
 	import com.zutalor.application.Application;
 	import com.zutalor.components.media.base.MediaController;
-	import com.zutalor.containers.positioning.Aligner;
+	import com.zutalor.positioning.Aligner;
 	import com.zutalor.events.MediaEvent;
 	import com.zutalor.interfaces.IMediaController;
 	import com.zutalor.objectPool.ObjectPool;

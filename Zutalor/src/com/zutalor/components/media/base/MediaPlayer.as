@@ -7,7 +7,7 @@
 	import com.zutalor.events.MediaEvent;
 	import com.zutalor.events.MediaLoadProgressEvent;
 	import com.zutalor.interfaces.IMediaPlayer;
-	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.widgets.Spinner;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.ShowError;

@@ -1,6 +1,6 @@
 ﻿package com.zutalor.interfaces 
 {
-	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.properties.PropertyManager;
 	
 	/**
 	 * ...

@@ -9,7 +9,7 @@ package com.zutalor.view.mediators
 	import com.zutalor.gesture.AppGestureEvent;
 	import com.zutalor.gesture.UserInputProperties;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.translate.TranslateItemProperties;
@@ -163,7 +163,7 @@ package com.zutalor.view.mediators
 			for (var i:int = 0; i < l; i++)
 			{
 				gp = _viewGestures.getPropsByIndex(i);
-				// FUCK_gm.activateGesture(gp.type, StageRef.stage, gp.name);
+				// TODO GEOFF_gm.activateGesture(gp.type, StageRef.stage, gp.name);
 			}
 			
 			_hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey, false, 0, true);

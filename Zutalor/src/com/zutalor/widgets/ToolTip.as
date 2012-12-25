@@ -5,7 +5,7 @@
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.application.ApplicationProperties;
 	import com.zutalor.properties.ToolTipProperties;
-	import com.zutalor.propertyManagers.Presets;
+	import com.zutalor.properties.Presets;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.StageRef;

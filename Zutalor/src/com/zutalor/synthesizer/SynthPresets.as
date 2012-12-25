@@ -60,7 +60,6 @@ package com.zutalor.synthesizer
 				preset.hold = props.@hold;
 				preset.sustain = props.@sustain;
 				preset.release = props.@release;
-				preset.metadata = props.@metadata;
 				preset.humanize = StringUtils.toBoolean(props.@humanize);
 				preset.pvUp = props.@pvUp;
 				preset.pvDown = props.@pvDown;

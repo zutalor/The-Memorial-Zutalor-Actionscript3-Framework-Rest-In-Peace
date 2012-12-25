@@ -1,7 +1,7 @@
 ﻿package com.zutalor.sequence 
 {
 	import com.zutalor.application.AppController;
-	import com.zutalor.propertyManagers.NestedPropsManager;
+	import com.zutalor.properties.NestedPropsManager;
 	import com.zutalor.utils.MasterClock;
 	import flash.events.Event;
 	/**

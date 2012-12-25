@@ -6,7 +6,7 @@ package com.zutalor.components.slider
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.view.properties.ViewItemProperties;
-	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.translate.Translate;
 	import flash.display.Sprite;
 	/**

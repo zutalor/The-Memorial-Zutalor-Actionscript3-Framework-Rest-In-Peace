@@ -1,6 +1,7 @@
 package com.zutalor.widgets
 {
 	import adobe.utils.CustomActions;
+	import com.zutalor.motion.Motion;
 	import flash.display.Sprite;
 	import com.zutalor.utils.MathG;
 	import flash.events.Event;

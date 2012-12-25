@@ -1,5 +1,6 @@
 package com.zutalor.synthesizer
 {
+	import com.noteflight.standingwave3.elements.Sample;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.ShowError;
@@ -12,7 +13,6 @@ package com.zutalor.synthesizer
 	import com.noteflight.standingwave3.filters.ResamplingFilter;
 	import com.noteflight.standingwave3.generators.ADSREnvelopeGenerator;
 	import com.noteflight.standingwave3.generators.SoundGenerator;
-	import com.noteflight.standingwave3.sources.SamplerSource;
 	import com.noteflight.standingwave3.utils.AudioUtils;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -27,14 +27,14 @@ package com.zutalor.synthesizer
 		private static const NUM_SAMPLES_TO_LOAD_CONCURRENTLY:int = 2;
 		
 		private var _urls:Vector.<String>;
-		private var _samplerSources:Vector.<SamplerSource>;
+		private var _SamplerSourceGs:Vector.<SamplerSourceG>;
 		private var _sampleMaps:gDictionary;
 		private var _frequencies:gDictionary;
 		
 		private var _numSamples:int;
 		private var _numLoaded:int;
 		private var _curLoading:int;
-		private var _samplerSourcesLoading:int;
+		private var _SamplerSourceGsLoading:int;
 		
 		private var _ad:AudioDescriptor;
 		private var _onComplete:Function;
@@ -83,21 +83,23 @@ package com.zutalor.synthesizer
 			noteNumber = noteNumber;
 			factor = AudioUtils.noteNumberToFrequency(noteNumber); 
 			
-			_samplerSources[indx].frequencyShift = factor / freq;
-			audioSource = _samplerSources[indx].clone();
+			_SamplerSourceGs[indx].frequencyShift = factor / freq;
+			audioSource = _SamplerSourceGs[indx].clone();
 		
 			if (preset.start)
-				SamplerSource(audioSource).firstFrame = preset.start;
+				SamplerSourceG(audioSource).firstFrame = preset.start;
 			
 			if (preset.loopEnd)
 				setupLoop(audioSource, preset.loopStart, preset.loopEnd);
 			
 			if (mods)
 				for (var i:int = 0; i < mods.length; i++)
-					SamplerSource(audioSource).pitchModulations.push(mods[i]);
+					SamplerSourceG(audioSource).pitchModulations.push(mods[i]);
 
 			panFilter = new PanFilter(new AmpFilter(audioSource, eg), preset.pan, preset.gain);
 			resamplingFilter = new ResamplingFilter(panFilter);
+			
+			
 			
 			return resamplingFilter;
 			
@@ -106,70 +108,16 @@ package com.zutalor.synthesizer
 		{
 				
 			var frameCount:int;
-			var isNegative:Boolean;
-			var test:Vector.<Number>;
 			var startLoopFrame:int;
 			var endFrame:int;
 
-			//find zero crossing frame or close to it...if zero is crossed between frames.
-			//var sample:Sample;
-			
-			/*
-			frameCount = audioSource.frameCount;
-			sample = audioSource.getSample(frameCount); // be faster to just get an offest into...but whatever for now. (too slow!)
-			
-			endFrame = loopEnd * _ad.rate;
-			if (endFrame > audioSource.frameCount)
-				endFrame = audioSource.frameCount;
-			
-
-								
-			for (var i:int = startLoopFrame; i < audioSource.frameCount; i++)
-			{
-				test = sample.getChannelSlice(0, i, 2);
-				if (!test[0])
-				{
-					startLoopFrame = i;
-					break;	
-				}
-				else 
-				{
-					if (test[0] < 0)
-						isNegative = true;
-						
-					if (isNegative && test[1] > 0 || !isNegative && test[1] < 0)
-					{
-						startLoopFrame = i;
-						break;	
-					}
-				}
-			}					
-			
-			isNegative = false;
-			
-			for (i = endFrame; i > 0; i--)
-			{
-				test = sample.getChannelSlice(0, i-1, 2);
-				if (!test[1])
-				{
-					endFrame = i;
-					break;
-				}
-				else
-				{
-					if (test[1] < 0)
-						isNegative = true;
-					
-					if (isNegative && test[0] > 0 || !isNegative && test[0] < 0)
-					{
-						endFrame = i;
-						break;	
-					}
-				}
-			}
-			*/
-			SamplerSource(audioSource).endFrame = endFrame;
-			SamplerSource(audioSource).startFrame = startLoopFrame = loopStart * _ad.rate;
+			//frameCount = audioSource.frameCount;
+			//endFrame = loopEnd * _ad.rate;
+			//if (endFrame > audioSource.frameCount)
+			//	endFrame = audioSource.frameCount;
+				trace(audioSource.frameCount);
+			//SamplerSourceG(audioSource).endFrame = endFrame;
+			//SamplerSourceG(audioSource).startFrame = startLoopFrame = loopStart * _ad.rate;				
 		}		
 		
 		public function getSoundUrl(sampleMap:SampleMap, noteNumber:Number):String
@@ -215,7 +163,7 @@ package com.zutalor.synthesizer
 				_numSamples += int(xml.sampleMaps.props[i].@samples);	
 			}
 			_urls = new Vector.<String>(_numSamples);
-			_samplerSources = new Vector.<SamplerSource>(_numSamples);
+			_SamplerSourceGs = new Vector.<SamplerSourceG>(_numSamples);
 			
 			for (var p:int = 0; p < numSampleMaps; p++)
 			{
@@ -285,7 +233,7 @@ package com.zutalor.synthesizer
 			e.target.removeEventListener(IOErrorEvent.DISK_ERROR,onIOError);
 			e.target.removeEventListener(IOErrorEvent.IO_ERROR,onIOError);			
 			indx = _urls.indexOf(StringUtils.getFileName(e.target.url));
-			_samplerSources[indx] = new SamplerSource(_ad, new SoundGenerator(e.target as Sound, _ad));
+			_SamplerSourceGs[indx] = new SamplerSourceG(_ad, new SoundGenerator(e.target as Sound, _ad));
 			_numLoaded++;
 			if (_numLoaded < _numSamples)
 				loadNext();

@@ -1,6 +1,6 @@
 package com.zutalor.path 
 {
-	import com.zutalor.propertyManagers.PropertyManager;
+	import com.zutalor.properties.PropertyManager;
 	/**
 	 * ...
 	 * @author Geoff Pepos

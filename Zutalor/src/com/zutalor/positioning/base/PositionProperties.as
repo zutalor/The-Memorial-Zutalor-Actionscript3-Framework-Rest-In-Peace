@@ -1,4 +1,4 @@
-package com.zutalor.containers.positioning.base 
+package com.zutalor.positioning.base 
 {
 	/**
 	 * ...

@@ -22,49 +22,49 @@ package com.zutalor.synthesizer
 	 */
 	public class Sequencer
 	{	
-		private var _presets:SynthPresets;
-		private var _voices:Voices;
-		private var _envelopeGenerators:Vector.<ADSREnvelopeGenerator>;
-		private var _egs:int;
-		private var _listPerformance:ListPerformance;
-		private var _audioPerformer:AudioPerformer;
-		private var _player:AudioPlayer;
-		private var _tracks:gDictionary;
-		private var _stereoAd:AudioDescriptor;
-		private var _monoAd:AudioDescriptor;
-		private var _framesPerCallBack:int;
-		private var _onComplete:Function;
-		private var _onCompleteArgs:*;
+		private var presets:SynthPresets;
+		private var voices:Voices;
+		private var envelopeGenerators:Vector.<ADSREnvelopeGenerator>;
+		private var egs:int;
+		private var listPerformance:ListPerformance;
+		private var audioPerformer:AudioPerformer;
+		private var player:AudioPlayer;
+		private var tracks:gDictionary;
+		private var stereoAd:AudioDescriptor;
+		private var monoAd:AudioDescriptor;
+		private var framesPerCallBack:int;
+		private var onComplete:Function;
+		private var onCompleteArgs:*;
 		
-		public function Sequencer(voices:Voices, presets:SynthPresets, tracks:gDictionary, framesPerCallback:int, sampleRate:Number)
+		public function Sequencer(pVoices:Voices, pPresets:SynthPresets, pTracks:gDictionary, pFramesPerCallback:int, pSampleRate:Number)
 		{
-			_init(sampleRate);
-			_voices = voices;
-			_presets = presets;
-			_tracks = tracks;
-			_framesPerCallBack = framesPerCallback;
+			init(pSampleRate);
+			voices = pVoices;
+			presets = pPresets;
+			tracks = pTracks;
+			framesPerCallBack = pFramesPerCallback;
 
 		}
-		private function _init(sampleRate:Number):void
+		private function init(sampleRate:Number):void
 		{
-			_stereoAd = new AudioDescriptor(sampleRate, AudioDescriptor.CHANNELS_STEREO);
-			_monoAd = new AudioDescriptor(sampleRate, AudioDescriptor.CHANNELS_MONO);
-			_listPerformance = new ListPerformance();			
+			stereoAd = new AudioDescriptor(sampleRate, AudioDescriptor.CHANNELS_STEREO);
+			monoAd = new AudioDescriptor(sampleRate, AudioDescriptor.CHANNELS_MONO);
+			listPerformance = new ListPerformance();			
 		}
 				
 		public function addTrack(track:Track):void
 		{			
-			_tracks.insert(track.trackName, track);
+			tracks.insert(track.trackName, track);
 		}
 		
 		public function getTrackByName(trackName:String):Track
 		{
-			return _tracks.getByKey(trackName);
+			return tracks.getByKey(trackName);
 		}
 		
 		public function getTrackByIndex(index:int):Track
 		{
-			return _tracks.getByIndex(index);
+			return tracks.getByIndex(index);
 		}
 
 		public function renderTracks(n:int=0):void
@@ -83,16 +83,16 @@ package com.zutalor.synthesizer
 			var preset:SynthPreset;
 									
 			if (!n)
-				numTracks = _tracks.length;
+				numTracks = tracks.length;
 			else
 				numTracks = n;
 			
-			_envelopeGenerators = new Vector.<ADSREnvelopeGenerator>;
-			_egs = 0;
+			envelopeGenerators = new Vector.<ADSREnvelopeGenerator>;
+			egs = 0;
 			
 			for (var t:int = 0; t < numTracks; t++)
 			{					
-				track = _tracks.getByIndex(t);
+				track = tracks.getByIndex(t);
 				
 				if (!track.mute)
 				{
@@ -114,9 +114,9 @@ package com.zutalor.synthesizer
 						for (i = 0; i < l; i++)
 							mods.push(new BendModulation(track.notes[i].startTime, track.notes[i].note - offset, nextTrigger + preset.noteTiming, track.notes[i + 1].note - offset));
 
-						_envelopeGenerators[_egs] = new ADSREnvelopeGenerator(_monoAd, preset.attack, preset.decay, track.notes.length * preset.noteTiming, preset.sustain, preset.release);							
-						_listPerformance.addSourceAt(0, _voices.getVoice(preset, track.notes[offsetIndx].note, _envelopeGenerators[_egs],  mods));
-						_egs++;
+						envelopeGenerators[egs] = new ADSREnvelopeGenerator(monoAd, preset.attack, preset.decay, track.notes.length * preset.noteTiming, preset.sustain, preset.release);							
+						listPerformance.addSourceAt(0, voices.getVoice(preset, track.notes[offsetIndx].note, envelopeGenerators[egs],  mods));
+						egs++;
 					}
 					else
 					{
@@ -125,14 +125,14 @@ package com.zutalor.synthesizer
 					
 						if (!preset.eachVoiceHasEg)
 						{
-							_envelopeGenerators[_egs] = new ADSREnvelopeGenerator(_monoAd, preset.attack, preset.decay, preset.hold, preset.sustain, preset.release);	
-							_egs++;
+							envelopeGenerators[egs] = new ADSREnvelopeGenerator(monoAd, preset.attack, preset.decay, preset.hold, preset.sustain, preset.release);	
+							egs++;
 						}
 						for (i = 0; i < track.notes.length; i++)
 						{
 							if (preset.eachVoiceHasEg)
 							{
-								_envelopeGenerators[_egs] = new ADSREnvelopeGenerator(_monoAd, preset.attack, preset.decay, preset.hold, preset.sustain, preset.release);	
+								envelopeGenerators[egs] = new ADSREnvelopeGenerator(monoAd, preset.attack, preset.decay, preset.hold, preset.sustain, preset.release);	
 							}
 							if (preset.midiNoteNumbers)
 								note = track.notes[i].note;
@@ -143,7 +143,7 @@ package com.zutalor.synthesizer
 								note = Math.round(note);
 
 								
-							_listPerformance.addSourceAt(track.notes[i].startTime, _voices.getVoice(preset, note, _envelopeGenerators[_egs - 1] , [ bm ]));
+							listPerformance.addSourceAt(track.notes[i].startTime, voices.getVoice(preset, note, envelopeGenerators[egs - 1] , null));
 
 						}
 					}
@@ -155,64 +155,64 @@ package com.zutalor.synthesizer
 		{
 			var i:int;
 			
-			for (i = 0; i < _listPerformance.elements.length; i++)
-				_listPerformance.elements[i] = null;
+			for (i = 0; i < listPerformance.elements.length; i++)
+				listPerformance.elements[i] = null;
 				
-			_listPerformance = new ListPerformance();
-			for (i = 0; i < _egs; i++)
+			listPerformance = new ListPerformance();
+			for (i = 0; i < egs; i++)
 			{
-				_envelopeGenerators[i].destroy();
-				_envelopeGenerators[i] = null;
+				envelopeGenerators[i].destroy();
+				envelopeGenerators[i] = null;
 			}
-			_envelopeGenerators = new Vector.<ADSREnvelopeGenerator>;
+			envelopeGenerators = new Vector.<ADSREnvelopeGenerator>;
 			
-			_egs = 0;
+			egs = 0;
 		}
 		
 		public function stop():void
 		{
-			if (_player)
-				_player.stop();
+			if (player)
+				player.stop();
 		}
 		
 		public function pause():void
 		{
-			if (_player)
-				_player.pause();
+			if (player)
+				player.pause();
 		}
 		
 		public function resume():void
 		{
-			if (_player)
-				_player.resume();
+			if (player)
+				player.resume();
 		}
 		
-		public function play(onComplete:Function = null, onCompleteArgs:* = null):void // plays the current list performance.
+		public function play(pOnComplete:Function = null, pOnCompleteArgs:* = null):void // plays the current list performance.
 		{	
-			_onComplete = onComplete;
-			_onCompleteArgs = onCompleteArgs;
+			onComplete = pOnComplete;
+			onCompleteArgs = pOnCompleteArgs;
 			
-			if (_listPerformance && _listPerformance.elements)		
+			if (listPerformance && listPerformance.elements)		
 			{
-				_audioPerformer = new AudioPerformer(_listPerformance, _stereoAd);
-				_audioPerformer.mixGain = _tracks.length * -5;
+				audioPerformer = new AudioPerformer(listPerformance, stereoAd);
+				audioPerformer.mixGain = tracks.length * -5;
 
-				_player = new AudioPlayer(_framesPerCallBack);
-				_player.play(_audioPerformer);
-				_player.addEventListener(Event.SOUND_COMPLETE, onSoundComplete, false, 0, true);
+				player = new AudioPlayer(framesPerCallBack);
+				player.play(audioPerformer);
+				player.addEventListener(Event.SOUND_COMPLETE, onSoundComplete, false, 0, true);
 			}
 		}		
 
 		private function onSoundComplete(e:Event):void
 		{
 			reset();
-			_player.removeEventListener(Event.SOUND_COMPLETE, onSoundComplete);
-			_player = null;
-			if (_onComplete != null)
-				if (_onCompleteArgs != null)
-					_onComplete(_onCompleteArgs);
+			player.removeEventListener(Event.SOUND_COMPLETE, onSoundComplete);
+			player = null;
+			if (onComplete != null)
+				if (onCompleteArgs != null)
+					onComplete(onCompleteArgs);
 				else
-					_onComplete();
+					onComplete();
 		}
 	}	
 }

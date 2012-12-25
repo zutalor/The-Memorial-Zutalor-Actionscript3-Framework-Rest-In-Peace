@@ -1,6 +1,6 @@
 package com.zutalor.components.base 
 {
-	import com.zutalor.containers.positioning.Aligner;
+	import com.zutalor.positioning.Aligner;
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.containers.Container;
 	import com.zutalor.containers.base.ContainerObject;

@@ -1,4 +1,4 @@
-﻿package com.zutalor.propertyManagers
+﻿package com.zutalor.properties
 {
 	import com.zutalor.utils.gDictionary;
 	/**

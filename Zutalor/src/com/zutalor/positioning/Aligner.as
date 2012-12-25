@@ -1,4 +1,4 @@
-package com.zutalor.containers.positioning 
+package com.zutalor.positioning 
 {
 	/**
 	 * uk.soulwire.utils.display.DisplayUtils

@@ -4,7 +4,7 @@ package depreciated.model
 	import com.zutalor.preloading.Asset;
 	import com.zutalor.preloading.AssetManager;
 	import com.zutalor.properties.TextFormatProperties;
-	import com.zutalor.propertyManagers.Props;
+	import com.zutalor.properties.Props;
 	import com.zutalor.utils.Assertions;
 	import com.zutalor.utils.EmbeddedResources;
 	import com.zutalor.utils.Singleton;

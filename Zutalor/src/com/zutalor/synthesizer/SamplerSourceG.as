@@ -1,4 +1,4 @@
-package com.noteflight.standingwave3.sources
+package com.zutalor.synthesizer
 {
     import com.noteflight.standingwave3.elements.*;
     import com.noteflight.standingwave3.modulation.*;
@@ -9,7 +9,7 @@ package com.noteflight.standingwave3.sources
      * complex sample wavetable playback functionality.
      * It has flexible start and loop points, and accepts pitch modulations.
      */
-    public class SamplerSource extends AbstractSource 
+    public class SamplerSourceG extends AbstractSource 
     {
         
         /** A direct access source to serve as the source of raw sample data */
@@ -41,12 +41,12 @@ package com.noteflight.standingwave3.sources
         
         private static const LOOP_MAX:Number = 30;
         
-        
+		
         /** 
          * LoopSource extends a sample indefinitely by looping a section.
          * The source of a loop is always a SoundGenerator.
          */
-        public function SamplerSource(ad:AudioDescriptor, soundGenerator:IDirectAccessSource)
+        public function SamplerSourceG(ad:AudioDescriptor, soundGenerator:IDirectAccessSource)
         {
             super(ad, 0, 1.0);
             this._generator = soundGenerator;
@@ -164,6 +164,8 @@ package com.noteflight.standingwave3.sources
                 _realizedModulations.push(pm);
             }
         }
+		
+		/*
         
         override public function clone():IAudioSource
         {
@@ -178,6 +180,25 @@ package com.noteflight.standingwave3.sources
             
             return rslt;
         }
-        
-    }
+        */
+
+		override public function clone():IAudioSource
+        {
+            var rslt:SamplerSourceG = new SamplerSourceG(_descriptor, _generator);
+            rslt.startFrame = startFrame;
+            rslt.endFrame = endFrame;
+            rslt.frequencyShift = frequencyShift;
+            rslt.resetPosition();
+			rslt.pitchModulations = pitchModulations;
+			rslt._realizedModulations = _realizedModulations;
+			rslt._pitchModulationData = _pitchModulationData;
+            
+			
+			// Yes, did in this extended class. (Well copied, plan to refactor it);
+            // "Figure out if we need to clone modulations
+            // FOr now, clones have empty modulations"
+            
+            return rslt;
+        }
+	}
 }

@@ -31,7 +31,7 @@
 		
 		override public function parseXML(xml:XML):Boolean
 		{	
-			MapXML.attributesToClass(xml , this); // map the properties
+			MapXML.attributesToClass(xml , this);
 			name = name.toLowerCase();
 			textFormat = makeTextFormat();
 			return true;
