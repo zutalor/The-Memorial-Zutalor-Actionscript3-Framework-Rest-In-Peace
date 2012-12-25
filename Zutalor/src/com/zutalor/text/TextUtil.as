@@ -120,5 +120,15 @@
 				}
 			}
 		}
+		
+		public static function makeCommaDelimited(... rest):String
+		{
+			var s:String;
+			
+			for (var i:int = 0; i < rest.length; i++)
+				s += String(rest[i]) + ",";
+				
+			return s;	
+		}
 	}
 }

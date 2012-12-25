@@ -8,6 +8,7 @@ package com.zutalor.synthesizer
 	import com.noteflight.standingwave3.generators.ADSREnvelopeGenerator;
 	import com.noteflight.standingwave3.generators.SoundGenerator;
 	import com.noteflight.standingwave3.utils.AudioUtils;
+	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.text.StringUtils;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.MathG;
@@ -25,14 +26,14 @@ package com.zutalor.synthesizer
 		protected static const NUM_SAMPLES_TO_LOAD_CONCURRENTLY:int = 2;
 		
 		protected var _urls:Vector.<String>;
-		protected var _SamplerSourceG:Vector.<SamplerSourceG>;
+		protected var _samplerSources:Vector.<SamplerSourceG>;
 		protected var _sampleMaps:gDictionary;
 		protected var _frequencies:gDictionary;
 		
 		protected var _numSamples:int;
 		protected var _numLoaded:int;
 		protected var _curLoading:int;
-		protected var _SamplerSourceGLoading:int;
+		protected var _samplerSourcesLoading:int;
 		
 		protected var _ad:AudioDescriptor;
 		protected var _onComplete:Function;
@@ -81,8 +82,8 @@ package com.zutalor.synthesizer
 			noteNumber = noteNumber;
 			factor = AudioUtils.noteNumberToFrequency(noteNumber);
 			
-			_SamplerSourceG[indx].frequencyShift = factor / freq;
-			audioSource = _SamplerSourceG[indx].clone();
+			_samplerSources[indx].frequencyShift = factor / freq;
+			audioSource = _samplerSources[indx].clone();
 			
 			if (preset.start)
 				SamplerSourceG(audioSource).firstFrame = preset.start;
@@ -188,7 +189,7 @@ package com.zutalor.synthesizer
 				return sampleMap.filebase + "-" + (n + 1) + sampleMap.fileExt;
 		}
 		
-		public function load(xml:XML, assetPath:String = null, onComplete:Function = null):void
+		public function load(sampleMaps:PropertyManager, assetPath:String = null, onComplete:Function = null):void
 		{
 			var numSampleMaps:int;
 			var sampleMap:SampleMap;
@@ -201,26 +202,19 @@ package com.zutalor.synthesizer
 			_assetPath = assetPath;
 			_onComplete = onComplete;
 			
-			numSampleMaps = xml.sampleMaps.props.length();
+			numSampleMaps = sampleMaps.length;
 			for (i = 0; i < numSampleMaps; i++)
 			{
-				_numSamples += int(xml.sampleMaps.props[i].@samples);
+				sampleMap = sampleMaps.getPropsByIndex(i);
+				_numSamples += sampleMap.samples;
 			}
 			_urls = new Vector.<String>(_numSamples);
-			_SamplerSourceG = new Vector.<SamplerSourceG>(_numSamples);
+			_samplerSources = new Vector.<SamplerSourceG>(_numSamples);
 			
 			for (var p:int = 0; p < numSampleMaps; p++)
 			{
-				sampleMap = new SampleMap();
+				sampleMap = sampleMaps.getPropsByIndex(p);
 				freqs = new Vector.<Number>;
-				
-				props = xml.sampleMaps.props[p];
-				sampleMap.name = props.@name;
-				sampleMap.filebase = props.@filebase;
-				sampleMap.fileExt = props.@fileExt;
-				sampleMap.baseMidiNote = props.@baseMidiNote;
-				sampleMap.interval = props.@interval;
-				sampleMap.samples = props.@samples;
 				
 				for (i = 1; i <= sampleMap.samples; i++)
 				{
@@ -277,7 +271,7 @@ package com.zutalor.synthesizer
 			e.target.removeEventListener(IOErrorEvent.DISK_ERROR, onIOError);
 			e.target.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
 			indx = _urls.indexOf(StringUtils.getFileName(e.target.url));
-			_SamplerSourceG[indx] = new SamplerSourceG(_ad, new SoundGenerator(e.target as Sound, _ad));
+			_samplerSources[indx] = new SamplerSourceG(_ad, new SoundGenerator(e.target as Sound, _ad));
 			_numLoaded++;
 			if (_numLoaded < _numSamples)
 				loadNext();

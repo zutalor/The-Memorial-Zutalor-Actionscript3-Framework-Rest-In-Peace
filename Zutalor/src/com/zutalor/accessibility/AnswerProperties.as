@@ -1,4 +1,4 @@
-package com.zutalor.view.properties 
+package com.zutalor.accessibility 
 {
 	/**
 	 * ...
@@ -6,6 +6,7 @@ package com.zutalor.view.properties
 	 */
 	public class AnswerProperties 
 	{
+		public var name:String;
 		public var questionId:String;
 		public var answer:String;
 		public var correctAnswer:String;

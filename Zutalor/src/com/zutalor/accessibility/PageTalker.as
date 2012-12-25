@@ -1,8 +1,7 @@
-package com.zutalor.view.mediators
+package com.zutalor.accessibility
 {
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.application.Application;
-	import com.zutalor.audio.TextToSpeech;
 	import com.zutalor.components.media.audio.AudioPlayer;
 	import com.zutalor.controllers.base.UiControllerBase;
 	import com.zutalor.events.HotKeyEvent;
@@ -18,15 +17,11 @@ package com.zutalor.view.mediators
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.StageRef;
-	import com.zutalor.view.properties.AnswerProperties;
-	import com.zutalor.view.properties.GenericData;
-	import com.zutalor.widgets.Dialog;
 	import org.gestouch.gestures.Gesture;
-	import org.gestouch.gestures.SwipeGesture;
 	import org.gestouch.gestures.TapGesture;
 
 	
-	public class ViewStateMediator
+	public class PageTalker
 	{	
 		private var _prevState:int;
 		private var _curStateId:String;
@@ -43,7 +38,7 @@ package com.zutalor.view.mediators
 		private var _answers:gDictionary;
 		private var _viewGestures:PropertyManager;
 		private var _viewKeyboardInput:PropertyManager;
-		private var _dataFromUiController:GenericData;
+		private var _dataFromUiController:AnswerProperties;
 		private var _transitionNext:String;
 		private var _transitionBack:String;
 		private var _curTransitionType:String;
@@ -54,12 +49,11 @@ package com.zutalor.view.mediators
 		private var _currentQuestion:int;
 		private var _loops:int;
 		private var _onCompleteState:String;
-
 		
 		private static const soundExt:String = ".mp3";
 		private static const letterAnswers:String = "abcdefgh";
 		
-		public function ViewStateMediator(uiController:UiControllerBase)
+		public function PageTalker(uiController:UiControllerBase)
 		{
 			_uiController = uiController;
 			init();
@@ -101,7 +95,7 @@ package com.zutalor.view.mediators
 				activateStateByIndex(0);
 		}
 		
-		public function onUiControllerMethodCompleted(args:XMLList, data:GenericData):void
+		public function onUiControllerMethodCompleted(args:XMLList, data:AnswerProperties):void
 		{
 			_dataFromUiController = data;
 			if (!_loopCount)
@@ -346,6 +340,7 @@ package com.zutalor.view.mediators
 				{	
 					case "uiControllerMethod" :
 						_uiController[XML(tp.tMeta).state.@method](XML(tp.tMeta).state);	
+						trace("uiControllerMethod");
 						break;
 					case "submitAnswers" :
 						var ap:AnswerProperties;

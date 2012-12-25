@@ -18,6 +18,7 @@ package com.zutalor.synthesizer
 	{
 		public var voices:Voices;
 		public var presets:PropertyManager;
+		public var sampleMaps:PropertyManager;
 		public var sequencer:Sequencer;
 		public var tracks:gDictionary;
 		
@@ -42,6 +43,7 @@ package com.zutalor.synthesizer
 		{
 			voices = new Voices(sampleRate);
 			presets = new PropertyManager(SynthPreset);
+			sampleMaps = new PropertyManager(SampleMap);
 			tracks = new gDictionary();
 			sequencer = new Sequencer(voices, presets, tracks, framesPerCallBack, sampleRate);
 			monoAD = new AudioDescriptor(sampleRate, 1);
@@ -54,7 +56,6 @@ package com.zutalor.synthesizer
 		
 		public function loadVoices(xmlUrl:String, assetPath:String, numTracks:int, onComplete:Function = null):void
 		{
-			var xml:XML;
 			var loader:URLLoaderG = new URLLoaderG();
 			
 			for (var i:int = 0; i < numTracks; i++)
@@ -66,13 +67,13 @@ package com.zutalor.synthesizer
 			function onXMLLoadComplete(lg:URLLoaderG):void
 			{
 				//TODO Handle error.
-				xml = XML(lg.data);
-				voices.load(xml, assetPath, finishSetup);
+				presets.parseXML(XML(lg.data).presets);
+				sampleMaps.parseXML(XML(lg.data).sampleMaps);
+				voices.load(sampleMaps, assetPath, finishSetup);
 			}
 					
 			function finishSetup():void
 			{
-				presets.parseXML(xml.sampleMaps);
 				if (onComplete != null)
 					onComplete();
 			}

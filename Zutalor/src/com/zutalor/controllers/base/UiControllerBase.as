@@ -9,7 +9,6 @@ package com.zutalor.controllers.base
 	import com.zutalor.utils.Logger;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.controller.ViewControllerRegistry;
-	import com.zutalor.view.mediators.ViewStateMediator;
 	import flash.desktop.NativeApplication;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;

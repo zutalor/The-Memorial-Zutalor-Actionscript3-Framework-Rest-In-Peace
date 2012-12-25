@@ -1,5 +1,6 @@
-package com.zutalor.audio 
+package com.zutalor.accessibility 
 { 
+	import com.zutalor.audio.SamplePlayer;
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
