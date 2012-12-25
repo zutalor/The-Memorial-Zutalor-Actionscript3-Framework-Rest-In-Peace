@@ -48,7 +48,8 @@ package com.zutalor.audio
 				params = p.split(",");
 				xmlUrl = TextUtil.strip(params[0]);
 				assetPath = TextUtil.strip(params[1]);
-				initSynth(MAX_GRAPHS); 
+				synthesizer = new Synthesizer(AudioDescriptor.RATE_44100, 8192);			
+				synthesizer.loadVoices(xmlUrl, assetPath, MAX_GRAPHS, onComplete); 
 				prepareData();	
 			}
 		}
@@ -57,6 +58,7 @@ package com.zutalor.audio
 		{
 			if (synthesizer)
 				synthesizer.sequencer.stop();
+			
 			_isPlaying = false;
 		}
 						
@@ -202,32 +204,7 @@ package com.zutalor.audio
 			calculate(data[i], samples, calcRandom)
 		}
 				
-		private function initSynth(numTracks:int=3):void
-		{
-			var xml:XML;
-			var loader:URLLoaderG = new URLLoaderG();
-			
-			synthesizer = new Synthesizer(AudioDescriptor.RATE_44100, 8192);			
-			for (var i:int = 0; i < MAX_GRAPHS; i++)
-			{
-				synthesizer.tracks.insert(String(i), new Track());
-			}	
-			loader.load(xmlUrl, onXMLLoadComplete);
 		
-			function onXMLLoadComplete(lg:URLLoaderG):void
-			{
-				//TODO Handle error.
-				xml = XML(lg.data);
-				synthesizer.voices.load(xml, assetPath, finishSetup);
-			}
-					
-			function finishSetup():void
-			{
-				synthesizer.presets.parseXml(xml);
-				if (_onComplete != null)
-					_onComplete();
-			}
-		}	
 
 		
 		// PLOTTING FUNCTIONS

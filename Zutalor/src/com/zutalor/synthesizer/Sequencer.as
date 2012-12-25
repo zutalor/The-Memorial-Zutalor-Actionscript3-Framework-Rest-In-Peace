@@ -1,20 +1,16 @@
 package com.zutalor.synthesizer
 {
-	import com.zutalor.utils.gDictionary;
 	import com.noteflight.standingwave3.elements.AudioDescriptor;
 	import com.noteflight.standingwave3.elements.IAudioSource;
-	import com.noteflight.standingwave3.filters.PanFilter;
-	import com.noteflight.standingwave3.filters.StandardizeFilter;
 	import com.noteflight.standingwave3.generators.ADSREnvelopeGenerator;
 	import com.noteflight.standingwave3.modulation.BendModulation;
 	import com.noteflight.standingwave3.output.AudioPlayer;
 	import com.noteflight.standingwave3.performance.AudioPerformer;
 	import com.noteflight.standingwave3.performance.ListPerformance;
-	import com.noteflight.standingwave3.performance.PerformableAudioSource;
-	import com.noteflight.standingwave3.sources.SineSource;
 	import com.noteflight.standingwave3.utils.AudioUtils;
+	import com.zutalor.properties.PropertyManager;
+	import com.zutalor.utils.gDictionary;
 	import flash.events.Event;
-	import flash.utils.getTimer;
 	
 	/**
 	 * ...
@@ -22,7 +18,7 @@ package com.zutalor.synthesizer
 	 */
 	public class Sequencer
 	{	
-		private var presets:SynthPresets;
+		private var presets:PropertyManager;
 		private var voices:Voices;
 		private var envelopeGenerators:Vector.<ADSREnvelopeGenerator>;
 		private var egs:int;
@@ -36,7 +32,7 @@ package com.zutalor.synthesizer
 		private var onComplete:Function;
 		private var onCompleteArgs:*;
 		
-		public function Sequencer(pVoices:Voices, pPresets:SynthPresets, pTracks:gDictionary, pFramesPerCallback:int, pSampleRate:Number)
+		public function Sequencer(pVoices:Voices, pPresets:PropertyManager, pTracks:gDictionary, pFramesPerCallback:int, pSampleRate:Number)
 		{
 			init(pSampleRate);
 			voices = pVoices;

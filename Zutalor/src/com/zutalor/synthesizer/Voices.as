@@ -22,28 +22,28 @@ package com.zutalor.synthesizer
 	 */
 	public class Voices
 	{
-		private static const NUM_SAMPLES_TO_LOAD_CONCURRENTLY:int = 2;
+		protected static const NUM_SAMPLES_TO_LOAD_CONCURRENTLY:int = 2;
 		
-		private var _urls:Vector.<String>;
-		private var _SamplerSourceGs:Vector.<SamplerSourceG>;
-		private var _sampleMaps:gDictionary;
-		private var _frequencies:gDictionary;
+		protected var _urls:Vector.<String>;
+		protected var _SamplerSourceG:Vector.<SamplerSourceG>;
+		protected var _sampleMaps:gDictionary;
+		protected var _frequencies:gDictionary;
 		
-		private var _numSamples:int;
-		private var _numLoaded:int;
-		private var _curLoading:int;
-		private var _SamplerSourceGsLoading:int;
+		protected var _numSamples:int;
+		protected var _numLoaded:int;
+		protected var _curLoading:int;
+		protected var _SamplerSourceGLoading:int;
 		
-		private var _ad:AudioDescriptor;
-		private var _onComplete:Function;
-		private var _assetPath:String;
+		protected var _ad:AudioDescriptor;
+		protected var _onComplete:Function;
+		protected var _assetPath:String;
 		
 		public function Voices(sampleRate:int = 44100)
 		{
 			_init(sampleRate);
 		}
 		
-		private function _init(sampleRate:int = 44100):void
+		protected function _init(sampleRate:int = 44100):void
 		{
 			_ad = new AudioDescriptor(sampleRate, 1);
 			_sampleMaps = new gDictionary;
@@ -81,8 +81,8 @@ package com.zutalor.synthesizer
 			noteNumber = noteNumber;
 			factor = AudioUtils.noteNumberToFrequency(noteNumber);
 			
-			_SamplerSourceGs[indx].frequencyShift = factor / freq;
-			audioSource = _SamplerSourceGs[indx].clone();
+			_SamplerSourceG[indx].frequencyShift = factor / freq;
+			audioSource = _SamplerSourceG[indx].clone();
 			
 			if (preset.start)
 				SamplerSourceG(audioSource).firstFrame = preset.start;
@@ -207,7 +207,7 @@ package com.zutalor.synthesizer
 				_numSamples += int(xml.sampleMaps.props[i].@samples);
 			}
 			_urls = new Vector.<String>(_numSamples);
-			_SamplerSourceGs = new Vector.<SamplerSourceG>(_numSamples);
+			_SamplerSourceG = new Vector.<SamplerSourceG>(_numSamples);
 			
 			for (var p:int = 0; p < numSampleMaps; p++)
 			{
@@ -239,9 +239,9 @@ package com.zutalor.synthesizer
 			loadSamples();
 		}
 		
-// PRIVATE METHODS
+// PROTECTED METHODS
 		
-		private function loadSamples():void
+		protected function loadSamples():void
 		{
 			if (!_urls.length)
 				throw new Error("Synth Sounds: cannot load samples.");
@@ -251,7 +251,7 @@ package com.zutalor.synthesizer
 				loadNext();
 		}
 		
-		private function loadNext():void
+		protected function loadNext():void
 		{
 			if (_curLoading < _numSamples)
 			{
@@ -263,13 +263,13 @@ package com.zutalor.synthesizer
 			}
 		}
 		
-		private function onIOError(e:Event):void
+		protected function onIOError(e:Event):void
 		{
 			trace("IoError");
 			throw new Error("IoError");
 		}
 		
-		private function onSampleLoadComplete(e:Event):void
+		protected function onSampleLoadComplete(e:Event):void
 		{
 			var indx:int;
 			
@@ -277,7 +277,7 @@ package com.zutalor.synthesizer
 			e.target.removeEventListener(IOErrorEvent.DISK_ERROR, onIOError);
 			e.target.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
 			indx = _urls.indexOf(StringUtils.getFileName(e.target.url));
-			_SamplerSourceGs[indx] = new SamplerSourceG(_ad, new SoundGenerator(e.target as Sound, _ad));
+			_SamplerSourceG[indx] = new SamplerSourceG(_ad, new SoundGenerator(e.target as Sound, _ad));
 			_numLoaded++;
 			if (_numLoaded < _numSamples)
 				loadNext();

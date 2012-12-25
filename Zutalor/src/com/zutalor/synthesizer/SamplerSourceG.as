@@ -165,23 +165,6 @@ package com.zutalor.synthesizer
             }
         }
 		
-		/*
-        
-        override public function clone():IAudioSource
-        {
-            var rslt:SamplerSource = new SamplerSource(_descriptor, _generator);
-            rslt.startFrame = startFrame;
-            rslt.endFrame = endFrame;
-            rslt.frequencyShift = frequencyShift;
-            rslt.resetPosition();
-            
-            // Figure out if we need to clone modulations
-            // FOr now, clones have empty modulations
-            
-            return rslt;
-        }
-        */
-
 		override public function clone():IAudioSource
         {
             var rslt:SamplerSourceG = new SamplerSourceG(_descriptor, _generator);

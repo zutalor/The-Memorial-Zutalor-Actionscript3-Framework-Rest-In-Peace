@@ -1,12 +1,13 @@
 package com.zutalor.synthesizer  
 {
+	import com.zutalor.interfaces.IProperties;
+	import com.zutalor.properties.PropertiesBase;
 	/**
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class SynthPreset
+	public class SynthPreset extends PropertiesBase implements IProperties
 	{
-		public var name:String;
 		public var soundName:String;
 		public var midiNoteNumbers:Boolean;
 		public var rounding:Boolean;
@@ -15,7 +16,6 @@ package com.zutalor.synthesizer
 		public var noteTiming:Number;
 		public var pan:Number;
 		public var gain:Number;
-		
 		public var eachVoiceHasEg:Boolean;
 		public var monophonic:Boolean;
 		public var attack:Number;
@@ -23,13 +23,10 @@ package com.zutalor.synthesizer
 		public var hold:Number;
 		public var sustain:Number;
 		public var release:Number;
-		
 		public var start:Number = 0;
 		public var loopStart:Number = 0;
 		public var loopEnd:Number = 0;
-	
 		public var dataIsPitchBend:Boolean;
-		
 		public var bendStartTime:Number = 0;
 		public var bendEndTime:Number = 0;
 		public var bendStartValue:Number = 0;
@@ -45,10 +42,6 @@ package com.zutalor.synthesizer
 		public var tvDown:Number
 		public var tvIterations:Number
 		public var tvProbability:Number
-		public var tvFalloff:Number				
-		
-		public function SynthPreset() 
-		{
-		}
+		public var tvFalloff:Number
 	}
 }
