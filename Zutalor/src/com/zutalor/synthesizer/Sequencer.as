@@ -43,8 +43,8 @@ package com.zutalor.synthesizer
 			presets = pPresets;
 			tracks = pTracks;
 			framesPerCallBack = pFramesPerCallback;
-
 		}
+		
 		private function init(sampleRate:Number):void
 		{
 			stereoAd = new AudioDescriptor(sampleRate, AudioDescriptor.CHANNELS_STEREO);

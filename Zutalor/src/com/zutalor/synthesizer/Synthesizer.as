@@ -28,11 +28,11 @@ package com.zutalor.synthesizer
 		private var stereoAD:AudioDescriptor;
 		private var maxVoices:int;
 			
-		public function Synthesizer(sampleRate:Number, framesPerCallBack:int, maxVoices:int = 16)
+		public function Synthesizer(pSampleRate:Number, pFramesPerCallBack:int, pMaxVoices:int = 16)
 		{
-			framesPerCallBack = framesPerCallBack;
-			sampleRate = sampleRate;
-			maxVoices = maxVoices;
+			framesPerCallBack = pFramesPerCallBack;
+			sampleRate = pSampleRate;
+			maxVoices = pMaxVoices;
 			init();
 		}	
 		
