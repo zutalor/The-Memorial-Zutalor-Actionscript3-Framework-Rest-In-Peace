@@ -1,3 +1,12 @@
+/*
+
+If it's a page, display the page.
+If it's a question ask question, play prompt.
+If it's a controller method. Do the controller loop asking the proper questions.
+
+*/
+
+
 package com.zutalor.accessibility
 {
 	import com.zutalor.air.AirStatus;
@@ -10,6 +19,7 @@ package com.zutalor.accessibility
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.text.TextUtil;
+	import com.zutalor.transition.Transition;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.translate.TranslateItemProperties;
 	import com.zutalor.utils.gDictionary;
@@ -43,13 +53,7 @@ package com.zutalor.accessibility
 		private var _transitionBack:String;
 		private var _curTransitionType:String;
 		private var _inTransition:Boolean;
-		
-		private var _loopCount:int;
-		private var _questions:Array;
-		private var _currentQuestion:int;
-		private var _loops:int;
-		private var _onCompleteState:String;
-		
+				
 		private static const soundExt:String = ".mp3";
 		private static const letterAnswers:String = "abcdefgh";
 		
@@ -103,33 +107,11 @@ package com.zutalor.accessibility
 				_questions = args.@questions.split(",");
 				_loops = args.@loop;
 				_onCompleteState = args.@onCompleteState;
-				questionLoop();
 			}
 		}
 		
 		// PRIVATE METHODS
 		
-		private function questionLoop():void
-		{
-			if (_loopCount == _loops)
-			{
-				_loopCount = 0;
-				activateStateById(_onCompleteState);
-			}
-			else if (_loopCount < _loops)
-			{
-				if (_currentQuestion < _questions.length)
-				{
-					_dataFromUiController.name = (_loopCount + 1) + " - " + _questions[_currentQuestion];
-					activateStateById(_questions[_currentQuestion++]);
-				}
-				if (_currentQuestion == _questions.length)
-				{
-					++_loopCount;
-					_currentQuestion = 0;
-				}
-			}
-		}
 		
 		private function activateStateById(id:String):void
 		{
@@ -305,6 +287,7 @@ package com.zutalor.accessibility
 			var page:String;
 			var forTextToSpeech:String;
 			var next:String;
+			var t:Transition;
 
 			if (!_inTransition)
 			{
@@ -324,11 +307,11 @@ package com.zutalor.accessibility
 					page = TextUtil.stripSurroundedBy(page, "<MOBILE>", "</MOBILE>");
 					
 				page = TextUtil.stripSurroundedBy(page, "<hide>", "</hide>");
-				
 				forTextToSpeech = TextUtil.stripSurroundedBy(page, "<DISPLAYTEXT>", "</DISPLAYTEXT>");
-
 				_uiController.getValueObject().text = TextUtil.stripSurroundedBy(page, "<PHONETIC>", "</PHONETIC>");
-				_uiController.onModelChange(null, _curTransitionType, onTransitionComplete );
+				_uiController.onModelChange();
+				t = new Transition();
+				t.simpleRender(_uiController.vc.container, "slideLeft", "in", onTransitionComplete);
 			}
 		
 			function onTransitionComplete():void

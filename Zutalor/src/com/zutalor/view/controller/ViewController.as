@@ -156,28 +156,10 @@
 			viewEventMediator.onItemFocusIn();
 		}
 		
-		public function onModelChange(itemNames:String = null, transition:String = null, onTransitionComplete:Function = null):void
+		public function onModelChange(itemNames:String = null):void
 		{
 			var items:Array
-			var t:Transition;
-			var bmd:BitmapData;
-			var bm:Bitmap;
 			
-			if (transition)
-			{
-				bmd = new BitmapData(StageRef.stage.stageWidth, StageRef.stage.stageHeight);
-				bmd.draw(vp.container);
-				bm = new Bitmap(bmd);
-				bm.visible = true;
-				StageRef.stage.addChild(bm);				
-				t = new Transition();
-				t.simpleRender(bm, transition, "out", hideBm);
-				
-				function hideBm():void
-				{
-					bm.visible = false;
-				}
-			}
 			if (itemNames)
 			{
 				items = itemNames.split(",");
@@ -186,15 +168,6 @@
 			}
 			else
 				copyModelToView();
-
-			if (transition)
-			{
-				t = new Transition();
-				t.simpleRender(vp.container, transition, "in", onTransitionComplete);
-			}
-			else
-				if (onTransitionComplete != null)
-					onTransitionComplete();
 		}
 		
 		public function onViewChange(itemNames:String = null):void

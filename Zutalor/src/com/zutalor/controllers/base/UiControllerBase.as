@@ -108,9 +108,9 @@ package com.zutalor.controllers.base
 			return null;
 		}
 		
-		public function onModelChange(args:*=null, transition:String = null, onTransitionComplete:Function = null):void
+		public function onModelChange(args:*=null):void
 		{
-			_vController.onModelChange(args, transition, onTransitionComplete);
+			_vController.onModelChange(args);
 		}
 		
 		public function onModelError(responds:*=null):void

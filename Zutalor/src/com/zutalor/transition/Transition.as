@@ -134,7 +134,7 @@
 		}
 		
 		private function doTransition():void
-		{			
+		{						
 			_tweenObject = null;
 			_tweenObjectForWipe = null;	
 			_dc.visible = true;
