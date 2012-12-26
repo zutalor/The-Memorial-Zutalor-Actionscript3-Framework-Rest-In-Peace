@@ -9,6 +9,7 @@ package com.zutalor.gesture
 	{	
 		public var type:String;
 		public var action:String;
+		public var useSimulationData:String;
 		public var actionUp:String;
 		public var actionDown:String;
 		public var actionRight:String;

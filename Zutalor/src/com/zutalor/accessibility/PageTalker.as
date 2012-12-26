@@ -48,7 +48,7 @@ package com.zutalor.accessibility
 		private var _answers:gDictionary;
 		private var _viewGestures:PropertyManager;
 		private var _viewKeyboardInput:PropertyManager;
-		private var _dataFromUiController:AnswerProperties;
+		private var _dataFromSimulation:String;
 		private var _transitionNext:String;
 		private var _transitionBack:String;
 		private var _curTransitionType:String;
@@ -99,15 +99,10 @@ package com.zutalor.accessibility
 				activateStateByIndex(0);
 		}
 		
-		public function onUiControllerMethodCompleted(args:XMLList, data:AnswerProperties):void
+		public function onUiControllerMethodCompleted(args:XMLList, data:String):void
 		{
-			_dataFromUiController = data;
-			if (!_loopCount)
-			{
-				_questions = args.@questions.split(",");
-				_loops = args.@loop;
-				_onCompleteState = args.@onCompleteState;
-			}
+			_dataFromSimulation = data;
+			activateStateById(args.@onCompleteState);
 		}
 		
 		// PRIVATE METHODS
@@ -226,14 +221,15 @@ package com.zutalor.accessibility
 					answer.correctAnswer = XML(_curStateText)..answers.@correctAnswer;
 					answer.timestamp = date.toString();
 
-					if (_dataFromUiController)
+					if (_dataFromSimulation)
 					{
-						_curAnswerKey = answer.questionId = _dataFromUiController.name;
-						answer.data = _dataFromUiController.data;
+						answer.questionId = _curStateId;
+						answer.data = _dataFromSimulation;
 					}
 					else
-						_curAnswerKey = _curStateId;
+						answer.data = "";
 						
+					_curAnswerKey = _curStateId;	
 					_answers.insert(_curAnswerKey, answer);
 					playSound(answerText, XML(_curStateText)..Q[answerIndex].@sound);
 				}
@@ -265,16 +261,11 @@ package com.zutalor.accessibility
 						}
 						break;
 					case "next" :
-						if (String(tMeta.state.@next) == "question")
-							questionLoop();
-						else if (String(tMeta.state.@next) == "exit")
+						if (String(tMeta.state.@next) == "exit")
 							_uiController.exit();
 						else
 							activateStateById(tMeta.state.@next);
 						break;		
-					case "questionLoop" :
-						questionLoop();
-						break;
 					default :
 						break;
 				}
@@ -316,12 +307,16 @@ package com.zutalor.accessibility
 		
 			function onTransitionComplete():void
 			{
+				var time:Array;
+				var timeStr:String;
+				
 				_inTransition = false;
 				_prevState = _curState;
 				
 				switch (String(XML(tp.tMeta).state.@type))
 				{	
 					case "uiControllerMethod" :
+						_dataFromSimulation = "";
 						_uiController[XML(tp.tMeta).state.@method](XML(tp.tMeta).state);	
 						trace("uiControllerMethod");
 						break;
@@ -330,7 +325,9 @@ package com.zutalor.accessibility
 						for (var i:int = 0; i < _answers.length; i++)
 						{
 							ap = _answers.getByIndex(i);
-							trace(ap.answer, ap.questionId);
+							time = ap.timestamp.split(" ");
+							timeStr = TextUtil.makeCommaDelimited(time);
+							trace(ap.questionId + "," + ap.answer + "," + ap.data + "," + timeStr);
 						}
 						activateStateById(String(XML(tp.tMeta).state.@onCompleteState));
 						break;

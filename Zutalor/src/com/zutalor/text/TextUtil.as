@@ -123,11 +123,15 @@
 		
 		public static function makeCommaDelimited(... rest):String
 		{
-			var s:String;
+			var s:String = "";
 			
 			for (var i:int = 0; i < rest.length; i++)
-				s += String(rest[i]) + ",";
+			{
+				s += String(rest[i]);
+				if (i < rest.length - 1)
+					s += ",";
 				
+			}	
 			return s;	
 		}
 	}
