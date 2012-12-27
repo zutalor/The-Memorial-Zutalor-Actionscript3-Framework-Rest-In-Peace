@@ -6,8 +6,7 @@ package com.zutalor.synthesizer
 	import com.noteflight.standingwave3.modulation.BendModulation;
 	import com.noteflight.standingwave3.output.AudioPlayer;
 	import com.noteflight.standingwave3.utils.AudioUtils;
-	import com.zutalor.loaders.URLLoaderG;
-	import com.zutalor.properties.PropertyManager;
+	import com.zutalor.synthesizer.properties.SynthPreset;
 	import com.zutalor.utils.gDictionary;
 	
 	/**
@@ -16,9 +15,8 @@ package com.zutalor.synthesizer
 	 */
 	public class Synthesizer
 	{
-		public var voices:Voices;
-		public var presets:PropertyManager;
-		public var sampleMaps:PropertyManager;
+		public var sounds:Sounds;
+		public var presets:Presets;
 		public var sequencer:Sequencer;
 		public var tracks:gDictionary;
 		
@@ -42,8 +40,6 @@ package com.zutalor.synthesizer
 		protected function init():void
 		{
 			voices = new Voices(sampleRate);
-			presets = new PropertyManager(SynthPreset);
-			sampleMaps = new PropertyManager(SampleMap);
 			tracks = new gDictionary();
 			sequencer = new Sequencer(voices, presets, tracks, framesPerCallBack, sampleRate);
 			monoAD = new AudioDescriptor(sampleRate, 1);
@@ -54,29 +50,12 @@ package com.zutalor.synthesizer
 				audioPlayers[i] = new AudioPlayer(framesPerCallBack);
 		}
 		
-		public function loadVoices(xmlUrl:String, assetPath:String, numTracks:int, onComplete:Function = null):void
+		public function makeTracks(numTracks:int):void
 		{
-			var loader:URLLoaderG = new URLLoaderG();
-			
 			for (var i:int = 0; i < numTracks; i++)
 			{
 				tracks.insert(String(i), new Track());
 			}	
-			loader.load(xmlUrl, onXMLLoadComplete);
-		
-			function onXMLLoadComplete(lg:URLLoaderG):void
-			{
-				//TODO Handle error.
-				presets.parseXML(XML(lg.data).presets);
-				sampleMaps.parseXML(XML(lg.data).sampleMaps);
-				voices.load(sampleMaps, assetPath, finishSetup);
-			}
-					
-			function finishSetup():void
-			{
-				if (onComplete != null)
-					onComplete();
-			}
 		}	
 		
 		public function playNote(note:Number, preset:SynthPreset):void

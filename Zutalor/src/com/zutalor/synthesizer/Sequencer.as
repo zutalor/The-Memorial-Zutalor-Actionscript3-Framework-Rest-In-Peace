@@ -9,6 +9,7 @@ package com.zutalor.synthesizer
 	import com.noteflight.standingwave3.performance.ListPerformance;
 	import com.noteflight.standingwave3.utils.AudioUtils;
 	import com.zutalor.properties.PropertyManager;
+	import com.zutalor.synthesizer.properties.Track;
 	import com.zutalor.utils.gDictionary;
 	import flash.events.Event;
 	
@@ -19,7 +20,7 @@ package com.zutalor.synthesizer
 	public class Sequencer
 	{	
 		private var presets:PropertyManager;
-		private var voices:Voices;
+		private var sounds:Sounds;
 		private var envelopeGenerators:Vector.<ADSREnvelopeGenerator>;
 		private var egs:int;
 		private var listPerformance:ListPerformance;
@@ -32,10 +33,10 @@ package com.zutalor.synthesizer
 		private var onComplete:Function;
 		private var onCompleteArgs:*;
 		
-		public function Sequencer(pVoices:Voices, pPresets:PropertyManager, pTracks:gDictionary, pFramesPerCallback:int, pSampleRate:Number)
+		public function Sequencer(pSounds:Sounds, pPresets:PropertyManager, pTracks:gDictionary, pFramesPerCallback:int, pSampleRate:Number)
 		{
 			init(pSampleRate);
-			voices = pVoices;
+			sounds = pSounds;
 			presets = pPresets;
 			tracks = pTracks;
 			framesPerCallBack = pFramesPerCallback;
@@ -111,7 +112,7 @@ package com.zutalor.synthesizer
 							mods.push(new BendModulation(track.notes[i].startTime, track.notes[i].note - offset, nextTrigger + preset.noteTiming, track.notes[i + 1].note - offset));
 
 						envelopeGenerators[egs] = new ADSREnvelopeGenerator(monoAd, preset.attack, preset.decay, track.notes.length * preset.noteTiming, preset.sustain, preset.release);							
-						listPerformance.addSourceAt(0, voices.getVoice(preset, track.notes[offsetIndx].note, envelopeGenerators[egs],  mods));
+						listPerformance.addSourceAt(0, sounds.getVoice(preset, track.notes[offsetIndx].note, envelopeGenerators[egs],  mods));
 						egs++;
 					}
 					else
@@ -137,9 +138,8 @@ package com.zutalor.synthesizer
 
 							if (preset.rounding)
 								note = Math.round(note);
-
-								
-							listPerformance.addSourceAt(track.notes[i].startTime, voices.getVoice(preset, note, envelopeGenerators[egs - 1] , null));
+	
+							listPerformance.addSourceAt(track.notes[i].startTime, sounds.getVoice(preset, note, envelopeGenerators[egs - 1] , null));
 
 						}
 					}

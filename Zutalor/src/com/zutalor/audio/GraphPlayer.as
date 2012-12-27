@@ -2,10 +2,9 @@ package com.zutalor.audio
 {
 	import com.noteflight.standingwave3.elements.AudioDescriptor;
 	import com.zutalor.loaders.URLLoaderG;
-	import com.zutalor.synthesizer.Note;
+	import com.zutalor.synthesizer.properties.Note;
+	import com.zutalor.synthesizer.properties.Track;
 	import com.zutalor.synthesizer.Synthesizer;
-	import com.zutalor.synthesizer.SynthPreset;
-	import com.zutalor.synthesizer.Track;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.utils.ArrayUtils;
 	import com.zutalor.utils.MathG;
@@ -82,7 +81,7 @@ package com.zutalor.audio
 			{
 				gs = graphCollection[i];
 				gs.noteScaling = 1;
-				gs.preset = makeSynthPreset(gs);
+				//gs.preset = makeSynthPreset(gs);
 				_curData[i] = data[ gs.graph ]; 							
 				max[i] = ArrayUtils.getMax(_curData[i]);
 				if (max[i] > curMax)
@@ -141,41 +140,7 @@ package com.zutalor.audio
 			}		
 		}
 						
-		private function makeSynthPreset(gs:GraphSettings):SynthPreset
-		{
-			var sp:SynthPreset = new SynthPreset();
-			
-			sp.soundName = gs.soundName;
-			sp.midiNoteNumbers = true;
-			sp.rounding = false;
-			
-			sp.lowNote = 30 + (gs.range * 40);
-			sp.highNote = 52 + (gs.range * 40);
-										
-			sp.pan = gs.pan; 
-			
-			if (!sp.pan) // TODO: for some reason standingWave addsourceAt won't play if pan is 0, check to see if right and left are cancelling each other out.
-					sp.pan = .2;
-			
-			sp.gain = -6;
-			
-			sp.noteTiming = gs.speed;
-			
-			if (!gs.noteOverlap)
-			{
-				sp.dataIsPitchBend = true;
-				sp.loopStart = .6;
-				sp.loopEnd = 1;
-			}
-			else
-				sp.hold = gs.noteOverlap;
-			
-			sp.decay = .01;
-			sp.release = .03;
-			sp.attack = .25
-			sp.sustain = 1;
-			return sp;
-		}
+		
 		
 		private function prepareData():void
 		{
@@ -203,10 +168,7 @@ package com.zutalor.audio
 			data[i] = [];
 			calculate(data[i], samples, calcRandom)
 		}
-				
-		
 
-		
 		// PLOTTING FUNCTIONS
 		
 		private function calculate(a:Array, samples:int, plottingFunction:Function):void

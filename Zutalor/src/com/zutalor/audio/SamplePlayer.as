@@ -10,6 +10,9 @@ package com.zutalor.audio
 
 	public final class SamplePlayer
 	{
+		public var speed:int
+		private static var bufferSkipCount:int;
+		
 		private const bufferSize: int = 4096; 
 		private const SAMPLERATE:Number = 44.1;	
 		private var inputSound: Sound; 
@@ -57,7 +60,7 @@ package com.zutalor.audio
 				playing = false;
 				removeInputListeners();
 				inputSound = null;
-				outputSound.removeEventListener(SampleDataEvent.SAMPLE_DATA, sampleData);								
+				outputSound.removeEventListener(SampleDataEvent.SAMPLE_DATA, onSampleData);								
 				samplesPosition = 0;
 			}		
 		}
@@ -71,7 +74,7 @@ package com.zutalor.audio
 			if (samplesTotal)
 			{
 				soundLoaded = true;
-				outputSound.addEventListener(SampleDataEvent.SAMPLE_DATA, sampleData);
+				outputSound.addEventListener(SampleDataEvent.SAMPLE_DATA, onSampleData);
 				outputSound.play();
 			}
 			else
@@ -79,8 +82,8 @@ package com.zutalor.audio
 				stop();	
 		}
 		
-		private function sampleData(e:SampleDataEvent):void
-		{
+		private function onSampleData(e:SampleDataEvent):void
+		{	
 			extract(e.data, bufferSize);
 		}		
 		

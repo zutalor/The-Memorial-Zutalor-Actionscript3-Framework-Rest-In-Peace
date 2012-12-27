@@ -1,6 +1,7 @@
 package com.zutalor.accessibility 
 { 
 	import com.zutalor.audio.SamplePlayer;
+	import com.zutalor.text.TextUtil;
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
@@ -168,6 +169,8 @@ package com.zutalor.accessibility
 			str = r.join(". ");
 			r = str.split("  ");
 			str = r.join("");
+			
+			str = TextUtil.stripSurroundedBy(str, "<", ">");
 			
 			r = str.split(" ");
 			wordcount += r.length;

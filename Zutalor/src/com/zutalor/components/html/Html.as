@@ -44,6 +44,9 @@ package com.zutalor.components.html
 		
 		override public function set value(value:*):void
 		{
+			if (!value)
+				value = "";
+				
 			textField.htmlText = value;
 			StyleSheets.apply(textField, vip.styleSheetName, int(vip.width));			
 		}

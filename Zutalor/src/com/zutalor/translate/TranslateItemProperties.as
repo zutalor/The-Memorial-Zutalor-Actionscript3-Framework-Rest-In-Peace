@@ -9,7 +9,6 @@
 	 */
 	public class TranslateItemProperties extends PropertiesBase implements IProperties
 	{
-		
 		public var tText:String;
 		public var tMeta:String;
 		public var sound:String;
