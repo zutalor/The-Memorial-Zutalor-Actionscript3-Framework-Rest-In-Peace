@@ -47,8 +47,8 @@ package com.zutalor.audio
 				params = p.split(",");
 				xmlUrl = TextUtil.strip(params[0]);
 				assetPath = TextUtil.strip(params[1]);
-				synthesizer = new Synthesizer(AudioDescriptor.RATE_44100, 8192);			
-				synthesizer.loadVoices(xmlUrl, assetPath, MAX_GRAPHS, onComplete); 
+				synthesizer = new Synthesizer(AudioDescriptor.RATE_44100, 8192, MAX_GRAPHS);			
+				synthesizer.sounds.load(xmlUrl, assetPath, onComplete); 
 				prepareData();	
 			}
 		}

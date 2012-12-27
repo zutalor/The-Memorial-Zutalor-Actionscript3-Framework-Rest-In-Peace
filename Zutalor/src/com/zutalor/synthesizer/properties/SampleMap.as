@@ -1,5 +1,6 @@
 package com.zutalor.synthesizer.properties
 {
+	import com.noteflight.standingwave3.sources.SamplerSource;
 	import com.zutalor.interfaces.IProperties;
 	import com.zutalor.properties.PropertiesBase;
 	/**
@@ -13,5 +14,8 @@ package com.zutalor.synthesizer.properties
 		public var baseMidiNote:int;
 		public var interval:int;
 		public var samples:int;
+		public var urls:Vector.<String>;
+		public var samplerSources:Vector.<SamplerSource>;
+		public var frequencies:Vector.<Number>;
 	}	
 }

@@ -8,18 +8,18 @@ package com.zutalor.synthesizer
 	 * ...
 	 * @author Geoff
 	 */
-	public class Presets 
+	public class PresetLoader 
 	{
 		public var presets:PropertyManager;
 		public var sampleMaps:PropertyManager;
 		
-		public function Presets():void
+		public function PresetLoader():void
 		{
 			presets = new PropertyManager(SynthPreset);
 			sampleMaps = new PropertyManager(SampleMap);
 		}
 		
-		public function load(xmlUrl:String)
+		public function load(xmlUrl:String, onComplete:Function):void
 		{
 			var loader:URLLoaderG = new URLLoaderG();
 			

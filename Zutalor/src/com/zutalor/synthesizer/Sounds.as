@@ -8,10 +8,10 @@ package com.zutalor.synthesizer
 	import com.noteflight.standingwave3.generators.ADSREnvelopeGenerator;
 	import com.noteflight.standingwave3.sources.SamplerSource;
 	import com.noteflight.standingwave3.utils.AudioUtils;
-	import com.zutalor.synthesizer.properties.SoundProperties;
-	import com.zutalor.utils.gDictionary;
+	import com.zutalor.properties.PropertyManager;
+	import com.zutalor.synthesizer.properties.SampleMap;
+	import com.zutalor.synthesizer.properties.SynthPreset;
 	import com.zutalor.utils.MathG;
-	import com.zutalor.utils.ShowError;
 	
 	/**
 	 * ...
@@ -20,11 +20,12 @@ package com.zutalor.synthesizer
 	public class Sounds
 	{
 	
-		protected var sounds:gDictionary;
+		protected var sampleMaps:PropertyManager;
 		protected var soundLoader:SoundLoader;
+		protected var presetLoader:PresetLoader;
+		protected var assetPath:String;
 		protected var ad:AudioDescriptor;
 		protected var onComplete:Function;
-		
 		
 		public function Sounds(sampleRate:int = 44100)
 		{
@@ -34,12 +35,21 @@ package com.zutalor.synthesizer
 		protected function init(sampleRate:int = 44100):void
 		{
 			ad = new AudioDescriptor(sampleRate, 1);
-			sounds = new gDictionary;
+			soundLoader = new SoundLoader();
+			presetLoader = new PresetLoader();
+			sampleMaps = presetLoader.sampleMaps;
 		}
 		
-		public function loadSounds(assetPath:String = null, onComplete:Function = null):void
+		public function load(xmlUrl:String, pAssetPath:String, pOnComplete:Function = null):void
 		{
-			soundLoader.load(sounds, assetPath, onComplete);
+			assetPath = pAssetPath;
+			onComplete = pOnComplete;
+			presetLoader.load(xmlUrl, onPresetLoadComplete);
+		}
+		
+		protected function onPresetLoadComplete():void
+		{
+			soundLoader.load(sampleMaps, assetPath, ad, onComplete);
 		}
 		
 		public function getVoice(preset:SynthPreset, noteNumber:Number, eg:ADSREnvelopeGenerator, mods:Array):ResamplingFilter
@@ -50,23 +60,19 @@ package com.zutalor.synthesizer
 			var freq:Number;
 			var factor:Number;
 			var noteNumber:Number;
-			var soundProperties:SoundProperties;
+			var sampleMap:SampleMap;
 			var url:String;
 			var panFilter:PanFilter;
 			var resamplingFilter:ResamplingFilter;
 			
-			soundProperties = sounds.getByKey(preset.soundName);
+			sampleMap = sampleMaps.getPropsByName(preset.soundName);			
 			
-			sampleMap = sampleMaps.getByKey(preset.soundName);
-			if (!sounds)
-				ShowError.fail(Sounds, "Sound not found: " + preset.soundName);
-			
-			url = getSoundUrl(soundProperties.sampleMap, noteNumber);
-			indx = soundProperties.urls.indexOf(url);
-			freq = soundProperties.frequencies[indx];
+			url = getSoundUrl(sampleMap, noteNumber);
+			indx = sampleMap.urls.indexOf(url);
+			freq = sampleMap.frequencies[indx];
 			factor = AudioUtils.noteNumberToFrequency(noteNumber);
-			soundProperties.samplerSources[indx].frequencyShift = factor / freq;
-			audioSource = soundProperties.samplerSources[indx].clone();
+			sampleMap.samplerSources[indx].frequencyShift = factor / freq;
+			audioSource = sampleMap.samplerSources[indx].clone();
 						
 			if (preset.loopEnd && preset.loopEnd)
 				setupLoop(audioSource, preset.loopStart, preset.loopEnd);
@@ -82,7 +88,7 @@ package com.zutalor.synthesizer
 		
 		}
 		
-		public function getSoundUrl(sampleMap:SampleMap, noteNumber:Number):String
+		protected function getSoundUrl(sampleMap:SampleMap, noteNumber:Number):String
 		{
 			var n:int;
 			var totalNotes:int;

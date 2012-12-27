@@ -1,64 +1,68 @@
 package com.zutalor.synthesizer 
 {
+	import com.noteflight.standingwave3.elements.AudioDescriptor;
+	import com.noteflight.standingwave3.generators.SoundGenerator;
 	import com.noteflight.standingwave3.sources.SamplerSource;
+	import com.noteflight.standingwave3.utils.AudioUtils;
+	import com.zutalor.properties.PropertyManager;
+	import com.zutalor.synthesizer.properties.SampleMap;
+	import com.zutalor.text.StringUtils;
 	import com.zutalor.utils.gDictionary;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.media.Sound;
+	import flash.net.URLRequest;
 	/**
 	 * ...
 	 * @author Geoff
 	 */
 	public class SoundLoader 
 	{
-		protected static const NUM_SAMPLES_TO_LOAD_CONCURRENTLY:int = 2;
-	
+		protected var samplesToLoadConcurrently:int = 2;
+		protected var numSampleMaps:int;
+		protected var curSampleMap:int;
 		protected var numSamples:int;
 		protected var numLoaded:int;
 		protected var curLoading:int;
-		protected var samplerSourcesLoading:int;	
-		protected var assetPath:String;
-		protected var sounds:gDictionary;
 		
-		public function loadSounds(pSounds:gDictionary, pAssetPath:String = null, pOnComplete:Function = null):void
+		protected var assetPath:String;
+		protected var sampleMaps:PropertyManager;
+		protected var sampleMap:SampleMap;
+		protected var ad:AudioDescriptor;
+		protected var onComplete:Function;
+		
+		public function load(pSampleMaps:PropertyManager, pAssetPath:String, 
+											pAd:AudioDescriptor, pOnComplete:Function = null):void
 		{
-			var numSampleMaps:int;
-			var props:XML;
 			var fileName:String;
-			var i:int;
-			var curSample:int;
 			
-			sounds = pSounds;
+			sampleMaps = pSampleMaps;
 			assetPath = pAssetPath;
+			ad = pAd;
 			onComplete = pOnComplete;
-			
+
+			curSampleMap = 0;			
 			numSampleMaps = sampleMaps.length;
-			for (i = 0; i < numSampleMaps; i++)
-			{
-				sampleMap = sampleMaps.getPropsByIndex(i);
-				numSamples += sampleMap.samples;
-			}
-			urls = new Vector.<String>(numSamples);
-			samplerSources = new Vector.<SamplerSource>(numSamples);
 			
 			for (var p:int = 0; p < numSampleMaps; p++)
 			{
 				sampleMap = sampleMaps.getPropsByIndex(p);
-				freqs = new Vector.<Number>;
+				numSamples = sampleMap.samples;
+				sampleMap.urls = new Vector.<String>(numSamples);
+				sampleMap.samplerSources = new Vector.<SamplerSource>(numSamples);	
+				sampleMap.frequencies = new Vector.<Number>;
 				
-				for (i = 1; i <= sampleMap.samples; i++)
+				for (var i:int = 1; i <= sampleMap.samples; i++)
 				{
 					if (i < 10)
 						fileName = sampleMap.filebase + "-0" + i + sampleMap.fileExt;
 					else
 						fileName = sampleMap.filebase + "-" + i + sampleMap.fileExt;
 					
-					urls[curSample] = fileName;
-					freqs.push(AudioUtils.noteNumberToFrequency((sampleMap.interval * i) + sampleMap.baseMidiNote));
-					curSample++;
+					sampleMap.urls[i] = fileName;
+					sampleMap.frequencies[i] = (AudioUtils.noteNumberToFrequency((sampleMap.interval * i)
+																					+ sampleMap.baseMidiNote));
 				}
-				frequencies.insert(sampleMap.name, freqs);
-				sampleMaps.insert(sampleMap.name, sampleMap);
 			}
 			loadSamples();
 		}
@@ -67,30 +71,28 @@ package com.zutalor.synthesizer
 		
 		protected function loadSamples():void
 		{
-			if (!urls.length)
-				throw new Error("Synth Sounds: cannot load samples.");
-			numSamples = urls.length;
-			numLoaded = 0;
-			for (var i:int = 0; i < NUMSAMPLESTOLOADCONCURRENTLY; i++)
-				loadNextSample();
+			if (curSampleMap < numSampleMaps)
+			{
+				numLoaded = curLoading = 0;
+				sampleMap = sampleMaps.getPropsByIndex(curSampleMap);
+				numSamples = sampleMap.urls.length;
+				for (var i:int = 0; i < samplesToLoadConcurrently; i++)
+					loadNextSample();
+			}
+			else if (onComplete != null)
+				onComplete();
 		}
 		
 		protected function loadNextSample():void
 		{
 			if (curLoading < numSamples)
 			{
-				var sound:Sound = new Sound(new URLRequest(assetPath + urls[curLoading]));
+				var sound:Sound = new Sound(new URLRequest(assetPath + sampleMap.urls[curLoading]));
 				sound.addEventListener(Event.COMPLETE, onSampleLoadComplete, false, 0, true);
 				sound.addEventListener(IOErrorEvent.DISK_ERROR, onIOError, false, 0, true);
 				sound.addEventListener(IOErrorEvent.IO_ERROR, onIOError, false, 0, true);
 				curLoading++;
 			}
-		}
-		
-		protected function onIOError(e:Event):void
-		{
-			trace("IoError");
-			throw new Error("IoError");
 		}
 		
 		protected function onSampleLoadComplete(e:Event):void
@@ -100,15 +102,23 @@ package com.zutalor.synthesizer
 			e.target.removeEventListener(Event.COMPLETE, onSampleLoadComplete);
 			e.target.removeEventListener(IOErrorEvent.DISK_ERROR, onIOError);
 			e.target.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
-			indx = urls.indexOf(StringUtils.getFileName(e.target.url));
-			samplerSources[indx] = new SamplerSource(ad, new SoundGenerator(e.target as Sound, ad));
+			
+			indx = sampleMap.urls.indexOf(StringUtils.getFileName(e.target.url));
+			sampleMap.samplerSources[indx] = new SamplerSource(ad, new SoundGenerator(e.target as Sound, ad));
 			numLoaded++;
 			if (numLoaded < numSamples)
 				loadNextSample();
-			else if (onComplete != null)
-				onComplete();
+			else 
+			{
+				curSampleMap++;
+				loadSamples();
+			}
 		}
 		
+		protected function onIOError(e:Event):void
+		{
+			trace("IoError");
+			throw new Error("IoError");
+		}	
 	}
-
 }

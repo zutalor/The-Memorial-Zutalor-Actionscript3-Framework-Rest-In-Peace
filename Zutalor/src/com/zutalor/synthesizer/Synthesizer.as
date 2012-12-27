@@ -7,6 +7,7 @@ package com.zutalor.synthesizer
 	import com.noteflight.standingwave3.output.AudioPlayer;
 	import com.noteflight.standingwave3.utils.AudioUtils;
 	import com.zutalor.synthesizer.properties.SynthPreset;
+	import com.zutalor.synthesizer.properties.Track;
 	import com.zutalor.utils.gDictionary;
 	
 	/**
@@ -16,7 +17,6 @@ package com.zutalor.synthesizer
 	public class Synthesizer
 	{
 		public var sounds:Sounds;
-		public var presets:Presets;
 		public var sequencer:Sequencer;
 		public var tracks:gDictionary;
 		
@@ -26,37 +26,32 @@ package com.zutalor.synthesizer
 		protected var framesPerCallBack:int;
 		protected var sampleRate:int;
 		protected var monoAD:AudioDescriptor;
-		protected var stereoAD:AudioDescriptor;
 		protected var maxVoices:int;
+		protected var numTracks:int;
 			
-		public function Synthesizer(pSampleRate:Number, pFramesPerCallBack:int, pMaxVoices:int = 16)
+		public function Synthesizer(pSampleRate:Number, pFramesPerCallBack:int, pNumTracks:int, pMaxVoices:int = 16)
 		{
 			framesPerCallBack = pFramesPerCallBack;
 			sampleRate = pSampleRate;
 			maxVoices = pMaxVoices;
+			numTracks = pNumTracks;
 			init();
 		}	
 		
 		protected function init():void
 		{
-			voices = new Voices(sampleRate);
+			sounds = new Sounds(sampleRate);
 			tracks = new gDictionary();
-			sequencer = new Sequencer(voices, presets, tracks, framesPerCallBack, sampleRate);
+			sequencer = new Sequencer(sounds, tracks, framesPerCallBack, sampleRate);
 			monoAD = new AudioDescriptor(sampleRate, 1);
-			stereoAD = new AudioDescriptor(sampleRate, 2);
 			audioPlayers = new Vector.<AudioPlayer>;
 			envelopeGenerators = new Vector.<ADSREnvelopeGenerator>(maxVoices);
 			for (var i:int = 0; i < maxVoices; i++)
 				audioPlayers[i] = new AudioPlayer(framesPerCallBack);
-		}
-		
-		public function makeTracks(numTracks:int):void
-		{
-			for (var i:int = 0; i < numTracks; i++)
-			{
+				
+			for (i = 0; i < numTracks; i++)
 				tracks.insert(String(i), new Track());
-			}	
-		}	
+		}
 		
 		public function playNote(note:Number, preset:SynthPreset):void
 		{
@@ -87,7 +82,7 @@ package com.zutalor.synthesizer
 			
 			envelopeGenerators[curVoice] = new ADSREnvelopeGenerator(monoAD, preset.attack, preset.decay, preset.hold, preset.sustain, preset.release);	
 			
-			voice = voices.getVoice(preset, note, envelopeGenerators[curVoice], mods);
+			voice = sounds.getVoice(preset, note, envelopeGenerators[curVoice], mods);
 			
 			audioPlayers[curVoice].play(voice);
 			audioPlayers[curVoice].preset = preset.name;

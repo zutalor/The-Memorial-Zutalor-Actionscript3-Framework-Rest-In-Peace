@@ -8,7 +8,7 @@ package com.zutalor.synthesizer
 	import com.noteflight.standingwave3.performance.AudioPerformer;
 	import com.noteflight.standingwave3.performance.ListPerformance;
 	import com.noteflight.standingwave3.utils.AudioUtils;
-	import com.zutalor.properties.PropertyManager;
+	import com.zutalor.synthesizer.properties.SynthPreset;
 	import com.zutalor.synthesizer.properties.Track;
 	import com.zutalor.utils.gDictionary;
 	import flash.events.Event;
@@ -19,7 +19,6 @@ package com.zutalor.synthesizer
 	 */
 	public class Sequencer
 	{	
-		private var presets:PropertyManager;
 		private var sounds:Sounds;
 		private var envelopeGenerators:Vector.<ADSREnvelopeGenerator>;
 		private var egs:int;
@@ -33,11 +32,10 @@ package com.zutalor.synthesizer
 		private var onComplete:Function;
 		private var onCompleteArgs:*;
 		
-		public function Sequencer(pSounds:Sounds, pPresets:PropertyManager, pTracks:gDictionary, pFramesPerCallback:int, pSampleRate:Number)
+		public function Sequencer(pSounds:Sounds, pTracks:gDictionary, pFramesPerCallback:int, pSampleRate:Number)
 		{
 			init(pSampleRate);
 			sounds = pSounds;
-			presets = pPresets;
 			tracks = pTracks;
 			framesPerCallBack = pFramesPerCallback;
 		}
@@ -64,7 +62,7 @@ package com.zutalor.synthesizer
 			return tracks.getByIndex(index);
 		}
 
-		public function renderTracks(n:int=0):void
+		public function renderTracks(tracksToRender:int=0):void
 		{
 			var track:Track;
 			var numTracks:int;
@@ -79,10 +77,10 @@ package com.zutalor.synthesizer
 			var offsetIndx:int;
 			var preset:SynthPreset;
 									
-			if (!n)
+			if (!tracksToRender)
 				numTracks = tracks.length;
 			else
-				numTracks = n;
+				numTracks = tracksToRender;
 			
 			envelopeGenerators = new Vector.<ADSREnvelopeGenerator>;
 			egs = 0;
