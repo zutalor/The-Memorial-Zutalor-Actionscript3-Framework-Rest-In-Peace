@@ -3,7 +3,6 @@ package com.zutalor.accessibility
 {
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.application.Application;
-	import com.zutalor.audio.GraphSettings;
 	import com.zutalor.audio.SamplePlayer;
 	import com.zutalor.controllers.base.UiControllerBase;
 	import com.zutalor.events.HotKeyEvent;
@@ -172,6 +171,11 @@ package com.zutalor.accessibility
 						answerIndex = np.keyboardAnswers.indexOf(uip.name.toLowerCase());
 
 					answerText = XML(np.tip.tText)..Q[answerIndex];
+					if (!answerText)
+					{
+						activateState(np.tip.name);
+						return;
+					}
 					qMark = answerText.indexOf("?");
 					if (qMark != -1)
 						answerText = answerText.substring(0, qMark);

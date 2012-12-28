@@ -107,9 +107,12 @@ package com.zutalor.synthesizer
 						offset = track.notes[offsetIndx].note;
 								
 						for (i = 0; i < l; i++)
-							mods.push(new BendModulation(track.notes[i].startTime, track.notes[i].note - offset, nextTrigger + preset.noteTiming, track.notes[i + 1].note - offset));
+							mods.push(new BendModulation(track.notes[i].startTime, track.notes[i].note - offset, 
+															nextTrigger + preset.noteTiming, track.notes[i + 1].note - offset));
 
-						envelopeGenerators[egs] = new ADSREnvelopeGenerator(monoAd, preset.attack, preset.decay, track.notes.length * preset.noteTiming, preset.sustain, preset.release);							
+						envelopeGenerators[egs] = new ADSREnvelopeGenerator(monoAd, preset.attack, preset.decay, 
+															track.notes.length * preset.noteTiming, preset.sustain, preset.release);							
+						
 						listPerformance.addSourceAt(0, sounds.getVoice(preset, track.notes[offsetIndx].note, envelopeGenerators[egs],  mods));
 						egs++;
 					}
@@ -189,7 +192,7 @@ package com.zutalor.synthesizer
 			if (listPerformance && listPerformance.elements)		
 			{
 				audioPerformer = new AudioPerformer(listPerformance, stereoAd);
-				audioPerformer.mixGain = tracks.length * -5;
+				audioPerformer.mixGain = tracks.length * -2;
 
 				player = new AudioPlayer(framesPerCallBack);
 				player.play(audioPerformer);

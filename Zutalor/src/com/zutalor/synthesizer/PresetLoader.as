@@ -30,15 +30,9 @@ package com.zutalor.synthesizer
 				//TODO Handle error.
 				presets.parseXML(XML(lg.data).presets);
 				sampleMaps.parseXML(XML(lg.data).sampleMaps);
-			}
-					
-			function finishSetup():void
-			{
 				if (onComplete != null)
 					onComplete();
 			}
 		}
-		
 	}
-
 }

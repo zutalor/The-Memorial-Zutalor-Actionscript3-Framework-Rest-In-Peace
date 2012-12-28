@@ -2,6 +2,7 @@ package com.zutalor.synthesizer
 {
 	import com.noteflight.standingwave3.elements.AudioDescriptor;
 	import com.noteflight.standingwave3.elements.IAudioSource;
+	import com.noteflight.standingwave3.elements.Sample;
 	import com.noteflight.standingwave3.filters.AmpFilter;
 	import com.noteflight.standingwave3.filters.PanFilter;
 	import com.noteflight.standingwave3.filters.ResamplingFilter;
@@ -12,6 +13,7 @@ package com.zutalor.synthesizer
 	import com.zutalor.synthesizer.properties.SampleMap;
 	import com.zutalor.synthesizer.properties.SynthPreset;
 	import com.zutalor.utils.MathG;
+	import com.zutalor.utils.ShowError;
 	
 	/**
 	 * ...
@@ -20,12 +22,17 @@ package com.zutalor.synthesizer
 	public class Sounds
 	{
 	
-		protected var sampleMaps:PropertyManager;
+		protected static var _sampleMaps:PropertyManager;
 		protected var soundLoader:SoundLoader;
 		protected var presetLoader:PresetLoader;
 		protected var assetPath:String;
 		protected var ad:AudioDescriptor;
 		protected var onComplete:Function;
+		
+		public static function get sampleMaps():PropertyManager
+		{
+			return _sampleMaps;
+		}
 		
 		public function Sounds(sampleRate:int = 44100)
 		{
@@ -37,7 +44,7 @@ package com.zutalor.synthesizer
 			ad = new AudioDescriptor(sampleRate, 1);
 			soundLoader = new SoundLoader();
 			presetLoader = new PresetLoader();
-			sampleMaps = presetLoader.sampleMaps;
+			_sampleMaps = presetLoader.sampleMaps;
 		}
 		
 		public function load(xmlUrl:String, pAssetPath:String, pOnComplete:Function = null):void
@@ -49,7 +56,7 @@ package com.zutalor.synthesizer
 		
 		protected function onPresetLoadComplete():void
 		{
-			soundLoader.load(sampleMaps, assetPath, ad, onComplete);
+			soundLoader.load(_sampleMaps, assetPath, ad, onComplete);
 		}
 		
 		public function getVoice(preset:SynthPreset, noteNumber:Number, eg:ADSREnvelopeGenerator, mods:Array):ResamplingFilter
@@ -65,7 +72,9 @@ package com.zutalor.synthesizer
 			var panFilter:PanFilter;
 			var resamplingFilter:ResamplingFilter;
 			
-			sampleMap = sampleMaps.getPropsByName(preset.soundName);			
+			sampleMap = _sampleMaps.getPropsByName(preset.soundName);
+			if (!sampleMap)
+				ShowError.fail(Sounds, "No samples for " + preset.soundName);
 			
 			url = getSoundUrl(sampleMap, noteNumber);
 			indx = sampleMap.urls.indexOf(url);
@@ -116,9 +125,6 @@ package com.zutalor.synthesizer
 		{
 			var startLoopFrame:int;
 			var endFrame:int;
-
-			// maybe find zero crossing?
-			
 			endFrame = loopEnd * ad.rate;
 			startLoopFrame = loopStart * ad.rate;
 			if (endFrame > audioSource.frameCount)

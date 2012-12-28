@@ -8,6 +8,7 @@ package com.zutalor.synthesizer
 	import com.zutalor.synthesizer.properties.SampleMap;
 	import com.zutalor.text.StringUtils;
 	import com.zutalor.utils.gDictionary;
+	import com.zutalor.utils.ShowError;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.media.Sound;
@@ -50,14 +51,14 @@ package com.zutalor.synthesizer
 				numSamples = sampleMap.samples;
 				sampleMap.urls = new Vector.<String>(numSamples);
 				sampleMap.samplerSources = new Vector.<SamplerSource>(numSamples);	
-				sampleMap.frequencies = new Vector.<Number>;
+				sampleMap.frequencies = new Vector.<Number>(numSamples);
 				
-				for (var i:int = 1; i <= sampleMap.samples; i++)
+				for (var i:int = 0; i < sampleMap.samples; i++)
 				{
-					if (i < 10)
-						fileName = sampleMap.filebase + "-0" + i + sampleMap.fileExt;
+					if (i < 9)
+						fileName = sampleMap.filebase + "-0" + (i+1) + sampleMap.fileExt;
 					else
-						fileName = sampleMap.filebase + "-" + i + sampleMap.fileExt;
+						fileName = sampleMap.filebase + "-" + (i + 1) + sampleMap.fileExt;
 					
 					sampleMap.urls[i] = fileName;
 					sampleMap.frequencies[i] = (AudioUtils.noteNumberToFrequency((sampleMap.interval * i)
@@ -75,6 +76,9 @@ package com.zutalor.synthesizer
 			{
 				numLoaded = curLoading = 0;
 				sampleMap = sampleMaps.getPropsByIndex(curSampleMap);
+				if (!sampleMap)
+					ShowError.fail(SoundLoader, "No sample maps.");
+				
 				numSamples = sampleMap.urls.length;
 				for (var i:int = 0; i < samplesToLoadConcurrently; i++)
 					loadNextSample();
