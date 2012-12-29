@@ -2,16 +2,16 @@ package depreciated
 {
 	import com.greensock.TweenMax;
 	import com.zutalor.utils.StageRef;
-	import com.log2e.utils.SpinningPreloader;
+	import com.log2e.utils.spinnerPreloader;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
-	import net.nrftw.iphone.components.loaders.SpinningLoader;
+	import net.nrftw.iphone.components.loaders.spinnerLoader;
 	
 	public class PleaseWait
 	{
 		private static var _waitGraphic:Graphic;
-		private static var _spinner:SpinningPreloader;
+		private static var _spinner:spinnerPreloader;
 		private static var _rotIncr:Number;
 		private static var _myTween:TweenMax;
 
@@ -30,7 +30,7 @@ package depreciated
 			}
 			else
 			{
-				_spinner = new SpinningPreloader();
+				_spinner = new spinnerPreloader();
 			}
 		}
 		

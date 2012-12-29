@@ -39,9 +39,10 @@ package com.zutalor.accessibility
 			init();
 		}
 		
-		public function onUiControllerMethodCompleted(args:XMLList, data:String):void
+		public function onUiControllerMethodCompleted(args:XMLList, data:Object, iteration:int):void
 		{
 			np.dataFromSimulation = data;
+			np.iteration = iteration;
 			activateState(args.@onCompleteState);
 		}
 		
@@ -188,13 +189,15 @@ package com.zutalor.accessibility
 
 					if (np.dataFromSimulation)
 					{
-						answer.questionId = np.tip.name;
+						answer.questionId = np.tip.name + "-" + np.iteration;
 						answer.data = np.dataFromSimulation;
 					}
 					else
+					{
+						answer.questionId = np.tip.name;
 						answer.data = "";
-						
-					np.curAnswerKey = np.tip.name;	
+					}	
+					np.curAnswerKey = answer.questionId;	
 					np.answers.insert(np.curAnswerKey, answer);
 					readText(answerText, XML(np.tip.tText)..Q[answerIndex].@sound);
 				}

@@ -151,10 +151,6 @@ package com.zutalor.synthesizer
 		public function reset():void
 		{
 			var i:int;
-			
-			for (i = 0; i < listPerformance.elements.length; i++)
-				listPerformance.elements[i] = null;
-				
 			listPerformance = new ListPerformance();
 			for (i = 0; i < egs; i++)
 			{
@@ -194,7 +190,9 @@ package com.zutalor.synthesizer
 				audioPerformer = new AudioPerformer(listPerformance, stereoAd);
 				audioPerformer.mixGain = tracks.length * -2;
 
-				player = new AudioPlayer(framesPerCallBack);
+				if (!player)
+					player = new AudioPlayer(framesPerCallBack);
+				
 				player.play(audioPerformer);
 				player.addEventListener(Event.SOUND_COMPLETE, onSoundComplete, false, 0, true);
 			}

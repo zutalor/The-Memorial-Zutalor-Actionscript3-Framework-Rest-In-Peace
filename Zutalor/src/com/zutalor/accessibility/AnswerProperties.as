@@ -10,7 +10,7 @@ package com.zutalor.accessibility
 		public var questionId:String;
 		public var answer:String;
 		public var correctAnswer:String;
-		public var data:String;
+		public var data:Object;
 		public var timestamp:String;
 	}
 }

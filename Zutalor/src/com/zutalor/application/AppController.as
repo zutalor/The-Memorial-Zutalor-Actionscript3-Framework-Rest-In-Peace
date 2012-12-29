@@ -8,6 +8,7 @@
 	import com.zutalor.application.ApplicationProperties;
 	import com.zutalor.color.Color;
 	import com.zutalor.components.html.StyleSheets;
+	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.events.AppEvent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.plugin.constants.PluginClasses;
@@ -59,6 +60,7 @@
 		private var _bootXmlUrl:String;
 		private var _currentOrientation:String;
 		private var _ip:String;
+		private var splash:Bitmap;
 
 		private const DEBUG_ANALYTICS:Boolean =  false;
 		
@@ -128,9 +130,7 @@
 
 		private function showSplash():void
 		{
-			var splash:Bitmap;
 			splash = EmbeddedResources.createInstance(_splashEmbedClassName);
-			splash.name = "__splash";
 			StageRef.stage.addChild(splash);
 			splash.x = (StageRef.stage.fullScreenWidth - splash.width) / 2;
 			splash.y = (StageRef.stage.fullScreenHeight - splash.height) / 2;
@@ -223,8 +223,14 @@
 			}
 			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, onSWFAddressChange);
 			dispatchEvent(new AppEvent(AppEvent.INITIALIZED));	
-			if (_splashEmbedClassName)
-				StageRef.stage.removeChild((StageRef.stage.getChildByName("__splash")));
+			if (splash)
+			{
+				TweenMax.to(splash, .1, { alpha:0, onComplete:removeSplash } );
+			}
+			function removeSplash():void
+			{
+				StageRef.stage.removeChild(splash);
+			}
 		}	
 		
 		private function processStateChange():void
@@ -295,8 +301,8 @@
 			Color.theme = ap.colorTheme;
 			
 
-			if (ap.spinningpresetId)
-				Spinner.init(ap.spinningpresetId, ap.spinningGraphicCyclesPerSecond);
+			if (ap.spinnerGraphicId)
+				Spinner.init(ap.spinnerGraphicId, ap.spinnerGraphicCyclesPerSecond);
 			
 			if (ap.googleAnalyticsAccount && AirStatus.isNativeApplication || DEBUG_ANALYTICS)
 			{

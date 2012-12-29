@@ -23,8 +23,8 @@
 		public var firstState:String;
 		public var language:String;
 		public var gateway:String;
-		public var spinningpresetId:String;
-		public var spinningGraphicCyclesPerSecond:Number;
+		public var spinnerGraphicId:String;
+		public var spinnerGraphicCyclesPerSecond:Number;
 		public var appXmlPath:String;
 		public var systemXmlPath:String;
 		public var appXmlUrls:String;

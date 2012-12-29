@@ -12,7 +12,8 @@ package com.zutalor.accessibility
 		public var curAnswerKey:String;
 		public var history:Array;
 		public var answers:gDictionary;
-		public var dataFromSimulation:String;
+		public var dataFromSimulation:Object;
+		public var iteration:int;
 		public var transitionNext:String;
 		public var transitionBack:String;
 		public var curTransitionType:String;
