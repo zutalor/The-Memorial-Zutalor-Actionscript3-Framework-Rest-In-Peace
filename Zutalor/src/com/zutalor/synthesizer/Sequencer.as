@@ -151,6 +151,7 @@ package com.zutalor.synthesizer
 		public function reset():void
 		{
 			var i:int;
+			listPerformance.elements
 			listPerformance = new ListPerformance();
 			for (i = 0; i < egs; i++)
 			{

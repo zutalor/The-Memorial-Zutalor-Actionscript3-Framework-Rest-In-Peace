@@ -32,7 +32,6 @@
 	import com.zutalor.filters.Shadow;
 	import com.zutalor.transition.Transition;
 	import com.zutalor.gesture.DoubleTapGesture;
-	import com.zutalor.gesture.FlickGesture;
 	import com.zutalor.gesture.GestureListener;
 	import com.zutalor.path.Path;
 	import com.zutalor.plugin.Plugins;
@@ -78,7 +77,6 @@
 			GestureListener.register(RotateGesture);
 			GestureListener.register(TransformGesture);
 			GestureListener.register(ZoomGesture);
-			GestureListener.register(FlickGesture);
 			
 			Plugins.registerClass(ViewContainer);
 			Plugins.registerClass(ScrollingContainer);

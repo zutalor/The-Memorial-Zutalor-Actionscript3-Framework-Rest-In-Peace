@@ -93,12 +93,12 @@ package com.zutalor.controllers.base
 			return _vController;
 		}
 		
-		public function setCurrentView(lName:String):void
+		public function set currentView(lName:String):void
 		{
 			_currentView = lName;
 		}
 		
-		public function getCurrentView():String
+		public function get currentView():String
 		{
 			return _currentView;
 		}

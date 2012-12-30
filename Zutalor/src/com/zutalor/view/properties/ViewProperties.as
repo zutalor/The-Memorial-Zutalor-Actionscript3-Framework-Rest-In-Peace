@@ -47,7 +47,7 @@
 		
 		override public function parseXML(xml:XML):Boolean
 		{	
-			MapXML.attributesToClass(xml , this);
+			MapXML.attributesToClass(xml , this); 
 			name = name.toLowerCase();
 			if (!styleSheetName)
 				styleSheetName = Application.settings.defaultStyleSheetName;
