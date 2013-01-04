@@ -20,7 +20,7 @@ package com.zutalor.filters.base
 			_presets.parseXML(options.xml[options.nodeId]);
 		}
 		
-		protected function getClass():Class
+		protected function reflect():Class
 		{
 			return null;
 		}
@@ -31,7 +31,7 @@ package com.zutalor.filters.base
 			var klass:Class;
 			var f:*;
 			
-			klass = getClass();
+			klass = reflect();
 			
 			f = new klass();
 			p = _presets.getPropsByName(preset);

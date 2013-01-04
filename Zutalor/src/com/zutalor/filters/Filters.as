@@ -1,10 +1,12 @@
 package com.zutalor.filters 
 {
+	import com.greensock.plugins.FilterPlugin;
 	import com.gskinner.utils.IDisposable;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.NestedPropsManager;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.filters.DropShadowFilter;
 	/**
 	 * ...
 	 * @author Geoff Pepos
@@ -41,6 +43,7 @@ package com.zutalor.filters
 			var numFilters:int;
 			var fp:FiltersProperties;
 			var fip:FiltersItemProperties;
+			var filter:*;
 			
 			var filters:Array = [];
 
@@ -52,7 +55,8 @@ package com.zutalor.filters
 			for (var i:int = 0; i < numFilters; i++)
 			{
 				fip = _filterPresets.getItemPropsByIndex(preset, i);
-				filters[i] = Plugins.getNewInstance(fip.type);
+				filter = Plugins.getNewInstance(fip.type);
+				filters[i] =  filter.get(fip.preset);
 				_d.filters = filters;
 			}
 		}

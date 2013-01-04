@@ -86,6 +86,8 @@ package com.zutalor.view.rendering
 
 			if (vip.hidden)
 				viewItem.visible = false;
+				
+			trace(viewItem.width, viewItem.height, viewItem.name);	
 		}
 	}
 }

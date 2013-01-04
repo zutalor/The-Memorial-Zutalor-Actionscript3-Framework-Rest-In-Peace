@@ -28,11 +28,6 @@
 		public var clipFadeOut:Number;
 		public var endFadeOut:Number;
 		public var allowRepeats:Boolean;
-		public var toolsContainer:String;
-		public var toolsView:String;
-		public var respondToControlKeys:Boolean;
-		public var toolsAttached:Boolean;
-		
 		public var ai:Boolean; //the below only become used if this is true;
 		public var minClips:int;
 		public var maxClips:int;

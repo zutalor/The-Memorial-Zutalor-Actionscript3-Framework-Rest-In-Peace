@@ -57,9 +57,6 @@ package com.zutalor.components.media.playlist
 		
 		private var _startTimeMs:Number;
 		private var _totalTimeMs:Number;		
-
-		private var _toolsCreator:ViewCreator;
-		
 		// ai properties
 		private var _minClips:int;
 		private var _maxClips:int;
@@ -73,8 +70,6 @@ package com.zutalor.components.media.playlist
 		public var _isPlaying:Boolean;
 		
 		private var _volume:Number;
-		
-		public var toolsLayer:Sprite;
 		
 		private var _state:PlaylistMediaState;
 		
@@ -113,8 +108,6 @@ package com.zutalor.components.media.playlist
 			_players = new gDictionary();
 			_hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey, false, 0, true);
 			_pp = _presets.getPropsById(vip.playlistName);
-			
-			toolsLayer = new Sprite();
 			_state = new PlaylistMediaState();
 			sp = new MediaStateProperties();
 			sp.playlist = this;
@@ -123,10 +116,6 @@ package com.zutalor.components.media.playlist
 			_state.initialize(sp,_players);
 			
 			MasterClock.registerCallback(onTimer, false, TIMER_INTERVAL);	
-
-			if (_pp.toolsAttached)
-				addChild(toolsLayer);
-			
 			_numPlaylistItems = _presets.getNumItems(playlistName);	
 			
 			_endIndex = _numPlaylistItems;	
@@ -163,10 +152,6 @@ package com.zutalor.components.media.playlist
 				}					
 				_clipNames.push(pip.name);
 			}
-			
-			if (_pp.toolsContainer)
-				initTools();
-
 				
 			initAi();	
 			if (_pp.autoPlay)
@@ -191,8 +176,6 @@ package com.zutalor.components.media.playlist
 		{
 			addChildAt(p.view, 0);
 			p.visible = false;
-			if (_pp.toolsAttached)
-				addChild(toolsLayer);
 		}
 		
 		private function initAi():void
@@ -403,21 +386,6 @@ package com.zutalor.components.media.playlist
 			me.target.removeEventListener(MediaEvent.PLAY, onPlayStarted);
 			dispatchEvent(new MediaEvent(MediaEvent.PLAY));
 		}
-							
-		private function initTools():void
-		{			
-
-			_toolsCreator = new ViewCreator();
-			_toolsCreator.create(_pp.toolsView);
-			_toolsCreator.container.addEventListener(UIEvent.PLAY, play);
-			_toolsCreator.container.addEventListener(UIEvent.PLAY_TOGGLE, play);
-			_toolsCreator.container.addEventListener(UIEvent.NEXT, next);
-			_toolsCreator.container.addEventListener(UIEvent.PREVIOUS, prev);		
-				
-			if (_pp.toolsAttached)
-				toolsLayer.addChild(_toolsCreator.container);
-		
-		}
 		
 		private function next(e:Event):void
 		{
@@ -466,22 +434,11 @@ package com.zutalor.components.media.playlist
 					playNext();
 				}
 			}
-			if (_currentPlaylistIndex > 1)
-				_toolsCreator.container.viewController.callUiControllerMethod(PluginMethods.SET_PREV_BUTTON_VISIBILITY, true);
-			else	
-				_toolsCreator.container.viewController.callUiControllerMethod(PluginMethods.SET_PREV_BUTTON_VISIBILITY, false);
-				
-			if (_currentPlaylistIndex < _endIndex)	
-				_toolsCreator.container.viewController.callUiControllerMethod(PluginMethods.SET_NEXT_BUTTON_VISIBILITY, true);
-			else	
-				_toolsCreator.container.viewController.callUiControllerMethod(PluginMethods.SET_NEXT_BUTTON_VISIBILITY, false);
 		}
 		
 		public function onHotKey(hke:HotKeyEvent):void
 		{
-			if (_pp.respondToControlKeys)
-				playbackControl(hke.message);
-			else if (CONTROL_KEYS.indexOf(hke.message) == -1)
+			if (CONTROL_KEYS.indexOf(hke.message) == -1)
 				playbackControl(hke.message);
 		}
 				

@@ -78,7 +78,9 @@ package com.zutalor.components.text
 		
 		override public function set value(value:*):void
 		{
-			super.value = textField.text;
+			if (!value)
+				 value = "";
+			super.value = textField.text = value;
 			textField.text = value.split("\\n").join("\n");
 			applyTextAttributes();
 		}
@@ -87,6 +89,9 @@ package com.zutalor.components.text
 				
 		private function applyTextAttributes():void
 		{
+			if (!_tap)
+				return;
+				
 			textField.selectable = _tap.selectable;
 			textField.type = _tap.type;
 			textField.autoSize = _tap.autoSize;

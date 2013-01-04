@@ -27,6 +27,7 @@
 	import com.zutalor.containers.ParallaxContainer;
 	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.containers.ViewContainer;
+	import com.zutalor.filters.base.FuzzyFilter;
 	import com.zutalor.filters.Filters;
 	import com.zutalor.filters.Glow;
 	import com.zutalor.filters.Shadow;
@@ -115,6 +116,7 @@
 			Properties.register(Button, "buttonPresets");
 			Properties.register(Toggle, "togglePresets");
 			Properties.register(Stepper, "stepperPresets");
+			Properties.register(Slider, "sliderPresets");
 			Properties.register(ComponentGroup, "componentGroupPresets");
 			Properties.register(Text, "textAttributePresets", null, Text.registerTextAttributes);
 			Properties.register(Text, "textFormatPresets", null, Text.registerTextFormats);
@@ -124,8 +126,8 @@
 			Properties.register(List, "listPresets");
 			Properties.register(Color, "colorThemes", "theme");
 			Properties.register(Filters, "filters", "filter");
-			Properties.register(Glow, "glowPresets");
-			Properties.register(Shadow, "shadowPresets");
+			Properties.register(FuzzyFilter, "glowPresets");
+			Properties.register(FuzzyFilter, "shadowPresets");
 			
 			super.start(bootXMLUrl, splashClassName);
 		}

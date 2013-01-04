@@ -119,7 +119,7 @@ package com.zutalor.components.graphic
 						item = label(gri);
 						break;	
 					case Graphic.GRAPHIC : // nested graphic!
-						item = graphic(gri);
+						item = new Graphic(gri.presetId); trace(gri.presetId);
 						break;
 					default :
 						item = draw(gri);
@@ -275,15 +275,6 @@ package com.zutalor.components.graphic
 			height = coords[3];
 		
 			return new Rectangle(adjustWidth, adjustHeight, width - (adjustWidth * 2), height - (adjustHeight * 2));
-		}
-		
-		private function graphic(gri:GraphicItemProperties):ContainerObject
-		{
-			var gr:Graphic = new Graphic(vip.name);
-
-			gr.vip.presetId = gri.presetId;
-			gr.render();	
-			return gr;
 		}
 		
 		private function embed(gri:GraphicItemProperties):ContainerObject

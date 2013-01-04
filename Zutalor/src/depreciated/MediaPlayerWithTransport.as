@@ -1,4 +1,4 @@
-package com.zutalor.components.media.base 
+package depreciated 
 {
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containerUtils.ContainerLoader;

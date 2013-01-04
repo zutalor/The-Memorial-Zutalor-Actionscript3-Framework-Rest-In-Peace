@@ -74,7 +74,7 @@ package com.zutalor.plugin
 			if (!Klass)
 				ShowError.fail(Plugins,"No class registered for: " + className);
 			else
-				return new Klass;
+				return new Klass();
 				
 		}
 		

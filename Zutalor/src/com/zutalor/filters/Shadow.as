@@ -11,17 +11,7 @@ package com.zutalor.filters
 	 */
 	public class Shadow extends FuzzyFilter
 	{
-		protected static var _presets:PropertyManager;
-		
-		public static function registerPresets(options:Object):void
-		{
-			if (!_presets)
-				_presets = new PropertyManager(FuzzyFilterProperties);
-			
-			_presets.parseXML(options.xml[options.nodeId]);
-		}
-		
-		override protected function getClass():Class
+		override protected function reflect():Class
 		{
 			return DropShadowFilter;
 		}
