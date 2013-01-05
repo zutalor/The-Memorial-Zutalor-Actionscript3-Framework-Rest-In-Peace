@@ -21,34 +21,34 @@ package com.zutalor.view.rendering
 		
 		public function applyFilters(vip:ViewItemProperties, viewItem:Component):void
 		{
-			var mask:Graphic;
-
 			if (vip.filterPreset || vip.maskId)
 			{
 				if (vip.transitionDelay)
 					MasterClock.callOnce(_applyFilters, vip.transitionDelay);
 				else
-					_applyFilters();						
+					_applyFilters(viewItem, vip);						
 			}				
+		}
+		
+		private function _applyFilters(viewItem:*, vip:ViewItemProperties):void
+		{
+			var mask:Graphic;
 			
-			function _applyFilters():void
+			if (_filters)
 			{
-				if (_filters)
-				{
-					var filters:Filters = new Filters();
-					_filters.push(filters);
-					filters.add(viewItem, vip.filterPreset);
-				}
-				
-				if (vip.maskId)
-				{
-					mask = new Graphic(vip.name);
-					mask.vip.presetId = vip.maskId;
-					mask.render();
-					viewItem.mask = mask;
-					viewItem.addChild(mask);
-				}		
+				var filters:Filters = new Filters();
+				_filters.push(filters);
+				filters.add(viewItem, vip.filterPreset);
 			}
+			
+			if (vip.maskId)
+			{
+				mask = new Graphic(vip.maskId);
+				mask.vip.presetId = vip.maskId;
+				mask.render();
+				viewItem.mask = mask;
+				viewItem.addChild(mask);
+			}		
 		}
 	}
 }

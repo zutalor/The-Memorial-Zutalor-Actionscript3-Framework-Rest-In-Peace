@@ -6,7 +6,6 @@ package com.zutalor.view.mediators
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
-	import com.zutalor.application.ApplicationProperties;
 	import com.zutalor.properties.NestedPropsManager;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.utils.ShowError;
@@ -29,36 +28,6 @@ package com.zutalor.view.mediators
 		{
 			vc = viewController;
 			_vpm = ViewController.presets;
-		}
-
-		public function setItemInitialValue(vip:ViewItemProperties):void
-		{
-			var item:*;
-			var ViewItemClass:Class
-			
-			ViewItemClass = Plugins.getClass(vip.type);
-			item = vc.container.getChildByName(vip.name);
-			
-			if (vip.voName)
-			{
-				_valueObject = Plugins.callMethod(vc.vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
-				item.value = _valueObject[vip.name];
-			}			
-		}
-		
-		public function setAllIniialValues():void
-		{
-			var vip:ViewItemProperties;
-									
-			for (var i:int = 0; i < vc.numViewItems; i++)
-			{
-				vip = _vpm.getItemPropsByIndex(vc.viewId, i);
-				if (vip.voName)
-				{
-					setItemInitialValue(vip);
-					vc.onViewChange(vip.name);
-				}
-			}
 		}
 		
 		public function validate():Boolean
@@ -96,10 +65,7 @@ package com.zutalor.view.mediators
 						if (vip.required) 
 						{
 							if (_valueObject[vip.name] == "" || _valueObject[vip.name] == vip.text)
-							{
-								setItemInitialValue(vip);
 								valid = false;
-							}
 						}
 						else if (vip.validate == "email")
 						{
@@ -177,16 +143,6 @@ package com.zutalor.view.mediators
 							}
 							break;
 							
-						case ViewItemProperties.HTML :
-							var t:TextField = item;
-							vc.itemDictionary.insert(vip.name, t);
-							TextUtil.applyStylesheet(t, _ap.defaultStyleSheetName, int(vip.width));
-							if (_valueObject[vip.name] != null)
-							{
-								t.htmlText = _valueObject[vip.name];
-								TextUtil.smoothHtmlBitmaps(t);
-							}
-							break;
 						
 						case ViewItemProperties.VIDEO :
 							var v:VideoPlayer;

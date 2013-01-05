@@ -31,11 +31,6 @@ package com.zutalor.components.base
 				
 		public function onValueChange(uie:UIEvent):void
 		{
-			
-		}
-		
-		public function dispatchValueChange(uie:UIEvent):void
-		{
 			value = uie.value;
 		}
 		

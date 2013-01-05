@@ -13,6 +13,9 @@ package com.zutalor.components.slider
 	 * ...
 	 * @author Geoff Pepos
 	 */
+	
+	 //NOTE: TODO There is a bug in the track click area. Doesn't update the value properly
+	 
 	public class Slider extends Component implements IComponent
 	{
 		private var _sliderController:ScrollBarController;
@@ -64,7 +67,7 @@ package com.zutalor.components.slider
 			else
 				_sliderController = new HScrollBarController(this, _thumb, _track, _reveal, sp.tweenTime, sp.numSteps, sp.onlyShowTrackOnMouseDown);
 				
-			_sliderController.addEventListener(UIEvent.VALUE_CHANGED, dispatchValueChange, false, 0, true);		
+			_sliderController.addEventListener(UIEvent.VALUE_CHANGED, onValueChange, false, 0, true);		
 		}
 		
 		public function get track():Sprite

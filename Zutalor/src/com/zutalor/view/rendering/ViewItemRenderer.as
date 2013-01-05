@@ -38,8 +38,6 @@ package com.zutalor.view.rendering
 				container.push(viewItem);
 				
 			viewItem.name = vip.name;
-			if (vip.name == "speed")
-				trace();
 			viewItem.render(vip);
 			filterApplier(vip, viewItem);
 
@@ -55,6 +53,9 @@ package com.zutalor.view.rendering
 			
 			if (vip.tapAction)
 				viewItem.buttonMode = true;
+				
+			if (vip.text)
+				viewItem.value = vip.text;
 			
 			return viewItem;
 		}

@@ -22,7 +22,6 @@
 		public var graphicStyle:String;
 		public var vPad:int;
 		public var hPad:int;
-		public var align:String;
 		public var blendMode:String;		
 		public var easing:String;
 		public var brush:String;	

@@ -157,13 +157,8 @@ package com.zutalor.components.graphic
 			if (gri.scale9Data)
 				item.scale9Grid = getScale9GridRect(gri.scale9Data); 
 			
-			if (gri.align && (_width + _height))
-				aligner.alignObject(item, _width, _height, gri.align, gri.hPad, gri.vPad);
-			else	
-			{
-				item.x += gri.hPad;
-				item.y += gri.vPad;
-			}	
+			item.x += gri.hPad;
+			item.y += gri.vPad;
 			itemIndex++;
 			renderNextItem();
 		}

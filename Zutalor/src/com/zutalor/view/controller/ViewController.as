@@ -4,19 +4,17 @@
 	import com.gskinner.utils.IDisposable;
 	import com.zutalor.components.base.Component;
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.positioning.Dragger;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.transition.Transition;
-	import com.zutalor.transition.TransitionTypes;
 	import com.zutalor.interfaces.IMediaPlayer;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
+	import com.zutalor.positioning.Dragger;
 	import com.zutalor.properties.NestedPropsManager;
+	import com.zutalor.transition.TransitionTypes;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.ShowError;
-	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.mediators.ViewEventMediator;
 	import com.zutalor.view.mediators.ViewModelMediator;
 	import com.zutalor.view.properties.ViewItemProperties;
@@ -27,8 +25,6 @@
 	import com.zutalor.view.transition.ItemFX;
 	import com.zutalor.view.transition.ViewItemTransition;
 	import com.zutalor.widgets.Focus;
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.geom.Point;
 
 	public class ViewController implements IDisposable
@@ -500,10 +496,7 @@
 				else
 					Plugins.callMethod(vp.uiControllerInstanceName, vp.initialMethod);
 			}
-			//if (viewModelMediator != null)
-			//	viewModelMediator.setAllInitialValues();
-			
-		_onComplete();	
+			_onComplete();	
 		}
 	}
 }
