@@ -500,8 +500,8 @@
 				else
 					Plugins.callMethod(vp.uiControllerInstanceName, vp.initialMethod);
 			}
-			if (viewModelMediator != null)
-				viewModelMediator.setAllInitialValues();
+			//if (viewModelMediator != null)
+			//	viewModelMediator.setAllInitialValues();
 			
 		_onComplete();	
 		}

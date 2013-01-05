@@ -19,6 +19,7 @@
 		// gesture types
 		public static const APP_STATE_CHANGE:String = "appStateChange";
 		public static const UI_EVENT:String = "uiEvent";
+		public static const URL:String = "url";
 		public static const PLUGIN_METHOD:String = "pluginMethodCall";
 		public static const CONTAINER_METHOD:String = "containerMethodCall";
 		public static const VIEWITEM_METHOD:String = "viewItemMethodCall";	
@@ -42,6 +43,7 @@
 		
 		public var width:String; // yes string because it can be either "auto" or a number.
 		public var height:String; // same as above
+		public var scale:Number;
 		public var align:String;
 		public var tabIndex:int;
 		

@@ -36,7 +36,7 @@ package com.zutalor.components.base
 		
 		public function dispatchValueChange(uie:UIEvent):void
 		{
-			dispatchEvent(uie.clone());
+			value = uie.value;
 		}
 		
 		public function get value():*

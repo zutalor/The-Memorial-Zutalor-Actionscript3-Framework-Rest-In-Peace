@@ -3,21 +3,20 @@ package com.zutalor.components.graphic
 	import com.zutalor.color.Color;
 	import com.zutalor.components.base.Component;
 	import com.zutalor.components.embed.Embed;
-	import com.zutalor.filters.Filters;
-	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.components.label.Label;
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.transition.Transition;
+	import com.zutalor.filters.Filters;
+	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.properties.NestedPropsManager;
 	import com.zutalor.properties.PropertyManager;
+	import com.zutalor.transition.Transition;
 	import com.zutalor.translate.Translate;
-	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.EmbeddedResources;
+	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import flash.display.Graphics;
-	import flash.display.GraphicsPathCommand;
 	import flash.display.Sprite;
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
@@ -105,11 +104,11 @@ package com.zutalor.components.graphic
 			var gri:GraphicItemProperties;
 			gri = _graphics.getItemPropsByIndex(vip.presetId, itemIndex);
 			
-	
 			if (!gri)
 				trace(Graphic, "No preset graphic id " + vip.presetId);
 			else
 			{
+
 				switch (gri.type)
 				{
 					case Graphic.EMBED :
@@ -119,7 +118,9 @@ package com.zutalor.components.graphic
 						item = label(gri);
 						break;	
 					case Graphic.GRAPHIC : // nested graphic!
-						item = new Graphic(gri.presetId); trace(gri.presetId);
+						item = new Graphic(gri.name);
+						Graphic(item).vip.presetId = gri.presetId;
+						Graphic(item).render();
 						break;
 					default :
 						item = draw(gri);
@@ -146,7 +147,7 @@ package com.zutalor.components.graphic
 				
 			if (gri.scale)
 				item.scaleX = item.scaleY = gri.scale;			
-				
+			
 			if (gri.filterPreset)
 			{
 				var filters:Filters = new Filters();
@@ -155,7 +156,7 @@ package com.zutalor.components.graphic
 
 			if (gri.scale9Data)
 				item.scale9Grid = getScale9GridRect(gri.scale9Data); 
-				
+			
 			if (gri.align && (_width + _height))
 				aligner.alignObject(item, _width, _height, gri.align, gri.hPad, gri.vPad);
 			else	
@@ -163,7 +164,6 @@ package com.zutalor.components.graphic
 				item.x += gri.hPad;
 				item.y += gri.vPad;
 			}	
-			
 			itemIndex++;
 			renderNextItem();
 		}
@@ -284,8 +284,6 @@ package com.zutalor.components.graphic
 			em = new Embed(gri.name);
 			em.vip.className = gri.className;
 			em.render();
-			em.x = int(gri.hPad);
-			em.y = int(gri.vPad);
 			return em;
 		}
 		

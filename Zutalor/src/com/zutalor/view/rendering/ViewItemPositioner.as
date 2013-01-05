@@ -39,14 +39,13 @@ package com.zutalor.view.rendering
 			var vPad:int;
 			
 			viewItem = _c.getChildByName(vip.name) as Component;
-			
 			width = int(vip.width);
 			height = int(vip.height);
 			x = int(vip.x);
 			y = int(vip.y);
 			hPad = int(vip.hPad);
 			vPad = int(vip.vPad);
-				
+			
 			if (vip.width)
 				if (vip.width == "auto")
 					viewItem.width = _width - hPad - x;
@@ -83,11 +82,12 @@ package com.zutalor.view.rendering
 				viewItem.alpha = vip.alpha;
 			else
 				viewItem.alpha = 1;
+			
+			if (vip.scale)
+				viewItem.scaleX = viewItem.scaleY = vip.scale;
 
 			if (vip.hidden)
-				viewItem.visible = false;
-				
-			trace(viewItem.width, viewItem.height, viewItem.name);	
+				viewItem.visible = false;		
 		}
 	}
 }

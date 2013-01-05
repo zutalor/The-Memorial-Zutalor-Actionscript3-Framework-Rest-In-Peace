@@ -44,10 +44,13 @@ package com.zutalor.components.slider
 			
 			_track = new Button(vip.name);
 			_track.vip.presetId = sp.trackButtonId;
+			_track.render();
+			
 			_thumb = new Button(vip.name);
 			_thumb.vip.presetId = sp.thumbButtonId;
 			_thumb.vip.text = Translate.text(vip.tKey);
 			_thumb.vip.textAttributes = vip.textAttributes;
+			_thumb.render();
 
 			if (sp.revealId)
 			{
@@ -76,8 +79,13 @@ package com.zutalor.components.slider
 		
 		override public function set value(p:*):void
 		{
-			super.value = p;
 			_sliderController.setPercent(p);
+			super.value = p;
+		}
+		
+		override public function get value():*
+		{
+			return _sliderController.getPercent();
 		}
 	}
 }

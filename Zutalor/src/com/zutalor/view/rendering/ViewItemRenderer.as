@@ -33,12 +33,14 @@ package com.zutalor.view.rendering
 				
 			ViewItemClass = Plugins.getClass(vip.type);
 			viewItem = new ViewItemClass(vip.name);
+							
 			if (!viewItem.isInvisible) 
 				container.push(viewItem);
 				
 			viewItem.name = vip.name;
+			if (vip.name == "speed")
+				trace();
 			viewItem.render(vip);
-				
 			filterApplier(vip, viewItem);
 
 			if (positioner != null)
@@ -50,6 +52,10 @@ package com.zutalor.view.rendering
 				viewItem.tabIndex = vip.tabIndex;
 				viewItem.focusRect = true;
 			}	
+			
+			if (vip.tapAction)
+				viewItem.buttonMode = true;
+			
 			return viewItem;
 		}
 	}

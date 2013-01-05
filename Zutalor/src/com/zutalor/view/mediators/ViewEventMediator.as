@@ -10,6 +10,7 @@ package com.zutalor.view.mediators
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
+	import com.zutalor.loaders.URL;
 	import com.zutalor.plugin.constants.PluginClasses;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
@@ -338,8 +339,7 @@ package com.zutalor.view.mediators
 			
 			if (vip && vip.voName)
 			{
-				vc.viewModelMediator.vc.onViewChange(vip.name);
-				vc.viewModelMediator.copyViewItemToValueObject(vip, uie.target);
+				vc.onViewChange(vip.name);
 				if (uie.target is ComponentGroup || uie.target is RadioGroup)
 				{
 					cgp = ComponentGroup.presets.getPropsByName(vip.presetId);
@@ -348,7 +348,6 @@ package com.zutalor.view.mediators
 					for (var i:int = 0; i < cgp.numComponents; i++)
 						contentContainer.getChildAt(i).value = uie.value[i];
 				}
-				onTap(null, vip.name);
 			}
 		}
 		
@@ -404,9 +403,16 @@ package com.zutalor.view.mediators
 							break;
 						case ViewItemProperties.VIEWITEM_METHOD :
 							viewItemMethodCall();
+						case ViewItemProperties.URL :
+							url();
 							break;
 						default :
 							break;
+					}
+					
+					function url():void
+					{
+						URL.open(vip.tapAction);
 					}
 					
 					function appStateChange():void

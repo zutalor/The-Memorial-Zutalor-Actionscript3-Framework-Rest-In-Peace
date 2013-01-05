@@ -46,7 +46,7 @@ package com.zutalor.view.mediators
 			}			
 		}
 		
-		public function setAllInitialValues():void
+		public function setAllIniialValues():void
 		{
 			var vip:ViewItemProperties;
 									
@@ -95,7 +95,7 @@ package com.zutalor.view.mediators
 					case Component :
 						if (vip.required) 
 						{
-							if (_valueObject[vip.name] == "" || _valueObject[vip.name] == vip.text || _valueObject[vip.name] == vip.text)
+							if (_valueObject[vip.name] == "" || _valueObject[vip.name] == vip.text)
 							{
 								setItemInitialValue(vip);
 								valid = false;
@@ -141,18 +141,12 @@ package com.zutalor.view.mediators
 		}	
 		
 		public function copyViewItemToValueObject(vip:ViewItemProperties, item:*):void
- 		{
-			var ViewItemClass:Class;
-		
+ 		{		
 			if (vip.voName)
 			{
-				ViewItemClass = Plugins.getClass(vip.type);
 				_valueObject = Plugins.callMethod(vc.vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
 				if (_valueObject)
-				{
-					if (ViewItemClass == Component)
-						_valueObject[vip.name] = item.value;
-				}
+					_valueObject[vip.name] = item.value;
 				else
 					ShowError.fail(ViewModelMediator,"valueObject not found: " + vip.voName);
 			}
@@ -162,12 +156,10 @@ package com.zutalor.view.mediators
 		{
 			var c:ViewContainer;
 			var dataProvider:Array;
-			var ViewItemClass:Class;
 			
 			if (vip.voName)
 			{
-				_valueObject = Plugins.callMethod(vc.vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
-				ViewItemClass = Plugins.getClass(vip.type);							
+				_valueObject = Plugins.callMethod(vc.vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );						
 				item.value = _valueObject[vip.name];
 			}
 		}

@@ -47,14 +47,12 @@ package com.zutalor.components.text
 			super.render(viewItemProperties);
 			editable = true;
 			textField = new TextField();
-			if (vip.text)
-			{
-				textField.text = vip.text;
-				if (!textField.text)
-					textField.text = ""
-				if (vip.textAttributes)
-					textAttributes = vip.textAttributes;
-			}
+			textAttributes = vip.textAttributes;
+			if (!vip.text)
+				vip.text = "";
+	
+			textField.text = vip.text;
+			applyTextAttributes();
 			addChild(textField);
 		}
 		

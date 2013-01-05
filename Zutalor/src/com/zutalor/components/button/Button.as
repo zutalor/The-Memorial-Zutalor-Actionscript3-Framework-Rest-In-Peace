@@ -58,8 +58,7 @@
 				
 			_sb = new SimpleButton(_up, _over, _down, _up);
 			addChild(_sb);
-			vip.text = StringUtils.stripLeadingSpaces(vip.text);
-			_sb.name = vip.text;				
+			vip.text = StringUtils.stripLeadingSpaces(vip.text);			
 			vip.hPad = _bp.hPad;
 			vip.vPad = _bp.vPad;
 
@@ -74,15 +73,20 @@
 			
 			if (vip.width)
 				width = int(vip.width);
-			else
+			else if (_bp.width)
 				width = _bp.width;
 
 			if (vip.height)
 				height = int(vip.height);
-			else
+			else if (_bp.height)
 				height = _bp.height;
 				
 			vip.textAttributes = _textAttributes[i];
+			
+			if (vip.text)
+				_sb.name = vip.text;	
+			else
+				_sb.name = name;
 			
 			for (var i:int = 0; i < 4; i++)
 			{
@@ -121,9 +125,15 @@
 		
 		override public function set name(n:String):void
 		{
-			super.name = n;
-			for (var i:int; i < numChildren; i++)
-				getChildAt(i).name = n;
+			if (n)
+			{
+				super.name = n;
+				if (_sb)
+					_sb.name = n;
+				
+				for (var i:int; i < numChildren; i++)
+					getChildAt(i).name = n;
+			}
 		}
 		
 		override public function set enabled(value:Boolean):void
