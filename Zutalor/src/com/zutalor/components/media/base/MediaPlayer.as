@@ -27,7 +27,6 @@
 		protected var _volume:Number;
 		private var _url:String;
 		private var _playerType:String;
-		private var _bufferingTime:int;	
 		
 		public var startDelay:Number;
 		public var viewFadeIn:Number;
@@ -39,8 +38,8 @@
 		public var endVariance:Number;
 		public var loop:int;
 		public var loopDelay:Number;
-		public var bufferTime:Number;
-		public var scaleToFit:Boolean = true;
+		
+		private var _bufferTime:Number;
 		
 		private static var presets:PropertyManager;
 				
@@ -65,10 +64,9 @@
 			mpp = presets.getPropsByName(vip.mediaPreset);
 			if (!mpp)
 				ShowError.fail(MediaPlayer,"No media preset " + vip.url);
-						
-			load(vip.url, mpp.volume);
-			if (mpp.controlsViewId)
-				initTransport(mpp.controlsViewId, mpp.controlsContainerName);			
+			
+			volume = mpp.volume;	
+			load(vip.url, int(vip.width), int(vip.height), vip.x, vip.y);		
 			
 			if (vip.url)
 			{
@@ -133,13 +131,11 @@
 		
 		// PUBLIC METHODS
 		
-		public function load(url:String, defaultVolume:Number = 1):void
+		public function load(url:String, width:int, height:int, x:int=0, y:int=0):void
 		{				
-			url = url;
-			volume = defaultVolume;
+			_url = url;
 			mediaController.returnToZeroOnStop = true;
-		
-			mediaController.load(url, scaleToFit, bufferTime);
+			mediaController.load(url, width, height, x, y);
 		}	
 		
 		public function play():void
@@ -182,61 +178,11 @@
 			}
 			else
 				onStopComplete();
-		}		
-		
-		override public function set width(n:Number):void
-		{
-			mediaController.width = n;
-		}
-		
-		override public function get width():Number
-		{
-			return mediaController.width;
-		}
-		
-		override public function set height(n:Number):void
-		{
-			mediaController.height = n;
-		}
-		
-		override public function get height():Number
-		{
-			return mediaController.height;
-		}
-		
-		override public function set x(n:Number):void
-		{
-			mediaController.x = n;
-		}
-		
-		override public function set y(n:Number):void
-		{
-			mediaController.y = n;
-		}
-		
-		override public function get x():Number
-		{
-			return mediaController.x;
-		}
-		
-		override public function get y():Number
-		{
-			return mediaController.y;
 		}
 				
 		public function get view():DisplayObject
 		{
 			return mediaController.view;
-		}
-		
-		override public function set visible(v:Boolean):void
-		{
-			super.visible = mediaController.visible = v;
-		}
-		
-		override public function get visible():Boolean
-		{
-			return mediaController.visible;
 		}
 			
 		public function get playerType():String
@@ -246,7 +192,7 @@
 		
 		public function get url():String
 		{
-			return url;
+			return _url;
 		}
 		
 		public function set framerate(fr:Number):void
@@ -276,13 +222,13 @@
 								
 		public function set volume(v:Number):void
 		{
-			volume = v;
+			_volume = v;
 			mediaController.volume = v;
 		}
 		
 		public function get volume():Number
 		{
-			return volume;
+			return _volume;
 		}
 
 		override public function dispose():void
@@ -295,8 +241,6 @@
 		}		
 						
 		// PRIVATE METHODS
-				
-		private function initTransport(transportViewId:String, transportContainer:String):void {}		
 		
 		private function onTotalTimeFound():void
 		{
@@ -306,7 +250,7 @@
 			if (mediaController.totalTime)
 			{
 				MasterClock.unRegisterCallback(onTotalTimeFound);
-				end = mediaController.totalTime - mediaController.currentTime - start - end - endVariance;
+				end = mediaController.totalTime - mediaController.currentTime - start - endVariance;
 	
 				if (overlap)
 				{
@@ -401,20 +345,21 @@
 		{
 			var adjustment:int;
 			
-			if (_bufferingTime)
+			if (_bufferTime)
 			{
 				if (MasterClock.isRegistered(onEndClip))
-					MasterClock.modifyInterval(onEndClip, _bufferingTime - getTimer());
+					MasterClock.modifyInterval(onEndClip, _bufferTime - getTimer());
 				if (MasterClock.isRegistered(onOverLapClip))
-					MasterClock.modifyInterval(onOverLapClip, _bufferingTime - getTimer());
-				_bufferingTime = 0;
+					MasterClock.modifyInterval(onOverLapClip, _bufferTime - getTimer());
+				
+				_bufferTime = 0;
 			}
 			Spinner.hide();
 		}
 
 		private function onBufferEmpty(e:MediaEvent):void
 		{
-			_bufferingTime = getTimer();
+			_bufferTime = getTimer();
 			Spinner.show(2);
 		}
 		

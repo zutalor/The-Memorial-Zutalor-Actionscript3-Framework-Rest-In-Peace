@@ -108,15 +108,21 @@
 				processStateChange();
 		}		
 		
-		// PRIVATE METHODS		
+		// PRIVATE METHODS
+		
+		private function onCloseEvent(e:Event):void
+		{
+			e.target.removeEventListener(UIEvent.CLOSE, onCloseEvent);
+			closeView(e.target.name);
+		}
 				
 		private function closeView(viewName:String, onComplete:Function = null):void
 		{
 			var appState:String;
-			var cc:ViewCloser;
+			var vc:ViewCloser;
 			
-			cc = new ViewCloser();
-			cc.close(viewName, onComplete);
+			vc = new ViewCloser();
+			vc.close(viewName, onComplete);
 			appState = ViewProperties(vpm.getPropsById(viewName)).appState;
 			if (appState)
 			{
@@ -262,7 +268,8 @@
 						_curViewProps.transitionPreset = appStateProps.transitionPreset;
 					
 					_curViewProps.mediaPreset = appStateProps.mediaPreset;
-					viewCreator.create(appStateProps.viewId, appStateProps.name, onAppContainerLoadComplete);							
+					viewCreator.create(appStateProps.viewId, appStateProps.name, onAppContainerLoadComplete);
+					viewCreator.container.addEventListener(UIEvent.CLOSE, onCloseEvent, false, 0, true);
 				}
 			}
 		}

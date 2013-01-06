@@ -44,6 +44,9 @@
 		
 		private var _framerate:Number;
 		
+		public var scaleToFit:Boolean = true;
+		public var bufferSecs:Number = 4;
+		
 		override public function VideoController()
 		{
 			super();
@@ -53,30 +56,6 @@
 		private function init():void
 		{
 			_duration = 0;
-		}
-		
-		override public function set width(n:Number):void
-		{
-			super.width = n;
-			onStageVideoStateChange();
-		}
-		
-		override public function set height(n:Number):void
-		{
-			super.height = n;
-			onStageVideoStateChange();
-		}
-		
-		override public function set x(n:Number):void
-		{
-			super.x = n;
-			onStageVideoStateChange();
-		}
-		
-		override public function set y(n:Number):void
-		{
-			super.y = n;
-			onStageVideoStateChange();
 		}
 		
 		override public function set framerate(fr:Number):void
@@ -100,7 +79,7 @@
 				return false;
 		}
 		
-		override public function load(url:String, scaleToFit:Boolean, bufferSecs:Number):void
+		override public function load(url:String, width:int, height:int, x:int=0, y:int=0):void
 		{
 			var s:Stage;
 			
@@ -165,7 +144,7 @@
 			if (sv)
 			{
 				scale = Scale.curAppScale;
-				rc = new Rectangle(x * scale, y * scale, width * scale, height * scale);
+				rc = new Rectangle(view.x, view.y, view.width, view.height);
 				sv.viewPort = rc;
 			}
 		}
@@ -412,16 +391,6 @@
 				
 				if (sv)
 					onStageVideoStateChange();
-				else
-				{
-					
-					view.width = width;
-					view.height = height;
-					videoDisplay.width = metadata.width;
-					videoDisplay.height = metadata.height;
-					if (_scaleToFit)
-						aligner.alignObject(videoDisplay, width, height, Aligner.FIT);
-				}
 
 				stream.resume();
 				

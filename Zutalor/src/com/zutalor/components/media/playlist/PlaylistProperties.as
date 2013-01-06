@@ -15,6 +15,11 @@
 		public var defaultImageLength:Number;
 		public var bufferTime:Number;
 		public var autoPlay:Boolean;
+		public var x:int;
+		public var y:int;
+		public var z:int;
+		public var width:int;
+		public var height:int;
 		public var scaleToFit:Boolean;
 		public var startDelay:Number;
 		public var loop:int;

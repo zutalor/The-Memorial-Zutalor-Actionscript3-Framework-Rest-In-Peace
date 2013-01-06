@@ -26,7 +26,7 @@
 		private var _loaded:Boolean;
 		private var _volume:Number;
 		
-		override public function load(url:String,scaleToFit:Boolean, bufferTime:Number):void
+		override public function load(url:String, width:int, height:int, x:int=0, y:int=0):void
 		{
 			var className:Array;
 			
@@ -35,7 +35,7 @@
 				onPlaybackComplete();
 				return;
 			}
-			_scaleToFit = scaleToFit;
+
 			_pausePosition = 0;
 			_volume = 1;
 			

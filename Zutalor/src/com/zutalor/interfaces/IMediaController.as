@@ -10,31 +10,11 @@
 	 */
 	public interface IMediaController
 	{			
-		function load(fileName:String, scaleToFit:Boolean, bufferTime:Number):void
+		function load(fileName:String, width:int, height:int, x:int=0, y:int=0):void
 		
 		function set view(v:DisplayObjectContainer):void
 		
 		function get view():DisplayObjectContainer
-		
-		function set x(n:Number):void
-		
-		function set y(n:Number):void
-		
-		function set width(n:Number):void
-		
-		function set height(n:Number):void
-		
-		function get x():Number
-		
-		function get y():Number
-		
-		function get width():Number
-		
-		function get height():Number
-		
-		function set visible(v:Boolean):void
-		
-		function get visible():Boolean
 		
 		function get currentTime():Number
 		

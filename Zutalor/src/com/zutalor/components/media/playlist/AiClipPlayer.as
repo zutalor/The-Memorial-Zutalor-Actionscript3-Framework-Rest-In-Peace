@@ -208,11 +208,11 @@ package com.zutalor.components.media.playlist
 		}
 		
 		private function onPlayStarted(e:MediaEvent):void
-					{
-						e.target.removeEventListener(MediaEvent.PLAY, onPlayStarted);
-						trace("started", e.target.name, e.target);
-						dispatchEvent(new MediaEvent(MediaEvent.PLAY));
-					}
+		{
+			e.target.removeEventListener(MediaEvent.PLAY, onPlayStarted);
+			trace("started", e.target.name, e.target);
+			dispatchEvent(new MediaEvent(MediaEvent.PLAY));
+		}
 		
 		public function cueNext(me:MediaEvent = null):void
 		{
@@ -256,7 +256,6 @@ package com.zutalor.components.media.playlist
 		{
 			var pip:PlaylistItemProperties;
 			
-			trace(debug);
 			_clipsToPlay = [];
 			_clipIndex = 0;
 							

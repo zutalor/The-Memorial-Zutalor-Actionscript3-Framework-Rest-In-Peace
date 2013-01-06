@@ -30,7 +30,5 @@
 		public var backgroundColor:uint;
 		public var fadeOut:Number;
 		public var hideOnPlayComplete:Boolean;
-		public var controlsViewId:String;
-		public var controlsContainerName:String;
 	}
 }

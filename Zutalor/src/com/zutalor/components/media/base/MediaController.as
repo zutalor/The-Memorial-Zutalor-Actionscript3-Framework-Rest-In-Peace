@@ -35,72 +35,21 @@
 		protected var _paused:Boolean;
 		protected var _duration:Number;
 		
-		private var _width:Number;
-		private var _height:Number;
+		public var bufferTime:Number;
 		
 		public function MediaController() 
 		{
 		
 		}
 		
-		public function load(fileName:String, scaleToFit:Boolean, bufferTime:Number):void
+		public function load(fileName:String, width:int, height:int, x:int=0, y:int=0):void
 		{
 			
-		}
-		
-		public function get visible():Boolean
-		{
-			return _view.visible;
-		}
-		
-		public function set visible(v:Boolean):void
-		{
-			_view.visible = v;
 		}
 		
 		public function get hasAudio():Boolean
 		{
 			return true;
-		}
-		
-		public function set width(n:Number):void
-		{
-			_view.width = _width = n;
-		}
-		
-		public function set height(n:Number):void
-		{
-			_view.height = _height = n;
-		}
-		
-		public function get width():Number
-		{
-			return _width;
-		}
-		
-		public function get height():Number
-		{
-			return _height;
-		}
-		
-		public function set x(n:Number):void
-		{
-			_view.x = n;
-		}
-		
-		public function get x():Number
-		{
-			return _view.x;
-		}
-
-		public function set y(n:Number):void
-		{
-			_view.y = n;
-		}
-		
-		public function get y():Number
-		{
-			return _view.y;
 		}
 		
 		public function get view():DisplayObjectContainer

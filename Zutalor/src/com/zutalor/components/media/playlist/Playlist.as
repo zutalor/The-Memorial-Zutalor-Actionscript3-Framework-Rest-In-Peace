@@ -7,8 +7,6 @@ package com.zutalor.components.media.playlist
 	import com.zutalor.events.MediaEvent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.interfaces.IComponent;
-	import com.zutalor.interfaces.IMediaPlayer;
-	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.properties.NestedPropsManager;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.HotKeyManager;
@@ -16,16 +14,14 @@ package com.zutalor.components.media.playlist
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.properties.ViewItemProperties;
-	import com.zutalor.view.rendering.ViewCreator;
 	import flash.display.DisplayObject;
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.utils.getTimer;
 	/**
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class Playlist extends Component implements IComponent, IMediaPlayer
+	public class Playlist extends Component implements IComponent
 	{	
 		public static const IMAGE:String = "image";
 		public static const VIDEO:String = "video";
@@ -532,15 +528,6 @@ package com.zutalor.components.media.playlist
 			return this;
 		}
 		
-		public function load(url:String, defaultVolume:Number = 1):void {}
-		
-		public function get url():String 
-		{
-			return null;
-		}
-		
-		public function set returnToZero(value:Boolean):void { }
-		
 		public function get isPlaying():Boolean 
 		{
 			return _isPlaying;
@@ -550,7 +537,5 @@ package com.zutalor.components.media.playlist
 		{
 			_isPlaying = v;
 		}
-		
-		public function seek(value:Number):void {}
 	}
 }

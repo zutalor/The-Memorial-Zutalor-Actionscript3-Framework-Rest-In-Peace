@@ -45,6 +45,9 @@
 
 			super.render(viewItemProperties);
 			
+			if (vip.presetId == "return-up")
+				trace();
+			
 			_bp = ButtonProperties(_presets.getPropsByName(vip.presetId));
 			
 			_up = makeButtonState(_bp.upId);
@@ -151,8 +154,8 @@
 		{
 			var g:Graphic;
 			g = new Graphic(name);
-			vip.presetId = presetId;
-			g.render(vip)
+			g.vip.presetId = presetId;
+			g.render(g.vip)
 			return g;
 		}
 	}

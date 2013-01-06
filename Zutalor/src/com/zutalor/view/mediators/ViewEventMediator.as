@@ -20,6 +20,7 @@ package com.zutalor.view.mediators
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.properties.ViewItemProperties;
+	import com.zutalor.view.utils.ViewCloser;
 	import com.zutalor.view.utils.ViewUtils;
 	import com.zutalor.widgets.Focus;
 	import flash.events.Event;
@@ -485,7 +486,7 @@ package com.zutalor.view.mediators
 									Plugins.callMethod(PluginClasses.AIR_PLUGIN, PluginMethods.NW_MINIMIZE);
 								break;
 							case UIEvent.FULLSCREEN: 
-								FullScreen.toggle();
+								FullScreen.toggle();	
 								break;
 							default: 
 								var c:ViewContainer = ViewController.presets.getPropsById(containerNames[i]).container;

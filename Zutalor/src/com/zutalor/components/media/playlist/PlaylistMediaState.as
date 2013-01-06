@@ -198,7 +198,7 @@
 				{
 					if (_players.length < _sp.clipsCacheSize)
 					{
-						p = new PlayerClass();
+						p = new PlayerClass("");
 						p.name = pip.name;
 						//traceAction("Making a new player", p);
 						p.returnToZero = false;
@@ -227,14 +227,14 @@
 			if (p)
 			{
 				if (!pip.width)
-					p.load(fullUrl, pip.volume);
+					p.load(fullUrl, _pp.width, _pp.height, _pp.x, _pp.y);
 				else	
-					p.load(fullUrl, pip.volume);
+					p.load(fullUrl, pip.width, pip.height, pip.x, pip.y);
 			}	
 			return p;
 		}
 	
-		private function startPlayback(pip:PlaylistItemProperties, p:*):void
+		private function startPlayback(pip:PlaylistItemProperties, p:MediaPlayer):void
 		{	
 			var start:Number;
 			var end:Number;
@@ -295,7 +295,14 @@
 				p.endVariance = MathG.randFloat(0, _pp.endVariance);	
 			
 			p.addEventListener(MediaEvent.COMPLETE, recyclePlayer);
-			p.play(vFadeIn, aFadeIn, fadeOut, _pp.overlap, delay, start, end, pip.loop, pip.loopDelay);
+			p.audioFadeIn = aFadeIn;
+			p.fadeOut = fadeOut;
+			p.overlap = _pp.overlap;
+			p.start = start;
+			p.startDelay = delay;
+			p.loop = pip.loop;
+			p.loopDelay = pip.loopDelay;
+			p.play();
 			_sp.playlist.addMediaPlayer(p);
 			p.visible = true;
 			dispatchEvent(new MediaEvent(MediaEvent.PLAY));
