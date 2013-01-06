@@ -17,8 +17,6 @@
 		public var height:int;
 		public var alpha:Number = 1;
 		public var url:String;
-		public var presetId:String;
-		public var libraryName:String;
 		public var filterPreset:String;
 		public var start:int;
 		public var end:int;

@@ -40,6 +40,7 @@
 		public var loopDelay:Number;
 		
 		private var _bufferTime:Number;
+		private var _savedVolume:Number;
 		
 		private static var presets:PropertyManager;
 				
@@ -116,7 +117,7 @@
 			if (audioFadeIn)
 			{
 				mediaController.volume = 0;
-				TweenMax.to(mediaController, audioFadeIn, { volume:volume } );
+				TweenMax.to(mediaController, audioFadeIn, { volume:_savedVolume } );
 			}
 			else
 				mediaController.volume = volume;
@@ -141,6 +142,12 @@
 		public function play():void
 		{
 			Spinner.show(2);
+			
+			if (audioFadeIn)
+			{
+				_savedVolume = volume;
+				volume = 0;
+			}	
 			
 			if (!fadeOut)
 				fadeOut = 0;
