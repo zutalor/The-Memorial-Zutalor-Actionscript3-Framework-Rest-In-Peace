@@ -14,8 +14,6 @@
 		function get visible():Boolean
 		function load(url:String, width:int, height:int, x:int=0, y:int=0):void
 		function get url():String
-		function set framerate(fr:Number):void
-		function get framerate():Number
 		function set returnToZero(b:Boolean):void
 		function set totalTime(n:Number):void
 		function get isPlaying():Boolean

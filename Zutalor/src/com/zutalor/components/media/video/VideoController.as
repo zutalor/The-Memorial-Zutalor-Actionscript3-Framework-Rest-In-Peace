@@ -40,9 +40,6 @@
 		private var lastSeekableTime:Number;
 		
 		private var _buffercount:int;
-		private var _videoframerate:Number;
-		
-		private var _framerate:Number;
 		
 		public var scaleToFit:Boolean = true;
 		public var bufferSecs:Number = 4;
@@ -56,19 +53,6 @@
 		private function init():void
 		{
 			_duration = 0;
-		}
-		
-		override public function set framerate(fr:Number):void
-		{
-			if (fr > 0)
-				_framerate = fr;
-			else
-				_framerate = 0;
-		}
-		
-		override public function get framerate():Number
-		{
-			return _framerate;
 		}
 		
 		override public function get hasAudio():Boolean
@@ -96,6 +80,7 @@
 				nc.connect(null);
 			}
 			_url = url;
+			
 			if (stream)
 				stream.close();
 			else
@@ -239,12 +224,8 @@
 		override public function stop():void
 		{
 			
-			
 			if (_isPlaying)
 			{
-				if (_framerate < _videoframerate)
-					MasterClock.stop(onFrameCallback);
-				
 				//if (returnToZeroOnStop) 
 				//	stream.seek(0);
 				
@@ -340,7 +321,6 @@
 		
 		override public function dispose():void
 		{
-			MasterClock.unRegisterCallback(onFrameCallback);
 			if (sv)
 				sv.removeEventListener(StageVideoEvent.RENDER_STATE, onStageVideoStateChange);
 				
@@ -378,47 +358,19 @@
 		
 		public function onMetaData(metadata:Object):void
 		{
-			var aligner:Aligner;
+			_metadata = metadata;
+			_duration = metadata.duration;
+			lastSeekableTime = metadata.lastkeyframetimestamp;
+			dispatchEvent(new MediaEvent(MediaEvent.METADATA));
 			
-			aligner = new Aligner();
-			if (metadata.framerate)
-			{
-				_metadata = metadata;
-				_duration = metadata.duration;
-				_videoframerate = metadata.framerate;
-				lastSeekableTime = metadata.lastkeyframetimestamp;
-				dispatchEvent(new MediaEvent(MediaEvent.METADATA));
-				
-				if (sv)
-					onStageVideoStateChange();
+			if (sv)
+				onStageVideoStateChange();
 
-				stream.resume();
-				
-				dispatchEvent(new MediaEvent(MediaEvent.PLAY));
-				
-				if (!_framerate)
-					_framerate = _videoframerate;
-				else if (_framerate < _videoframerate)
-					MasterClock.registerCallback(onFrameCallback, true, 1000 / _framerate);
-					
-			}
+			stream.resume();
+			dispatchEvent(new MediaEvent(MediaEvent.PLAY));
 		}
 		
 		// PRIVATE METHODS
-		
-		private function onFrameCallback():void
-		{
-			if (!_paused && _isPlaying)
-			{
-				_paused = true;
-				stream.pause();
-			}
-			else
-			{
-				stream.resume();
-				_paused = false;
-			}
-		}
 		
 		private function onNSStatus(stats:NetStatusEvent):void
 		{

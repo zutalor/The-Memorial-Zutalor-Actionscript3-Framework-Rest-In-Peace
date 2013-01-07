@@ -58,12 +58,8 @@ package com.zutalor.components.toggle
 		
 		private function onMouseDown(me:MouseEvent):void
 		{
-			if (value)
-				value = false;
-			else
-				value = true;
-			
-			toggle();					
+			value = !value;
+			dispatchEvent(new MouseEvent(MouseEvent.CLICK));
 		}
 		
 		override public function set value(value:*):void
@@ -94,6 +90,7 @@ package com.zutalor.components.toggle
 		
 		override public function dispose():void
 		{
+			removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			removeChildAt(0);
 			removeChildAt(0);
 			_onState = null;

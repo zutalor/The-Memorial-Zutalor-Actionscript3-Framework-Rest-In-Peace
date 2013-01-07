@@ -31,11 +31,7 @@
 		function get volume():Number
 		
 		function set volume(volume:Number):void
-		
-		function set framerate(fr:Number):void
-		
-		function get framerate():Number
-		
+	
 		function get metadata():Object												
 		
 		function get isPlaying():Boolean

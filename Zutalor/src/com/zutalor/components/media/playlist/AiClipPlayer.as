@@ -33,7 +33,6 @@ package com.zutalor.components.media.playlist
 		private var _playing:int;
 		private var _ppm:NestedPropsManager;	
 		private var _clipIndex:int;
-		private var _framerate:Number;
 		private var _volume:Number;
 		
 		private const TIMER_INTERVAL:int = 1000;
@@ -111,26 +110,6 @@ package com.zutalor.components.media.playlist
 			_clipsAlreadyPlayed = new gDictionary();
 		}
 		
-		public function set framerate(fr:Number):void
-		{
-			var len:uint;
-			var p:MediaPlayer;
-			
-			_framerate = fr;
-			
-			len = _players.length;
-			for (var i:int = 0; i < len; i++)
-			{
-				p = _players.getByIndex(i);
-				p.framerate = fr;
-			}
-		}		
-		
-		public function get framerate():Number
-		{
-			return _framerate;
-		}
-		
 		public function cued():int
 		{
 			return _cueList.length;
@@ -189,10 +168,7 @@ package com.zutalor.components.media.playlist
 					}	
 					else	
 					{
-						MasterClock.registerCallback(onTimer, true, TIMER_INTERVAL)
-						if (_framerate)
-							p.framerate = _framerate;
-										
+						MasterClock.registerCallback(onTimer, true, TIMER_INTERVAL);										
 						p.addEventListener(MediaEvent.PLAY, onPlayStarted, false, 0, true);
 						p.x = _sp.playlist.x;
 						p.y = _sp.playlist.y;

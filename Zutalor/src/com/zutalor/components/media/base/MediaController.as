@@ -72,16 +72,6 @@
 			return 0;
 		}
 		
-		public function get framerate():Number
-		{
-			return 0;
-		}
-		
-		public function set framerate(fr:Number):void
-		{
-			
-		}
-		
 		public function get currentTime():Number
 		{
 			return 0;

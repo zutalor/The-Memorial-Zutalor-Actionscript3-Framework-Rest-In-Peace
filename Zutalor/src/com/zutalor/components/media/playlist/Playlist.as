@@ -170,7 +170,7 @@ package com.zutalor.components.media.playlist
 		
 		public function addMediaPlayer(p:MediaPlayer):void
 		{
-			addChildAt(p.view, 0);
+			addChild(p.view);
 			p.visible = false;
 		}
 		
@@ -318,20 +318,6 @@ package com.zutalor.components.media.playlist
 				}
 			}
 			MasterClock.callOnce(onStopComplete, fadeOut * 1000);
-		}
-		
-		public function set framerate(fr:Number):void
-		{
-			if (_aiPlayer)
-				_aiPlayer.framerate = fr;
-		}
-		
-		public function get framerate():Number
-		{
-			if (_aiPlayer)
-				return _aiPlayer.framerate;
-			else
-				return 0;
 		}
 		
 		public function set volume(v:Number):void

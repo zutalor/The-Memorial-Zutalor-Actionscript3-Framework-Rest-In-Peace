@@ -111,7 +111,7 @@
 				startTimer();
 			}
 			else
-				trace("starting function not found");
+				trace("TimerRegistery: starting function not found");
 		}
 		
 		public function resetAndStart(callback:Function):void

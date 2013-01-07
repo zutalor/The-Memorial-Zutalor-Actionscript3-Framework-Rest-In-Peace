@@ -202,16 +202,6 @@
 			return _url;
 		}
 		
-		public function set framerate(fr:Number):void
-		{
-			mediaController.framerate = fr;
-		}
-		
-		public function get framerate():Number
-		{
-			return mediaController.framerate;
-		}
-		
 		public function set returnToZero(b:Boolean):void
 		{
 			mediaController.returnToZeroOnStop = b;
