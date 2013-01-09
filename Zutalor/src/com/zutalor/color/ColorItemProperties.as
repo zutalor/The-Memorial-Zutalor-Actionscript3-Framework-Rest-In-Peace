@@ -8,6 +8,8 @@
 	 */
 	public class ColorItemProperties extends PropertiesBase implements IProperties
 	{		
+		public function ColorItemProperties() { }
+		
 		public var hue:Number;
 		public var saturation:Number;
 		public var luminance:Number;

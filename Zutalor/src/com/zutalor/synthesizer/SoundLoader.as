@@ -32,6 +32,8 @@ package com.zutalor.synthesizer
 		protected var ad:AudioDescriptor;
 		protected var onComplete:Function;
 		
+		public function SoundLoader() { }
+		
 		public function load(pSampleMaps:PropertyManager, pAssetPath:String, 
 											pAd:AudioDescriptor, pOnComplete:Function = null):void
 		{

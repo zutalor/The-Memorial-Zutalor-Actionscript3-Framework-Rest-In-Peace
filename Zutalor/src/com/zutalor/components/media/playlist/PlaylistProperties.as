@@ -39,6 +39,8 @@
 		public var oddsOfPlaying:int;
 		public var startVariance:Number;		
 		public var endVariance:Number;		
+		
+		public function PlaylistProperties() { }
 				
 		override public function parseXML(xml:XML):Boolean
 		{

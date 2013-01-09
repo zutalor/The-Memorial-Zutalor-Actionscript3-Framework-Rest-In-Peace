@@ -16,7 +16,9 @@ package com.zutalor.text
 		private const DEFAULT_ENCODE_CHARACTER:String='*';
 		private const MINIMUM_CARD_LENGTH:int=13;
 		private const MAXIMUM_CARD_LENGTH:int=16;
-				
+
+		public function StringUtils() {}
+		
 		/**
 		 * Convert a style sheet formatted color (#ff0099) to
 		 * a whole integer.

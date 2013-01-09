@@ -23,5 +23,7 @@ package com.zutalor.view.navigator
 		public var soundExt:String;
 		public var keyboardAnswers:String;
 		public var inTransition:Boolean;
+		
+		public function NavigatorProperties() { }
 	}
 }

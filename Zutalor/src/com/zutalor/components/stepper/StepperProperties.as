@@ -19,5 +19,7 @@
 		public var maxValue:Number;
 		public var vertical:Boolean;
 		public var textAttributes:String;
+		
+		public function StepperProperties() { }
 	}
 }

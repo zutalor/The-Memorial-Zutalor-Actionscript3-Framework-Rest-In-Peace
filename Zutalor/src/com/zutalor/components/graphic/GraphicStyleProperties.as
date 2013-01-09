@@ -33,7 +33,8 @@
 		public var colorsArray:Array;
 		public var alphasArray:Array;
 		public var ratiosArray:Array;
-	
+		
+		public function GraphicStyleProperties () { }
 		
 		override public function parseXML(xml:XML):Boolean
 		{	

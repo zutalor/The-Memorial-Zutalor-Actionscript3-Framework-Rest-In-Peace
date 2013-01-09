@@ -29,6 +29,8 @@
 		public var underline:Boolean;
 		public var textFormat:TextFormat;
 		
+		public function TextFormatProperties() { }
+		
 		override public function parseXML(xml:XML):Boolean
 		{	
 			MapXML.attributesToClass(xml , this);

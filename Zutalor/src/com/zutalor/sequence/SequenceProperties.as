@@ -8,6 +8,8 @@
 	 */
 	public class SequenceProperties extends PropertiesBase implements IProperties
 	{
+		public function SequenceProperties() { }
+		
 		public var loop:Boolean;
 	}
 }

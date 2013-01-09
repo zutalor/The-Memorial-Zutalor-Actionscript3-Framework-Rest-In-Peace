@@ -11,5 +11,7 @@
 		public var onStateButtonId:String;
 		public var offStateButtonId:String;
 		public var initialValue:Boolean;
+		
+		public function ToggleProperties() { }
 	}
 }

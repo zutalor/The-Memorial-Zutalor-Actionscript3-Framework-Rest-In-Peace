@@ -33,15 +33,17 @@ package com.zutalor.synthesizer.properties
 		public var bendEndValue:Number = 0;
 		
 		public var humanize:Boolean; 	// affects below
-		public var pvUp:Number 			// pitch variation
-		public var pvDown:Number
-		public var pvIterations:Number
-		public var pvProbability:Number
-		public var pvFalloff:Number		
-		public var tvUp:Number 			// timing variation
-		public var tvDown:Number
-		public var tvIterations:Number
-		public var tvProbability:Number
-		public var tvFalloff:Number
+		public var pvUp:Number; 			// pitch variation
+		public var pvDown:Number;
+		public var pvIterations:Number;
+		public var pvProbability:Number;
+		public var pvFalloff:Number;		
+		public var tvUp:Number; 			// timing variation
+		public var tvDown:Number;
+		public var tvIterations:Number;
+		public var tvProbability:Number;
+		public var tvFalloff:Number;
+		
+		public function SynthPreset() { }
 	}
 }

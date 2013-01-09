@@ -24,6 +24,8 @@ package com.zutalor.filters
 		
 		private static var _filterPresets:NestedPropsManager;
 				
+		public function Filters() {}
+		
 		public static function registerPresets(options:Object):void
 		{
 			if (!_filterPresets)

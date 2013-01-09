@@ -6,6 +6,8 @@ package com.zutalor.properties
 	 */
 	public class PresetRegistryProperties 
 	{
+		public function PresetRegistryProperties() {}
+		
 		public var propertyClass:*;
 		public var nodeId:String;
 		public var childNodeId:String;

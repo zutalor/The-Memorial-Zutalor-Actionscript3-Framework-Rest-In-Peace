@@ -8,6 +8,8 @@
 	 */
 	public class FuzzyFilterProperties extends PropertiesBase implements IProperties
 	{
+		public function FuzzyFilterProperties() {}
+		
 		public var color:uint;
 		public var alpha:Number;
 		public var blurX:Number;

@@ -45,6 +45,8 @@
 		public var draggableDict:gDictionary;
 		
 		private static var _presets:NestedPropsManager;
+		
+		public function ViewController() {}
 				
 		public static function registerPresets(options:Object):void
 		{

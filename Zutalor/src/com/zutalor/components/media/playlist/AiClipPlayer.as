@@ -37,6 +37,8 @@ package com.zutalor.components.media.playlist
 		
 		private const TIMER_INTERVAL:int = 1000;
 		
+		public function AiClipPlayer() { }
+		
 		public function initialize(sp:MediaStateProperties, playlist:Playlist):void
 		{
 			_sp = sp;

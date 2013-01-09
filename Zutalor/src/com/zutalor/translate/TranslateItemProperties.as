@@ -13,6 +13,8 @@
 		public var tMeta:String;
 		public var sound:String;
 		
+		public function TranslateItemProperties() { }
+		
 		override public function parseXML(xml:XML):Boolean
 		{
 			MapXML.attributesToClass(xml , this);

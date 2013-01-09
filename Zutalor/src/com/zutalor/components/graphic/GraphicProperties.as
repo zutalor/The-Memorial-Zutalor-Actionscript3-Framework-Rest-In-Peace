@@ -19,5 +19,7 @@
 		public var transitionOut:String;
 		public var loop:Number; //-1 infinite
 		public var loopDelay:Number;
+		
+		public function GraphicProperties() { }
 	}
 }

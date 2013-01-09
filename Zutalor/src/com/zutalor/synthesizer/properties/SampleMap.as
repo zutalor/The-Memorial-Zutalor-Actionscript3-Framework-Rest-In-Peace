@@ -19,5 +19,7 @@ package com.zutalor.synthesizer.properties
 		public var urls:Vector.<String>;
 		public var samplerSources:Vector.<SamplerSource>;
 		public var frequencies:Vector.<Number>;
+		
+		public function SampleMap() { }
 	}	
 }

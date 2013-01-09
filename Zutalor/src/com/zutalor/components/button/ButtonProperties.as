@@ -24,6 +24,8 @@
 		public var height:int;
 		public var align:String;
 		public var vPad:int;				
-		public var hPad:int;				
+		public var hPad:int;
+		
+		public function ButtonProperties() { }
 	}
 }

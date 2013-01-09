@@ -22,6 +22,8 @@ package com.zutalor.loaders
 		private var _callback:Function;
 		private var _error:Boolean;
 		
+		public function URLLoaderG () {}
+		
 		public function load(url:String, callBack:Function, dataFormat:String = URLLoaderDataFormat.TEXT):void
 		{
 			_callback = callBack;

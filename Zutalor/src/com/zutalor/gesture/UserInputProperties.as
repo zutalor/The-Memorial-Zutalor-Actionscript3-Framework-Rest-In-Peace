@@ -18,5 +18,7 @@ package com.zutalor.gesture
 		public var rows:int;
 		public var cols:int;
 		public var sound:String;
+		
+		public function UserInputProperties() { }
 	}
 }

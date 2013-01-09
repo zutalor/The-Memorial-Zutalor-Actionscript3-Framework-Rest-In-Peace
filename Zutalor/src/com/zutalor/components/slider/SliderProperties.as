@@ -15,5 +15,7 @@
 		public var numSteps:int;
 		public var tweenTime:Number;
 		public var onlyShowTrackOnMouseDown:Boolean;
+		
+		public function SliderProperties() { }
 	}
 }

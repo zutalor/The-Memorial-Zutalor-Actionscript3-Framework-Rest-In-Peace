@@ -30,5 +30,7 @@
 		public var backgroundColor:uint;
 		public var fadeOut:Number;
 		public var hideOnPlayComplete:Boolean;
+		
+		public function MediaProperties () { }
 	}
 }

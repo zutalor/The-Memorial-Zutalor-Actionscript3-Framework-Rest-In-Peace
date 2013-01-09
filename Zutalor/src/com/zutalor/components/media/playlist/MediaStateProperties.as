@@ -19,5 +19,7 @@
 		public var allowRepeats:Boolean;
 		public var clipFadeOut:Number;
 		public var overlap:Number;
+		
+		public function MediaStateProperties() { }
 	}
 }

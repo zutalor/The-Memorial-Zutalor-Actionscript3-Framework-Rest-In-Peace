@@ -10,6 +10,8 @@
 	
 	public class AppStateProperties extends PropertiesBase implements IProperties
 	{
+		public function AppStateProperties() { }
+		
 		public static const VIEW:String = "view";
 		public static const SEQUENCE:String = "sequence";
 

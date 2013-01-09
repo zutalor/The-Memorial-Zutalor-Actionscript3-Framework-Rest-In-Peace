@@ -6,6 +6,8 @@ package com.zutalor.view.navigator
 	 */
 	public class AnswerProperties 
 	{
+		public function AnswerProperties() {}
+		
 		public var name:String;
 		public var questionId:String;
 		public var answer:String;

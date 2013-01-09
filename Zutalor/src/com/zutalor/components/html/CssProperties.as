@@ -15,6 +15,8 @@
 		public var path:String;
 		public var styleSheet:StyleSheet;
 		
+		public function CssProperties() { }
+		
 		override public function parseXML(xml:XML):Boolean
 		{
 			MapXML.attributesToClass(xml , this);

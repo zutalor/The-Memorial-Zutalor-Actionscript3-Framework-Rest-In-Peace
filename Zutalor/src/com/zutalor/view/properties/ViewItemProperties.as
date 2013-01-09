@@ -89,6 +89,8 @@
 		public var filterPreset:String;
 		public var maskId:String;
 		public var tMeta:String; // use for whatever. Runs through "translate" text.
+		
+		public function ViewItemProperties() {}
 					
 		override public function parseXML(xml:XML):Boolean
 		{

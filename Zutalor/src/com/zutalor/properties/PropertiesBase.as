@@ -12,6 +12,8 @@
 		public var child:PropertyManager;
 		public var name:String;
 		
+		public function PropertiesBase() {}
+		
 		public function parseXML(xml:XML):Boolean
 		{	
 			MapXML.attributesToClass(xml , this);

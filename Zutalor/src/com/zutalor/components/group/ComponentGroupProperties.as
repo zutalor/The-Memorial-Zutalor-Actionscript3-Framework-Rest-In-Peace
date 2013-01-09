@@ -15,6 +15,8 @@
 		public var hPad:int;
 		public var vPad:int;
 		public var maxHaveValue:int;
-		public var minHaveValue:int;		
+		public var minHaveValue:int;
+		
+		public function ComponentGroupProperties() { }
 	}
 }

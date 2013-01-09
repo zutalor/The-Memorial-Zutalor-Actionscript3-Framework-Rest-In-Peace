@@ -40,7 +40,9 @@
 		
 		public var googleAnalyticsAccount:String;
 		public var portrait:Boolean;
-		public var targetPortable:Boolean;		
+		public var targetPortable:Boolean;
+		
+		public function ApplicationProperties() {}
 	
 		override public function parseXML(xml:XML):Boolean
 		{

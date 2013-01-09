@@ -29,7 +29,9 @@
 		public var textAttributes:String;
 		public var className:String;
 		public var filterPreset:String;
-				
+		
+		public function GraphicItemProperties() { }
+		
 		override public function parseXML(xml:XML):Boolean
 		{	
 			MapXML.attributesToClass(xml , this);

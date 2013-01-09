@@ -10,6 +10,8 @@
 	
 	public class PathProperties extends PropertiesBase implements IProperties
 	{
+		public function PathProperties() { }
+		
 		public var path:String;
 	}
 }

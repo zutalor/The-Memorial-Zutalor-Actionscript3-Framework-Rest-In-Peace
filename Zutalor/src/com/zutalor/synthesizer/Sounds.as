@@ -59,7 +59,7 @@ package com.zutalor.synthesizer
 			soundLoader.load(_sampleMaps, assetPath, ad, onComplete);
 		}
 		
-		public function getVoice(preset:SynthPreset, noteNumber:Number, eg:ADSREnvelopeGenerator, mods:Array):SamplerSource
+		public function getVoice(preset:SynthPreset, noteNumber:Number, eg:ADSREnvelopeGenerator, mods:Array):IAudioSource
 		{
 			var ampFilter:AmpFilter;
 			var audioSource:IAudioSource;
@@ -86,17 +86,15 @@ package com.zutalor.synthesizer
 			if (preset.loopEnd && preset.loopEnd)
 				setupLoop(audioSource, preset.loopStart, preset.loopEnd);
 			
-			//if (mods)
-			//	for (var i:int = 0; i < mods.length; i++)
-			//		SamplerSource(audioSource).pitchModulations.push(mods[i]);
+			if (mods)
+				for (var i:int = 0; i < mods.length; i++)
+					SamplerSource(audioSource).pitchModulations.push(mods[i]);
 			
 			//panFilter = new PanFilter(new AmpFilter(audioSource, eg), preset.pan, preset.gain);
 			//resamplingFilter = new ResamplingFilter(panFilter);
 			
 			//return resamplingFilter;
 			return SamplerSource(audioSource);
-			
-		
 		}
 		
 		protected function getSoundUrl(sampleMap:SampleMap, noteNumber:Number):String

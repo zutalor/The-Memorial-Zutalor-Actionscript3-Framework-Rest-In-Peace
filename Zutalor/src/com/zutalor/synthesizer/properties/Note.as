@@ -6,6 +6,8 @@ package com.zutalor.synthesizer.properties
 	 */
 	public class Note 
 	{
+		public function Note() {}
+		
 		public var note:Number;
 		public var startTime:Number;
 		public var velocity:Number;

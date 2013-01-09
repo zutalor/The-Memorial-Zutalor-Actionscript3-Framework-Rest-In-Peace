@@ -22,6 +22,8 @@ package com.zutalor.controllers.base
 		private var _vController:ViewController;
 		private var _currentView:String;
 		
+		public function UiControllerBase() {}
+		
 		final public function init(params:Object):void
 		{	
 			if (!vc) // only first view of the model gets privelages to grab the controller. 

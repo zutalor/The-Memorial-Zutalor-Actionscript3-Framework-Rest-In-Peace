@@ -32,5 +32,7 @@
 		public var loopDelay:Number
 		public var hotkey:String;
 		public var hotkeyTriggerMode:String;
+		
+		public function PlaylistItemProperties() { }
 	}
 }

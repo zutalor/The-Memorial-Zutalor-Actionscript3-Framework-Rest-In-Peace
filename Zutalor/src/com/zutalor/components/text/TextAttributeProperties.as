@@ -19,5 +19,7 @@
 		public var wordWrap:Boolean;
 		public var maxChars:int;
 		public var displayAsPassword:Boolean;
+		
+		public function TextAttributeProperties() { }
 	}
 }

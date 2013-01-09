@@ -8,6 +8,8 @@
 	 */
 	public class ColorProperties extends PropertiesBase implements IProperties
 	{		
+		public function ColorProperties() { }
+		
 		public var basedOnTheme:String;
 		public var basedOnItem:String;
 		public var hueShift:Number;

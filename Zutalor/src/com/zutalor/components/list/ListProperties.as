@@ -25,6 +25,8 @@
 		public var data:String;
 		public var itemRenderer:String;
 		
+		public function ListProperties() { }
+		
 		override public function parseXML(xml:XML):Boolean
 		{
 			MapXML.attributesToClass(xml , this);

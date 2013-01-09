@@ -16,6 +16,8 @@
 		private var _onComplete:Function;
 		
 		private static var _presets:NestedPropsManager;
+		
+		public function Sequence() {}
 				
 		public static function registerPresets(options:Object):void
 		{

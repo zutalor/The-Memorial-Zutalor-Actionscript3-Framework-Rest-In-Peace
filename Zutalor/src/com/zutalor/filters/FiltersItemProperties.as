@@ -8,6 +8,8 @@
 	 */
 	public class FiltersItemProperties extends PropertiesBase implements IProperties
 	{
+		public function FiltersItemProperties () { }
+		
 		public var type:String;
 		public var preset:String;
 	}

@@ -12,6 +12,7 @@ package com.zutalor.synthesizer
 	import com.zutalor.synthesizer.properties.SynthPreset;
 	import com.zutalor.synthesizer.properties.Track;
 	import com.zutalor.utils.gDictionary;
+	import com.zutalor.utils.MasterClock;
 	import flash.events.Event;
 	
 	/**
@@ -46,7 +47,6 @@ package com.zutalor.synthesizer
 		{
 			stereoAd = new AudioDescriptor(sampleRate, AudioDescriptor.CHANNELS_STEREO);
 			monoAd = new AudioDescriptor(sampleRate, AudioDescriptor.CHANNELS_MONO);
-			listPerformance = new ListPerformance();			
 		}
 				
 		public function addTrack(track:Track):void
@@ -85,6 +85,8 @@ package com.zutalor.synthesizer
 			
 			envelopeGenerators = new Vector.<ADSREnvelopeGenerator>;
 			egs = 0;
+			listPerformance = new ListPerformance();
+			trace("render");
 			
 			for (var t:int = 0; t < numTracks; t++)
 			{					
@@ -143,38 +145,22 @@ package com.zutalor.synthesizer
 							if (preset.rounding)
 								note = Math.round(note);
 	
-							listPerformance.addSourceAt(track.notes[i].startTime, sounds.getVoice(preset, note, envelopeGenerators[egs - 1] , null));
-
+								
+							var s:IAudioSource = sounds.getVoice(preset, note, envelopeGenerators[egs - 1] , null)	
+							listPerformance.addSourceAt(track.notes[i].startTime, s);
 						}
 					}
 				}
 			}
 		}
-				
-		public function reset():void
-		{
-			var i:int;
-			
-			for (i = 0; i < listPerformance.elements.length; i++)
-				if (listPerformance.elements[i].source is ResamplingFilter)
-					ResamplingFilter(listPerformance.elements[i].source).destroy();
-
-			listPerformance = new ListPerformance();
-			
-			for (i = 0; i < egs; i++)
-			{
-				envelopeGenerators[i].destroy();
-				envelopeGenerators[i] = null;
-			}
-			envelopeGenerators = new Vector.<ADSREnvelopeGenerator>;
-			
-			egs = 0;
-		}
 		
 		public function stop():void
 		{
 			if (player)
+			{
 				player.stop();
+				reset();
+			}
 		}
 		
 		public function pause():void
@@ -197,27 +183,59 @@ package com.zutalor.synthesizer
 			if (listPerformance && listPerformance.elements)		
 			{
 				audioPerformer = new AudioPerformer(listPerformance, stereoAd);
-				audioPerformer.mixGain = tracks.length * -2;
+				audioPerformer.mixGain = tracks.length * -6;
 			
 				if (!player)
 					player = new AudioPlayer(framesPerCallBack);
 				
-				player.play(audioPerformer);
-				player.addEventListener(Event.SOUND_COMPLETE, onSoundComplete, false, 0, true);
+				player.play(audioPerformer);	
+				player.addEventListener(Event.SOUND_COMPLETE, oc, false, 0, true);
+		
+//				audioPerformer.getSample(4096);
 			}
-			else
-				onSoundComplete(new Event("t"));
-		}		
-
-		private function onSoundComplete(e:Event):void
+		}	
+		
+		private function oc(e:Event):void
+		{
+			trace("complete");
+			player.removeEventListener(Event.SOUND_COMPLETE, oc);
+			MasterClock.callOnce(onSoundComplete, 1000);
+		}
+		
+		private function onSoundComplete():void
 		{
 			reset();
-			player.removeEventListener(Event.SOUND_COMPLETE, onSoundComplete);
 			if (onComplete != null)
 				if (onCompleteArgs != null)
 					onComplete(onCompleteArgs);
 				else
-					onComplete();
+					onComplete();			
+		}
+
+		private function reset():void
+		{
+			var i:int;
+				
+			if (listPerformance)
+			{
+				trace("reset");
+				
+				for (i = 0; i < listPerformance.elements.length; i++)
+					if (listPerformance.elements[i].source is ResamplingFilter)
+						ResamplingFilter(listPerformance.elements[i].source).destroy();
+
+				for (i = 0; i < egs; i++)
+				{
+					envelopeGenerators[i].destroy();
+					envelopeGenerators[i] = null;
+				}
+				
+				audioPerformer.destroy();
+				audioPerformer = null;
+				envelopeGenerators = null;
+				listPerformance = null;			
+				egs = 0;
+			}
 		}
 	}	
 }

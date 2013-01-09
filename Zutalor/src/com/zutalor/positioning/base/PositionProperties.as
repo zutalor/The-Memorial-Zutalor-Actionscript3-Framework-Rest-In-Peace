@@ -6,6 +6,8 @@ package com.zutalor.positioning.base
 	 */
 	public class PositionProperties 
 	{
+		public function PositionProperties() {} 
+		
 		public var setCurPos:Function;
 		public var getCurPos:Function;
 		public var positioningEnabled:Boolean;

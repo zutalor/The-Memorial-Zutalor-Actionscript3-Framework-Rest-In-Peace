@@ -9,6 +9,8 @@
 	 */
 	public class SequenceItemProperties extends PropertiesBase implements IProperties
 	{
+		public function SequenceItemProperties() { }
+		
 		public var item:String;
 		public var delay:Number;
 	}

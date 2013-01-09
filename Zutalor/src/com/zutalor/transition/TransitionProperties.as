@@ -23,6 +23,8 @@
 		public var outDelay:Number;	
 		public var xValue:Number;
 		public var yValue:Number;
+		
+		public function TransitionProperties() { }
 				
 		override public function parseXML(xml:XML):Boolean
 		{	

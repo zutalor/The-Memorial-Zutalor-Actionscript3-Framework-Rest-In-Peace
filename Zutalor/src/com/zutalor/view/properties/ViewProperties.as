@@ -45,6 +45,8 @@
 		public var filterPreset:String;		
 		public var container:ViewContainer;
 		
+		public function ViewProperties() {}
+		
 		override public function parseXML(xml:XML):Boolean
 		{	
 			MapXML.attributesToClass(xml , this); 

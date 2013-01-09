@@ -8,7 +8,9 @@
 	 * @author Geoff Pepos
 	 */
 	public class FiltersProperties extends PropertiesBase implements IProperties
-	{			
+	{
+		public function FiltersProperties() { }
+		
 		public var filterPresetsItemProperties:PropertyManager;				
 	}
 }

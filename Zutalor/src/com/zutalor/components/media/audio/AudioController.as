@@ -26,6 +26,8 @@
 		private var _loaded:Boolean;
 		private var _volume:Number;
 		
+		public function AudioController() {}
+		
 		override public function load(url:String, width:int, height:int, x:int=0, y:int=0):void
 		{
 			var className:Array;
