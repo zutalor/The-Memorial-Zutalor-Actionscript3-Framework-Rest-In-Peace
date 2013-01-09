@@ -59,7 +59,7 @@ package com.zutalor.synthesizer
 			soundLoader.load(_sampleMaps, assetPath, ad, onComplete);
 		}
 		
-		public function getVoice(preset:SynthPreset, noteNumber:Number, eg:ADSREnvelopeGenerator, mods:Array):ResamplingFilter
+		public function getVoice(preset:SynthPreset, noteNumber:Number, eg:ADSREnvelopeGenerator, mods:Array):SamplerSource
 		{
 			var ampFilter:AmpFilter;
 			var audioSource:IAudioSource;
@@ -82,18 +82,20 @@ package com.zutalor.synthesizer
 			factor = AudioUtils.noteNumberToFrequency(noteNumber);
 			sampleMap.samplerSources[indx].frequencyShift = factor / freq;
 			audioSource = sampleMap.samplerSources[indx].clone();
-						
+			
 			if (preset.loopEnd && preset.loopEnd)
 				setupLoop(audioSource, preset.loopStart, preset.loopEnd);
 			
-			if (mods)
-				for (var i:int = 0; i < mods.length; i++)
-					SamplerSource(audioSource).pitchModulations.push(mods[i]);
+			//if (mods)
+			//	for (var i:int = 0; i < mods.length; i++)
+			//		SamplerSource(audioSource).pitchModulations.push(mods[i]);
 			
-			panFilter = new PanFilter(new AmpFilter(audioSource, eg), preset.pan, preset.gain);
-			resamplingFilter = new ResamplingFilter(panFilter);
+			//panFilter = new PanFilter(new AmpFilter(audioSource, eg), preset.pan, preset.gain);
+			//resamplingFilter = new ResamplingFilter(panFilter);
 			
-			return resamplingFilter;
+			//return resamplingFilter;
+			return SamplerSource(audioSource);
+			
 		
 		}
 		

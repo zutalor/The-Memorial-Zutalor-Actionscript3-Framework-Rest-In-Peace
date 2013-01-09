@@ -1,4 +1,4 @@
-package com.zutalor.view.rendering
+package depreciated
 {
 import com.zutalor.components.button.Button;
 import com.zutalor.components.ComponentGroup;

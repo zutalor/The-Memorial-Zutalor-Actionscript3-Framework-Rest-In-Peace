@@ -57,7 +57,7 @@ package com.zutalor.synthesizer
 		{
 			var bm:BendModulation;
 			var mods:Array;
-			var voice:ResamplingFilter;	
+			var voice:*;	
 
 			if (preset.bendEndTime)
 			{

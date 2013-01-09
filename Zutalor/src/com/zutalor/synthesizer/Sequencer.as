@@ -2,6 +2,7 @@ package com.zutalor.synthesizer
 {
 	import com.noteflight.standingwave3.elements.AudioDescriptor;
 	import com.noteflight.standingwave3.elements.IAudioSource;
+	import com.noteflight.standingwave3.filters.ResamplingFilter;
 	import com.noteflight.standingwave3.generators.ADSREnvelopeGenerator;
 	import com.noteflight.standingwave3.modulation.BendModulation;
 	import com.noteflight.standingwave3.output.AudioPlayer;
@@ -29,6 +30,7 @@ package com.zutalor.synthesizer
 		private var stereoAd:AudioDescriptor;
 		private var monoAd:AudioDescriptor;
 		private var framesPerCallBack:int;
+		private var mods:Array;		
 		private var onComplete:Function;
 		private var onCompleteArgs:*;
 		
@@ -70,7 +72,6 @@ package com.zutalor.synthesizer
 			var note:Number;
 			var v:IAudioSource;
 			var bm:BendModulation;
-			var mods:Array;
 			var l:int;
 			var i:int;
 			var offset:Number;
@@ -100,7 +101,9 @@ package com.zutalor.synthesizer
 					
 					if (preset.dataIsPitchBend)
 					{
-						mods = [];
+						if (!mods)
+							mods = [];
+						
 						l = track.notes.length - 1;
 						
 						offsetIndx = Math.floor(track.notes.length / 2);
@@ -151,8 +154,13 @@ package com.zutalor.synthesizer
 		public function reset():void
 		{
 			var i:int;
-			listPerformance.elements
+			
+			for (i = 0; i < listPerformance.elements.length; i++)
+				if (listPerformance.elements[i].source is ResamplingFilter)
+					ResamplingFilter(listPerformance.elements[i].source).destroy();
+
 			listPerformance = new ListPerformance();
+			
 			for (i = 0; i < egs; i++)
 			{
 				envelopeGenerators[i].destroy();
@@ -190,20 +198,21 @@ package com.zutalor.synthesizer
 			{
 				audioPerformer = new AudioPerformer(listPerformance, stereoAd);
 				audioPerformer.mixGain = tracks.length * -2;
-
+			
 				if (!player)
 					player = new AudioPlayer(framesPerCallBack);
 				
 				player.play(audioPerformer);
 				player.addEventListener(Event.SOUND_COMPLETE, onSoundComplete, false, 0, true);
 			}
+			else
+				onSoundComplete(new Event("t"));
 		}		
 
 		private function onSoundComplete(e:Event):void
 		{
 			reset();
 			player.removeEventListener(Event.SOUND_COMPLETE, onSoundComplete);
-			player = null;
 			if (onComplete != null)
 				if (onCompleteArgs != null)
 					onComplete(onCompleteArgs);

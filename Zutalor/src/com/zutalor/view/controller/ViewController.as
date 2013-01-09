@@ -12,7 +12,6 @@
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.positioning.Dragger;
 	import com.zutalor.properties.NestedPropsManager;
-	import com.zutalor.transition.TransitionTypes;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.view.mediators.ViewEventMediator;
@@ -21,26 +20,20 @@
 	import com.zutalor.view.properties.ViewProperties;
 	import com.zutalor.view.rendering.ViewItemFilterApplier;
 	import com.zutalor.view.rendering.ViewItemPositioner;
-	import com.zutalor.view.rendering.ViewItemRenderer;
+	import com.zutalor.view.rendering.ViewRenderer;
 	import com.zutalor.view.transition.ItemFX;
-	import com.zutalor.view.transition.ViewItemTransition;
 	import com.zutalor.widgets.Focus;
 	import flash.geom.Point;
 
 	public class ViewController implements IDisposable
 	{		
-		private var _onComplete:Function;
-		private var itemIndex:int;
-		private var viewEventMediator:ViewEventMediator;
+		private var onComplete:Function;
+		private var viewRenderer:ViewRenderer;
 		private var defaultVO:*;
-		
-		private var viewItemFilterApplier:ViewItemFilterApplier;
-		private var viewItemPositioner:ViewItemPositioner;
-		private var viewItemRenderer:ViewItemRenderer;
-		
-		private var filters:Array;
-		private var viewItemTransition:ViewItemTransition;
-		
+	
+		public var filters:Array;	
+		public var viewEventMediator:ViewEventMediator;
+		public var viewItemPositioner:ViewItemPositioner;
 		public var viewId:String;
 		public var numViewItems:int;		
 		public var vp:ViewProperties;	
@@ -70,10 +63,9 @@
 		public function load(vc:ViewContainer, pViewId:String, appState:String, pOnComplete:Function):void
 		{	
 			viewId = pViewId;
-			_onComplete = pOnComplete;
+			onComplete = pOnComplete;
 			vp = presets.getPropsById(viewId);
-			filters = [];
-			itemIndex = 0;			
+			filters = [];		
 
 			if (!vp)
 				ShowError.fail(ViewController,"No view properties for viewId: " + viewId);
@@ -89,13 +81,18 @@
 				defaultVO = Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT);
 				viewModelMediator = new ViewModelMediator(this);
 			}
-			viewItemPositioner = new ViewItemPositioner(vp.container, vp.width, vp.height);
-			viewEventMediator = new ViewEventMediator(this);
-			viewItemFilterApplier = new ViewItemFilterApplier(filters);
-			viewItemRenderer = new ViewItemRenderer(vp.container, viewItemFilterApplier.applyFilters, 
-																				viewItemPositioner.positionItem);			
+			
 			numViewItems = presets.getNumItems(viewId);	
-			renderNextViewItem();
+			viewEventMediator = new ViewEventMediator(this);
+			viewItemPositioner = new ViewItemPositioner(vp.container, vp.width, vp.height);
+			viewRenderer = new ViewRenderer(this);
+			viewRenderer.render(onRenderComplete);
+		}
+		
+		protected function onRenderComplete():void
+		{
+			viewRenderer.dispose();
+			viewRenderer = null;
 		}
 		
 		
@@ -290,10 +287,9 @@
 				for (i = 0; i < numFilters; i++)
 					filters[i].dispose();
 			}
-			vp.container.dispose();	
+			vp.container.dispose();
 			filters = null;
 			numViewItems = 0;
-			viewItemRenderer = null;
 			viewModelMediator = null;
 			viewEventMediator = null;		
 			Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.DISPOSE)			
@@ -346,19 +342,6 @@
 				item = vp.container.getChildByName(itemName) as Component;
 				if (item)
 					item.alpha = a;
-		}
-		
-		public function setAllItemVisibility(visible:Boolean=true, fade:Number = 0, delay:Number = 0):void
-		{
-			var ni:int;
-			
-			setItemVisibility(null, visible, fade, delay);
-			if (vp.container.numChildren)
-			{
-				ni = vp.container.numChildren;
-				for (var i:int = 0; i < ni; i++)
-					ItemFX.fade(vp.name, vp.container.getChildAt(i), visible, fade, delay);
-			}
 		}
 		
 		public function setItemVisibility(name:String, visible:Boolean = true, fade:int = 0, delay:int = 0):void
@@ -423,31 +406,8 @@
 		{
 			vp.container.dispatchEvent(new UIEvent(eventType, vp.container.name));
 		}				
-		
-		// PRIVATE METHODS
 
-		private function renderNextViewItem():void
-		{	
-			var vip:ViewItemProperties;
-			var viewItem:*;
-			
-			if (itemIndex < numViewItems)
-			{
-				vip = presets.getItemPropsByIndex(viewId, itemIndex++);
-				if (!vip.styleSheetName)
-					vip.styleSheetName = vp.styleSheetName;
-				
-				viewItem = viewItemRenderer.renderItem(vip);
-				if (vip.draggable)
-					registerDraggableObject(viewItem);		
-					
-				renderNextViewItem();
-			}	
-			else
-				viewPopulateComplete();
-		}
-	
-		private function registerDraggableObject(co:ContainerObject):void
+		public function registerDraggableObject(co:ContainerObject):void
 		{
 			if (!dragger)
 			{
@@ -465,38 +425,6 @@
 				co.x  = p.x;
 				co.y  = p.y;
 			}
-		}
-		
-		private function viewPopulateComplete():void
-		{
-			var i:int;
-			var l:int;
-			var c:int;
-
-			var vip:ViewItemProperties;			
-			c = container.numChildren;
-			viewEventMediator.itemListenerSetup();				
-			viewEventMediator.addListenersToContainer(vp.container);
-			vp.container.arranger.resize(vp.resizeMode);
-			vp.container.arranger.alignToStage(vp.align, vp.hPad, vp.vPad);
-
-			for (i = 0; i < c; i++)
-			{
-				vip = presets.getItemPropsByIndex(viewId, i);
-				if (vip && vip.transitionPreset) {
-					viewItemTransition = new ViewItemTransition();
-					viewItemTransition.render(vip, container, TransitionTypes.IN);
-				}
-			}
-			
-			if (vp.initialMethod)
-			{
-				if (vp.initialMethodParams)
-					Plugins.callMethod(vp.uiControllerInstanceName, vp.initialMethod,vp.initialMethodParams);
-				else
-					Plugins.callMethod(vp.uiControllerInstanceName, vp.initialMethod);
-			}
-			_onComplete();	
 		}
 	}
 }
