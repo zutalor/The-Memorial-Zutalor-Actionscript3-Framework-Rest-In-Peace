@@ -188,23 +188,19 @@ package com.zutalor.synthesizer
 				if (!player)
 					player = new AudioPlayer(framesPerCallBack);
 				
+				player.addEventListener(Event.SOUND_COMPLETE, onSoundComplete, false, 0, true);
 				player.play(audioPerformer);	
-				player.addEventListener(Event.SOUND_COMPLETE, oc, false, 0, true);
-		
+				
+				//onSoundComplete(new Event(""));
 //				audioPerformer.getSample(4096);
 			}
 		}	
-		
-		private function oc(e:Event):void
-		{
-			trace("complete");
-			player.removeEventListener(Event.SOUND_COMPLETE, oc);
-			MasterClock.callOnce(onSoundComplete, 1000);
-		}
-		
-		private function onSoundComplete():void
+			
+		private function onSoundComplete(e:Event):void
 		{
 			reset();
+			trace("complete");
+			player.removeEventListener(Event.SOUND_COMPLETE, onSoundComplete);
 			if (onComplete != null)
 				if (onCompleteArgs != null)
 					onComplete(onCompleteArgs);
