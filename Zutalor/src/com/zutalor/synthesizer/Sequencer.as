@@ -183,7 +183,8 @@ package com.zutalor.synthesizer
 			if (listPerformance && listPerformance.elements)		
 			{
 				audioPerformer = new AudioPerformer(listPerformance, stereoAd);
-				audioPerformer.mixGain = tracks.length * -6;
+				if (tracks.length > 1)
+					audioPerformer.mixGain = tracks.length * -2;
 			
 				if (!player)
 					player = new AudioPlayer(framesPerCallBack);
@@ -215,11 +216,6 @@ package com.zutalor.synthesizer
 			if (listPerformance)
 			{
 				trace("reset");
-				
-				for (i = 0; i < listPerformance.elements.length; i++)
-					if (listPerformance.elements[i].source is ResamplingFilter)
-						ResamplingFilter(listPerformance.elements[i].source).destroy();
-
 				for (i = 0; i < egs; i++)
 				{
 					envelopeGenerators[i].destroy();

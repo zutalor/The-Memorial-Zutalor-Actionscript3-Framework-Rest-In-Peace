@@ -69,8 +69,6 @@ package com.zutalor.synthesizer
 			var noteNumber:Number;
 			var sampleMap:SampleMap;
 			var url:String;
-			var panFilter:PanFilter;
-			var resamplingFilter:ResamplingFilter;
 			
 			sampleMap = _sampleMaps.getPropsByName(preset.soundName);
 			if (!sampleMap)
@@ -90,11 +88,8 @@ package com.zutalor.synthesizer
 				for (var i:int = 0; i < mods.length; i++)
 					SamplerSource(audioSource).pitchModulations.push(mods[i]);
 			
-			//panFilter = new PanFilter(new AmpFilter(audioSource, eg), preset.pan, preset.gain);
-			//resamplingFilter = new ResamplingFilter(panFilter);
-			
-			//return resamplingFilter;
-			return SamplerSource(audioSource);
+			ampFilter = new AmpFilter(audioSource, eg);
+			return ampFilter;
 		}
 		
 		protected function getSoundUrl(sampleMap:SampleMap, noteNumber:Number):String
