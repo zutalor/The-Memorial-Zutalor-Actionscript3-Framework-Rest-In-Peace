@@ -2,7 +2,6 @@ package com.zutalor.synthesizer
 {
 	import com.noteflight.standingwave3.elements.AudioDescriptor;
 	import com.noteflight.standingwave3.elements.IAudioSource;
-	import com.noteflight.standingwave3.filters.ResamplingFilter;
 	import com.noteflight.standingwave3.generators.ADSREnvelopeGenerator;
 	import com.noteflight.standingwave3.modulation.BendModulation;
 	import com.noteflight.standingwave3.output.AudioPlayer;
@@ -12,7 +11,6 @@ package com.zutalor.synthesizer
 	import com.zutalor.synthesizer.properties.SynthPreset;
 	import com.zutalor.synthesizer.properties.Track;
 	import com.zutalor.utils.gDictionary;
-	import com.zutalor.utils.MasterClock;
 	import flash.events.Event;
 	
 	/**
