@@ -44,10 +44,5 @@ package com.zutalor.components.base
 			_value = value;
 			dispatchEvent(new UIEvent(UIEvent.VALUE_CHANGED, null, null, null, value));
 		}
-		
-		public function get isInvisible():Boolean
-		{
-			return false;
-		}
 	}
 }

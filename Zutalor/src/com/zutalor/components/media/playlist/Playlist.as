@@ -170,7 +170,7 @@ package com.zutalor.components.media.playlist
 		
 		public function addMediaPlayer(p:MediaPlayer):void
 		{
-			addChild(p.view);
+			addChildAt(p, 0);
 			p.visible = false;
 		}
 		

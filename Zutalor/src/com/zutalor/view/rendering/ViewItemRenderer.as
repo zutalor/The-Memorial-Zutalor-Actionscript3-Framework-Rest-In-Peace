@@ -27,16 +27,10 @@ package com.zutalor.view.rendering
 			var viewItem:Component;
 			var ViewItemClass:Class;
 			var vip:ViewItemProperties;
-			
-			if (vip.tKey)
-				vip.text = Translate.text(vip.tKey);
 				
 			ViewItemClass = Plugins.getClass(vip.type);
 			viewItem = new ViewItemClass(vip.name);
-							
-			if (!viewItem.isInvisible) 
-				container.push(viewItem);
-				
+			container.push(viewItem);
 			viewItem.name = vip.name;
 			viewItem.render(vip);
 			filterApplier(vip, viewItem);
@@ -53,6 +47,9 @@ package com.zutalor.view.rendering
 			
 			if (vip.tapAction)
 				viewItem.buttonMode = true;
+			
+			if (vip.tKey)
+				vip.text = Translate.text(vip.tKey);
 				
 			if (vip.text)
 				viewItem.value = vip.text;

@@ -21,10 +21,5 @@
 			_audioController = new AudioController();
 			initialize(MediaProperties.PLAYER_AUDIO, _audioController)
 		}
-		
-		override public function get isInvisible():Boolean
-		{
-			return true;
-		}
 	}
 }
