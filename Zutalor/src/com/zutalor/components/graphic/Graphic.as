@@ -263,13 +263,18 @@ package com.zutalor.components.graphic
 			var adjustHeight:Number;
 			var width:Number;
 			var height:Number;
+			var rect:Rectangle;
 			
 			adjustWidth = coords[2] * .2;
 			adjustHeight = coords[3] * .2;
 			width = coords[2];
 			height = coords[3];
-		
-			return new Rectangle(adjustWidth, adjustHeight, width - (adjustWidth * 2), height - (adjustHeight * 2));
+			
+			rect = new Rectangle(coords[0] + adjustWidth, 
+								 coords[1] + adjustHeight, 
+								 width + coords[0] - (adjustWidth * 2), 
+								 height + coords[1] - (adjustHeight * 2));
+			return rect;					 
 		}
 		
 		private function embed(gri:GraphicItemProperties):ContainerObject
