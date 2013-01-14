@@ -68,8 +68,10 @@ package com.zutalor.components.media.playlist
 		private var _volume:Number;
 		
 		private var _state:PlaylistMediaState;
+		private var _width:Number;
+		private var _height:Number;
 		
-		private static var _presets:NestedPropsManager;
+		private static var _presets:NestedPropsManager; 
 				
 		public function Playlist(name:String)
 		{
@@ -99,7 +101,8 @@ package com.zutalor.components.media.playlist
 			var sp:MediaStateProperties;
 			
 			_volume = 1;
-			vip.playlistName = vip.playlistName;
+			_width = int(vip.width);
+			_height = int(vip.height);
 			_hkm = HotKeyManager.gi();
 			_players = new gDictionary();
 			_hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey, false, 0, true);
@@ -258,6 +261,9 @@ package com.zutalor.components.media.playlist
 			MasterClock.start(onTimer);
 			if (_pp.ai)
 				_aiPlayer.playNext();
+
+			width = _width;
+			height = _height;
 		}
 		
 		public function pause():void

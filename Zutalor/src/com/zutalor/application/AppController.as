@@ -8,7 +8,6 @@
 	import com.zutalor.application.ApplicationProperties;
 	import com.zutalor.color.Color;
 	import com.zutalor.components.html.StyleSheets;
-	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.events.AppEvent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.plugin.constants.PluginClasses;
@@ -18,9 +17,9 @@
 	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.sequence.Sequence;
 	import com.zutalor.translate.Translate;
+	import com.zutalor.utils.EmbeddedResources;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.MasterClock;
-	import com.zutalor.utils.EmbeddedResources;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.properties.ViewProperties;
@@ -91,28 +90,11 @@
 			Boot.init(_bootXmlUrl, init);
 		}
 		
-		public function enableAppState(state:String):void 
-		{	
-			_curAppState = state;
-			if (_curViewProps && !_curViewProps.contentPersists)
-			{
-				if (appStateProps.viewId == _curViewProps.name)
-					closeView(_curViewProps.container.name, processStateChange);
-				else 
-				{
-					closeView(_curViewProps.container.name);
-					processStateChange();
-				}
-			}
-			else
-				processStateChange();
-		}		
-		
 		// PRIVATE METHODS
 		
-		private function onCloseEvent(e:Event):void
+		private function onCloseView(e:Event):void
 		{
-			e.target.removeEventListener(UIEvent.CLOSE, onCloseEvent);
+			e.target.removeEventListener(UIEvent.CLOSE, onCloseView);
 			closeView(e.target.name);
 		}
 				
@@ -148,10 +130,10 @@
 			ap.stageVideoAvailable = (e.availability == StageVideoAvailability.AVAILABLE);
 		}
 		
-		private function onStateSelected(uie:UIEvent):void
+		private function onStateChangeEvent(uie:UIEvent):void
 		{
-			stateChangeSWFAddress(uie.state);
-		}		
+			changeAppState(uie.state);
+		}
 		
 		private function onSWFAddressFirstBroadcast(e:SWFAddressEvent):void	
 		{
@@ -166,7 +148,7 @@
 			SWFAddress.setTitle(ap.appName + " - " + _firstState);
 		}
 		
-		private function onSWFAddressChange(e:SWFAddressEvent = null):void	
+		private function onSWFAddressChange(e:SWFAddressEvent):void	
 		{
 			var page:String;
 	
@@ -175,7 +157,7 @@
 				page = page.substring(1);
 			
 			if (page || int(page) < _presets.length)
-				enableAppState(page);
+				changeAppState(page);
 		}
 		
 		private function stateChangeSWFAddress(state:String):void 
@@ -188,8 +170,27 @@
 				if (ap.googleAnalyticsAccount && AirStatus.isNativeApplication || DEBUG_ANALYTICS)
 					Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.TRACK_PAGE_VIEW, 
 																			{ page:state } );
+																			
+				changeAppState(state);															
 			}
-		}	
+		}
+		
+		private function changeAppState(state:String):void 
+		{	
+			_curAppState = state;
+			if (_curViewProps && !_curViewProps.contentPersists)
+			{
+				if (appStateProps.viewId == _curViewProps.name)
+					closeView(_curViewProps.container.name, processStateChange);
+				else 
+				{
+					closeView(_curViewProps.container.name);
+					processStateChange();
+				}
+			}
+			else
+				processStateChange();
+		}						
 		
 		private function checkOrientation():void
 		{
@@ -221,7 +222,7 @@
 		private function loadFirstPage():void
 		{
 			if (_firstState)
-				enableAppState(_firstState);
+				changeAppState(_firstState);
 			else
 			{
 				SWFAddress.setTitle(ap.appName);
@@ -269,7 +270,7 @@
 					
 					_curViewProps.mediaPreset = appStateProps.mediaPreset;
 					viewCreator.create(appStateProps.viewId, appStateProps.name, onAppContainerLoadComplete);
-					viewCreator.container.addEventListener(UIEvent.CLOSE, onCloseEvent, false, 0, true);
+					viewCreator.container.addEventListener(UIEvent.CLOSE, onCloseView, false, 0, true);
 				}
 			}
 		}
@@ -298,15 +299,14 @@
 			
 			ap.ip = _ip;
 
-			StageRef.stage.addEventListener(StageVideoAvailabilityEvent.STAGE_VIDEO_AVAILABILITY, 
-																					onStageVideoAbility);	
+			_appStateCallStack = new gDictionary();	
+			StageRef.stage.addEventListener(StageVideoAvailabilityEvent.STAGE_VIDEO_AVAILABILITY,onStageVideoAbility); 	
 			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, onSWFAddressFirstBroadcast);			
 			MasterClock.initialize();
 			Remoting.gateway = ap.gateway;
-			_appStateCallStack = new gDictionary();	
+
 			Translate.language = ap.language;
 			Color.theme = ap.colorTheme;
-			
 
 			if (ap.spinnerGraphicId)
 				Spinner.init(ap.spinnerGraphicId, ap.spinnerGraphicCyclesPerSecond);
@@ -319,7 +319,7 @@
 									{ page:ap.appName + " " + ap.version + " started." } );
 			}
 			
-			StageRef.stage.addEventListener(UIEvent.APP_STATE_SELECTED, onStateSelected);	
+			StageRef.stage.addEventListener(UIEvent.APP_STATE_SELECTED, onStateChangeEvent);	
 			StageRef.stage.addEventListener(Event.RESIZE, vu.onStageResize);
 			MasterClock.registerCallback(checkOrientation, true, 500);	
 			vu.onStageResize();

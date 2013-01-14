@@ -1,8 +1,10 @@
 ﻿package com.zutalor.sequence 
 {
 	import com.zutalor.application.AppController;
+	import com.zutalor.events.UIEvent;
 	import com.zutalor.properties.NestedPropsManager;
 	import com.zutalor.utils.MasterClock;
+	import com.zutalor.utils.StageRef;
 	import flash.events.Event;
 	/**
 	 * ...
@@ -68,8 +70,8 @@
 			sip = _presets.getItemPropsByIndex(currentSequence, sequenceIndx);
 			if (sip)
 			{
-				sequenceIndx++
-				_controller.enableAppState(sip.item);
+				sequenceIndx++;
+				StageRef.stage.dispatchEvent(new UIEvent(UIEvent.APP_STATE_SELECTED, null, sip.item));
 			}
 		}			
 	}

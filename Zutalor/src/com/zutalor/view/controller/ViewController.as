@@ -95,8 +95,8 @@
 		{
 			viewRenderer.dispose();
 			viewRenderer = null;
+			onComplete();
 		}
-		
 		
 		// PUBLIC METHODS
 			

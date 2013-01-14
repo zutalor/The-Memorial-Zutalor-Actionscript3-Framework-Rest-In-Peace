@@ -387,7 +387,7 @@ package com.zutalor.view.mediators
 					}
 					else	
 						containerNames = vip.tapContainerNames.split(",");
-					
+
 					switch (vip.onTap)
 					{
 						case ViewItemProperties.UI_EVENT :
