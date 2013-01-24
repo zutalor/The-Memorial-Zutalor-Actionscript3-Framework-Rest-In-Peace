@@ -8,12 +8,12 @@ package com.zutalor.view.navigator
 	 */
 	public class NavigatorProperties 
 	{
+		public var id:String;
 		public var tip:TranslateItemProperties;
 		public var curAnswerKey:String;
 		public var history:Array;
 		public var answers:gDictionary;
-		public var dataFromSimulation:Object;
-		public var uiControllerToken:String;
+		public var data:String;
 		public var transitionNext:String;
 		public var transitionBack:String;
 		public var curTransitionType:String;

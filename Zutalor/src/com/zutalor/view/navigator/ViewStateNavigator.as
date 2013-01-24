@@ -40,10 +40,10 @@ package com.zutalor.view.navigator
 			init();
 		}
 		
-		public function onUiControllerMethodCompleted(args:XMLList, data:Object, uiControllerToken:String):void
+		public function onUiControllerMethodCompleted(args:XMLList, data:String, id:String):void
 		{
-			np.dataFromSimulation = data;
-			np.uiControllerToken = uiControllerToken;
+			np.data = data;
+			np.id = id;
 			activateState(args.@onCompleteState);
 		}
 		
@@ -173,11 +173,13 @@ package com.zutalor.view.navigator
 						answerIndex = np.keyboardAnswers.indexOf(uip.name.toLowerCase());
 
 					answerText = XML(np.tip.tText)..Q[answerIndex];
+					
 					if (!answerText)
 					{
 						activateState(np.tip.name);
 						return;
 					}
+					
 					qMark = answerText.indexOf("?");
 					if (qMark != -1)
 						answerText = answerText.substring(0, qMark);
@@ -188,16 +190,17 @@ package com.zutalor.view.navigator
 					answer.correctAnswer = XML(np.tip.tText)..answers.@correctAnswer;
 					answer.timestamp = date.toString();
 
-					if (np.dataFromSimulation)
+					if (np.data)
 					{
-						answer.questionId = np.tip.name + "-" + np.uiControllerToken;
-						answer.data = np.dataFromSimulation;
+						answer.questionId = np.tip.name + "-" + np.id;
+						answer.data = np.data;
 					}
 					else
 					{
 						answer.questionId = np.tip.name;
 						answer.data = "";
-					}	
+					}
+					
 					np.curAnswerKey = answer.questionId;	
 					np.answers.insert(np.curAnswerKey, answer);
 					readText(answerText, XML(np.tip.tText)..Q[answerIndex].@sound);
@@ -276,7 +279,7 @@ package com.zutalor.view.navigator
 				switch (String(XML(np.tip.tMeta).state.@type))
 				{	
 					case "uiControllerMethod" :
-						np.dataFromSimulation = "";
+						np.data = "";
 						uiController[XML(np.tip.tMeta).state.@method](XML(np.tip.tMeta).state);	
 						break;
 					case "submitAnswers" :
@@ -316,14 +319,19 @@ package com.zutalor.view.navigator
 		protected function submitAnswers():void
 		{
 			var ts:String;
+			var answer:String;
+			var answers:Array = [];
 				
 			var ap:AnswerProperties;
 			for (var i:int = 0; i < np.answers.length; i++)
 			{
 				ap = np.answers.getByIndex(i);
 				ts = TextUtil.makeCommaDelimited(ap.timestamp.split(" "));
-				trace(ap.questionId + "," + ap.answer + "," + ap.data + "," + ts);
+				answer =  ap.questionId + "," + ap.answer + "," + ts + "," + ap.data;
+				answers.push(answer);
 			}
+			
+			uiController[XML(np.tip.tMeta).state.@method](answers);	
 			activateState(String(XML(np.tip.tMeta).state.@onCompleteState));
 		}
 		
