@@ -42,6 +42,16 @@
 		
 		}
 		
+		public function set alpha(n:Number):void
+		{
+			_view.alpha = n;
+		}
+		
+		public function get alpha():Number
+		{
+			return _view.alpha;
+		}
+		
 		public function load(fileName:String, width:int, height:int, x:int=0, y:int=0):void
 		{
 			

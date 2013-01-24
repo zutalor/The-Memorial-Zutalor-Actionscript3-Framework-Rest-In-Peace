@@ -179,10 +179,7 @@
 			MasterClock.unRegisterCallback(onOverLapClip);
 			
 			if (fadeOut)
-			{
-				TweenMax.to(mediaController.view, fadeOut, { alpha:0, onComplete:onStopComplete } );
-				TweenMax.to(mediaController, fadeOut, { volume:0 } );
-			}
+				TweenMax.to(mediaController, fadeOut, { alpha:0, volume:0, onComplete:onStopComplete } );
 			else
 				onStopComplete();
 		}
@@ -293,13 +290,13 @@
 		private function onStopComplete():void
 		{
 			mediaController.stop();
-			mediaController.volume = 1;
 			cleanUpAfterStop();
 		}
 		
 		private function cleanUpAfterStop():void
 		{
 			Spinner.hide();
+			mediaController.volume = mediaController.view.alpha = 1;
 			setPlayPauseButton();							
 		}	
 		

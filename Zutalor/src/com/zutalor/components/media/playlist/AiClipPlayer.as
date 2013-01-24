@@ -110,6 +110,13 @@ package com.zutalor.components.media.playlist
 			_clipsToPlay = [];
 			_clipsAlreadyPlayed.dispose();
 			_clipsAlreadyPlayed = new gDictionary();
+			
+			for (var i:int = 0; i < _players.length; i++)
+			{
+				p = _players.getByIndex(i);
+				p.removeEventListener(MediaEvent.OVERLAP, cueNext);
+				p.removeEventListener(MediaEvent.COMPLETE, cueNext);
+			}
 		}
 		
 		public function cued():int

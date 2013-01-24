@@ -5,9 +5,7 @@ package com.zutalor.content
 	 * @author G Pepos
 	 */
 
-	import com.zutalor.ui.Dialog;
-	import deng.fzip.FZip;
-	import deng.fzip.FZipFile;
+
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.OutputProgressEvent;
@@ -33,7 +31,6 @@ package com.zutalor.content
 		private var _error:Boolean;
 		private var _progressCallback:Function;
 		private var _completeCallback:Function;
-		private var _fzip:FZip;
 		private var _url:String;
  
 		public function get percentage():Number  { return _percentage; }
@@ -47,7 +44,7 @@ package com.zutalor.content
 			_directory = dir; 
 			_percentage = 0;
 			
-			_fzip = new FZip();
+			//_fzip = new FZip();
 			
 			
 			if (Capabilities.os.toLowerCase().indexOf("win") != -1)
@@ -125,25 +122,25 @@ package com.zutalor.content
 		{
 			
 			//TODO Clean UP
-			Dialog.show(Dialog.CONFIRM, Dialog.IO_ERROR, onConfirm);
+			//Dialog.show(//Dialog.CONFIRM, //Dialog.IO_ERROR, onConfirm);
 			
 			function onConfirm(m:String):void
 			{
-				if (m == Dialog.OK)
+/*				if (m == //Dialog.OK)
 					unpack(_url, _progressCallback, _completeCallback);
 				else
 				{
 					_error = true;
 					finishUp();
 				}
-			}
+*/			}
 		}
 		
 		private function onDiskError(e:IOErrorEvent):void
 		{
 			_error = true;
 			// TODO Clean UP
-			Dialog.show(Dialog.ALERT, Dialog.DISK_ERROR, finishUp);
+			//Dialog.show(//Dialog.ALERT, //Dialog.DISK_ERROR, finishUp);
 		}
 		
 		private function extractFile(id:int = 0):void

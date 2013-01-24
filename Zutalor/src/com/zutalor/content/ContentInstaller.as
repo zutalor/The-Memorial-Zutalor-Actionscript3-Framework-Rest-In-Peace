@@ -1,22 +1,23 @@
-package com.zutalor.content 
+package com.zutalor.content
 {
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.translate.Translate;
-	import com.zutalor.ui.Dialog;
+	import com.zutalor.widgets.Dialog;
+	
 	/**
 	 * ...
 	 * @author G Pepos
 	 */
-	public class ContentInstaller 
-	{	
+	public class ContentInstaller
+	{
 		private var _unpacker:Unpacker;
 		private var _onComplete:Function;
 		private var _error:Boolean;
 		
-		public function ContentInstaller(localDir:String) 
+		public function ContentInstaller(localDir:String)
 		{
 			_unpacker = new Unpacker(localDir);
-		}		
+		}
 		
 		public function get error():Boolean
 		{
@@ -40,18 +41,18 @@ package com.zutalor.content
 		
 		private function onProgress(message:String):void
 		{
-			if (message == Unpacker.UNPACK_FILE)
-				Dialog.show(Dialog.NOTIFY, Translate.tText("unpack") + "<br/><br/>" 
-						+ TextUtil.stripFileExtenstion(_unpacker.currentFile));
-			else
-				Dialog.show(Dialog.NOTIFY, "download", null, _unpacker.percentage);
+		/*
+		   if (message == Unpacker.UNPACK_FILE)
+		   Dialog.show(Dialog.NOTIFY, Translate.tText("unpack") + "<br/><br/>" + TextUtil.stripFileExtenstion(_unpacker.currentFile));
+		   else
+		 Dialog.show(Dialog.NOTIFY, "download", null, _unpacker.percentage);*/
 		}
-				
+		
 		private function onDownloadComplete():void
 		{
-			_error = _unpacker.cancelled;
+			/*_error = _unpacker.cancelled;
 			if (!_unpacker.cancelled && !_unpacker.error)
-				Dialog.show(Dialog.ALERT, "download-success", onDialogComplete);
+				Dialog.show(Dialog.ALERT, "download-success", onDialogComplete);*/
 		}
 		
 		private function onDialogComplete(message:String):void
