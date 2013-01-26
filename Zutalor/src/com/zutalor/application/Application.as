@@ -67,6 +67,9 @@ package com.zutalor.application
 		
 			if (url != "undefined" && url != "/" && url != null) 
 				URL.open("/#/" + url.substring(1), "_self");
+			
+			if (ip == "undefined")
+				ip = "unknown";
 				
 			_appController = new AppController(bootXmlUrl, ip, splashEmbedClassName);	
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);

@@ -297,7 +297,8 @@
 			vu = ViewUtils.gi();
 			vpm = ViewController.presets;
 			
-			ap.ip = _ip;
+			if (_ip)
+				ap.ip = _ip;
 
 			_appStateCallStack = new gDictionary();	
 			StageRef.stage.addEventListener(StageVideoAvailabilityEvent.STAGE_VIDEO_AVAILABILITY,onStageVideoAbility); 	

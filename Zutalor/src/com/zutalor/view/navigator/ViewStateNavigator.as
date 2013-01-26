@@ -327,7 +327,10 @@ package com.zutalor.view.navigator
 			{
 				ap = np.answers.getByIndex(i);
 				ts = TextUtil.makeCommaDelimited(ap.timestamp.split(" "));
-				answer =  ap.questionId + "," + ap.answer + "," + ts + "," + ap.data;
+				answer =  ap.questionId + "," + ap.answer + "," + ts
+				if (ap.data)
+					answer += "," + ap.data;
+				
 				answers.push(answer);
 			}
 			
