@@ -25,7 +25,8 @@ package com.zutalor.audio
 		public var bitrate:String;
 		public var bitdepth:String;
 		
-		private var afterSpeaking:Function;
+		private var onComplete:Function;
+		private var onCompleteArgs:*;
 		private var stopped:Boolean;
 		private var samplePlayer:SamplePlayer;
 		
@@ -52,18 +53,24 @@ package com.zutalor.audio
 							+ "&voice=" + voice + "&speed=" + speed + "&pitch=" + pitch + "&text=" + unescape(text);
 		}
 		
-		public function speak(text:String, afterSpeaking:Function=null):void
+		public function speak(text:String, onComplete:Function=null, onCompleteArgs:* = null):void
 		{
 			var sentences:Array;
 			var l:int;
 			var i:int;
 			
-			this.afterSpeaking = afterSpeaking;
+			this.onComplete = onComplete;
+			this.onCompleteArgs = onCompleteArgs;
 	
 			if (!enabled)
 			{
-				if (afterSpeaking != null)
-					afterSpeaking();
+				if (onComplete != null)
+				{
+					if (onCompleteArgs)
+						onComplete(onCompleteArgs);
+					else
+						onComplete();
+				}
 			}
 			else
 			{
@@ -87,12 +94,6 @@ package com.zutalor.audio
 		{
 			stopped = true;
 			samplePlayer.stop();
-
-			if (afterSpeaking != null)
-			{
-				afterSpeaking();
-				afterSpeaking = null;
-			}
 		}
 		
 		public function dispose():void

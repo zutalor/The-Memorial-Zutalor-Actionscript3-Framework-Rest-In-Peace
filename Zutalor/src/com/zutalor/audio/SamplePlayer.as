@@ -20,6 +20,7 @@ package com.zutalor.audio
 		private var samplesTotal:int; 	
 		private var samplesPosition: int = 0;
 		private var onComplete:Function;
+		private var onCompleteArgs:*;
 		private var playing:Boolean;
 		
 		public var soundLoaded:Boolean;
@@ -35,11 +36,12 @@ package com.zutalor.audio
 			outputSound = new Sound();
 		}
 
-		public function play(url:String, onComplete:Function = null): void
+		public function play(url:String, onComplete:Function = null, onCompleteArgs:*=null): void
 		{
 			stopSound();
 			soundLoaded = false;
-			onComplete = onComplete;
+			this.onComplete = onComplete;
+			this.onCompleteArgs = onCompleteArgs;
 			inputSound = new Sound();
 			inputSound.addEventListener(Event.COMPLETE, onLoaded, false, 0, true);
 			inputSound.addEventListener(IOErrorEvent.IO_ERROR, onIOError, false, 0, true);
@@ -50,7 +52,12 @@ package com.zutalor.audio
 		{
 			stopSound();
 			if (onComplete != null)
-				onComplete();
+			{
+				if (onCompleteArgs)
+					onComplete(onCompleteArgs);
+				else
+					onComplete();
+			}
 		}
 		
 		private function stopSound():void

@@ -348,7 +348,8 @@
 		
 		public function setItemVisibility(name:String, visible:Boolean = true, fade:int = 0, delay:int = 0):void
 		{
-			ItemFX.fade(vp.name, vp.container.getChildByName(name), visible, fade, delay);
+			var fx:ItemFX = new ItemFX();
+			fx.fade(vp.name, vp.container.getChildByName(name), visible, fade, delay);
 		}
 		
 		public function setEnabled(itemName:String, d:Boolean):void

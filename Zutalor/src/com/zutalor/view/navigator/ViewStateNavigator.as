@@ -14,11 +14,13 @@ package com.zutalor.view.navigator
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.transition.Transition;
 	import com.zutalor.translate.Translate;
+	import com.zutalor.translate.TranslateItemProperties;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.GridValues;
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.StageRef;
+	import flash.utils.getTimer;
 	import org.gestouch.gestures.Gesture;
 	import org.gestouch.gestures.TapGesture;
 
@@ -55,7 +57,7 @@ package com.zutalor.view.navigator
 			var gs:GraphSettings;
 			var tMeta:XML;
 			var textToSpeechUrl:String;
-			
+		
 			np = new NavigatorProperties();	
 			np.answers = new gDictionary();
 			np.history = [];
@@ -77,6 +79,7 @@ package com.zutalor.view.navigator
 			np.soundPath = tMeta.settings.@soundPath;
 			np.soundExt = tMeta.settings.@soundExt;
 			np.keyboardAnswers = tMeta.settings.@keyboardAnswers;
+			
 			initUserInput();
 			activateState(tMeta.settings.@firstPage);
 		}
@@ -158,6 +161,7 @@ package com.zutalor.view.navigator
 			function onAnswer():void
 			{
 				var answer:AnswerProperties;
+				var promptId:String;
 				var answerText:String;
 				var answerIndex:int;
 				var qMark:int
@@ -203,7 +207,12 @@ package com.zutalor.view.navigator
 					
 					np.curAnswerKey = answer.questionId;	
 					np.answers.insert(np.curAnswerKey, answer);
-					readText(answerText, XML(np.tip.tText)..Q[answerIndex].@sound);
+
+					promptId = String(tMeta.state.@prompt);
+					if (!promptId)
+						promptId = "answer-prompt";
+					
+					sayText(answerText, XML(np.tip.tText)..Q[answerIndex].@sound, sayPrompt, promptId);
 				}
 				else
 				{
@@ -255,6 +264,7 @@ package com.zutalor.view.navigator
 				np.inTransition = true;
 				stop();
 				np.tip = Translate.presets.getItemPropsByName(Translate.language, id);
+				uiController.getValueObject().prompt = "";
 				if (!np.tip)
 				{
 					trace("State not found: " + id);
@@ -270,12 +280,18 @@ package com.zutalor.view.navigator
 					t.simpleRender(uiController.vc.container,np.curTransitionType, "in", onTransitionComplete);
 				}
 				else
+				{
 					onTransitionComplete();
+				}
 			}
 		
 			function onTransitionComplete():void
 			{
-				np.inTransition = false;				
+				var promptId:String;
+				
+				np.inTransition = false;
+				promptId = String(XML(np.tip.tMeta).state.@prompt);
+				
 				switch (String(XML(np.tip.tMeta).state.@type))
 				{	
 					case "uiControllerMethod" :
@@ -285,8 +301,20 @@ package com.zutalor.view.navigator
 					case "submitAnswers" :
 						submitAnswers();
 						break;
-				}
-				readText(getTextForSpeech(np.tip.tText), np.tip.sound);
+					case "page" :							
+						
+						if (!promptId)
+							promptId = "page-prompt";
+
+							sayText(getTextForSpeech(np.tip.tText), np.tip.sound, sayPrompt, promptId);
+						break;
+					case "question" :
+						if (!promptId)
+							promptId = "question-prompt";
+							
+							sayText(getTextForSpeech(np.tip.tText), np.tip.sound, sayPrompt, promptId);
+						break;
+				}				
 			}
 		}
 		
@@ -338,13 +366,27 @@ package com.zutalor.view.navigator
 			activateState(String(XML(np.tip.tMeta).state.@onCompleteState));
 		}
 		
-		protected function readText(text:String, soundName:String):void
+		protected function sayPrompt(id:String):void
 		{
+			var tip:TranslateItemProperties;
 			
+			tip = Translate.presets.getItemPropsByName(Translate.language, id);
+			
+			if (tip)
+			{
+				uiController.getValueObject().prompt = getTextForDisplay(tip.tText);
+				uiController.onModelChange();
+				uiController.vc.setItemVisibility("prompt", true, 1);
+				sayText(getTextForSpeech(tip.tText), tip.sound);
+			}
+		}
+				
+		protected function sayText(text:String, soundName:String, onComplete:Function = null, onCompleteArgs:* = null):void
+		{	
 			if (text && textToSpeech.apiUrl)
-				textToSpeech.speak(text);
+				textToSpeech.speak(text, onComplete, onCompleteArgs);
 			else if (soundName)
-				samplePlayer.play(np.soundPath + soundName + np.soundExt);
+				samplePlayer.play(np.soundPath + soundName + np.soundExt, onComplete, onCompleteArgs);
 		}
 		
 		protected function stop():void
