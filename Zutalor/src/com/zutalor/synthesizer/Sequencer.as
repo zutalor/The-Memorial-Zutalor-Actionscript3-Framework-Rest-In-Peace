@@ -101,18 +101,18 @@ package com.zutalor.synthesizer
 					
 					if (preset.dataIsPitchBend)
 					{
-						if (!mods)
-							mods = [];
+			
+						mods = [];
 						
 						l = track.notes.length - 1;
 						
 						offsetIndx = Math.floor(track.notes.length / 2);
 						offset = track.notes[offsetIndx].note;
-								
-						for (i = 0; i < l; i++)
+						
+						for (i = 0; i < l-1; i++)
 							mods.push(new BendModulation(track.notes[i].startTime, track.notes[i].note - offset, 
 															nextTrigger + preset.noteTiming, track.notes[i + 1].note - offset));
-
+															
 						envelopeGenerators[egs] = new ADSREnvelopeGenerator(monoAd, preset.attack, preset.decay, 
 															track.notes.length * preset.noteTiming, preset.sustain, preset.release);							
 						

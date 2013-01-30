@@ -9,6 +9,7 @@
 
 	public class ArrayUtils
 	{
+		
 		public static function getIndexWithValue(a:Array, value:*= true):int
 		{
 			for (var i:int = 0; i < a.length; i++)

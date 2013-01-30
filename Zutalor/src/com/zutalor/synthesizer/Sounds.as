@@ -81,7 +81,7 @@ package com.zutalor.synthesizer
 			sampleMap.samplerSources[indx].frequencyShift = factor / freq;
 			audioSource = sampleMap.samplerSources[indx].clone();
 			
-			if (preset.loopEnd && preset.loopEnd)
+			if (preset.loopStart && preset.loopEnd)
 				setupLoop(audioSource, preset.loopStart, preset.loopEnd);
 			
 			if (mods)
