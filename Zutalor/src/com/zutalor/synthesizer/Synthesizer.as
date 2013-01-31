@@ -65,7 +65,7 @@ package com.zutalor.synthesizer
 				mods = [ bm ];
 			}
 				
-			if (!preset.midiNoteNumbers)
+			if (preset.isAudioFrequencey)
 				note = AudioUtils.frequencyToNoteNumber(note);
 
 			if (preset.rounding)

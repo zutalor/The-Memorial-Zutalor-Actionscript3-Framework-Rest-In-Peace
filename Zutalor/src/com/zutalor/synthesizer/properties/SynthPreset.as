@@ -9,7 +9,8 @@ package com.zutalor.synthesizer.properties
 	public class SynthPreset extends PropertiesBase implements IProperties
 	{
 		public var soundName:String;
-		public var midiNoteNumbers:Boolean;
+		public var midiNote:Number;
+		public var isAudioFrequencey:Boolean;
 		public var rounding:Boolean;
 		public var lowNote:Number;
 		public var highNote:Number;

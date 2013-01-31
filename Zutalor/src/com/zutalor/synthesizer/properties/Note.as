@@ -8,7 +8,7 @@ package com.zutalor.synthesizer.properties
 	{
 		public function Note() {}
 		
-		public var note:Number;
+		public var midiNote:Number;
 		public var startTime:Number;
 		public var velocity:Number;
 		public var attack:Number;

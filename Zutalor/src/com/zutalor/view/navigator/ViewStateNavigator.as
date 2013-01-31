@@ -3,6 +3,7 @@ package com.zutalor.view.navigator
 {
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.application.Application;
+	import com.zutalor.audio.GraphSettings;
 	import com.zutalor.audio.SamplePlayer;
 	import com.zutalor.audio.TextToSpeech;
 	import com.zutalor.controllers.base.UiControllerBase;

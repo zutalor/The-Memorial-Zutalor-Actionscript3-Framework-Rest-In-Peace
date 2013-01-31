@@ -31,13 +31,13 @@
 	import com.zutalor.filters.Filters;
 	import com.zutalor.filters.Glow;
 	import com.zutalor.filters.Shadow;
-	import com.zutalor.transition.Transition;
 	import com.zutalor.gesture.DoubleTapGesture;
 	import com.zutalor.gesture.GestureListener;
 	import com.zutalor.path.Path;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.Properties;
 	import com.zutalor.sequence.Sequence;
+	import com.zutalor.transition.Transition;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.view.controller.ViewController;
 	import org.gestouch.gestures.LongPressGesture;

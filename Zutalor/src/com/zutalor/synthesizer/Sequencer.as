@@ -107,16 +107,21 @@ package com.zutalor.synthesizer
 						l = track.notes.length - 1;
 						
 						offsetIndx = Math.floor(track.notes.length / 2);
-						offset = track.notes[offsetIndx].note;
+						offset = track.notes[offsetIndx].midiNote;
 						
-						for (i = 0; i < l-1; i++)
-							mods.push(new BendModulation(track.notes[i].startTime, track.notes[i].note - offset, 
-															nextTrigger + preset.noteTiming, track.notes[i + 1].note - offset));
+						for (i = 0; i < l - 1; i++)
+						{
+							mods.push(new BendModulation(track.notes[i].startTime, track.notes[i].midiNote - offset, 
+															nextTrigger, track.notes[i + 1].midiNote - offset));
+															
+							nextTrigger += preset.noteTiming;
+							trace(nextTrigger);
+						}
 															
 						envelopeGenerators[egs] = new ADSREnvelopeGenerator(monoAd, preset.attack, preset.decay, 
 															track.notes.length * preset.noteTiming, preset.sustain, preset.release);							
 						
-						listPerformance.addSourceAt(0, sounds.getVoice(preset, track.notes[offsetIndx].note, envelopeGenerators[egs],  mods));
+						listPerformance.addSourceAt(0, sounds.getVoice(preset, track.notes[offsetIndx].midiNote, envelopeGenerators[egs],  mods));
 						egs++;
 					}
 					else
@@ -135,10 +140,10 @@ package com.zutalor.synthesizer
 							{
 								envelopeGenerators[egs] = new ADSREnvelopeGenerator(monoAd, preset.attack, preset.decay, preset.hold, preset.sustain, preset.release);	
 							}
-							if (preset.midiNoteNumbers)
-								note = track.notes[i].note;
+							if (!preset.isAudioFrequencey)
+								note = track.notes[i].midiNote;
 							else
-								note = AudioUtils.frequencyToNoteNumber(track.notes[i].note);
+								note = AudioUtils.frequencyToNoteNumber(track.notes[i].midiNote);
 
 							if (preset.rounding)
 								note = Math.round(note);
