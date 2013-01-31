@@ -119,7 +119,7 @@ package com.zutalor.audio
 					t = synthesizer.tracks.getByIndex(i);
 					temp = ArrayUtils.compress(curGraphData[i], 0, ArrayUtils.getMax(data[i]), gs.preset.lowNote, gs.preset.highNote, gs.noteScaling);
 					t.preset = gs.preset;
-					t.mute = gs.mute;
+					t.mute = gs.preset.mute;
 					makeNotes();
 				}
 			}
@@ -147,8 +147,8 @@ package com.zutalor.audio
 					note = new Note();
 					t.notes[x] = note;
 
-					if (gs.preset.midiNote)
-						note.midiNote = gs.preset.midiNote;
+					if (gs.preset.midiNoteConstant)
+						note.midiNote = gs.preset.midiNoteConstant;
 					else
 						note.midiNote = temp[x];
 					
@@ -175,7 +175,6 @@ package com.zutalor.audio
 				for (x = 0; x < startTimes.length; x++)
 				{
 					t.notes[x].startTime = startTimes[x];
-					//trace(startTimes[x], t.notes[x].midiNote);
 				}
 			}
 		}

@@ -9,19 +9,21 @@ package com.zutalor.synthesizer.properties
 	public class SynthPreset extends PropertiesBase implements IProperties
 	{
 		public var soundName:String;
-		public var midiNote:Number;
+		public var midiNoteConstant:Number;
 		public var isAudioFrequencey:Boolean;
 		public var rounding:Boolean;
 		public var lowNote:Number;
 		public var highNote:Number;
 		public var noteTiming:Number;
-		public var pan:Number;
-		public var gain:Number;
+		public var pan:Number = 0;
+		public var gain:Number = 0;
+		public var mute:Boolean;
 		public var eachVoiceHasEg:Boolean;
 		public var monophonic:Boolean;
 		public var attack:Number;
 		public var decay:Number;
 		public var hold:Number;
+		public var overlap:Number = 0;
 		public var sustain:Number;
 		public var release:Number;
 		public var start:Number = 0;

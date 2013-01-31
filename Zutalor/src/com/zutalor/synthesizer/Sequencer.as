@@ -21,7 +21,6 @@ package com.zutalor.synthesizer
 	{	
 		private var sounds:Sounds;
 		private var envelopeGenerators:Vector.<ADSREnvelopeGenerator>;
-		private var egs:int;
 		private var listPerformance:ListPerformance;
 		private var audioPerformer:AudioPerformer;
 		private var player:AudioPlayer;
@@ -74,6 +73,7 @@ package com.zutalor.synthesizer
 			var pitchOffset:Number;
 			var pitchOffsetIndx:int;
 			var preset:SynthPreset;
+			var eg:ADSREnvelopeGenerator;
 									
 			if (!tracksToRender)
 				numTracks = tracks.length;
@@ -81,7 +81,6 @@ package com.zutalor.synthesizer
 				numTracks = tracksToRender;
 			
 			envelopeGenerators = new Vector.<ADSREnvelopeGenerator>;
-			egs = 0;
 			listPerformance = new ListPerformance();
 			trace("render");
 			
@@ -111,11 +110,10 @@ package com.zutalor.synthesizer
 															
 						}
 															
-						envelopeGenerators[egs] = new ADSREnvelopeGenerator(monoAd, preset.attack, preset.decay, 
-															track.notes[l].startTime, preset.sustain, preset.release);							
+						eg = new ADSREnvelopeGenerator(monoAd, preset.attack, preset.decay, 
+															track.notes[l].startTime, preset.sustain, preset.release);
 						
-						listPerformance.addSourceAt(track.offset, sounds.getVoice(preset, track.notes[pitchOffsetIndx].midiNote, envelopeGenerators[egs],  mods));
-						egs++;
+						listPerformance.addSourceAt(track.offset, sounds.getVoice(preset, track.notes[pitchOffsetIndx].midiNote, eg,  mods));
 					}
 					else
 					{
@@ -123,15 +121,17 @@ package com.zutalor.synthesizer
 							bm = new BendModulation(preset.bendStartTime, preset.bendStartValue, preset.bendEndTime, preset.bendEndValue);	
 					
 						if (!preset.eachVoiceHasEg)
-						{
-							envelopeGenerators[egs] = new ADSREnvelopeGenerator(monoAd, preset.attack, preset.decay, preset.hold, preset.sustain, preset.release);	
-							egs++;
-						}
-						for (i = 0; i < track.notes.length; i++)
+							eg = new ADSREnvelopeGenerator(monoAd, preset.attack, preset.decay, preset.hold, preset.sustain, preset.release);	
+
+						for (i = 0; i < track.notes.length - 1; i++)
 						{
 							if (preset.eachVoiceHasEg)
 							{
-								envelopeGenerators[egs] = new ADSREnvelopeGenerator(monoAd, preset.attack, preset.decay, preset.hold, preset.sustain, preset.release);	
+								eg = new ADSREnvelopeGenerator(monoAd, preset.attack, preset.decay, 
+																		(track.notes[i + 1].startTime - track.notes[i].startTime) * preset.overlap,
+																		preset.sustain, preset.release);
+								envelopeGenerators.push(eg);
+								trace(track.notes[i + 1].startTime - track.notes[i].startTime )
 							}
 							if (!preset.isAudioFrequencey)
 								midiNote = track.notes[i].midiNote;
@@ -141,7 +141,7 @@ package com.zutalor.synthesizer
 							if (preset.rounding)
 								midiNote = Math.round(midiNote);
 								
-							var s:IAudioSource = sounds.getVoice(preset, midiNote, envelopeGenerators[egs - 1] , null)	
+							var s:IAudioSource = sounds.getVoice(preset, midiNote, eg , null)	
 							listPerformance.addSourceAt(track.notes[i].startTime + track.offset, s);
 						}
 					}
@@ -211,7 +211,7 @@ package com.zutalor.synthesizer
 			if (listPerformance)
 			{
 				trace("reset");
-				for (i = 0; i < egs; i++)
+				for (i = 0; i < envelopeGenerators.length; i++)
 				{
 					envelopeGenerators[i].destroy();
 					envelopeGenerators[i] = null;
@@ -221,7 +221,6 @@ package com.zutalor.synthesizer
 				audioPerformer = null;
 				envelopeGenerators = null;
 				listPerformance = null;			
-				egs = 0;
 			}
 		}
 	}	

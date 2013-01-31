@@ -8,20 +8,16 @@ package com.zutalor.audio
 	 */
 	public class GraphSettings 
 	{
-		public var mute:Boolean;
 		public var plotter:Plotter;
 		public var preset:SynthPreset;
+		public var noteScaling:Number;		
 		public var lineStyle:int = 3;
 		public var color:uint = 0;
 		public var dotsize:int = 0;
-		public var noteScaling:Number;
-		public var soundName:String;
 		public var samples:int;
 		public var graph:int;
-		public var pan:Number;		
 		public var speed:Number;
 		public var range:Number;
-		public var noteOverlap:Number;
 		public var reverse:Number;
 		
 		public function GraphSettings() { }
