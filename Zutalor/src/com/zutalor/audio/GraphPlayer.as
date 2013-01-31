@@ -41,7 +41,7 @@ package com.zutalor.audio
 				params = pParams.split(",");
 				xmlUrl = TextUtil.strip(params[0]);
 				assetPath = TextUtil.strip(params[1]);
-				synthesizer = new Synthesizer(AudioDescriptor.RATE_44100, 8192, pMaxGraphs);			
+				synthesizer = new Synthesizer(AudioDescriptor.RATE_44100, 8192, 3);			
 				synthesizer.sounds.load(xmlUrl, assetPath, pOnComplete); 
 			}
 		}
@@ -163,7 +163,7 @@ package com.zutalor.audio
 					if (variableTiming)
 					{
 						if (x < temp.length)
-							startTime +=  ((1 -(Math.abs(temp[x] - temp[x + 1]))) * 200) / 1000;
+							startTime +=  (1 -(Math.abs(temp[x] - temp[x + 1]))) / 20;
 					}
 					else
 						startTime = gs.preset.noteTiming * x;

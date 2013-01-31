@@ -99,8 +99,7 @@ package com.zutalor.synthesizer
 					{
 						mods = [];	
 						l = track.notes.length - 1;
-						
-						pitchOffsetIndx = Math.floor(l / 2);
+						pitchOffsetIndx = l / 2;
 						pitchOffset = track.notes[pitchOffsetIndx].midiNote;
 						
 						for (i = 0; i < l - 1; i++)
@@ -186,9 +185,6 @@ package com.zutalor.synthesizer
 				
 				player.addEventListener(Event.SOUND_COMPLETE, onSoundComplete, false, 0, true);
 				player.play(audioPerformer);	
-				
-				//onSoundComplete(new Event(""));
-//				audioPerformer.getSample(4096);
 			}
 		}	
 			
