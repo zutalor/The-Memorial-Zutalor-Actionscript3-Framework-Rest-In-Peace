@@ -1,6 +1,7 @@
 
 package com.zutalor.view.navigator
 {
+	import com.greensock.TweenMax;
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.application.Application;
 	import com.zutalor.audio.GraphSettings;
@@ -49,6 +50,70 @@ package com.zutalor.view.navigator
 			np.id = id;
 			activateState(args.@onCompleteState);
 		}
+		
+		public function activateState(id:String):void
+		{
+			var t:Transition;
+
+			if (!np.inTransition)
+			{
+				np.inTransition = true;
+				stop();
+				np.tip = Translate.presets.getItemPropsByName(Translate.language, id);
+				uiController.getValueObject().prompt = "";
+				if (!np.tip)
+				{
+					trace("State not found: " + id);
+					return;
+				}
+				np.history.push(np.tip.name);
+				uiController.getValueObject().text = getTextForDisplay(np.tip.tText);
+				uiController.onModelChange();
+				
+				if (np.curTransitionType)
+				{
+					t = new Transition();
+					t.simpleRender(uiController.vc.container,np.curTransitionType, "in", onTransitionComplete);
+				}
+				else
+				{
+					onTransitionComplete();
+				}
+			}
+		
+			function onTransitionComplete():void
+			{
+				var promptId:String;
+				
+				np.inTransition = false;
+				promptId = String(XML(np.tip.tMeta).state.@prompt);
+				
+				switch (String(XML(np.tip.tMeta).state.@type))
+				{	
+					case "uiControllerMethod" :
+						np.data = "";
+						uiController[XML(np.tip.tMeta).state.@method](XML(np.tip.tMeta).state);	
+						break;
+					case "submitAnswers" :
+						submitAnswers();
+						break;
+					case "page" :							
+						
+						if (!promptId)
+							promptId = "page-prompt";
+
+							sayText(getTextForSpeech(np.tip.tText), np.tip.sound, sayPrompt, promptId);
+						break;
+					case "question" :
+						if (!promptId)
+							promptId = "question-prompt";
+							
+							sayText(getTextForSpeech(np.tip.tText), np.tip.sound, sayPrompt, promptId);
+						break;
+				}				
+			}
+		}
+
 		
 		// PROTECTED METHODS
 										
@@ -255,70 +320,7 @@ package com.zutalor.view.navigator
 				}
 			}
 		}
-				
-		protected function activateState(id:String):void
-		{
-			var t:Transition;
-
-			if (!np.inTransition)
-			{
-				np.inTransition = true;
-				stop();
-				np.tip = Translate.presets.getItemPropsByName(Translate.language, id);
-				uiController.getValueObject().prompt = "";
-				if (!np.tip)
-				{
-					trace("State not found: " + id);
-					return;
-				}
-				np.history.push(np.tip.name);
-				uiController.getValueObject().text = getTextForDisplay(np.tip.tText);
-				uiController.onModelChange();
-				
-				if (np.curTransitionType)
-				{
-					t = new Transition();
-					t.simpleRender(uiController.vc.container,np.curTransitionType, "in", onTransitionComplete);
-				}
-				else
-				{
-					onTransitionComplete();
-				}
-			}
-		
-			function onTransitionComplete():void
-			{
-				var promptId:String;
-				
-				np.inTransition = false;
-				promptId = String(XML(np.tip.tMeta).state.@prompt);
-				
-				switch (String(XML(np.tip.tMeta).state.@type))
-				{	
-					case "uiControllerMethod" :
-						np.data = "";
-						uiController[XML(np.tip.tMeta).state.@method](XML(np.tip.tMeta).state);	
-						break;
-					case "submitAnswers" :
-						submitAnswers();
-						break;
-					case "page" :							
 						
-						if (!promptId)
-							promptId = "page-prompt";
-
-							sayText(getTextForSpeech(np.tip.tText), np.tip.sound, sayPrompt, promptId);
-						break;
-					case "question" :
-						if (!promptId)
-							promptId = "question-prompt";
-							
-							sayText(getTextForSpeech(np.tip.tText), np.tip.sound, sayPrompt, promptId);
-						break;
-				}				
-			}
-		}
-		
 		protected function getTextForSpeech(text:String):String
 		{
 			if (text)
@@ -363,8 +365,8 @@ package com.zutalor.view.navigator
 				answers.push(answer);
 			}
 			
-			uiController[XML(np.tip.tMeta).state.@method](answers);	
-			activateState(String(XML(np.tip.tMeta).state.@onCompleteState));
+			uiController[XML(np.tip.tMeta).state.@method](answers,
+							String(XML(np.tip.tMeta).state.@onCompleteState));
 		}
 		
 		protected function sayPrompt(id:String):void
@@ -377,7 +379,8 @@ package com.zutalor.view.navigator
 			{
 				uiController.getValueObject().prompt = getTextForDisplay(tip.tText);
 				uiController.onModelChange();
-				uiController.vc.setItemVisibility("prompt", true, 1);
+				uiController.vc.getItemByName("prompt").alpha = 0;
+				TweenMax.to(uiController.vc.getItemByName("prompt"), .5, { alpha:1 } );
 				sayText(getTextForSpeech(tip.tText), tip.sound);
 			}
 		}
