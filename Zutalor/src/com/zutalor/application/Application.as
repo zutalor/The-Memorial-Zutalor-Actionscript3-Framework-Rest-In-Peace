@@ -51,7 +51,7 @@ package com.zutalor.application
 			Plugins.registerClassAndCreateCachedInstance(DialogController);
 		}
 		
-		public function start(bootXmlUrl:String, splashEmbedClassName:String=null):void
+		public function start(bootXmlUrl:String, inlineXML:XML, splashEmbedClassName:String=null):void
 		{
 			var paramObj:Object
 			var url:String;
@@ -71,7 +71,7 @@ package com.zutalor.application
 			if (ip == "undefined")
 				ip = "unknown";
 				
-			_appController = new AppController(bootXmlUrl, ip, splashEmbedClassName);	
+			_appController = new AppController(bootXmlUrl, ip, inlineXML, splashEmbedClassName);	
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		

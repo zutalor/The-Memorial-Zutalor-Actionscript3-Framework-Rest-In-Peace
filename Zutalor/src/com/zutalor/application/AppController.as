@@ -59,6 +59,7 @@
 		private var _bootXmlUrl:String;
 		private var _currentOrientation:String;
 		private var _ip:String;
+		private var _inlineXML:XML;
 		private var splash:Bitmap;
 
 		private const DEBUG_ANALYTICS:Boolean =  false;
@@ -73,7 +74,7 @@
 			_presets.parseXML(options.xml[options.nodeId]);
 		}
 		
-		public function AppController(bootXmlUrl:String, ip:String, splashClassName:String=null)
+		public function AppController(bootXmlUrl:String, ip:String, inlineXML:XML, splashClassName:String=null)
 		{
 			_splashEmbedClassName = splashClassName;
 			_ip = ip;
@@ -87,7 +88,7 @@
 				
 			MasterClock.initialize();
 			MasterClock.defaultInterval = 1000 / StageRef.stage.frameRate;
-			Boot.init(_bootXmlUrl, init);
+			AppXmlLoader.init(_bootXmlUrl, _inlineXML, init);
 		}
 		
 		// PRIVATE METHODS

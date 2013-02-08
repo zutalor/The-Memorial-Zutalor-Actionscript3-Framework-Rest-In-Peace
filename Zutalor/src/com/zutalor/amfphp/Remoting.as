@@ -78,12 +78,13 @@ package com.zutalor.amfphp
 		public function onNetStatus(e:NetStatusEvent):void
 		{
 			switch (e.info.code)
-			{
+			{	
 				case "NetConnection.Call.Failed" :
 					if (_onFailure != null)
 						_onFailure(e.info.code);
 					break;
 			}
+			trace(e.info.code);
 		}			
 	}
 }

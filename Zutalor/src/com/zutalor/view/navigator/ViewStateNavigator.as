@@ -259,7 +259,7 @@ package com.zutalor.view.navigator
 					answer.questionId = np.tip.name;
 					answer.correctAnswer = XML(np.tip.tText)..answers.@correctAnswer;
 					answer.timestamp = date.toString();
-
+					
 					if (np.data)
 					{
 						answer.questionId = np.tip.name + "-" + np.id;

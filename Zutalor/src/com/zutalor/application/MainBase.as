@@ -56,6 +56,7 @@
 	public class MainBase extends Application
 	{		
 		public var bootXMLUrl:String;
+		public var inlineXML:XML;
 		public var splashClassName:String;
 		
 		public function MainBase()
@@ -124,12 +125,12 @@
 			Properties.register(MediaPlayer, "mediaPresets");
 			Properties.register(Playlist, "playlists" , "playlist");
 			Properties.register(List, "listPresets");
-			Properties.register(Color, "colorThemes", "theme");
+			Properties.register(Color, "colors", "color");
 			Properties.register(Filters, "filters", "filter");
 			Properties.register(FuzzyFilter, "glowPresets");
 			Properties.register(FuzzyFilter, "shadowPresets");
 			
-			super.start(bootXMLUrl, splashClassName);
+			super.start(bootXMLUrl, inlineXML, splashClassName);
 		}
 	}
 }
