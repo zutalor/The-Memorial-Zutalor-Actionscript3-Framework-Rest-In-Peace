@@ -51,7 +51,7 @@ package com.zutalor.application
 			Plugins.registerClassAndCreateCachedInstance(DialogController);
 		}
 		
-		public function start(bootXmlUrl:String, inlineXML:XML, splashEmbedClassName:String=null):void
+		public function start(bootXmlUrl:String, inlineXML:XML = null, splashEmbedClassName:String=null):void
 		{
 			var paramObj:Object
 			var url:String;

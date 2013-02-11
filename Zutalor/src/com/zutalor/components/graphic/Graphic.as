@@ -77,6 +77,13 @@ package com.zutalor.components.graphic
 				_render();
 		}
 		
+		public function renderFromPresetId(id:String):void
+		{
+			var vip:ViewItemProperties = new ViewItemProperties();
+			vip.presetId = id;
+			render(vip);
+		}
+		
 		private function _render():void
 		{
 			var grp:GraphicProperties;
