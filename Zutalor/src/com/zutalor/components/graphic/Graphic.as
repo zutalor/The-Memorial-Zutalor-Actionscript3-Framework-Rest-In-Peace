@@ -120,6 +120,7 @@ package com.zutalor.components.graphic
 				{
 					case Graphic.EMBED :
 						item = embed(gri);
+						item.name = name;
 						break;
 					case Graphic.LABEL :	
 						item = label(gri);
