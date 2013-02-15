@@ -7,7 +7,7 @@ package com.zutalor.gesture
 	 */
 	public class TwoFingerPanGesture extends PanGesture
 	{
-		public function DoubleTapGesture(target:Object = null) 
+		public function TwoFingerPanGesture(target:Object = null) 
 		{
 			super(target);
 			minNumTouchesRequired = 2;
