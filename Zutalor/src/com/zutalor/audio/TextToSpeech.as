@@ -3,6 +3,7 @@ package com.zutalor.audio
 	import com.zutalor.audio.SamplePlayer;
 	import com.zutalor.text.TextUtil;
 	import flash.events.Event;
+	import flash.events.IOErrorEvent;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
@@ -27,8 +28,10 @@ package com.zutalor.audio
 		
 		private var onComplete:Function;
 		private var onCompleteArgs:*;
+		private var overrideDisableSpeech:Boolean;
 		private var stopped:Boolean;
 		private var samplePlayer:SamplePlayer;
+		private var text:String;
 		
 		public function TextToSpeech(apiUrl:String, voice:String = "usenglishfemale", speed:String = "2", 
 															pitch:String = "100", format:String = "mp3",
@@ -44,15 +47,27 @@ package com.zutalor.audio
 			this.bitrate = bitrate;
 			this.bitdepth = bitdepth;
 			samplePlayer = new SamplePlayer();
+			samplePlayer.addEventListener(IOErrorEvent.IO_ERROR, speakWithTextToSpeech, false, 0, true);
 		}
 		
-		public function sayText(text:String, url:String, onComplete:Function = null, onCompleteArgs:* = null, overRideDisableSpeech:Boolean = false):void
-		{	
-			if (text && apiUrl)
-				speak(text, onComplete, onCompleteArgs, overRideDisableSpeech);
-			else if (url)
+		public function sayText(text:String, url:String, onComplete:Function = null, onCompleteArgs:* = null, overrideDisableSpeech:Boolean = false):void
+		{
+			this.onComplete = onComplete;
+			this.onCompleteArgs = onCompleteArgs;
+			this.overrideDisableSpeech = overrideDisableSpeech;
+			this.text = text;
+			
+			if (url)
 				samplePlayer.play(url, onComplete, onCompleteArgs);
+			else if (text && apiUrl)
+				speakWithTextToSpeech();
 		}
+		
+		protected function speakWithTextToSpeech(e:IOErrorEvent = null):void
+		{
+			speak(text, onComplete, onCompleteArgs, overrideDisableSpeech);							
+		}
+		
 		
 		protected function makeURL(text:String):String
 		{
@@ -61,7 +76,7 @@ package com.zutalor.audio
 							+ "&voice=" + voice + "&speed=" + speed + "&pitch=" + pitch + "&text=" + unescape(text);
 		}
 		
-		protected function speak(text:String, onComplete:Function=null, onCompleteArgs:* = null, overRideDisableSpeech:Boolean = false):void
+		protected function speak(text:String, onComplete:Function=null, onCompleteArgs:* = null, overrideDisableSpeech:Boolean = false):void
 		{
 			var sentences:Array;
 			var l:int;
@@ -70,17 +85,7 @@ package com.zutalor.audio
 			this.onComplete = onComplete;
 			this.onCompleteArgs = onCompleteArgs;
 	
-			if (!enabled && !overRideDisableSpeech)
-			{
-				if (onComplete != null)
-				{
-					if (onCompleteArgs)
-						onComplete(onCompleteArgs);
-					else
-						onComplete();
-				}
-			}
-			else
+			if (enabled || overrideDisableSpeech)
 			{
 				stopped = false;
 				if (enableRandomVoices)
@@ -94,7 +99,22 @@ package com.zutalor.audio
 				{
 					if (i < l && !stopped)
 						say(sentences[i++], sayNextSentence);
+					else
+						callOnComplete();
 				}
+			}
+			else 
+				callOnComplete();
+		}
+		
+		public function callOnComplete():void
+		{
+			if (onComplete != null)
+			{
+				if (onCompleteArgs)
+					onComplete(onCompleteArgs);
+				else
+					onComplete();
 			}
 		}
 		

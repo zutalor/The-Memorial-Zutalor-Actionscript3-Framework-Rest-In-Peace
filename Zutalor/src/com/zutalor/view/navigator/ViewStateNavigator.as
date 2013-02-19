@@ -412,7 +412,7 @@ package com.zutalor.view.navigator
 			if (VALID_INPUT.indexOf(key.toUpperCase()) != -1)
 				inputText += key;
 			else
-				hkm.clearKeys(); // Don't know why this makes things work. Something to do with shift keys.
+				hkm.clearKeys();
 		}		
 		
 		protected function submitAnswers():void

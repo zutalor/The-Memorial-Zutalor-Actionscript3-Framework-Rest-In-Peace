@@ -1,6 +1,7 @@
 package com.zutalor.audio
 {
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
 	import flash.events.SampleDataEvent;
 	import flash.media.Sound;
@@ -8,7 +9,7 @@ package com.zutalor.audio
 	import flash.utils.ByteArray;
 
 
-	public final class SamplePlayer
+	public final class SamplePlayer extends EventDispatcher
 	{
 		public var speed:int
 		private static var bufferSkipCount:int;
@@ -128,7 +129,7 @@ package com.zutalor.audio
 
 		private function onIOError( e:IOErrorEvent ):void
 		{
-			trace( e );
+			dispatchEvent(e);
 			stop();
 		}
 	}
