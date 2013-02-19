@@ -24,7 +24,6 @@ package com.zutalor.view.navigator
 	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.StageRef;
 	import flash.events.KeyboardEvent;
-	import flash.utils.getTimer;
 	import org.gestouch.gestures.Gesture;
 	import org.gestouch.gestures.TapGesture;
 
@@ -48,6 +47,8 @@ package com.zutalor.view.navigator
 		protected var allowChangingAnwers:Boolean = false;
 		
 		protected static const VALID_INPUT:String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890()_+{}[]|\:;<,>.?/";
+		
+		public var OVERRIDE_SPEACH_DISABLED:Boolean = true;
 		
 		public function ViewStateNavigator(pUiController:UiControllerBase)
 		{
@@ -111,7 +112,6 @@ package com.zutalor.view.navigator
 					case "page" :
 						if (!promptId)
 							promptId = "page-prompt";
-
 							speak(textToSpeechUtils.getTextForSpeech(np.tip.tText), np.tip.sound, sayPrompt, promptId);
 						break;
 					case "multipleChoice" :
@@ -388,7 +388,7 @@ package com.zutalor.view.navigator
 			if (uip.action == "complete")
 				trace(inputText);
 			else if (uip.action == "backspace")
-				inputText = inputText.substr(0, inputText.length - 2);
+				inputText = inputText.substr(0, inputText.length - 1);
 			else if (uip.action == "space")
 			{
 				if (inputText.charAt(inputText.length -1) != " ")
@@ -400,7 +400,7 @@ package com.zutalor.view.navigator
 					if (inputText.charAt(i-1) == " ")
 						break;
 				}
-				trace(inputText.substr(i));
+				speak(inputText.substr(i), null, null, null, OVERRIDE_SPEACH_DISABLED);
 			}
 		}
 		
@@ -417,7 +417,7 @@ package com.zutalor.view.navigator
 		
 		protected function submitAnswers():void
 		{
-			var ts:String;
+			var timeStamp:String;
 			var answer:String;
 			var answers:Array = [];
 				
@@ -425,8 +425,8 @@ package com.zutalor.view.navigator
 			for (var i:int = 0; i < np.answers.length; i++)
 			{
 				ap = np.answers.getByIndex(i);
-				ts = TextUtil.makeCommaDelimited(ap.timestamp.split(" "));
-				answer =  ap.questionId + "," + ap.answer + "," + ts
+				timeStamp = TextUtil.makeCommaDelimited(ap.timestamp.split(" "));
+				answer =  ap.questionId + "," + ap.answer + "," + timeStamp;
 				if (ap.data)
 					answer += "," + ap.data;
 				
@@ -437,9 +437,9 @@ package com.zutalor.view.navigator
 							String(XML(np.tip.tMeta).state.@onCompleteState));
 		}
 		
-		protected function speak(text:String, soundName:String, onComplete:Function = null, onCompleteArgs:* = null):void
+		protected function speak(text:String, soundName:String, onComplete:Function = null, onCompleteArgs:* = null, overRideDisableSpeech:Boolean = false):void
 		{
-			textToSpeech.sayText(text, np.soundPath + soundName + np.soundExt, onComplete, onCompleteArgs);
+			textToSpeech.sayText(text, np.soundPath + soundName + np.soundExt, onComplete, onCompleteArgs, overRideDisableSpeech);
 		}
 		
 		protected function sayPrompt(id:String):void

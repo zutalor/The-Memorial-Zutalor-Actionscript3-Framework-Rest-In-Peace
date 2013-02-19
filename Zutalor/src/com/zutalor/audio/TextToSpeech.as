@@ -46,10 +46,10 @@ package com.zutalor.audio
 			samplePlayer = new SamplePlayer();
 		}
 		
-		public function sayText(text:String, url:String, onComplete:Function = null, onCompleteArgs:* = null):void
+		public function sayText(text:String, url:String, onComplete:Function = null, onCompleteArgs:* = null, overRideDisableSpeech:Boolean = false):void
 		{	
 			if (text && apiUrl)
-				speak(text, onComplete, onCompleteArgs);
+				speak(text, onComplete, onCompleteArgs, overRideDisableSpeech);
 			else if (url)
 				samplePlayer.play(url, onComplete, onCompleteArgs);
 		}
@@ -61,7 +61,7 @@ package com.zutalor.audio
 							+ "&voice=" + voice + "&speed=" + speed + "&pitch=" + pitch + "&text=" + unescape(text);
 		}
 		
-		protected function speak(text:String, onComplete:Function=null, onCompleteArgs:* = null):void
+		protected function speak(text:String, onComplete:Function=null, onCompleteArgs:* = null, overRideDisableSpeech:Boolean = false):void
 		{
 			var sentences:Array;
 			var l:int;
@@ -70,7 +70,7 @@ package com.zutalor.audio
 			this.onComplete = onComplete;
 			this.onCompleteArgs = onCompleteArgs;
 	
-			if (!enabled)
+			if (!enabled && !overRideDisableSpeech)
 			{
 				if (onComplete != null)
 				{
@@ -171,11 +171,13 @@ package com.zutalor.audio
 			r = str.split("\n");
 			str = r.join("");
 			r = str.split("\r");
-			str =r.join(" ");
+			str =r.join("");
 			r = str.split("\t");
 			str = r.join("");
 			r = str.split(".  ");
-			str = r.join(". ");
+			str = r.join("");
+			r = str.split(". ");
+			str = r.join("");
 			r = str.split("  ");
 			str = r.join("");
 			
@@ -186,7 +188,7 @@ package com.zutalor.audio
 			trace("Words Translated: " + wordcount);
 			
 			return str;
-		}	
+		}
 		
 		private function rand(min:Number,max:Number=NaN):int 
 		{
