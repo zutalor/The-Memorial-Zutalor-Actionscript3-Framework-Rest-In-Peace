@@ -46,6 +46,14 @@ package com.zutalor.audio
 			samplePlayer = new SamplePlayer();
 		}
 		
+		public function sayText(text:String, url:String, onComplete:Function = null, onCompleteArgs:* = null):void
+		{	
+			if (text && apiUrl)
+				speak(text, onComplete, onCompleteArgs);
+			else if (url)
+				samplePlayer.play(url, onComplete, onCompleteArgs);
+		}
+		
 		protected function makeURL(text:String):String
 		{
 			return apiUrl 	+ "&format=" + format + "&frequency=" + frequency + "&bitrate"
@@ -53,7 +61,7 @@ package com.zutalor.audio
 							+ "&voice=" + voice + "&speed=" + speed + "&pitch=" + pitch + "&text=" + unescape(text);
 		}
 		
-		public function speak(text:String, onComplete:Function=null, onCompleteArgs:* = null):void
+		protected function speak(text:String, onComplete:Function=null, onCompleteArgs:* = null):void
 		{
 			var sentences:Array;
 			var l:int;

@@ -188,7 +188,7 @@
 		{
 			if(!keyMappings[scope])
 			{
-				scope.addEventListener(KeyboardEvent.KEY_UP, onKeyUp, false,0,true);
+				scope.addEventListener(KeyboardEvent.KEY_UP, onKeyUp, false,int.MAX_VALUE,true);
 				keyMappings[scope]=new Dictionary();
 			}
 			keyMappings[scope][char.charCodeAt(0)]=message;	
@@ -198,7 +198,7 @@
 		{
 			if (!wordMappings[scope]) 
 			{
-				scope.addEventListener(KeyboardEvent.KEY_UP, onKeyUpForWordMapping, false,0,true);
+				scope.addEventListener(KeyboardEvent.KEY_UP, onKeyUpForWordMapping, false,int.MAX_VALUE,true);
 				wordMappings[scope]=new Dictionary();
 			}
 			wordMappings[scope][word]=message;
@@ -208,8 +208,8 @@
 		{
 			if(!sequenceMessages[scope])
 			{
-				scope.addEventListener(KeyboardEvent.KEY_DOWN,onKeyDownForSequence, false, 0, true);
-				scope.addEventListener(KeyboardEvent.KEY_UP,onKeyUpForSequence, false, 0, true);
+				scope.addEventListener(KeyboardEvent.KEY_DOWN,onKeyDownForSequence, false, int.MAX_VALUE, true);
+				scope.addEventListener(KeyboardEvent.KEY_UP,onKeyUpForSequence, false, int.MAX_VALUE, true);
 				sequenceMessages[scope]=new Dictionary();
 				
 			}

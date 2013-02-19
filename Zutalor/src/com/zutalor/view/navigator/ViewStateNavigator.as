@@ -7,6 +7,7 @@ package com.zutalor.view.navigator
 	import com.zutalor.audio.GraphSettings;
 	import com.zutalor.audio.SamplePlayer;
 	import com.zutalor.audio.TextToSpeech;
+	import com.zutalor.audio.TextToSpeechUtils;
 	import com.zutalor.controllers.base.UiControllerBase;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.gesture.AppGestureEvent;
@@ -22,6 +23,7 @@ package com.zutalor.view.navigator
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.StageRef;
+	import flash.events.KeyboardEvent;
 	import flash.utils.getTimer;
 	import org.gestouch.gestures.Gesture;
 	import org.gestouch.gestures.TapGesture;
@@ -30,13 +32,22 @@ package com.zutalor.view.navigator
 	public class ViewStateNavigator
 	{		
 		protected var textToSpeech:TextToSpeech;
+		protected var textToSpeechUtils:TextToSpeechUtils;
 		protected var samplePlayer:SamplePlayer;
 		protected var uiController:UiControllerBase;
 		protected var hkm:HotKeyManager;
 		protected var gestures:gDictionary;
 		protected var viewGestures:PropertyManager;
-		protected var viewKeyboardInput:PropertyManager;
+		protected var multipleChoiceKeys:PropertyManager;
+		protected var navigationKeys:PropertyManager;
+		protected var inputText:String;
 		protected var np:NavigatorProperties;
+		protected var tMeta:XML;
+		protected var uip:UserInputProperties;
+		
+		protected var allowChangingAnwers:Boolean = false;
+		
+		protected static const VALID_INPUT:String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890()_+{}[]|\:;<,>.?/";
 		
 		public function ViewStateNavigator(pUiController:UiControllerBase)
 		{
@@ -67,7 +78,7 @@ package com.zutalor.view.navigator
 					return;
 				}
 				np.history.push(np.tip.name);
-				uiController.getValueObject().text = getTextForDisplay(np.tip.tText);
+				uiController.getValueObject().text = textToSpeechUtils.getTextForDisplay(np.tip.tText);
 				uiController.onModelChange();
 				
 				if (np.curTransitionType)
@@ -97,25 +108,52 @@ package com.zutalor.view.navigator
 					case "submitAnswers" :
 						submitAnswers();
 						break;
-					case "page" :							
-						
+					case "page" :
 						if (!promptId)
 							promptId = "page-prompt";
 
-							sayText(getTextForSpeech(np.tip.tText), np.tip.sound, sayPrompt, promptId);
+							speak(textToSpeechUtils.getTextForSpeech(np.tip.tText), np.tip.sound, sayPrompt, promptId);
 						break;
-					case "question" :
+					case "multipleChoice" :
 						if (!promptId)
-							promptId = "question-prompt";
-							
-							sayText(getTextForSpeech(np.tip.tText), np.tip.sound, sayPrompt, promptId);
+							promptId = "mulipleChoicePrompt";
+						
+						speak(textToSpeechUtils.getTextForSpeech(np.tip.tText), np.tip.sound, sayPrompt, promptId);
+						KeyListeners(true, multipleChoiceKeys);
 						break;
+					case "textInput" :
+						if (!promptId)
+							promptId = "textInputPrompt";
+						
+						inputText = "";
+						speak(textToSpeechUtils.getTextForSpeech(np.tip.tText), np.tip.sound, sayPrompt, promptId);
+						KeyListeners(false, multipleChoiceKeys);
+						StageRef.stage.addEventListener(KeyboardEvent.KEY_UP, captureTextInput, false,0, true);
+						break;
+						
 				}				
 			}
 		}
 
 		
 		// PROTECTED METHODS
+		
+		protected function KeyListeners(add:Boolean, propertyManager:PropertyManager):void
+		{
+			var l:int;
+			var func:Function;
+			var userInputProperties:UserInputProperties;
+				
+			l = propertyManager.length;			
+			for (var i:int = 0; i < l; i++)
+			{
+				userInputProperties = propertyManager.getPropsByIndex(i);
+				if (add)
+					hkm.addMapping(StageRef.stage, userInputProperties.name, userInputProperties.name);
+				else
+					hkm.removeMapping(StageRef.stage, userInputProperties.name);
+			}
+		}
 										
 		protected function init():void
 		{
@@ -137,6 +175,7 @@ package com.zutalor.view.navigator
 				textToSpeechUrl = Application.settings.textToSpeechApiUrlPC;
 				
 			textToSpeech = new TextToSpeech(textToSpeechUrl);	
+			textToSpeechUtils = new TextToSpeechUtils();
 			textToSpeech.enabled = Application.settings.enableTextToSpeech;
 			tMeta = XML(Translate.getMetaByName("settings"));
 			np.transitionNext = tMeta.settings.@transitionNext;
@@ -154,35 +193,46 @@ package com.zutalor.view.navigator
 		{
 			var tMeta:XML;
 			var gp:UserInputProperties;
-			var up:UserInputProperties;
+			var userInputProperties:UserInputProperties;
 			var l:int;
 			
+			hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey, false, 0, true);
+			
 			tMeta = XML(Translate.getMetaByName("settings"));
+			
 			viewGestures = new PropertyManager(UserInputProperties);
 			viewGestures.parseXML(tMeta.gestures, "gesture");
 			
-			l = viewGestures.length;
+		/*	l = viewGestures.length;
 			for (var i:int = 0; i < l; i++)
 			{
 				gp = viewGestures.getPropsByIndex(i);
 				// TODO GEOFFgm.activateGesture(gp.type, StageRef.stage, gp.name);
-			}
+			}*/
 			
-			hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey, false, 0, true);
-			viewKeyboardInput = new PropertyManager(UserInputProperties);
-			viewKeyboardInput.parseXML(tMeta.keystrokes, "keystroke");
 			
-			l = viewKeyboardInput.length;			
-			for (i = 0; i < l; i++)
-			{
-				up = viewKeyboardInput.getPropsByIndex(i);
-				hkm.addMapping(StageRef.stage, up.name, up.name);
-			}
+			multipleChoiceKeys = new PropertyManager(UserInputProperties);
+			multipleChoiceKeys.parseXML(tMeta.keystrokes, "keystroke");
+			navigationKeys = new PropertyManager(UserInputProperties);
+			navigationKeys.parseXML(tMeta.navigation, "keystroke");	
+			
+			KeyListeners(true, navigationKeys);
 		}
 		
 		protected function onHotKey(hke:HotKeyEvent):void
 		{
-			onUserInput(viewKeyboardInput.getPropsByName(hke.message));
+			var uip:UserInputProperties;
+			
+			uip = navigationKeys.getPropsByName(hke.message);
+			
+			if (uip)
+				onUserInput(uip);
+			else
+			{
+				uip = multipleChoiceKeys.getChildIndexByName(hke.message);
+				if (uip)
+					onUserInput(uip);
+			}
 		}
 		
 		protected function onGesture(age:AppGestureEvent):void
@@ -206,7 +256,6 @@ package com.zutalor.view.navigator
 		
 		protected function onUserInput(uip:UserInputProperties, gesture:Gesture = null):void	
 		{
-			var tMeta:XML;
 			tMeta = XML(Translate.getMetaByName(np.tip.name));
 			
 			switch (String(tMeta.state.@type))
@@ -214,29 +263,30 @@ package com.zutalor.view.navigator
 				case "page" :
 					checkStateInput();
 					break;
-				case "question" :
-					onAnswer();
+				case "multipleChoice" :
+					onMultipleChoiceAnswer();
+					break;
+				case "textInput" :
+					onTextInput(uip);
 					break;
 				case "exit" :
 					uiController.exit();
 					break;
 				default :
 					break;
-			}
+			}	
 				
-			function onAnswer():void
+			function onMultipleChoiceAnswer():void
 			{
-				var answer:AnswerProperties;
 				var promptId:String;
 				var answerText:String;
 				var answerIndex:int;
-				var qMark:int
-				var date:Date = new Date();
-			
+				
 				if (uip.action == "exit")
 					uiController.exit();
-				else if (uip.action == "answer")
-				{
+				else if (uip.action != "answer")
+					checkForValidAnswer();
+				else {
 					if (uip.type == Plugins.getClassName(TapGesture))
 						answerIndex = getGridValues(gesture, uip).index;
 					else
@@ -250,37 +300,21 @@ package com.zutalor.view.navigator
 						return;
 					}
 					
-					qMark = answerText.indexOf("?");
-					if (qMark != -1)
-						answerText = answerText.substring(0, qMark);
-						
-					answer = new AnswerProperties();
-					answer.answer = answerText.substr(0, 1).toUpperCase();
-					answer.questionId = np.tip.name;
-					answer.correctAnswer = XML(np.tip.tText)..answers.@correctAnswer;
-					answer.timestamp = date.toString();
+					saveAnswer(answerText.substr(0, 1).toUpperCase(), XML(np.tip.tText)..answers.@correctAnswer);
 					
-					if (np.data)
+					if (allowChangingAnwers)
 					{
-						answer.questionId = np.tip.name + "-" + np.id;
-						answer.data = np.data;
+						promptId = String(tMeta.state.@prompt);
+						if (!promptId)
+							promptId = "answer-prompt";
+						
+						speak(answerText, XML(np.tip.tText)..Q[answerIndex].@sound, sayPrompt, promptId);
 					}
 					else
-					{
-						answer.questionId = np.tip.name;
-						answer.data = "";
-					}
-					
-					np.curAnswerKey = answer.questionId;	
-					np.answers.insert(np.curAnswerKey, answer);
-
-					promptId = String(tMeta.state.@prompt);
-					if (!promptId)
-						promptId = "answer-prompt";
-					
-					sayText(answerText, XML(np.tip.tText)..Q[answerIndex].@sound, sayPrompt, promptId);
+						checkForValidAnswer();
 				}
-				else
+				
+				function checkForValidAnswer():void
 				{
 					if (np.answers.getByKey(np.curAnswerKey))
 					{
@@ -309,43 +343,77 @@ package com.zutalor.view.navigator
 							activateState(np.tip.name);
 						}
 						break;
-					case "next" :
+					default : 
 						if (String(tMeta.state.@next) == "exit")
 							uiController.exit();
 						else
 							activateState(tMeta.state.@next);
 						break;		
-					default :
-						break;
 				}
 			}
-		}
-						
-		protected function getTextForSpeech(text:String):String
-		{
-			if (text)
-				return TextUtil.stripSurroundedBy(getTextForDevice(text), "<DISPLAYTEXT>", "</DISPLAYTEXT>");
-			else
-				return text;
-		}
 			
-		protected function getTextForDisplay(text:String):String
-		{
-			if (text)
-				return TextUtil.stripSurroundedBy(getTextForDevice(text), "<PHONETIC>", "</PHONETIC>");
-			else
-				return text;
+			function saveAnswer(answerText:String, correctAnswer:String):void
+			{
+				var answer:AnswerProperties;
+				var date:Date;
+			
+				date = new Date();
+				answer = new AnswerProperties();
+				
+				answer.answer = answerText;
+				answer.questionId = np.tip.name;
+				answer.correctAnswer = correctAnswer;
+				answer.timestamp = date.toString();
+				
+				if (np.data)
+				{
+					answer.questionId = np.tip.name + "-" + np.id;
+					answer.data = np.data;
+				}
+				else
+				{
+					answer.questionId = np.tip.name;
+					answer.data = "";
+				}
+				
+				np.curAnswerKey = answer.questionId;	
+				np.answers.insert(np.curAnswerKey, answer);
+			}
 		}
 		
-		protected function getTextForDevice(text:String):String
+		protected function onTextInput(uip:UserInputProperties):void
 		{
-			if (!text)
-				return text;
-			else if (AirStatus.isMobile)
-				return TextUtil.stripSurroundedBy(text, "<PC>", "</PC>");
-			else
-				return TextUtil.stripSurroundedBy(text, "<MOBILE>", "</MOBILE>");
+			var l:int;
+			
+			if (uip.action == "complete")
+				trace(inputText);
+			else if (uip.action == "backspace")
+				inputText = inputText.substr(0, inputText.length - 2);
+			else if (uip.action == "space")
+			{
+				if (inputText.charAt(inputText.length -1) != " ")
+					inputText += " ";
+				
+				l = inputText.length - 2;
+				for (var i:int = l; i > 0; i--)
+				{
+					if (inputText.charAt(i-1) == " ")
+						break;
+				}
+				trace(inputText.substr(i));
+			}
 		}
+		
+		protected function captureTextInput(ke:KeyboardEvent):void
+		{
+			var key:String;
+			
+			key = String.fromCharCode(ke.charCode);
+			if (VALID_INPUT.indexOf(key.toUpperCase()) != -1)
+				inputText += key;
+			else
+				hkm.clearKeys(); // Don't know why this makes things work. Something to do with shift keys.
+		}		
 		
 		protected function submitAnswers():void
 		{
@@ -369,6 +437,11 @@ package com.zutalor.view.navigator
 							String(XML(np.tip.tMeta).state.@onCompleteState));
 		}
 		
+		protected function speak(text:String, soundName:String, onComplete:Function = null, onCompleteArgs:* = null):void
+		{
+			textToSpeech.sayText(text, np.soundPath + soundName + np.soundExt, onComplete, onCompleteArgs);
+		}
+		
 		protected function sayPrompt(id:String):void
 		{
 			var tip:TranslateItemProperties;
@@ -377,20 +450,12 @@ package com.zutalor.view.navigator
 			
 			if (tip)
 			{
-				uiController.getValueObject().prompt = getTextForDisplay(tip.tText);
+				uiController.getValueObject().prompt = textToSpeechUtils.getTextForDisplay(tip.tText);
 				uiController.onModelChange();
 				uiController.vc.getItemByName("prompt").alpha = 0;
 				TweenMax.to(uiController.vc.getItemByName("prompt"), .5, { alpha:1 } );
-				sayText(getTextForSpeech(tip.tText), tip.sound);
+				speak(textToSpeechUtils.getTextForSpeech(tip.tText), tip.sound);
 			}
-		}
-				
-		protected function sayText(text:String, soundName:String, onComplete:Function = null, onCompleteArgs:* = null):void
-		{	
-			if (text && textToSpeech.apiUrl)
-				textToSpeech.speak(text, onComplete, onCompleteArgs);
-			else if (soundName)
-				samplePlayer.play(np.soundPath + soundName + np.soundExt, onComplete, onCompleteArgs);
 		}
 		
 		protected function stop():void

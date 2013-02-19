@@ -5,6 +5,7 @@ package com.zutalor.components.embed
 	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.utils.EmbeddedResources;
 	import flash.display.Bitmap;
+	import flash.geom.Matrix;
 	/**
 	 * ...
 	 * @author Geoff
@@ -24,7 +25,7 @@ package com.zutalor.components.embed
 			if (e is Bitmap)
 				e.smoothing = true;
 				
-			addChild(e);	
+			addChild(e);
 		}
 	}
 }

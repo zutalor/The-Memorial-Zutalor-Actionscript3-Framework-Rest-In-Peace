@@ -6,6 +6,7 @@ package com.zutalor.components.base
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.view.properties.ViewItemProperties;
+	import flash.geom.Matrix;
 	/**
 	 * ...
 	 * @author Geoff
@@ -21,6 +22,8 @@ package com.zutalor.components.base
 			super(containerName);
 			vip = new ViewItemProperties();
 			aligner = new Aligner();
+			cacheAsBitmap = true;
+			cacheAsBitmapMatrix = new Matrix();
 		}
 		
 		public function render(viewItemProperties:ViewItemProperties = null):void
