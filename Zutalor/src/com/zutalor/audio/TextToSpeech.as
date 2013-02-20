@@ -2,6 +2,7 @@ package com.zutalor.audio
 {
 	import com.zutalor.audio.SamplePlayer;
 	import com.zutalor.text.TextUtil;
+	import com.zutalor.utils.EmbeddedResources;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.net.URLLoader;
@@ -52,13 +53,16 @@ package com.zutalor.audio
 		
 		public function sayText(text:String, url:String, onComplete:Function = null, onCompleteArgs:* = null, overrideDisableSpeech:Boolean = false):void
 		{
+			var soundClass:Class;
 			this.onComplete = onComplete;
 			this.onCompleteArgs = onCompleteArgs;
 			this.overrideDisableSpeech = overrideDisableSpeech;
 			this.text = text;
 			
-			if (url)
-				samplePlayer.play(url, onComplete, onCompleteArgs);
+			soundClass = EmbeddedResources.getClass(text);
+		
+			if (url || soundClass)
+				samplePlayer.play(url, soundClass, onComplete, onCompleteArgs);
 			else if (text && apiUrl)
 				speakWithTextToSpeech();
 		}
@@ -85,7 +89,7 @@ package com.zutalor.audio
 			this.onComplete = onComplete;
 			this.onCompleteArgs = onCompleteArgs;
 	
-			if (enabled || overrideDisableSpeech)
+			if (true || enabled || overrideDisableSpeech)
 			{
 				stopped = false;
 				if (enableRandomVoices)
@@ -147,7 +151,7 @@ package com.zutalor.audio
 			}
 			
 			url = makeURL(text);
-			samplePlayer.play(url, checkforError);
+			samplePlayer.play(url, null, checkforError);
 			
 			function checkforError():void
 			{
@@ -184,27 +188,17 @@ package com.zutalor.audio
 			}
 		}
 		
-		private function cleanString(str:String):String // okay, could do this with regex; maybe also strip punctuation for smaller payload?
+		private function cleanString(str:String):String
 		{
-			var r:Array;
-
-			r = str.split("\n");
-			str = r.join("");
-			r = str.split("\r");
-			str =r.join("");
-			r = str.split("\t");
-			str = r.join("");
-			r = str.split(".  ");
-			str = r.join("");
-			r = str.split(". ");
-			str = r.join("");
-			r = str.split("  ");
-			str = r.join("");
+			var r:RegExp;
+			var s:String
+			var cs:Array;
 			
 			str = TextUtil.stripSurroundedBy(str, "<", ">");
+			r = new RegExp(/[^a-zA-Z 0-9]+/g) ;
 			
-			r = str.split(" ");
-			wordcount += r.length;
+			cs = str.split(" ");
+			wordcount += cs.length;
 			trace("Words Translated: " + wordcount);
 			
 			return str;

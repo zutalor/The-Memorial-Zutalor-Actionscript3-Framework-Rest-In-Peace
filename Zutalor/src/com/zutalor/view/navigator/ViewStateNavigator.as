@@ -46,11 +46,12 @@ package com.zutalor.view.navigator
 		
 		protected var allowChangingAnwers:Boolean = false;
 		
-		protected static const PUNCTUATION:Array = ["'", "*", ";", ":", "-", "}", "{", "+", "_", ")", "(", " ", "?", ".", ",", '"'];
-		protected static const PUNCTUATION_NAMES:Array = [ "apostrophe", "asterisk", "semicolon", "colon", "dash", "rightbracket", "leftbracket",
-					"plus", "underscore", "rightparen", "leftparen", "space", "questionmark", "period", "comma", "quote" ];
+		protected static const PUNCTUATION:Array = ["'", "*", ";", ":", "-", "}", "{", "+", "_", ")", "(", " ", "?", ".", ",", '"',"[" , "]" ];
+		protected static const PUNCTUATION_NAMES:Array = [ "apostrophe", "star", "semicolon", "colon", "dash", "rightbrace", "leftbrace",
+					"plus", "underscore", "rightparen", "leftparen", "space", "questionmark", "period", "comma", "quote",
+					"leftbracket", "rightbracket" ];
 		
-		protected static const VALID_INPUT:String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'()_+{}:;,.?-" + '"';
+		protected static const VALID_INPUT:String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'()_+{}:;,.?-[]*" + '"';
 		
 		public var OVERRIDE_SPEACH_DISABLED:Boolean = false;
 		
@@ -387,8 +388,6 @@ package com.zutalor.view.navigator
 		
 		protected function onTextInput(uip:UserInputProperties):void
 		{
-			var l:int;
-			var word:String;
 			var key:String;
 			
 			if (uip.action == "complete")
@@ -403,17 +402,25 @@ package com.zutalor.view.navigator
 			{
 				if (inputText.charAt(inputText.length -1) != " ")
 					inputText += " ";
-				
-				l = inputText.length - 2;
-				for (var i:int = l; i > 0; i--)
-				{
-					if (inputText.charAt(i-1) == " ")
-						break;
-				}
-				word = inputText.substr(i).toLowerCase();
-				speak(word, word, null, null, OVERRIDE_SPEACH_DISABLED);
+					
+				sayLastWord();
 			}
 			
+		}
+		
+		protected function sayLastWord():void
+		{
+			var l:int;
+			var word:String;
+			
+			l = inputText.length - 2;
+			for (var i:int = l; i > 0; i--)
+			{
+				if (inputText.charAt(i-1) == " ")
+					break;
+			}
+			word = inputText.substr(i).toLowerCase();
+			speak(word, word, null, null, OVERRIDE_SPEACH_DISABLED);
 		}
 		
 		protected function captureTextInput(ke:KeyboardEvent):void

@@ -15,13 +15,19 @@ package com.zutalor.utils
 		{
 			if (_resourceClass)
 				ShowError.fail(EmbeddedResources,"Current implementation only supports one registration.");
-			else	
+			else
 				_resourceClass = new resourceClass();
 		}
 		
 		public static function getClass(className:String):Class
 		{
-			return _resourceClass[className];
+			var klass:Class;
+			
+			try {
+				klass = _resourceClass[className];
+			} catch (e:*) { }
+			
+			return klass;
 		}
 						
 		public static function createInstance(className:String):*
@@ -32,7 +38,7 @@ package com.zutalor.utils
 			
 			try {
 				Klass = _resourceClass[className];
-				obj = new Klass();					
+				obj = new Klass();
 			} catch (e:*) { }
 			
 			if (!obj)

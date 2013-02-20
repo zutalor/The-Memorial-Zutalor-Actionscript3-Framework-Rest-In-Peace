@@ -1,10 +1,12 @@
 package com.zutalor.audio
 {
+	import com.zutalor.utils.MasterClock;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
 	import flash.events.SampleDataEvent;
 	import flash.media.Sound;
+	import flash.media.SoundChannel;
 	import flash.net.URLRequest;
 	import flash.utils.ByteArray;
 
@@ -14,10 +16,11 @@ package com.zutalor.audio
 		public var speed:int
 		private static var bufferSkipCount:int;
 		
-		private const bufferSize: int = 4096;
 		private const SAMPLERATE:Number = 44.1;
+		private var bufferSize: int;
 		private var inputSound: Sound;
-		private var outputSound: Sound = new Sound();
+		private var outputSound: Sound;
+		private var channel:SoundChannel;
 		private var samplesTotal:int;
 		private var samplesPosition: int = 0;
 		private var onComplete:Function;
@@ -32,21 +35,32 @@ package com.zutalor.audio
 			* http://blog.andre-michelle.com/2010/playback-mp3-loop-gapless/
 		*/
 		
-		public function SamplePlayer():void
+		public function SamplePlayer(bufferSize:int = 4096):void
 		{
+			this.bufferSize = bufferSize;
 			outputSound = new Sound();
 		}
 
-		public function play(url:String, onComplete:Function = null, onCompleteArgs:*=null): void
+		public function play(url:String, soundClass:Class = null, onComplete:Function = null, onCompleteArgs:*=null): void
 		{
 			stopSound();
 			soundLoaded = false;
 			this.onComplete = onComplete;
 			this.onCompleteArgs = onCompleteArgs;
-			inputSound = new Sound();
-			inputSound.addEventListener(Event.COMPLETE, onLoaded, false, 0, true);
-			inputSound.addEventListener(IOErrorEvent.IO_ERROR, onIOError, false, 0, true);
-			inputSound.load(new URLRequest(url));
+			
+			if (soundClass)
+			{
+				playing = soundLoaded = true;
+				inputSound = new soundClass();
+				channel = inputSound.play();
+			}
+			else
+			{
+				inputSound = new Sound();
+				inputSound.addEventListener(Event.COMPLETE, onLoaded, false, 0, true);
+				inputSound.addEventListener(IOErrorEvent.IO_ERROR, onIOError, false, 0, true);
+				inputSound.load(new URLRequest(url));
+			}
 		}
 		
 		public function stop():void
@@ -65,15 +79,16 @@ package com.zutalor.audio
 		{
 			if (playing)
 			{
-				outputSound.removeEventListener(SampleDataEvent.SAMPLE_DATA, onSampleData);
 				playing = false;
+				channel.stop();
+				outputSound.removeEventListener(SampleDataEvent.SAMPLE_DATA, onSampleData);
 				removeInputListeners();
 				inputSound = null;
 				samplesPosition = 0;
 			}
 		}
 
-		private function onLoaded( e:Event ):void
+		private function onLoaded( e:Event = null ):void
 		{
 			playing = true;
 			removeInputListeners();
@@ -83,16 +98,16 @@ package com.zutalor.audio
 			{
 				soundLoaded = true;
 				outputSound.addEventListener(SampleDataEvent.SAMPLE_DATA, onSampleData);
-				outputSound.play();
+				channel = outputSound.play();
 			}
 			else
-
 				stop();
 		}
 		
 		private function onSampleData(e:SampleDataEvent):void
 		{
-			extract(e.data, bufferSize);
+			if (playing)
+				extract(e.data, bufferSize);
 		}
 		
 		private function removeInputListeners():void
@@ -106,7 +121,7 @@ package com.zutalor.audio
 
 		private function extract(target: ByteArray, length:int):void
 		{
-			while( 0 < length && playing )
+			while(playing &&  0 < length)
 			{
 				if (samplesPosition + length > samplesTotal)
 				{
