@@ -46,7 +46,11 @@ package com.zutalor.view.navigator
 		
 		protected var allowChangingAnwers:Boolean = false;
 		
-		protected static const VALID_INPUT:String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890()_+{}[]|\:;<,>.?/";
+		protected static const PUNCTUATION:Array = ["'", "*", ";", ":", "-", "}", "{", "+", "_", ")", "(", " ", "?", ".", ",", '"'];
+		protected static const PUNCTUATION_NAMES:Array = [ "apostrophe", "asterisk", "semicolon", "colon", "dash", "rightbracket", "leftbracket",
+					"plus", "underscore", "rightparen", "leftparen", "space", "questionmark", "period", "comma", "quote" ];
+		
+		protected static const VALID_INPUT:String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'()_+{}:;,.?-" + '"';
 		
 		public var OVERRIDE_SPEACH_DISABLED:Boolean = false;
 		
@@ -384,6 +388,7 @@ package com.zutalor.view.navigator
 		protected function onTextInput(uip:UserInputProperties):void
 		{
 			var l:int;
+			var word:String;
 			var key:String;
 			
 			if (uip.action == "complete")
@@ -391,15 +396,13 @@ package com.zutalor.view.navigator
 			else if (uip.action == "backspace")
 			{
 				key = inputText.substr(inputText.length - 1, 1).toLowerCase();
-				speak(key, key);
-				//inputText = inputText.substr(0, inputText.length - 1);
-				//uiController.onModelChange();
+				speakKey(key);
+				inputText = inputText.substr(0, inputText.length - 1);
 			}
 			else if (uip.action == "space")
 			{
 				if (inputText.charAt(inputText.length -1) != " ")
 					inputText += " ";
-
 				
 				l = inputText.length - 2;
 				for (var i:int = l; i > 0; i--)
@@ -407,11 +410,9 @@ package com.zutalor.view.navigator
 					if (inputText.charAt(i-1) == " ")
 						break;
 				}
-				key = inputText.substr(i).toLowerCase();
-				speak(key, key, null, null, OVERRIDE_SPEACH_DISABLED);
+				word = inputText.substr(i).toLowerCase();
+				speak(word, word, null, null, OVERRIDE_SPEACH_DISABLED);
 			}
-			//uiController.getValueObject().inputText = "<P>" + inputText + "</P>";
-			//uiController.onModelChange("inputText");
 			
 		}
 		
@@ -422,13 +423,26 @@ package com.zutalor.view.navigator
 			key = String.fromCharCode(ke.charCode);
 			if (VALID_INPUT.indexOf(key.toUpperCase()) != -1)
 			{
-				speak(key, key);
+				speakKey(key);
 				inputText += key;
-				//uiController.getValueObject().inputText = "<P>" + inputText + "</P>";
-				//uiController.onModelChange("inputText");
 			}
 			else
 				hkm.clearKeys();
+		}
+		
+		protected function speakKey(key:String):void
+		{
+			var indx:int;
+						
+			indx = PUNCTUATION.indexOf(key);
+			
+			if (indx != -1)
+			{
+				key = PUNCTUATION_NAMES[indx];
+				speak(key, key);
+			}
+			else
+				speak(key, key);
 		}
 		
 		protected function submitAnswers():void
