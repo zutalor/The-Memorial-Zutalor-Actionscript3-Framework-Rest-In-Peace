@@ -29,7 +29,7 @@ package com.zutalor.view.navigator
 
 	
 	public class ViewStateNavigator
-	{		
+	{
 		protected var textToSpeech:TextToSpeech;
 		protected var textToSpeechUtils:TextToSpeechUtils;
 		protected var samplePlayer:SamplePlayer;
@@ -48,7 +48,7 @@ package com.zutalor.view.navigator
 		
 		protected static const VALID_INPUT:String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890()_+{}[]|\:;<,>.?/";
 		
-		public var OVERRIDE_SPEACH_DISABLED:Boolean = true;
+		public var OVERRIDE_SPEACH_DISABLED:Boolean = false;
 		
 		public function ViewStateNavigator(pUiController:UiControllerBase)
 		{
@@ -101,10 +101,10 @@ package com.zutalor.view.navigator
 				promptId = String(XML(np.tip.tMeta).state.@prompt);
 				
 				switch (String(XML(np.tip.tMeta).state.@type))
-				{	
+				{
 					case "uiControllerMethod" :
 						np.data = "";
-						uiController[XML(np.tip.tMeta).state.@method](XML(np.tip.tMeta).state);	
+						uiController[XML(np.tip.tMeta).state.@method](XML(np.tip.tMeta).state);
 						break;
 					case "submitAnswers" :
 						submitAnswers();
@@ -131,7 +131,7 @@ package com.zutalor.view.navigator
 						StageRef.stage.addEventListener(KeyboardEvent.KEY_UP, captureTextInput, false,0, true);
 						break;
 						
-				}				
+				}
 			}
 		}
 
@@ -144,7 +144,7 @@ package com.zutalor.view.navigator
 			var func:Function;
 			var userInputProperties:UserInputProperties;
 				
-			l = propertyManager.length;			
+			l = propertyManager.length;
 			for (var i:int = 0; i < l; i++)
 			{
 				userInputProperties = propertyManager.getPropsByIndex(i);
@@ -162,19 +162,19 @@ package com.zutalor.view.navigator
 			var tMeta:XML;
 			var textToSpeechUrl:String;
 		
-			np = new NavigatorProperties();	
+			np = new NavigatorProperties();
 			np.answers = new gDictionary();
 			np.history = [];
 			hkm = HotKeyManager.gi();
 			//gm.addEventListener(AppGestureEvent.RECOGNIZED, onGesture);
-			samplePlayer = new SamplePlayer();				
+			samplePlayer = new SamplePlayer();
 			
 			if (AirStatus.isMobile)
 				textToSpeechUrl = Application.settings.textToSpeechApiUrlMobile;
 			else
 				textToSpeechUrl = Application.settings.textToSpeechApiUrlPC;
 				
-			textToSpeech = new TextToSpeech(textToSpeechUrl);	
+			textToSpeech = new TextToSpeech(textToSpeechUrl);
 			textToSpeechUtils = new TextToSpeechUtils();
 			textToSpeech.enabled = Application.settings.enableTextToSpeech;
 			tMeta = XML(Translate.getMetaByName("settings"));
@@ -214,7 +214,7 @@ package com.zutalor.view.navigator
 			multipleChoiceKeys = new PropertyManager(UserInputProperties);
 			multipleChoiceKeys.parseXML(tMeta.keystrokes, "keystroke");
 			navigationKeys = new PropertyManager(UserInputProperties);
-			navigationKeys.parseXML(tMeta.navigation, "keystroke");	
+			navigationKeys.parseXML(tMeta.navigation, "keystroke");
 			
 			KeyListeners(true, navigationKeys);
 		}
@@ -254,7 +254,7 @@ package com.zutalor.view.navigator
 				*/
 		}
 		
-		protected function onUserInput(uip:UserInputProperties, gesture:Gesture = null):void	
+		protected function onUserInput(uip:UserInputProperties, gesture:Gesture = null):void
 		{
 			tMeta = XML(Translate.getMetaByName(np.tip.name));
 			
@@ -274,7 +274,7 @@ package com.zutalor.view.navigator
 					break;
 				default :
 					break;
-			}	
+			}
 				
 			function onMultipleChoiceAnswer():void
 			{
@@ -327,7 +327,7 @@ package com.zutalor.view.navigator
 			}
 			
 			function checkStateInput():void
-			{				
+			{
 				np.curTransitionType = np.transitionNext;
 				switch (uip.action)
 				{
@@ -343,12 +343,12 @@ package com.zutalor.view.navigator
 							activateState(np.tip.name);
 						}
 						break;
-					default : 
+					default :
 						if (String(tMeta.state.@next) == "exit")
 							uiController.exit();
 						else
 							activateState(tMeta.state.@next);
-						break;		
+						break;
 				}
 			}
 			
@@ -376,7 +376,7 @@ package com.zutalor.view.navigator
 					answer.data = "";
 				}
 				
-				np.curAnswerKey = answer.questionId;	
+				np.curAnswerKey = answer.questionId;
 				np.answers.insert(np.curAnswerKey, answer);
 			}
 		}
@@ -384,15 +384,22 @@ package com.zutalor.view.navigator
 		protected function onTextInput(uip:UserInputProperties):void
 		{
 			var l:int;
+			var key:String;
 			
 			if (uip.action == "complete")
 				trace(inputText);
 			else if (uip.action == "backspace")
-				inputText = inputText.substr(0, inputText.length - 1);
+			{
+				key = inputText.substr(inputText.length - 1, 1).toLowerCase();
+				speak(key, key);
+				//inputText = inputText.substr(0, inputText.length - 1);
+				//uiController.onModelChange();
+			}
 			else if (uip.action == "space")
 			{
 				if (inputText.charAt(inputText.length -1) != " ")
 					inputText += " ";
+
 				
 				l = inputText.length - 2;
 				for (var i:int = l; i > 0; i--)
@@ -400,8 +407,12 @@ package com.zutalor.view.navigator
 					if (inputText.charAt(i-1) == " ")
 						break;
 				}
-				speak(inputText.substr(i), null, null, null, OVERRIDE_SPEACH_DISABLED);
+				key = inputText.substr(i).toLowerCase();
+				speak(key, key, null, null, OVERRIDE_SPEACH_DISABLED);
 			}
+			//uiController.getValueObject().inputText = "<P>" + inputText + "</P>";
+			//uiController.onModelChange("inputText");
+			
 		}
 		
 		protected function captureTextInput(ke:KeyboardEvent):void
@@ -410,10 +421,15 @@ package com.zutalor.view.navigator
 			
 			key = String.fromCharCode(ke.charCode);
 			if (VALID_INPUT.indexOf(key.toUpperCase()) != -1)
+			{
+				speak(key, key);
 				inputText += key;
+				//uiController.getValueObject().inputText = "<P>" + inputText + "</P>";
+				//uiController.onModelChange("inputText");
+			}
 			else
 				hkm.clearKeys();
-		}		
+		}
 		
 		protected function submitAnswers():void
 		{
@@ -460,7 +476,7 @@ package com.zutalor.view.navigator
 		
 		protected function stop():void
 		{
-			textToSpeech.stop();			
+			textToSpeech.stop();
 			uiController.stop();
 			samplePlayer.stop();
 		}
@@ -469,8 +485,8 @@ package com.zutalor.view.navigator
 		
 		protected function getGridValues(gesture:Gesture, uip:UserInputProperties):GridValues
 		{
-			return MathG.gridIndexQuantizer(gesture.location.x, gesture.location.y, 
-						uip.cols, uip.rows, StageRef.stage.stageWidth, StageRef.stage.stageHeight);					
+			return MathG.gridIndexQuantizer(gesture.location.x, gesture.location.y,
+						uip.cols, uip.rows, StageRef.stage.stageWidth, StageRef.stage.stageHeight);
 		}
 	}
 }

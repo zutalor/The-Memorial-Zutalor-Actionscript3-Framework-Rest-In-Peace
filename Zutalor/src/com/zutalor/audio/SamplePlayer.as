@@ -14,11 +14,11 @@ package com.zutalor.audio
 		public var speed:int
 		private static var bufferSkipCount:int;
 		
-		private const bufferSize: int = 4096; 
-		private const SAMPLERATE:Number = 44.1;	
-		private var inputSound: Sound; 
-		private var outputSound: Sound = new Sound(); 
-		private var samplesTotal:int; 	
+		private const bufferSize: int = 4096;
+		private const SAMPLERATE:Number = 44.1;
+		private var inputSound: Sound;
+		private var outputSound: Sound = new Sound();
+		private var samplesTotal:int;
 		private var samplesPosition: int = 0;
 		private var onComplete:Function;
 		private var onCompleteArgs:*;
@@ -27,7 +27,7 @@ package com.zutalor.audio
 		public var soundLoaded:Boolean;
 		
 		/*
-			* @author inspired by MP3Loop.as by andre.michelle@audiotool.com (04/2010) 
+			* @author inspired by MP3Loop.as by andre.michelle@audiotool.com (04/2010)
 			* @author revised and extended by Geoff Pepos (11/2012)
 			* http://blog.andre-michelle.com/2010/playback-mp3-loop-gapless/
 		*/
@@ -65,18 +65,18 @@ package com.zutalor.audio
 		{
 			if (playing)
 			{
+				outputSound.removeEventListener(SampleDataEvent.SAMPLE_DATA, onSampleData);
 				playing = false;
 				removeInputListeners();
 				inputSound = null;
-				outputSound.removeEventListener(SampleDataEvent.SAMPLE_DATA, onSampleData);								
 				samplesPosition = 0;
-			}		
+			}
 		}
 
 		private function onLoaded( e:Event ):void
 		{
-			playing = true;	
-			removeInputListeners();		
+			playing = true;
+			removeInputListeners();
 			samplesTotal = inputSound.length * SAMPLERATE;
 			
 			if (samplesTotal)
@@ -87,13 +87,13 @@ package com.zutalor.audio
 			}
 			else
 
-				stop();	
+				stop();
 		}
 		
 		private function onSampleData(e:SampleDataEvent):void
-		{	
+		{
 			extract(e.data, bufferSize);
-		}		
+		}
 		
 		private function removeInputListeners():void
 		{

@@ -1,5 +1,5 @@
-package com.zutalor.audio 
-{ 
+package com.zutalor.audio
+{
 	import com.zutalor.audio.SamplePlayer;
 	import com.zutalor.text.TextUtil;
 	import flash.events.Event;
@@ -8,8 +8,8 @@ package com.zutalor.audio
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
 	
-	public class TextToSpeech 
-	{	
+	public class TextToSpeech
+	{
 		public var enabled:Boolean = true;
 		public var enableRandomVoices:Boolean = false;
 		public var wordcount:int;
@@ -33,9 +33,9 @@ package com.zutalor.audio
 		private var samplePlayer:SamplePlayer;
 		private var text:String;
 		
-		public function TextToSpeech(apiUrl:String, voice:String = "usenglishfemale", speed:String = "2", 
+		public function TextToSpeech(apiUrl:String, voice:String = "usenglishfemale", speed:String = "2",
 															pitch:String = "100", format:String = "mp3",
-															frequency:String = "44100", bitrate:String = "64", 
+															frequency:String = "44100", bitrate:String = "64",
 															bitdepth:String="16")
 		{
 			this.apiUrl = apiUrl;
@@ -65,7 +65,7 @@ package com.zutalor.audio
 		
 		protected function speakWithTextToSpeech(e:IOErrorEvent = null):void
 		{
-			speak(text, onComplete, onCompleteArgs, overrideDisableSpeech);							
+			speak(text, onComplete, onCompleteArgs, overrideDisableSpeech);
 		}
 		
 		
@@ -103,7 +103,7 @@ package com.zutalor.audio
 						callOnComplete();
 				}
 			}
-			else 
+			else
 				callOnComplete();
 		}
 		
@@ -131,15 +131,15 @@ package com.zutalor.audio
 				
 		// PRIVATE METHODS
 		
-		private function say(text:String, onSayComplete:Function):void 
-		{	
+		private function say(text:String, onSayComplete:Function):void
+		{
 			var url:String;
 			
 			if (!text)
 			{
 			  onSayComplete();
 			  return;
-			} 
+			}
 			
 			while (text.charAt(0) == " ")
 			{
@@ -182,7 +182,7 @@ package com.zutalor.audio
 					}
 				}
 			}
-		}		
+		}
 		
 		private function cleanString(str:String):String // okay, could do this with regex; maybe also strip punctuation for smaller payload?
 		{
@@ -210,12 +210,12 @@ package com.zutalor.audio
 			return str;
 		}
 		
-		private function rand(min:Number,max:Number=NaN):int 
+		private function rand(min:Number,max:Number=NaN):int
 		{
-			if (isNaN(max)) 
-			{ 
-				max = min; 
-				min = 0; 
+			if (isNaN(max))
+			{
+				max = min;
+				min = 0;
 			}
 			return Math.floor(Math.random() * (1 + max - min)) + min;
 		}
