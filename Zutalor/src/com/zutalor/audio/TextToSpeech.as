@@ -11,7 +11,7 @@ package com.zutalor.audio
 	
 	public class TextToSpeech
 	{
-		public var enabled:Boolean = true;
+		public var enabled:Boolean;
 		public var enableRandomVoices:Boolean = false;
 		public var wordcount:int;
 		
@@ -34,7 +34,7 @@ package com.zutalor.audio
 		private var samplePlayer:SamplePlayer;
 		private var text:String;
 		
-		public function TextToSpeech(apiUrl:String, voice:String = "usenglishfemale", speed:String = "2",
+		public function TextToSpeech(apiUrl:String, voice:String = "usenglishfemale", speed:String = "0",
 															pitch:String = "100", format:String = "mp3",
 															frequency:String = "44100", bitrate:String = "64",
 															bitdepth:String="16")
@@ -89,7 +89,7 @@ package com.zutalor.audio
 			this.onComplete = onComplete;
 			this.onCompleteArgs = onCompleteArgs;
 	
-			if (true || enabled || overrideDisableSpeech)
+			if (enabled || overrideDisableSpeech)
 			{
 				stopped = false;
 				if (enableRandomVoices)
@@ -105,9 +105,6 @@ package com.zutalor.audio
 					{
 						sentences[i] = cleanString(sentences[i]);
 						say(sentences[i++], sayNextSentence);
-						//trace(sentences[i++]);
-						//sayNextSentence();
-						
 					}
 					else
 						callOnComplete();
@@ -116,7 +113,7 @@ package com.zutalor.audio
 			else
 				callOnComplete();
 		}
-		
+				
 		public function callOnComplete():void
 		{
 			if (onComplete != null)

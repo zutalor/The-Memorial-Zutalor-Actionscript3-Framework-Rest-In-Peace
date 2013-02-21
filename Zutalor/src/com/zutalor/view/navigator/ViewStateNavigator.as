@@ -234,7 +234,7 @@ package com.zutalor.view.navigator
 				onUserInput(uip);
 			else
 			{
-				uip = multipleChoiceKeys.getChildIndexByName(hke.message);
+ 				uip = multipleChoiceKeys.getPropsByName(hke.message);
 				if (uip)
 					onUserInput(uip);
 			}

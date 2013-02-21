@@ -26,6 +26,7 @@ package com.zutalor.audio
 		private var onComplete:Function;
 		private var onCompleteArgs:*;
 		private var playing:Boolean;
+		private var embeddedSound:Boolean;
 		
 		public var soundLoaded:Boolean;
 		
@@ -48,11 +49,18 @@ package com.zutalor.audio
 			this.onComplete = onComplete;
 			this.onCompleteArgs = onCompleteArgs;
 			
+			if (channel)
+			{
+				channel.stop();
+				inputSound = null;
+			}
+				
 			if (soundClass)
 			{
 				playing = soundLoaded = true;
 				inputSound = new soundClass();
 				channel = inputSound.play();
+				channel.addEventListener(Event.SOUND_COMPLETE, onPlaybackComplete, false, 0, true);
 			}
 			else
 			{
@@ -68,10 +76,18 @@ package com.zutalor.audio
 			stopSound();
 		}
 		
+		private function onPlaybackComplete(e:Event):void
+		{
+			stopAndCallOnComplete();
+		}
+		
 		private function stopAndCallOnComplete():void
 		{
 			stopSound();
 			if (onComplete != null)
+				MasterClock.callOnce(callOnComplete, 225) // TODO tie this to the sample rate and buffer size.
+				
+			function callOnComplete():void
 			{
 				if (onCompleteArgs)
 					onComplete(onCompleteArgs);
@@ -85,10 +101,7 @@ package com.zutalor.audio
 			if (playing)
 			{
 				playing = false;
-				channel.stop();
 				outputSound.removeEventListener(SampleDataEvent.SAMPLE_DATA, onSampleData);
-				removeloadListeners();
-				inputSound = null;
 				samplesPosition = 0;
 			}
 		}
@@ -127,7 +140,7 @@ package com.zutalor.audio
 
 		private function extract(target: ByteArray, length:int):void
 		{
-			while(0 < length)
+			while(playing && 0 < length)
 			{
 				if (samplesPosition + length > samplesTotal)
 				{
@@ -142,7 +155,6 @@ package com.zutalor.audio
 					samplesPosition += length;
 					length = 0;
 				}
-
 				if (samplesPosition == samplesTotal)
 					stopAndCallOnComplete();
 			}
@@ -150,9 +162,9 @@ package com.zutalor.audio
 
 		private function onIOError( e:IOErrorEvent ):void
 		{
+			removeloadListeners();
+			stopSound();
 			dispatchEvent(e);
-			trace("IoError");
-			stopAndCallOnComplete();
 		}
 	}
 }

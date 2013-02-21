@@ -10,7 +10,7 @@
 	 */
 
 	public class ApplicationProperties extends PropertiesBase
-	{	
+	{
 		public var appName:String;
 		public var version:String;
 		public var ip:String;
