@@ -95,14 +95,20 @@ package com.zutalor.audio
 				if (enableRandomVoices)
 					voice = country[rand(0, 1)] + gender[rand(0, 1)];
 
-				sentences = cleanString(text).split(".");
+				sentences = text.split(".");
 				l = sentences.length;
 				sayNextSentence();
 				
 				function sayNextSentence():void
 				{
 					if (i < l && !stopped)
+					{
+						sentences[i] = cleanString(sentences[i]);
 						say(sentences[i++], sayNextSentence);
+						//trace(sentences[i++]);
+						//sayNextSentence();
+						
+					}
 					else
 						callOnComplete();
 				}
@@ -192,13 +198,23 @@ package com.zutalor.audio
 		{
 			var r:RegExp;
 			var s:String
-			var cs:Array;
+			var sa:Array;
 			
 			str = TextUtil.stripSurroundedBy(str, "<", ">");
 			r = new RegExp(/[^a-zA-Z 0-9]+/g) ;
+			sa = str.split("\n");
+			str = sa.join("");
+			sa = str.split("\t");
+			str = sa.join("");
+			sa = str.split("\r");
+			str = sa.join(" ");
+			sa = str.split("   ");
+			str = sa.join(" ");
+			sa = str.split("  ");
+			str = sa.join(" ");
 			
-			cs = str.split(" ");
-			wordcount += cs.length;
+			sa = str.split(" ");
+			wordcount += sa.length;
 			trace("Words Translated: " + wordcount);
 			
 			return str;

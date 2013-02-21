@@ -66,6 +66,11 @@ package com.zutalor.audio
 		public function stop():void
 		{
 			stopSound();
+		}
+		
+		private function stopAndCallOnComplete():void
+		{
+			stopSound();
 			if (onComplete != null)
 			{
 				if (onCompleteArgs)
@@ -82,7 +87,7 @@ package com.zutalor.audio
 				playing = false;
 				channel.stop();
 				outputSound.removeEventListener(SampleDataEvent.SAMPLE_DATA, onSampleData);
-				removeInputListeners();
+				removeloadListeners();
 				inputSound = null;
 				samplesPosition = 0;
 			}
@@ -90,18 +95,19 @@ package com.zutalor.audio
 
 		private function onLoaded( e:Event = null ):void
 		{
-			playing = true;
-			removeInputListeners();
+			removeloadListeners();
 			samplesTotal = inputSound.length * SAMPLERATE;
 			
 			if (samplesTotal)
 			{
+				playing = true;
 				soundLoaded = true;
 				outputSound.addEventListener(SampleDataEvent.SAMPLE_DATA, onSampleData);
 				channel = outputSound.play();
 			}
 			else
-				stop();
+				stopAndCallOnComplete();
+				
 		}
 		
 		private function onSampleData(e:SampleDataEvent):void
@@ -110,7 +116,7 @@ package com.zutalor.audio
 				extract(e.data, bufferSize);
 		}
 		
-		private function removeInputListeners():void
+		private function removeloadListeners():void
 		{
 			if (inputSound)
 			{
@@ -121,7 +127,7 @@ package com.zutalor.audio
 
 		private function extract(target: ByteArray, length:int):void
 		{
-			while(playing &&  0 < length)
+			while(0 < length)
 			{
 				if (samplesPosition + length > samplesTotal)
 				{
@@ -138,14 +144,15 @@ package com.zutalor.audio
 				}
 
 				if (samplesPosition == samplesTotal)
-					stop();
+					stopAndCallOnComplete();
 			}
 		}
 
 		private function onIOError( e:IOErrorEvent ):void
 		{
 			dispatchEvent(e);
-			stop();
+			trace("IoError");
+			stopAndCallOnComplete();
 		}
 	}
 }
