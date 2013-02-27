@@ -6,8 +6,9 @@ package com.zutalor.gesture
 	 * @author Geoff Pepos
 	 */
 	public class UserInputProperties extends PropertiesBase
-	{	
-		public var type:String;
+	{
+		public var type:String; // "gesture" or "keystroke"
+		public var activeForState:String;
 		public var action:String;
 		public var up:String;
 		public var down:String;

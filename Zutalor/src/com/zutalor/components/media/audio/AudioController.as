@@ -1,4 +1,4 @@
-﻿package com.zutalor.components.media.audio 
+﻿package com.zutalor.components.media.audio
 {
 	import com.zutalor.components.media.base.MediaController;
 	import com.zutalor.events.MediaEvent;
@@ -11,6 +11,7 @@
 	import flash.media.SoundChannel;
 	import flash.media.SoundLoaderContext;
 	import flash.media.SoundTransform;
+	import flash.net.NetStreamPlayTransitions;
 	import flash.net.URLRequest;
 	
 	/**
@@ -18,7 +19,7 @@
 	 * @author Geoff Pepos
 	 */
 	public class AudioController extends MediaController implements IMediaController
-	{		
+	{
 		private var _sound:Sound;
 		private var _soundContext:SoundLoaderContext;
 		private var _channel:SoundChannel;
@@ -87,20 +88,20 @@
 		
 		override public function get percentPlayed():Number
 		{
-			return  _channel.position / _sound.length;			
+			return  _channel.position / _sound.length;
 		}
 		
 		override public function get percentLoaded():Number
 		{
 			if (_sound)
-				return _sound.bytesLoaded / _sound.bytesTotal;		
+				return _sound.bytesLoaded / _sound.bytesTotal;
 			else
 				return 0;
 		}
 		
 		override public function get percentBuffered():Number
 		{
-			return 1; //TODO figure this out			
+			return 1; //TODO figure this out
 		}
 		
 		override public function get isPlaying():Boolean
@@ -121,7 +122,7 @@
 				trace("ioError: Audio, " + _url);
 			
 			onPlaybackComplete(e);
-			_sound = null;			
+			_sound = null;
 		}
 				
 		override public function set volume(v:Number):void
@@ -144,7 +145,7 @@
 				_isPlaying = true;
 				if (!start)
 					_channel = _sound.play(_pausePosition);
-				else	
+				else
 					_channel = _sound.play(start);
 				
 				if (!_channel.hasEventListener(Event.SOUND_COMPLETE))
@@ -166,7 +167,7 @@
 				dispatchEvent(new MediaEvent(MediaEvent.PLAY));
 			}
 			else if (!_sound)
-				MasterClock.unRegisterCallback(checkStart);			
+				MasterClock.unRegisterCallback(checkStart);
 			
 		}
 		
@@ -193,7 +194,7 @@
 		{
 			if (_sound)
 			{
-				_isPlaying = false;	
+				_isPlaying = false;
 				super.stop();
 				if (_channel)
 					_channel.stop();
@@ -234,7 +235,7 @@
 				_sound.removeEventListener(IOErrorEvent.IO_ERROR, callOnIOError);
 			}
 			if (_channel)
-				_channel.removeEventListener(Event.SOUND_COMPLETE, onPlaybackComplete);			
+				_channel.removeEventListener(Event.SOUND_COMPLETE, onPlaybackComplete);
 		}
 		
 		override public function dispose():void

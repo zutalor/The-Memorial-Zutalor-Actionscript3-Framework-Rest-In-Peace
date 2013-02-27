@@ -167,6 +167,7 @@
 		override public function play(start:Number = 0):void
 		{
 			var className:Array;
+			var urls:Array;
 			
 			super.play(start);
 			if (_url)
@@ -184,7 +185,7 @@
 						stream.close();
 						className = _url.split(".");
 						var ba:ByteArray = EmbeddedResources.createInstance(className[0]);
-						stream.play(null);
+						stream.play();
 						stream.appendBytes(ba);
 						stream.appendBytesAction(NetStreamAppendBytesAction.RESET_BEGIN);
 					}
@@ -200,12 +201,20 @@
 						else
 						{
 							stream.close();
-							stream.play(_url);
+							urls = _url.split(",");
+							for (var i:int = 0; i < urls.length; i++)
+								stream.play(urls[i]);
 						}
 					}
 				}
 				_isPlaying = true;
 			}
+		}
+		
+		public function appendStream(url:String):void
+		{
+			if (stream)
+				stream.play(url);
 		}
 		
 		override public function pause():void
@@ -226,7 +235,7 @@
 			
 			if (_isPlaying)
 			{
-				//if (returnToZeroOnStop) 
+				//if (returnToZeroOnStop)
 				//	stream.seek(0);
 				
 				if (stream)
@@ -377,41 +386,41 @@
 			//trace (_url, stats.info.code);
 			switch (stats.info.code)
 			{
-				case "NetStream.Buffer.Empty": 
+				case "NetStream.Buffer.Empty":
 					_buffering = true;
 					dispatchEvent(new MediaEvent(MediaEvent.BUFFER_EMPTY));
 					break;
-				case "NetStream.Buffer.Full": 
+				case "NetStream.Buffer.Full":
 					dispatchEvent(new MediaEvent(MediaEvent.BUFFER_FULL));
 					_buffering = false;
 					break;
-				case "NetStream.Buffer.Flush": 
+				case "NetStream.Buffer.Flush":
 					dispatchEvent(new MediaEvent(MediaEvent.BUFFER_FULL));
 					_buffering = false;
 					break;
-				case "NetStream.Play.Start": 
+				case "NetStream.Play.Start":
 					dispatchEvent(new MediaEvent(MediaEvent.BUFFER_FULL));
 					_buffering = false;
 					break;
-				case "NetStream.Play.Stop": 
-				case "NetStream.Play.Complete": 
+				case "NetStream.Play.Stop":
+				case "NetStream.Play.Complete":
 					dispatchEvent(new MediaEvent(MediaEvent.BUFFER_FULL));
 					_paused = false;
 					_isPlaying = false;
 					onPlaybackComplete();
 					break;
-				case "NetStream.Play.StreamNotFound": 
+				case "NetStream.Play.StreamNotFound":
 					dispatchEvent(new MediaEvent(MediaEvent.STREAM_NOT_FOUND));
 					_isPlaying = false;
 					onPlaybackComplete();
 					break;
-				case "NetStream.Seek.InvalidTime": 
+				case "NetStream.Seek.InvalidTime":
 					dispatchEvent(new MediaEvent(MediaEvent.SEEK_INVALID_TIME));
 					break;
-				case "NetStream.Seek.Notify": 
+				case "NetStream.Seek.Notify":
 					dispatchEvent(new MediaEvent(MediaEvent.SEEK_NOTIFY));
 					break;
-				case "NetStream.Unpause.Notify": 
+				case "NetStream.Unpause.Notify":
 					break;
 			
 			}

@@ -42,6 +42,14 @@ package com.zutalor.audio
 			outputSound = new Sound();
 		}
 
+		public function dispose():void
+		{
+			inputSound = null;
+			outputSound = null;
+			channel = null;
+			stopSound();
+		}
+		
 		public function play(url:String, soundClass:Class = null, onComplete:Function = null, onCompleteArgs:*=null): void
 		{
 			stopSound();
@@ -89,10 +97,13 @@ package com.zutalor.audio
 				
 			function callOnComplete():void
 			{
-				if (onCompleteArgs)
-					onComplete(onCompleteArgs);
-				else
-					onComplete();
+				if (onComplete != null)
+				{
+					if (onCompleteArgs)
+						onComplete(onCompleteArgs);
+					else
+						onComplete();
+				}
 			}
 		}
 		

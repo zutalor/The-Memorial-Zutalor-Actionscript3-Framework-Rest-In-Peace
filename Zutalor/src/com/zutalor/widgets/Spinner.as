@@ -23,7 +23,7 @@ package com.zutalor.widgets
 		}
 
 		public static function init(spinnerGraphicId:String, rotationCyclesPerSecond:Number = 2):void
-		{			
+		{
 			_rotIncr = 360 / StageRef.stage.frameRate * rotationCyclesPerSecond;
 			s = StageRef.stage;
 			canvas = new Sprite();
@@ -54,7 +54,7 @@ package com.zutalor.widgets
 					canvas.y = y;
 				}
 				else
-				{	
+				{
 					canvas.x = (s.stageWidth) * .5 ;
 					canvas.y = (s.stageHeight) * .5 ;
 				}

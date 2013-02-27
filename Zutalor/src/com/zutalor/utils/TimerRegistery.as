@@ -37,7 +37,7 @@
 			_fireOnce = [];
 			_lastTime = [];
 			_args = [];
-			_defaultInterval = 1000;
+			_defaultInterval = 2500;
 		}
 		
 		public function set defaultInterval(interval:uint):void
@@ -51,7 +51,7 @@
 			return _defaultInterval;
 		}
 				
-		public function registerCallback(callback:Function, autostart:Boolean, interval:uint, 
+		public function registerCallback(callback:Function, autostart:Boolean, interval:uint,
 													fireOnce:Boolean = false, args:String = null):void
 		{
 			var i:int;
@@ -162,7 +162,7 @@
 		{
 			if (!_isRunning)
 			{
-				this.addEventListener(Event.ENTER_FRAME, checkTimers, false, 0, true); 
+				this.addEventListener(Event.ENTER_FRAME, checkTimers, false, 0, true);
 				_isRunning = true;
 			}
 		}
@@ -193,7 +193,7 @@
 						
 						if (_fireOnce[i])
 							_callbacks[i] = null;
-						else	
+						else
 							_lastTime[i] = t;
 					}
 				}

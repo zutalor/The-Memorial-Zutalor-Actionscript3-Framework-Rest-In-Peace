@@ -29,7 +29,6 @@ package com.zutalor.audio
 		
 		private var onComplete:Function;
 		private var onCompleteArgs:*;
-		private var overrideDisableSpeech:Boolean;
 		private var stopped:Boolean;
 		private var samplePlayer:SamplePlayer;
 		private var text:String;
@@ -51,12 +50,11 @@ package com.zutalor.audio
 			samplePlayer.addEventListener(IOErrorEvent.IO_ERROR, speakWithTextToSpeech, false, 0, true);
 		}
 		
-		public function sayText(text:String, url:String, onComplete:Function = null, onCompleteArgs:* = null, overrideDisableSpeech:Boolean = false):void
+		public function sayText(text:String, url:String, onComplete:Function = null, onCompleteArgs:* = null):void
 		{
 			var soundClass:Class;
 			this.onComplete = onComplete;
 			this.onCompleteArgs = onCompleteArgs;
-			this.overrideDisableSpeech = overrideDisableSpeech;
 			this.text = text;
 			
 			soundClass = EmbeddedResources.getClass(text);
@@ -69,18 +67,19 @@ package com.zutalor.audio
 		
 		protected function speakWithTextToSpeech(e:IOErrorEvent = null):void
 		{
-			speak(text, onComplete, onCompleteArgs, overrideDisableSpeech);
+			speak(text, onComplete, onCompleteArgs);
 		}
 		
 		
 		protected function makeURL(text:String):String
 		{
-			return apiUrl 	+ "&format=" + format + "&frequency=" + frequency + "&bitrate"
-							+ bitrate + "&bitdepth" + bitdepth
-							+ "&voice=" + voice + "&speed=" + speed + "&pitch=" + pitch + "&text=" + unescape(text);
+			return apiUrl + unescape(text);
+			//return apiUrl 	+ "&format=" + format + "&frequency=" + frequency + "&bitrate"
+			//				+ bitrate + "&bitdepth" + bitdepth
+			//				+ "&voice=" + voice + "&speed=" + speed + "&pitch=" + pitch + "&text=" + unescape(text);
 		}
 		
-		protected function speak(text:String, onComplete:Function=null, onCompleteArgs:* = null, overrideDisableSpeech:Boolean = false):void
+		protected function speak(text:String, onComplete:Function=null, onCompleteArgs:* = null):void
 		{
 			var sentences:Array;
 			var l:int;
@@ -89,7 +88,7 @@ package com.zutalor.audio
 			this.onComplete = onComplete;
 			this.onCompleteArgs = onCompleteArgs;
 	
-			if (enabled || overrideDisableSpeech)
+			if (enabled)
 			{
 				stopped = false;
 				if (enableRandomVoices)
@@ -104,6 +103,7 @@ package com.zutalor.audio
 					if (i < l && !stopped)
 					{
 						sentences[i] = cleanString(sentences[i]);
+							
 						say(sentences[i++], sayNextSentence);
 					}
 					else
@@ -198,18 +198,14 @@ package com.zutalor.audio
 			var sa:Array;
 			
 			str = TextUtil.stripSurroundedBy(str, "<", ">");
-			r = new RegExp(/[^a-zA-Z 0-9]+/g) ;
-			sa = str.split("\n");
-			str = sa.join("");
-			sa = str.split("\t");
-			str = sa.join("");
 			sa = str.split("\r");
 			str = sa.join(" ");
 			sa = str.split("   ");
 			str = sa.join(" ");
 			sa = str.split("  ");
 			str = sa.join(" ");
-			
+			r = new RegExp(/[^a-zA-Z 0-9]+/g) ;
+			str = str.replace(r,"");
 			sa = str.split(" ");
 			wordcount += sa.length;
 			trace("Words Translated: " + wordcount);
