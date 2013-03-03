@@ -1,4 +1,4 @@
-package com.zutalor.application 
+package com.zutalor.application
 {
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.controllers.DialogController;
@@ -22,7 +22,7 @@ package com.zutalor.application
 	 */
 	
 	public class Application extends Sprite
-	{		
+	{
 		private var _appController:AppController;
 		
 		protected static var _presets:PropertyManager;
@@ -51,13 +51,13 @@ package com.zutalor.application
 			Plugins.registerClassAndCreateCachedInstance(DialogController);
 		}
 		
-		public function start(bootXmlUrl:String, inlineXML:XML = null, splashEmbedClassName:String=null):void
+		public function start(bootXmlUrl:String, inlineXML:XML = null, splashEmbedClassName:String=null, loadingSoundClassName:String = null):void
 		{
 			var paramObj:Object
 			var url:String;
 			var ip:String;
 			
-			parent.root.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, 
+			parent.root.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR,
 																							onUncaughtError);
 			try {
 				paramObj = LoaderInfo(this.root.loaderInfo).parameters;
@@ -65,13 +65,13 @@ package com.zutalor.application
 				ip = String(paramObj["ip"]);
 			} catch (e:*) { }
 		
-			if (url != "undefined" && url != "/" && url != null) 
+			if (url != "undefined" && url != "/" && url != null)
 				URL.open("/#/" + url.substring(1), "_self");
 			
 			if (ip == "undefined")
-				ip = "unknown";
+				ip = "IP unknown";
 				
-			_appController = new AppController(bootXmlUrl, ip, inlineXML, splashEmbedClassName);	
+			_appController = new AppController(bootXmlUrl, ip, inlineXML, splashEmbedClassName, loadingSoundClassName);
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
@@ -82,7 +82,7 @@ package com.zutalor.application
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			for (var i:int = 0; i < stage.numChildren; i++)
-				stage.getChildAt(i).visible = false;	
+				stage.getChildAt(i).visible = false;
 			
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			_appController.addEventListener(AppEvent.INITIALIZED, onInitialized);
@@ -104,7 +104,7 @@ package com.zutalor.application
 			function onConfirm():void
 			{
 				if (AirStatus.isNativeApplication)
-					NativeApplication.nativeApplication.exit(); 
+					NativeApplication.nativeApplication.exit();
 			}
 		}
 	}

@@ -1,10 +1,9 @@
 package com.zutalor.widgets
 {
 	import com.greensock.TweenMax;
+	import com.zutalor.audio.SamplePlayer;
 	import com.zutalor.components.graphic.Graphic;
-	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.utils.StageRef;
-	import com.zutalor.view.rendering.ViewItemFilterApplier;
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.Event;
@@ -16,14 +15,22 @@ package com.zutalor.widgets
 		private static var _myTween:TweenMax;
 		private static var s:Stage;
 		private static var canvas:Sprite;
+		private static var samplePlayer:SamplePlayer;
+		private static var _spinnerSoundClass:Class;
+		private static var _tweenKilled:Boolean;
 
 		public function Spinner()
 		{
 			
 		}
 
-		public static function init(spinnerGraphicId:String, rotationCyclesPerSecond:Number = 2):void
+		public static function init(spinnerGraphicId:String, spinnerSoundClass:Class, rotationCyclesPerSecond:Number = 2):void
 		{
+			if (spinnerSoundClass)
+			{
+				_spinnerSoundClass = spinnerSoundClass;
+				samplePlayer = new SamplePlayer();
+			}
 			_rotIncr = 360 / StageRef.stage.frameRate * rotationCyclesPerSecond;
 			s = StageRef.stage;
 			canvas = new Sprite();
@@ -60,7 +67,14 @@ package com.zutalor.widgets
 				}
 				_spinGraphic.visible = true;
 				_spinGraphic.alpha = 0;
-				_myTween = TweenMax.to(_spinGraphic, 1, { delay:delay, alpha:1 } );
+				_tweenKilled = false;
+				_myTween = TweenMax.to(_spinGraphic, 1, { delay:delay, onComplete:playAudio, alpha:1 } );
+			}
+			
+			function playAudio():void
+			{
+				if (!_tweenKilled && _spinnerSoundClass)
+					samplePlayer.play(null, _spinnerSoundClass);
 			}
 		}
 				
@@ -71,6 +85,9 @@ package com.zutalor.widgets
 		
 		public static function hide():void
 		{
+			if (_spinnerSoundClass)
+				samplePlayer.stop();
+			
 			if (_spinGraphic)
 			{
 				if (_spinGraphic.visible == true)
@@ -79,8 +96,10 @@ package com.zutalor.widgets
 						StageRef.stage.removeEventListener(Event.ENTER_FRAME, rotate);
 				}
 				if (_myTween)
+				{
+					_tweenKilled = true;
 					_myTween.kill();
-				
+				}
 				_spinGraphic.visible = false;
 			}
 		}

@@ -1,4 +1,4 @@
-﻿package com.zutalor.application  
+﻿package com.zutalor.application
 {
 	import com.zutalor.air.AirPlugin;
 	import com.zutalor.analytics.Analytics;
@@ -54,10 +54,11 @@
 	 */
 	
 	public class MainBase extends Application
-	{		
+	{
 		public var bootXMLUrl:String;
 		public var inlineXML:XML;
 		public var splashClassName:String;
+		public var loadingSoundClassName:String;
 		
 		public function MainBase()
 		{
@@ -109,7 +110,7 @@
 			Properties.register(AppController, "appStates");
 			Properties.register(ViewController, "views", "view");
 			Properties.register(Translate, "translations", "language");
-			Properties.register(Sequence, "sequences", "sequence");			
+			Properties.register(Sequence, "sequences", "sequence");
 			Properties.register(Graphic, "graphicStylePresets", null, Graphic.registerStylePresets);
 			Properties.register(Graphic, "graphics", "graphic", Graphic.registerGraphicPresets);
 			Properties.register(Filters, "filters", "filter");
@@ -130,7 +131,7 @@
 			Properties.register(FuzzyFilter, "glowPresets");
 			Properties.register(FuzzyFilter, "shadowPresets");
 			
-			super.start(bootXMLUrl, inlineXML, splashClassName);
+			super.start(bootXMLUrl, inlineXML, splashClassName, loadingSoundClassName);
 		}
 	}
 }

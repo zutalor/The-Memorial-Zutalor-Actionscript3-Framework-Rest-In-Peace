@@ -8,7 +8,7 @@ package com.zutalor.audio
 	import com.zutalor.utils.ArrayUtils;
 	
 	public class GraphPlayer
-	{		
+	{
 		public var synthesizer:Synthesizer;
 		public var xmlUrl:String;
 		public var assetPath:String;
@@ -30,19 +30,19 @@ package com.zutalor.audio
 		public function initialize(pParams:String, pGraphingFunctions:Array, pMaxGraphs:int, pOnComplete:Function = null):void
 		{
 			var params:Array;
-			var gs:GraphSettings;				
+			var gs:GraphSettings;
 
 			if (!_intitialized)
-			{	
-				_intitialized = true;				
+			{
+				_intitialized = true;
 				graphingFunctions = pGraphingFunctions;
 				_onComplete = pOnComplete;
 
 				params = pParams.split(",");
 				xmlUrl = TextUtil.strip(params[0]);
 				assetPath = TextUtil.strip(params[1]);
-				synthesizer = new Synthesizer(AudioDescriptor.RATE_44100, 8192, 3);			
-				synthesizer.sounds.load(xmlUrl, assetPath, pOnComplete); 
+				synthesizer = new Synthesizer(AudioDescriptor.RATE_44100, 8192, 3);
+				synthesizer.sounds.load(xmlUrl, assetPath, pOnComplete);
 			}
 		}
 				
@@ -66,7 +66,7 @@ package com.zutalor.audio
 
 			_onComplete = onComplete;
 			_numTracks = graphCollection.length;
-			prepareData(samples);	
+			prepareData(samples);
 			
 			synthesizer.sequencer.stop();
 			max = [];
@@ -74,7 +74,7 @@ package com.zutalor.audio
 			_isPlaying = true;
 			
 			assignData();
-			scaleAudioData();			
+			scaleAudioData();
 			renderGraphs();
 			
 			synthesizer.sequencer.renderTracks(_numTracks);
@@ -86,13 +86,13 @@ package com.zutalor.audio
 				{
 					gs = graphCollection[i];
 					gs.noteScaling = 1;
-					curGraphData[i] = data[ gs.graph ]; 							
+					curGraphData[i] = data[ gs.graph ];
 					max[i] = ArrayUtils.getMax(curGraphData[i]);
 					if (max[i] > curMax)
 					{
 						curMax = max[i];
 						maxIndx = i;
-					}	
+					}
 				}
 			}
 			
@@ -112,7 +112,7 @@ package com.zutalor.audio
 			}
 			
 			function renderGraphs():void
-			{	
+			{
 				for (var i:int; i < _numTracks; i++)
 				{
 					gs = graphCollection[i];
@@ -128,7 +128,7 @@ package com.zutalor.audio
 			{
 				_isPlaying = false;
 				_onComplete();
-			}		
+			}
 				
 			function makeNotes():void
 			{
@@ -158,7 +158,7 @@ package com.zutalor.audio
 					note.release = gs.preset.release;
 					note.hold = gs.preset.hold;
 					
-					startTimes[x] = startTime;	
+					startTimes[x] = startTime;
 
 					if (variableTiming)
 					{
@@ -200,6 +200,6 @@ package com.zutalor.audio
 				x = i * 200 / samples;
 				a[i] = plottingFunction(x);
 			}
-		}				
+		}
 	}
 }

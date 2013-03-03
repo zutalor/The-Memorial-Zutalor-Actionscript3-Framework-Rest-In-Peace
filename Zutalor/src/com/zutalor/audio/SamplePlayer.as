@@ -7,15 +7,15 @@ package com.zutalor.audio
 	import flash.events.SampleDataEvent;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
+	import flash.media.SoundTransform;
 	import flash.net.URLRequest;
 	import flash.utils.ByteArray;
 
 
 	public final class SamplePlayer extends EventDispatcher
 	{
-		public var speed:int
-		private static var bufferSkipCount:int;
-		
+		public var speed:int = 0;
+	
 		private const SAMPLERATE:Number = 44.1;
 		private var bufferSize: int;
 		private var inputSound: Sound;
@@ -27,6 +27,7 @@ package com.zutalor.audio
 		private var onCompleteArgs:*;
 		private var playing:Boolean;
 		private var embeddedSound:Boolean;
+		private var vol:Number;
 		
 		public var soundLoaded:Boolean;
 		
@@ -40,6 +41,7 @@ package com.zutalor.audio
 		{
 			this.bufferSize = bufferSize;
 			outputSound = new Sound();
+			vol = 1;
 		}
 
 		public function dispose():void
@@ -60,14 +62,24 @@ package com.zutalor.audio
 			if (channel)
 			{
 				channel.stop();
-				inputSound = null;
+				
+				try {
+					inputSound.close();
+				} catch (e:Error) { };
+
+				try {
+					outputSound.close();
+				} catch (e:Error) { };
+				
 			}
 				
 			if (soundClass)
 			{
 				playing = soundLoaded = true;
 				inputSound = new soundClass();
+				inputSound.addEventListener(IOErrorEvent.IO_ERROR, onIOError, false, 0, true);
 				channel = inputSound.play();
+				volume = vol;
 				channel.addEventListener(Event.SOUND_COMPLETE, onPlaybackComplete, false, 0, true);
 			}
 			else
@@ -82,6 +94,19 @@ package com.zutalor.audio
 		public function stop():void
 		{
 			stopSound();
+		}
+		
+		public function set volume(v:Number):void
+		{
+			if (channel)
+				channel.soundTransform = new SoundTransform(v);
+			
+			vol = v;
+		}
+		
+		public function get volume():Number
+		{
+			return vol;
 		}
 		
 		private function onPlaybackComplete(e:Event):void
@@ -128,10 +153,10 @@ package com.zutalor.audio
 				soundLoaded = true;
 				outputSound.addEventListener(SampleDataEvent.SAMPLE_DATA, onSampleData);
 				channel = outputSound.play();
+				volume = vol;
 			}
 			else
 				stopAndCallOnComplete();
-				
 		}
 		
 		private function onSampleData(e:SampleDataEvent):void
@@ -166,7 +191,9 @@ package com.zutalor.audio
 					samplesPosition += length;
 					length = 0;
 				}
-				if (samplesPosition == samplesTotal)
+				samplesPosition += speed;
+				
+				if (samplesPosition >= samplesTotal)
 					stopAndCallOnComplete();
 			}
 		}

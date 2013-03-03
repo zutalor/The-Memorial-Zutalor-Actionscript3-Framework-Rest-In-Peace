@@ -1,4 +1,4 @@
-package com.zutalor.audio
+package Zutalor.src.com.zutalor.textToSpeech
 {
 	import com.zutalor.audio.SamplePlayer;
 	import com.zutalor.text.TextUtil;
@@ -50,6 +50,16 @@ package com.zutalor.audio
 			samplePlayer.addEventListener(IOErrorEvent.IO_ERROR, speakWithTextToSpeech, false, 0, true);
 		}
 		
+		public function set volume(v:Number):void
+		{
+			samplePlayer.volume = v;
+		}
+		
+		public function get volume():Number
+		{
+			return samplePlayer.volume;
+		}
+		
 		public function sayText(text:String, url:String, onComplete:Function = null, onCompleteArgs:* = null):void
 		{
 			var soundClass:Class;
@@ -95,6 +105,7 @@ package com.zutalor.audio
 					voice = country[rand(0, 1)] + gender[rand(0, 1)];
 
 				sentences = text.split(".");
+				
 				l = sentences.length;
 				sayNextSentence();
 				
@@ -103,7 +114,6 @@ package com.zutalor.audio
 					if (i < l && !stopped)
 					{
 						sentences[i] = cleanString(sentences[i]);
-							
 						say(sentences[i++], sayNextSentence);
 					}
 					else

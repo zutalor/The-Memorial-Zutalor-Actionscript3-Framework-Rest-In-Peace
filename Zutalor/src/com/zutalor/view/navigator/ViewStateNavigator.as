@@ -2,15 +2,13 @@
 package com.zutalor.view.navigator
 {
 	import com.greensock.TweenMax;
+	import com.hurlant.util.der.ObjectIdentifier;
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.application.Application;
 	import com.zutalor.audio.GraphSettings;
 	import com.zutalor.audio.SamplePlayer;
-	import com.zutalor.audio.TextToSpeech;
-	import com.zutalor.audio.TextToSpeechUtils;
 	import com.zutalor.controllers.base.UiControllerBase;
 	import com.zutalor.events.HotKeyEvent;
-	import com.zutalor.gesture.AppGestureEvent;
 	import com.zutalor.gesture.UserInputProperties;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.PropertyManager;
@@ -18,37 +16,38 @@ package com.zutalor.view.navigator
 	import com.zutalor.transition.Transition;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.translate.TranslateItemProperties;
+	import com.zutalor.utils.EmbeddedResources;
 	import com.zutalor.utils.gDictionary;
-	import com.zutalor.utils.GridValues;
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.StageRef;
 	import flash.events.KeyboardEvent;
-	import org.gestouch.gestures.Gesture;
-	import org.gestouch.gestures.TapGesture;
-
+	import Zutalor.src.com.zutalor.textToSpeech.TextToSpeech;
+	import Zutalor.src.com.zutalor.textToSpeech.TextToSpeechUtils;
 	
 	public class ViewStateNavigator
 	{
 		protected var textToSpeech:TextToSpeech;
+		protected var errorPlayer:SamplePlayer;
 		protected var textToSpeechUtils:TextToSpeechUtils;
-		protected var samplePlayer:SamplePlayer;
 		protected var uiController:UiControllerBase;
 		protected var hkm:HotKeyManager;
-		protected var gestures:gDictionary;
-		protected var viewGestures:PropertyManager;
 		protected var hotKeys:PropertyManager;
 		protected var inputText:String;
 		protected var np:NavigatorProperties;
 		protected var tMeta:XML;
 		protected var uip:UserInputProperties;
 		protected var currentStateType:String;
-		protected var sayWordInterval:int = 1000;
-		protected var wordHasBeenSaid:Boolean;
-		protected var lastKeyTyped:String;
 		
-		protected var allowChangingAnwers:Boolean = false;
+		protected var wordHasBeenSaid:Boolean;
+		protected var keyPressInvalidated:Boolean;
+		
+		protected var allowAnswerChanging:Boolean = true;
+		protected var promptId:String;
+
+		protected var KEYSTROKE_DELAY_BEFORE_SAYING_WORD:int = 1500;
+		protected var DELAY_FROM_LAST_KEYSTROKE_BEFORE_SAYING_PROMPT:int = 5000;
 		
 		protected static const PUNCTUATION:Array = ["'", "*", ";", ":", "-", "}", "{", "+", "_", ")",
 													"(", "?", ".", ",", '"', "[" , "]", "~", "`",
@@ -58,7 +57,7 @@ package com.zutalor.view.navigator
 					"leftbracket", "rightbracket", "tilda", "accent", "exclamation", "at", "pound",
 					"dollar", "percent", "carot", "equals", "less", "greater", "backslash", "forwardslash", "verticalline", "ampersand", "space" ];
 		
-		protected static const VALID_INPUT:String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890~`!@#$%^&*()_+-={}[]:;\\',<>/|" + '"';
+		protected static const VALID_INPUT:String = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890~`!@#$%^&*()_+-={}[]:;\\',<>/|" + '"';
 		
 		public function ViewStateNavigator(pUiController:UiControllerBase)
 		{
@@ -83,6 +82,9 @@ package com.zutalor.view.navigator
 				stop();
 				np.tip = Translate.presets.getItemPropsByName(Translate.language, id);
 				uiController.getValueObject().prompt = "";
+				uiController.getValueObject().inputText = inputText = "";
+				uiController.onModelChange();
+				
 				if (!np.tip)
 				{
 					trace("State not found: " + id);
@@ -90,64 +92,56 @@ package com.zutalor.view.navigator
 				}
 				np.history.push(np.tip.name);
 				uiController.getValueObject().text = textToSpeechUtils.getTextForDisplay(np.tip.tText);
-				uiController.onModelChange();
+				uiController.onModelChange("text");
 				
 				if (np.curTransitionType)
 				{
 					t = new Transition();
-					t.simpleRender(uiController.vc.container,np.curTransitionType, "in", onTransitionComplete);
+					t.simpleRender(uiController.vc.container,np.curTransitionType, "in", initializeState);
 				}
 				else
-					onTransitionComplete();
-			}
-		
-			function onTransitionComplete():void
-			{
-				var promptId:String;
-				
-				np.inTransition = false;
-				promptId = String(XML(np.tip.tMeta).state.@prompt);
-				currentStateType = String(XML(np.tip.tMeta).state.@type);
-				if (String(XML(np.tip.tMeta).state.@includeUiControllerData) != "true")
-					np.data = null;
-
-				MasterClock.unRegisterCallback(checkForPause);
-
-				switch (currentStateType)
-				{
-					case "uiControllerMethod" :
-						np.data = "";
-						uiController[XML(np.tip.tMeta).state.@method](XML(np.tip.tMeta).state);
-						break;
-					case "submitAnswers" :
-						submitAnswers();
-						break;
-					case "page" :
-						if (!promptId)
-							promptId = "page-prompt";
-							speak(textToSpeechUtils.getTextForSpeech(np.tip.tText), np.tip.sound, sayPrompt, promptId);
-						break;
-					case "multipleChoice" :
-						if (!promptId)
-							promptId = "mulipleChoicePrompt";
-						
-						speak(textToSpeechUtils.getTextForSpeech(np.tip.tText), np.tip.sound, sayPrompt, promptId);
-						break;
-					case "textInput" :
-						
-						MasterClock.registerCallback(checkForPause, true, sayWordInterval);
-
-						if (!promptId)
-							promptId = "textInputPrompt";
-						
-						inputText = "";
-						speak(textToSpeechUtils.getTextForSpeech(np.tip.tText), np.tip.sound, sayPrompt, promptId);
-						StageRef.stage.addEventListener(KeyboardEvent.KEY_UP, captureTextInput, false,0, true);
-						break;
-				}
+					initializeState();
 			}
 		}
+		protected function initializeState():void
+		{
 
+			np.inTransition = false;
+			promptId = String(XML(np.tip.tMeta).state.@prompt);
+			currentStateType = String(XML(np.tip.tMeta).state.@type);
+			np.answerStates = String(XML(np.tip.tMeta).state.@answerStates);
+			np.nextState = String(XML(np.tip.tMeta).state.@next);
+			np.backState = String(XML(np.tip.tMeta).state.@back);
+			
+			if (String(XML(np.tip.tMeta).state.@includeUiControllerData) != "true")
+				np.data = null;
+
+			MasterClock.unRegisterCallback(checkForKeystrokePause);
+			MasterClock.unRegisterCallback(checkForUserDelay);
+			StageRef.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp, false, 0, true);
+
+			if (currentStateType == "uiControllerMethod")
+			{
+				stop();
+				np.data = "";
+				uiController[XML(np.tip.tMeta).state.@method](XML(np.tip.tMeta).state);
+			}
+			else if (np.batchSubmit && currentStateType == "submitAnswers")
+				batchSubmitAnswers();
+			else
+			{
+				if (currentStateType == "textInput")
+				{
+					MasterClock.registerCallback(checkForKeystrokePause, true, KEYSTROKE_DELAY_BEFORE_SAYING_WORD);
+					StageRef.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+					StageRef.stage.addEventListener(KeyboardEvent.KEY_UP, captureTextInput, false, 0, true);
+				}
+				if (!promptId)
+						promptId = currentStateType;
+				
+				sayText();
+			}
+		}
 		
 		// PROTECTED METHODS
 		
@@ -178,9 +172,7 @@ package com.zutalor.view.navigator
 			np.answers = new gDictionary();
 			np.history = [];
 			hkm = HotKeyManager.gi();
-			//gm.addEventListener(AppGestureEvent.RECOGNIZED, onGesture);
-			samplePlayer = new SamplePlayer();
-			
+		
 			if (AirStatus.isMobile)
 				textToSpeechUrl = Application.settings.textToSpeechApiUrlMobile;
 			else
@@ -188,6 +180,7 @@ package com.zutalor.view.navigator
 				
 			textToSpeech = new TextToSpeech(textToSpeechUrl);
 			textToSpeechUtils = new TextToSpeechUtils();
+			errorPlayer = new SamplePlayer();
 			textToSpeech.enabled = Application.settings.enableTextToSpeech;
 			
 			tMeta = XML(Translate.getMetaByName("settings"));
@@ -196,7 +189,9 @@ package com.zutalor.view.navigator
 			np.promptState = tMeta.settings.@promptState;
 			np.soundPath = tMeta.settings.@soundPath;
 			np.soundExt = tMeta.settings.@soundExt;
-			np.keyboardAnswers = tMeta.settings.@keyboardAnswers;
+			np.multipleChoiceAnswers = tMeta.settings.@multipleChoiceAnswers;
+			np.confirmationAnswers = tMeta.settings.@confirmationAnswers;
+			np.answerMethod = tMeta.settings.@answerMethod;
 			initUserInput();
 			activateState(tMeta.settings.@firstPage);
 		}
@@ -209,23 +204,16 @@ package com.zutalor.view.navigator
 			var l:int;
 			
 			hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey, false, 0, true);
-			
 			tMeta = XML(Translate.getMetaByName("settings"));
-			
-			viewGestures = new PropertyManager(UserInputProperties);
-			viewGestures.parseXML(tMeta.gestures, "gesture");
-			
-		/*	l = viewGestures.length;
-			for (var i:int = 0; i < l; i++)
-			{
-				gp = viewGestures.getPropsByIndex(i);
-				// TODO GEOFFgm.activateGesture(gp.type, StageRef.stage, gp.name);
-			}*/
-			
-			
 			hotKeys = new PropertyManager(UserInputProperties);
 			hotKeys.parseXML(tMeta.hotkeys, "keystroke");
 			KeyListeners(true);
+		}
+		
+		protected function onKeyUp(ke:KeyboardEvent):void
+		{
+			if (hkm.keyInvalidated)
+				sayError("Unrecognized");
 		}
 		
 		protected function onHotKey(hke:HotKeyEvent):void
@@ -233,117 +221,138 @@ package com.zutalor.view.navigator
 			var uip:UserInputProperties;
 			
 			uip = hotKeys.getPropsByName(hke.message);
-			
+
 			if (uip.activeForState == "all" || uip.activeForState == currentStateType)
 				onUserInput(uip);
 		}
 		
-		protected function checkForPause():void
+		protected function checkForKeystrokePause():void
 		{
 			if (!wordHasBeenSaid)
 				sayLastWord();
 		}
 		
-		protected function onGesture(age:AppGestureEvent):void
+		protected function checkForUserDelay():void
 		{
-			/*
-			var uip:UserInputProperties;
-			
-			uip = viewGestures.getPropsByName(age.name);
-		
-			if (age.gesture is SwipeGesture)
-			{
-				if (SwipeGesture(age.gesture).offsetX > 1)
-					uip.action = uip.actionRight;
-				else if (SwipeGesture(age.gesture).offsetY < 1)
-					uip.action = uip.actionLeft;
-			}
-			if (uip)
-				onUserInput(uip, age.gesture);
-				*/
+			stopUserDelayTimer();
+			sayPrompt(promptId, restartUserDelayTimer);
 		}
 		
-		protected function onUserInput(uip:UserInputProperties, gesture:Gesture = null):void
+		protected function stopUserDelayTimer():void
 		{
-			tMeta = XML(Translate.getMetaByName(np.tip.name));
+			MasterClock.stop(checkForUserDelay);
+		}
+		
+		protected function restartUserDelayTimer():void
+		{
+			MasterClock.start(checkForUserDelay);
+		}
+		
+		protected function onUserInput(uip:UserInputProperties):void
+		{
+			if (!np.tip)
+				return;
+			else
+				tMeta = XML(Translate.getMetaByName(np.tip.name));
 			
-			switch (String(tMeta.state.@type))
+			switch (uip.action)
 			{
-				case "page" :
-					checkStateInput(uip);
-					break;
-				case "multipleChoice" :
-					onMultipleChoiceAnswer();
-					break;
-				case "textInput" :
-					onTextInput(uip);
-					break;
 				case "exit" :
 					uiController.exit();
 					break;
+				case "goodbye" :
+					activateState("goodbye");
+					break;
+				case "back" :
+					activateNextState(uip);
+					break;
+				case "next" :
+					validateInput(uip);
+					break;
 				default :
+					onAnswer();
 					break;
 			}
-				
-			function onMultipleChoiceAnswer():void
+			
+			function onAnswer():void
 			{
-				var promptId:String;
-				var answerText:String;
-				var answerIndex:int;
-				
-				if (uip.action == "exit")
-					uiController.exit();
-				else if (uip.action != "answer")
-					checkForValidAnswer();
-				else {
-					if (uip.type == Plugins.getClassName(TapGesture))
-						answerIndex = getGridValues(gesture, uip).index;
-					else
-						answerIndex = np.keyboardAnswers.indexOf(uip.name.toLowerCase());
-
-					answerText = XML(np.tip.tText)..Q[answerIndex];
-					saveAnswer(answerText.substr(0, 1).toUpperCase(), XML(np.tip.tText)..answers.@correctAnswer);
-					
-					if (allowChangingAnwers)
-					{
-						promptId = String(tMeta.state.@prompt);
-						if (!promptId)
-							promptId = "answer-prompt";
-						
-						speak(answerText, XML(np.tip.tText)..Q[answerIndex].@sound, sayPrompt, promptId);
-					}
-					else
-						checkForValidAnswer();
-				}
-				
-				function checkForValidAnswer():void
+				switch (currentStateType)
 				{
-					if (np.answers.getByKey(np.curAnswerKey))
-					{
-						speakKey(answerText.substr(0, 1).toLowerCase(), onComplete);
-						
-						function onComplete():void
-						{
-							checkStateInput(uip);
-							np.curAnswerKey = null;
-						}
-					}
-					else
-						activateState(np.tip.name);
+					case "multipleChoice" :
+					case "confirmation" :
+						onMultipleChoice(uip, currentStateType);
+						break;
+					case "textInput" :
+						onTextInput(uip);
+						break;
+					default :
+						break;
 				}
 			}
 		}
 		
-		protected function checkStateInput(uip:UserInputProperties):void
+		protected function validateInput(uip:UserInputProperties):void
+		{
+			var asa:Array;
+			var l:int;
+			
+			
+			if (currentStateType == "page")
+			{
+				activateNextState(uip);
+				return;
+			}
+			
+			if (np.answerStates)
+			{
+				asa = np.answerStates.split(",");
+				if (np.answerIndex < asa.length && asa[np.answerIndex])
+					np.nextState = asa[np.answerIndex];
+			}
+			
+			if (np.answer)
+			{
+				saveAnswer(np);
+				np.answer = null;
+				activateNextState(uip);
+			}
+			else
+				speak("Please answer.", "pleaseanswer");
+		}
+		
+		protected function onMultipleChoice(uip:UserInputProperties, stateType:String):void
+		{
+			
+			if (stateType == "confirmation")
+				np.answerIndex = np.confirmationAnswers.indexOf(uip.name.toLowerCase());
+			else
+				np.answerIndex = np.multipleChoiceAnswers.indexOf(uip.name.toLowerCase());
+
+			if (XML(np.tip.tText)..Q[np.answerIndex] == undefined)
+				sayError("Unrecognized");
+			else
+			{
+				np.answerText = String(XML(np.tip.tText)..Q[np.answerIndex]);
+				np.correctAnswer = XML(np.tip.tText)..answers.@correctAnswer;
+				np.answer = np.answerText.substr(0, 1).toUpperCase();
+				
+				if (allowAnswerChanging)
+					speak(np.answerText, XML(np.tip.tText)..Q[np.answerIndex].@sound, sayPrompt, "onAnswered");
+				else
+					speakKey(np.answerText.substr(0, 1), validateInput, uip);
+			}
+		}
+		
+		protected function activateNextState(uip:UserInputProperties):void
 		{
 			np.curTransitionType = np.transitionNext;
 			switch (uip.action)
 			{
 				case "back" :
-					if (String(tMeta.state.@back))
+					if (np.backState)
 					{
 						np.curTransitionType = np.transitionBack;
-						activateState(tMeta.state.@back);
+						activateState(np.backState);
 					}
 					else
 					{
@@ -352,15 +361,15 @@ package com.zutalor.view.navigator
 					}
 					break;
 				default :
-					if (String(tMeta.state.@next) == "exit")
+					if (np.nextState == "exit")
 						uiController.exit();
 					else
-						activateState(tMeta.state.@next);
+						activateState(np.nextState);
 					break;
 			}
 		}
 		
-		protected function saveAnswer(answerText:String, correctAnswer:String = null):void
+		protected function saveAnswer(np:NavigatorProperties):void
 		{
 			var answer:AnswerProperties;
 			var date:Date;
@@ -368,14 +377,16 @@ package com.zutalor.view.navigator
 			date = new Date();
 			answer = new AnswerProperties();
 			
-			answer.answer = answerText;
+			answer.answer = np.answer;
 			answer.questionId = np.tip.name;
-			answer.correctAnswer = correctAnswer;
+			answer.correctAnswer = np.correctAnswer;
 			answer.timestamp = date.toString();
 			
 			if (np.data)
 			{
-				answer.questionId = np.tip.name + "-" + np.id;
+
+				answer.questionId = np.tip.name;
+				answer.dataId = np.id;
 				answer.data = np.data;
 			}
 			else
@@ -386,6 +397,9 @@ package com.zutalor.view.navigator
 			
 			np.curAnswerKey = answer.questionId;
 			np.answers.insert(np.curAnswerKey, answer);
+			
+			if (!np.batchSubmit)
+				submitCurrentAnswer(np);
 		}
 		
 		protected function onTextInput(uip:UserInputProperties):void
@@ -396,9 +410,8 @@ package com.zutalor.view.navigator
 			
 			switch (uip.action)
 			{
-				case "next" :
-					saveAnswer(inputText);
-					speak("Saving answer.", "savinganswer", checkStateInput, uip);
+				case "back" :
+					sayText();
 					break;
 				case "backspace" :
 					speakKey(key);
@@ -424,14 +437,40 @@ package com.zutalor.view.navigator
 					speakKey(" ", sayLastWord);
 					break;
 				case "enter" :
-					speak("pleasewait", "pleasewait", sayAnswer);
+					sayAnswer();
 					break;
 			}
+			updateInputTextView();
+		}
+		
+		protected function updateInputTextView():void
+		{
+			uiController.getValueObject().inputText =  "<P>" + textToSpeechUtils.getTextForDisplay(inputText) + "</P>";
+			uiController.onModelChange("inputText");
+			np.answer = np.answerText =inputText;
+			np.correctAnswer = null;
+		}
+		
+		protected function sayError(errorAudioClassName:String):void
+		{
+			textToSpeech.volume = 0;
+			errorPlayer.play(null, EmbeddedResources.getClass(errorAudioClassName), resetVolume );
+			
+			function resetVolume():void
+			{
+				textToSpeech.volume = 1;
+			}
+		}
+		
+		protected function sayText():void
+		{
+			speak(textToSpeechUtils.getTextForSpeech(np.tip.tText), np.tip.sound, sayPrompt, promptId);
 		}
 		
 		protected function sayAnswer():void
 		{
-			speak(inputText, null, null);
+			stopUserDelayTimer();
+			speak(inputText, null, restartUserDelayTimer);
 		}
 		
 		protected function sayLastWord():void
@@ -442,8 +481,10 @@ package com.zutalor.view.navigator
 			if (wordHasBeenSaid)
 				return;
 
-			if (inputText.length)
+			if (inputText && inputText.length)
 				wordHasBeenSaid = true;
+			else
+				return;
 			
 			l = inputText.length - 2;
 			for (var i:int = l; i > 0; i--)
@@ -452,7 +493,7 @@ package com.zutalor.view.navigator
 					break;
 			}
 			word = inputText.substr(i).toLowerCase();
-			speak(word, word, checkEndOfSentence, null);
+			speak(word, word, checkEndOfSentence);
 		}
 		
 		protected function checkEndOfSentence():void
@@ -468,20 +509,22 @@ package com.zutalor.view.navigator
 		{
 			var key:String;
 			
-			MasterClock.resetAndStart(checkForPause);
-					
 			key = String.fromCharCode(ke.charCode);
 			if (VALID_INPUT.indexOf(key.toUpperCase()) != -1)
 			{
+				MasterClock.resetAndStart(checkForKeystrokePause);
+				MasterClock.resetAndStart(checkForUserDelay);
+				MasterClock.registerCallback(checkForUserDelay, true, DELAY_FROM_LAST_KEYSTROKE_BEFORE_SAYING_PROMPT);
 				wordHasBeenSaid = false;
 				speakKey(key);
 				inputText += key;
+				updateInputTextView();
 			}
 			else
 				hkm.clearKeys();
 		}
 		
-		protected function speakKey(key:String, onComplete:Function = null, onCompleteArgs:*=null ):void
+		protected function speakKey(key:String, onComplete:Function = null, onCompleteArgs:*=null):void
 		{
 			var indx:int;
 						
@@ -493,29 +536,42 @@ package com.zutalor.view.navigator
 				speak(key, key, onComplete, onCompleteArgs);
 			}
 			else
-				speak(key, key, onComplete);
+				speak(key, key, onComplete, onCompleteArgs);
 		}
 		
-		protected function submitAnswers():void
+		protected function submitCurrentAnswer(np:NavigatorProperties):void
 		{
 			var timeStamp:String;
 			var answer:String;
-			var answers:Array = [];
+			var ap:AnswerProperties;
+			
+			ap = np.answers.getByKey(np.curAnswerKey);
+			timeStamp = TextUtil.makeCommaDelimited(ap.timestamp.split(" "));
+			answer =  ap.dataId + "," + ap.questionId + "," + escape(ap.answer) + "," + timeStamp;
+	
+			if (ap.data)
+				answer += "," + ap.data;
+				
+			uiController[np.answerMethod](answer,
+							String(XML(np.tip.tMeta).state.@onCompleteState));
+		}
+		
+		protected function batchSubmitAnswers():void
+		{
+			var timeStamp:String;
+			var answer:String;
 				
 			var ap:AnswerProperties;
 			for (var i:int = 0; i < np.answers.length; i++)
 			{
 				ap = np.answers.getByIndex(i);
 				timeStamp = TextUtil.makeCommaDelimited(ap.timestamp.split(" "));
-				answer =  ap.questionId + "," + ap.answer + "," + timeStamp;
+				answer =  ap.dataId + "," + ap.questionId + "," + escape(ap.answer) + "," + timeStamp;
 				if (ap.data)
 					answer += "," + ap.data;
 				
-				answers.push(answer);
+				uiController[np.answerMethod](answer, String(XML(np.tip.tMeta).state.@onCompleteState));
 			}
-			
-			uiController[XML(np.tip.tMeta).state.@method](answers,
-							String(XML(np.tip.tMeta).state.@onCompleteState));
 		}
 		
 		protected function speak(text:String, soundName:String, onComplete:Function = null, onCompleteArgs:* = null):void
@@ -526,7 +582,7 @@ package com.zutalor.view.navigator
 			textToSpeech.sayText(text, soundName, onComplete, onCompleteArgs);
 		}
 		
-		protected function sayPrompt(id:String):void
+		protected function sayPrompt(id:String, onComplete:Function = null, onCompleteArgs:* = null):void
 		{
 			var tip:TranslateItemProperties;
 			
@@ -535,26 +591,19 @@ package com.zutalor.view.navigator
 			if (tip)
 			{
 				uiController.getValueObject().prompt = textToSpeechUtils.getTextForDisplay(tip.tText);
-				uiController.onModelChange();
+				uiController.onModelChange("prompt");
 				uiController.vc.getItemByName("prompt").alpha = 0;
 				TweenMax.to(uiController.vc.getItemByName("prompt"), .5, { alpha:1 } );
-				speak(textToSpeechUtils.getTextForSpeech(tip.tText), tip.sound);
+				speak(textToSpeechUtils.getTextForSpeech(tip.tText), tip.sound, onComplete, onCompleteArgs);
 			}
 		}
+				// UTILITY
 		
 		protected function stop():void
 		{
 			textToSpeech.stop();
 			uiController.stop();
-			samplePlayer.stop();
-		}
-		
-		// UTILITY
-		
-		protected function getGridValues(gesture:Gesture, uip:UserInputProperties):GridValues
-		{
-			return MathG.gridIndexQuantizer(gesture.location.x, gesture.location.y,
-						uip.cols, uip.rows, StageRef.stage.stageWidth, StageRef.stage.stageHeight);
+			errorPlayer.stop();
 		}
 	}
 }

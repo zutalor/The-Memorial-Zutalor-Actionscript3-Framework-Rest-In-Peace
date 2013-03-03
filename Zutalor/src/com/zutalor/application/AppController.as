@@ -6,6 +6,7 @@
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.amfphp.Remoting;
 	import com.zutalor.application.ApplicationProperties;
+	import com.zutalor.audio.SamplePlayer;
 	import com.zutalor.color.Color;
 	import com.zutalor.components.html.StyleSheets;
 	import com.zutalor.events.AppEvent;
@@ -41,14 +42,14 @@
 	 */
 
 	public class AppController extends EventDispatcher
-	{	
+	{
 		private var vu:ViewUtils;
 		
 		private var appStateProps:AppStateProperties;
-		private var curContainerLoading:String;	
+		private var curContainerLoading:String;
 		
 		private var ap:ApplicationProperties;
-		private var vpm:NestedPropsManager;	
+		private var vpm:NestedPropsManager;
 			
 		private var _loadingSequence:Sequence;
 		private var _curViewProps:ViewProperties;
@@ -74,21 +75,44 @@
 			_presets.parseXML(options.xml[options.nodeId]);
 		}
 		
-		public function AppController(bootXmlUrl:String, ip:String, inlineXML:XML, splashClassName:String=null)
+		public function AppController(bootXmlUrl:String, ip:String, inlineXML:XML, splashClassName:String=null, loadingSoundClassName:String=null)
 		{
+			var samplePlayer:SamplePlayer;
+			
+			if (loadingSoundClassName)
+			{
+				samplePlayer = new SamplePlayer();
+				samplePlayer.play(null, EmbeddedResources.getClass(loadingSoundClassName), disposeSamplePlayer);
+			}
+			
 			_splashEmbedClassName = splashClassName;
 			_ip = ip;
 			_bootXmlUrl = bootXmlUrl;
+			
+			function disposeSamplePlayer():void
+			{
+				samplePlayer.dispose();
+				samplePlayer = null;
+			}
 		}
 		
 		public function initialize():void
-		{	
+		{
 			if (_splashEmbedClassName)
 				showSplash();
 				
 			MasterClock.initialize();
 			MasterClock.defaultInterval = 1000 / StageRef.stage.frameRate;
 			AppXmlLoader.init(_bootXmlUrl, _inlineXML, init);
+		}
+		
+		private function showSplash():void
+		{
+			splash = EmbeddedResources.createInstance(_splashEmbedClassName);
+			StageRef.stage.addChild(splash);
+			splash.x = (StageRef.stage.fullScreenWidth - splash.width) / 2;
+			splash.y = (StageRef.stage.fullScreenHeight - splash.height) / 2;
+			TweenMax.from(splash, 1, { alpha:0 } );
 		}
 		
 		// PRIVATE METHODS
@@ -112,22 +136,13 @@
 				_appStateCallStack.deleteByKey(appState);
 				appState = _appStateCallStack.getKeyByIndex(_appStateCallStack.length - 1);
 				SWFAddress.setTitle(ap.appName + " - " + appState);
-				SWFAddress.setValue(appState);	
+				SWFAddress.setValue(appState);
 				_curViewProps = null;
 			}
-		}			
-
-		private function showSplash():void
-		{
-			splash = EmbeddedResources.createInstance(_splashEmbedClassName);
-			StageRef.stage.addChild(splash);
-			splash.x = (StageRef.stage.fullScreenWidth - splash.width) / 2;
-			splash.y = (StageRef.stage.fullScreenHeight - splash.height) / 2;
-			TweenMax.from(splash, 1, { alpha:0 } );
 		}
 	
-		private function onStageVideoAbility(e:StageVideoAvailabilityEvent):void 
-		{ 
+		private function onStageVideoAbility(e:StageVideoAvailabilityEvent):void
+		{
 			ap.stageVideoAvailable = (e.availability == StageVideoAvailability.AVAILABLE);
 		}
 		
@@ -136,54 +151,54 @@
 			changeAppState(uie.state);
 		}
 		
-		private function onSWFAddressFirstBroadcast(e:SWFAddressEvent):void	
+		private function onSWFAddressFirstBroadcast(e:SWFAddressEvent):void
 		{
-			SWFAddress.removeEventListener(SWFAddressEvent.CHANGE, onSWFAddressFirstBroadcast);	
+			SWFAddress.removeEventListener(SWFAddressEvent.CHANGE, onSWFAddressFirstBroadcast);
 			_firstState = e.value.toLowerCase();
 			
-			if (_firstState != "/") 
-				_firstState = _firstState.substring(1); 
+			if (_firstState != "/")
+				_firstState = _firstState.substring(1);
 			else if (ap.firstState)
 				_firstState = ap.firstState.toLowerCase();
 				
 			SWFAddress.setTitle(ap.appName + " - " + _firstState);
 		}
 		
-		private function onSWFAddressChange(e:SWFAddressEvent):void	
+		private function onSWFAddressChange(e:SWFAddressEvent):void
 		{
 			var page:String;
 	
 			page = e.value.toLowerCase();
-			if (page != "/")		
+			if (page != "/")
 				page = page.substring(1);
 			
 			if (page || int(page) < _presets.length)
 				changeAppState(page);
 		}
 		
-		private function stateChangeSWFAddress(state:String):void 
-		{	
+		private function stateChangeSWFAddress(state:String):void
+		{
 			if (state && !curContainerLoading)
 			{
-				state = state.toLowerCase();										
+				state = state.toLowerCase();
 				SWFAddress.setTitle(ap.appName + " - " + state);
-				SWFAddress.setValue(state);	
+				SWFAddress.setValue(state);
 				if (ap.googleAnalyticsAccount && AirStatus.isNativeApplication || DEBUG_ANALYTICS)
-					Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.TRACK_PAGE_VIEW, 
+					Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.TRACK_PAGE_VIEW,
 																			{ page:state } );
 																			
-				changeAppState(state);															
+				changeAppState(state);
 			}
 		}
 		
-		private function changeAppState(state:String):void 
-		{	
+		private function changeAppState(state:String):void
+		{
 			_curAppState = state;
 			if (_curViewProps && !_curViewProps.contentPersists)
 			{
 				if (appStateProps.viewId == _curViewProps.name)
 					closeView(_curViewProps.container.name, processStateChange);
-				else 
+				else
 				{
 					closeView(_curViewProps.container.name);
 					processStateChange();
@@ -191,7 +206,7 @@
 			}
 			else
 				processStateChange();
-		}						
+		}
 		
 		private function checkOrientation():void
 		{
@@ -203,15 +218,15 @@
 				{
 					switch (StageRef.stage.deviceOrientation)
 					{
-						case StageOrientation.ROTATED_RIGHT: 
+						case StageOrientation.ROTATED_RIGHT:
 						case StageOrientation.ROTATED_LEFT:
 							orientation = StageOrientation.DEFAULT;
-							break; 
+							break;
 						case StageOrientation.UPSIDE_DOWN:
-							orientation = StageOrientation.UPSIDE_DOWN; 
-							break; 
-						default: 
-							orientation = StageOrientation.DEFAULT; 
+							orientation = StageOrientation.UPSIDE_DOWN;
+							break;
+						default:
+							orientation = StageOrientation.DEFAULT;
 							break;
 					}
 					StageRef.stage.setOrientation(orientation);
@@ -227,10 +242,10 @@
 			else
 			{
 				SWFAddress.setTitle(ap.appName);
-				SWFAddress.setValue("");			
+				SWFAddress.setValue("");
 			}
 			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, onSWFAddressChange);
-			dispatchEvent(new AppEvent(AppEvent.INITIALIZED));	
+			dispatchEvent(new AppEvent(AppEvent.INITIALIZED));
 			if (splash)
 			{
 				TweenMax.to(splash, .1, { alpha:0, onComplete:removeSplash } );
@@ -239,7 +254,7 @@
 			{
 				StageRef.stage.removeChild(splash);
 			}
-		}	
+		}
 		
 		private function processStateChange():void
 		{
@@ -250,7 +265,7 @@
 			if (!appStateProps)
 			{
 				SWFAddress.setTitle(ap.appName);
-				SWFAddress.setValue("");			
+				SWFAddress.setValue("");
 			}
 			else
 			{
@@ -260,10 +275,10 @@
 						_loadingSequence = new Sequence();
 						_loadingSequence.play(appStateProps.sequenceName, this, stateChangeComplete);
 				}
-				else if (appStateProps.viewId && !_appStateCallStack.getByKey(_curAppState)) 
+				else if (appStateProps.viewId && !_appStateCallStack.getByKey(_curAppState))
 				{
 					_appStateCallStack.insert(_curAppState, appStateProps);
-					_curViewProps = vpm.getPropsById(appStateProps.viewId);		
+					_curViewProps = vpm.getPropsById(appStateProps.viewId);
 					curContainerLoading = _curViewProps.name;
 					viewCreator = new ViewCreator();
 					if (appStateProps.transitionPreset)
@@ -287,11 +302,11 @@
 			if (curContainerLoading)
 			{
 				_curViewProps = vpm.getPropsById(curContainerLoading);
-				curContainerLoading = "";	
+				curContainerLoading = "";
 				dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}
-		 	
+		
 		private function init():void
 		{
 			ap = Application.settings;
@@ -301,9 +316,9 @@
 			if (_ip)
 				ap.ip = _ip;
 
-			_appStateCallStack = new gDictionary();	
-			StageRef.stage.addEventListener(StageVideoAvailabilityEvent.STAGE_VIDEO_AVAILABILITY,onStageVideoAbility); 	
-			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, onSWFAddressFirstBroadcast);			
+			_appStateCallStack = new gDictionary();
+			StageRef.stage.addEventListener(StageVideoAvailabilityEvent.STAGE_VIDEO_AVAILABILITY,onStageVideoAbility);
+			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, onSWFAddressFirstBroadcast);
 			MasterClock.initialize();
 			Remoting.gateway = ap.gateway;
 
@@ -311,22 +326,23 @@
 			Color.theme = ap.colorTheme;
 
 			if (ap.spinnerGraphicId)
-				Spinner.init(ap.spinnerGraphicId, ap.spinnerGraphicCyclesPerSecond);
+				Spinner.init(ap.spinnerGraphicId, EmbeddedResources.getClass(ap.spinnerSoundClassName), ap.spinnerGraphicCyclesPerSecond);
+				
 			
 			if (ap.googleAnalyticsAccount && AirStatus.isNativeApplication || DEBUG_ANALYTICS)
 			{
-				Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.INITIALIZE, 
+				Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.INITIALIZE,
 									{ display:StageRef.stage, accountId:ap.googleAnalyticsAccount, debug:DEBUG_ANALYTICS } );
-				Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.TRACK_PAGE_VIEW, 
+				Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.TRACK_PAGE_VIEW,
 									{ page:ap.appName + " " + ap.version + " started." } );
 			}
 			
-			StageRef.stage.addEventListener(UIEvent.APP_STATE_SELECTED, onStateChangeEvent);	
+			StageRef.stage.addEventListener(UIEvent.APP_STATE_SELECTED, onStateChangeEvent);
 			StageRef.stage.addEventListener(Event.RESIZE, vu.onStageResize);
-			MasterClock.registerCallback(checkOrientation, true, 500);	
+			MasterClock.registerCallback(checkOrientation, true, 500);
 			vu.onStageResize();
-			StyleSheets.loadCss(onInitComplete);			
-		}	
+			StyleSheets.loadCss(onInitComplete);
+		}
 		
 		private function onInitComplete():void
 		{

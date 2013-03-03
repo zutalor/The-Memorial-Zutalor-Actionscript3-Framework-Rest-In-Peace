@@ -1,4 +1,4 @@
-package com.zutalor.audio 
+package Zutalor.src.com.zutalor.textToSpeech
 {
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.text.TextUtil;
@@ -6,10 +6,10 @@ package com.zutalor.audio
 	 * ...
 	 * @author Geoff
 	 */
-	public class TextToSpeechUtils 
+	public class TextToSpeechUtils
 	{
 		
-		public function TextToSpeechUtils() 
+		public function TextToSpeechUtils()
 		{
 			
 		}
@@ -39,7 +39,5 @@ package com.zutalor.audio
 			else
 				return TextUtil.stripSurroundedBy(text, "<MOBILE>", "</MOBILE>");
 		}
-		
-		
 	}
 }

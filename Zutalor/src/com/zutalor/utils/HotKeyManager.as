@@ -17,22 +17,19 @@
 	 */
 	final public class HotKeyManager extends EventDispatcher
 	{
-		private var attemptedWordTimeout:Number;		
-		private var keyMappings:Dictionary;		
-		private var wordMappings:Dictionary;
-		private var sequenceMessages:Dictionary;		
+		public var keyInvalidated:Boolean;
+		private var keyMappings:Dictionary;
+		private var sequenceMessages:Dictionary;
 		private var sequencesByScope:Dictionary;
 		private var tmpDict:Dictionary;
-		private var keysDown:String;		
-
+		private var keysDown:String;
 		
 		private static var _instance:HotKeyManager;
 
-		public function HotKeyManager() 
+		public function HotKeyManager()
 		{
 			Singleton.assertSingle(HotKeyManager);
 			keyMappings=new Dictionary();
-			wordMappings=new Dictionary();
 			sequenceMessages=new Dictionary();
 			tmpDict=new Dictionary();
 			sequencesByScope=new Dictionary();
@@ -47,27 +44,23 @@
 			return _instance;
 		}
 		
-		public function initialize():void
-		{
-		}
-		
 		/**
 		 * Add a keyboard event mapping.
-		 * 
+		 *
 		 * <p>There are multiple ways you can add a handler. You can add
-		 * handler for a single character, a word or sentence, or a sequence.</p>
-		 * 
+		 * handler for a single character, or a sequence.</p>
+		 *
 		 * @example Adding mappings of different types.
-		 * <listing>	
-		 * 
+		 * <listing>
+		 *
 		 * km.addMapping(stage,"f", "message");
 		 * km.addMapping(stage,"Whatup","message");
 		 * km.addMapping(stage,"CONTROL+SHIFT+M", "message");
 		 * km.addMapping(stage,"CONTROL+m","message");
 		 * km.addMapping(myTextField,"ENTER","message");
-		 * 
+		 *
 		 * </listing>
-		 * 
+		 *
 		 * <p><strong>Supported Key Shortcuts for Key Sequences</strong></p>
 		 * <ul>
 		 * <li>BACKSPACE</li>
@@ -120,7 +113,7 @@
 		 * <li>NUMPAD_DECIMAL</li>
 		 * <li>NUMPAD_ENTER</li>
 		 * </ul>
-		 * 
+		 *
 		 */
 		public function  addMapping(obj:*,mapping:String,message:String):void
 		{
@@ -130,15 +123,13 @@
 				var i:int=0;
 				for(i; i < l; i++) addMapping(obj[i],mapping,message);
 				return;
-			}			
-			if (mapping.length == 1) 
+			}
+			if (mapping.length == 1)
 				addCharMapping(obj,mapping,message);
 			else if (isShortcutForKeycode(mapping))
 				addSequenceMapping(obj,mapping,message);
-			else if (mapping.indexOf("+") > -1) 
+			else if (mapping.indexOf("+") > -1)
 				addSequenceMapping(obj,mapping,message);
-			else 
-				addWordMapping(obj, mapping, message);
 		}
 		
 		public function  removeMapping(obj:*, mapping:String):void
@@ -153,11 +144,9 @@
 				removeCharMapping(obj, mapping);
 			else if (mapping.indexOf("+") > -1)
 				removeSequenceMapping(obj, mapping);
-			else if (isShortcutForKeycode(mapping)) 
+			else if (isShortcutForKeycode(mapping))
 				removeSequenceMapping(obj,mapping);
-			else 
-				removeWordMapping(obj, mapping);
-			
+		
 			clearKeys();
 		}
 		
@@ -178,9 +167,9 @@
 			keys += "numpad0+numpad1+numpad2+numpad3+numpad4+numpad5+numpad6+numpad7+numpad8+numpad9+";
 			keys += "numpadAdd+numpadDecimal+numpadDivide+numpadEnter+numpadMultiply+numpadSubtract";
 			
-			if (keys.indexOf(mapping) > -1) 
+			if (keys.indexOf(mapping) > -1)
 				return true;
-			else	
+			else
 				return false;
 		}
 		
@@ -191,17 +180,7 @@
 				scope.addEventListener(KeyboardEvent.KEY_UP, onKeyUp, false,int.MAX_VALUE,true);
 				keyMappings[scope]=new Dictionary();
 			}
-			keyMappings[scope][char.charCodeAt(0)]=message;	
-		}
-		
-		private function addWordMapping(scope:*, word:String, message:String):void
-		{
-			if (!wordMappings[scope]) 
-			{
-				scope.addEventListener(KeyboardEvent.KEY_UP, onKeyUpForWordMapping, false,int.MAX_VALUE,true);
-				wordMappings[scope]=new Dictionary();
-			}
-			wordMappings[scope][word]=message;
+			keyMappings[scope][char.charCodeAt(0)]=message;
 		}
 		
 		private function addSequenceMapping(scope:*,sequence:String,message:String):void
@@ -213,7 +192,7 @@
 				sequenceMessages[scope]=new Dictionary();
 				
 			}
-			if (!sequenceMessages[scope][sequence]) 
+			if (!sequenceMessages[scope][sequence])
 				sequenceMessages[scope][sequence]=new Dictionary();
 			
 			sequenceMessages[scope][sequence]['message']=message;
@@ -221,62 +200,33 @@
 		
 		private function removeCharMapping(scope:*, char:String):void
 		{
-			if (!keyMappings[scope]) 
+			if (!keyMappings[scope])
 				return;
-			if (!keyMappings[scope][char]) 
+			if (!keyMappings[scope][char])
 				return;
 			keyMappings[scope][char]=null;
-		}
-		
-		private function removeWordMapping(scope:*,word:String):void
-		{
-			if(!wordMappings[scope])return;
-			if(!wordMappings[scope][word])return;
-			wordMappings[scope][word]=null;
 		}
 		
 		private function removeSequenceMapping(scope:*, mapping:String):void
 		{
 			sequenceMessages[scope][mapping]=null;
-			//sequenceMessages[scope][mapping]['message']=null;
 		}
 		
 		private function onKeyUp(ke:KeyboardEvent):void
 		{
 			var scope:* = ke.target.stage;
+			
 			if(!keyMappings[scope]) return;
 
-			if (keyMappings[scope][ke.charCode]) 
-			{
+			if (keyMappings[scope][ke.charCode])
 				dispatchMessage(keyMappings[scope][ke.charCode]);
-			}
-		}
-		
-		private function onKeyUpForWordMapping(ke:KeyboardEvent):void
-		{
-			var scope:* =ke.target.stage;
-
-			if (!scope)
-				return;
-				
-			if (!tmpDict[scope]) tmpDict[scope] = "";
-			tmpDict[scope] += String.fromCharCode(ke.charCode);
-			if (wordMappings[scope])			
-				if (wordMappings[scope][tmpDict[scope]])
-				{
-					dispatchMessage(wordMappings[scope][tmpDict[scope]]);
-					tmpDict[scope]="";
-				}
-					
-			clearTimeout(attemptedWordTimeout);
-			attemptedWordTimeout=setTimeout(clearAttemptedWord,500,scope);
 		}
 		
 		private function onKeyUpForSequence(ke:KeyboardEvent):void
-		{		
+		{
 			var scope:* =ke.target.stage;
 			var char:String = KeyUtils.shortCutForKeyCode(ke.keyCode);
-			if (char == null) 
+			if (char == null)
 				char=String.fromCharCode(ke.charCode);
 			
 			var test:String=char+"+";
@@ -286,16 +236,18 @@
 			
 			if (!keysDown || keysDown == "")
 				return;
-			if (!sequenceMessages[scope][keysDown]) 
+			if (!sequenceMessages[scope][keysDown])
 				return;
 		}
 		
 		private function onKeyDownForSequence(ke:KeyboardEvent):void
 		{
-			var scope:* =ke.target.stage;
+			var scope:* = ke.target.stage;
+			keyInvalidated = true;
+			
 			if(!sequenceMessages[scope]) return;
 			var char:String = KeyUtils.shortCutForKeyCode(ke.keyCode);
-			if (char == null) 
+			if (char == null)
 				char=String.fromCharCode(ke.charCode);
 			
 			var c:String=char+"+";
@@ -309,13 +261,9 @@
 				dispatchMessage(sequenceMessages[scope][m]['message']);
 		}
 		
-		private function clearAttemptedWord(scope:*):void
-		{
-			tmpDict[scope]="";
-		}
-		
 		private function dispatchMessage(message:String):void
 		{
+			keyInvalidated = false;
 			dispatchEvent(new HotKeyEvent(HotKeyEvent.HOTKEY_PRESS, message));
 		}
 	}
