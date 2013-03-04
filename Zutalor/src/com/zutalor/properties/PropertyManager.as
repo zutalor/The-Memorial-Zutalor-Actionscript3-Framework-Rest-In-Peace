@@ -4,32 +4,43 @@
 	/**
 	 * ...
 	 * @author Geoff Pepos
-	 * 
-	 */  
+	 *
+	 */
 	
 	public class PropertyManager
-	{	
+	{
 		private var _propertygDictionary:gDictionary;
 		private var _PropertiesClass:Class;
 				
-		public function PropertyManager(PropertiesClass:Class) 
+		public function PropertyManager(PropertiesClass:Class)
 		{
 			_PropertiesClass = PropertiesClass;
 			_propertygDictionary = new gDictionary();
 		}
-					
-		public function parseXML(xmlList:XMLList, nodeName:String = "props", childClass:Class = null, 
+		
+		public function set ignoreCaseInKey(v:Boolean):void
+		{
+			_propertygDictionary.ignoreCaseInKey = v;
+		}
+		
+		public function get ignoreCaseInKey():Boolean
+		{
+			return _propertygDictionary.ignoreCaseInKey;
+		}
+		
+		public function parseXML(xmlList:XMLList, nodeName:String = "props", childClass:Class = null,
 											childXmlList:XMLList = null, childNodeName:String = null):void
-		{	
+		{
 			var xll:XMLList;
 			if (!nodeName)
 				xll = xmlList;
 			else
 				xll = xmlList[nodeName];
 			
-			for (var i:int = 0; i < xll.length(); i++) 
+			for (var i:int = 0; i < xll.length(); i++)
 			{
 				var prc:* = new _PropertiesClass();
+				prc.ignoreCaseInKey = _propertygDictionary.ignoreCaseInKey;
 				if (prc.parseXML(xll[i]))
 				{
 					_propertygDictionary.insert(prc.name, prc);
@@ -38,9 +49,10 @@
 						if (!prc.child)
 							prc.child = new PropertyManager(childClass);
 						
+						prc.child.ignoreCaseInKey = _propertygDictionary.ignoreCaseInKey;
 						prc.child.parseXML(xll[i][childNodeName], "");
 					}
-				}	
+				}
 			}
 			xll = null;
 		}
@@ -92,7 +104,7 @@
 		
 		public function getChildByName(name:String):*
 		{
-			var x:* = _propertygDictionary.getByKey(name); 
+			var x:* = _propertygDictionary.getByKey(name);
 			
 			if (x)
 				return x.child;

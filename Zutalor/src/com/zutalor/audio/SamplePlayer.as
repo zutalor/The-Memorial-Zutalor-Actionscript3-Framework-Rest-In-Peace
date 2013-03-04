@@ -14,7 +14,7 @@ package com.zutalor.audio
 
 	public final class SamplePlayer extends EventDispatcher
 	{
-		public var speed:int = 0;
+		public var speed:int = 4096;
 	
 		private const SAMPLERATE:Number = 44.1;
 		private var bufferSize: int;

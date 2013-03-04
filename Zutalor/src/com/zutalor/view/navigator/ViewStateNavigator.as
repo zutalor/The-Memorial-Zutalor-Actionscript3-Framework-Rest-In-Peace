@@ -206,13 +206,14 @@ package com.zutalor.view.navigator
 			hkm.addEventListener(HotKeyEvent.HOTKEY_PRESS, onHotKey, false, 0, true);
 			tMeta = XML(Translate.getMetaByName("settings"));
 			hotKeys = new PropertyManager(UserInputProperties);
+			hotKeys.ignoreCaseInKey = false;
 			hotKeys.parseXML(tMeta.hotkeys, "keystroke");
 			KeyListeners(true);
 		}
 		
 		protected function onKeyUp(ke:KeyboardEvent):void
 		{
-			if (hkm.keyInvalidated)
+			if (!np.inTransition && hkm.keyInvalidated && currentStateType != "uiControllerMethod")
 				sayError("Unrecognized");
 		}
 		
@@ -220,9 +221,12 @@ package com.zutalor.view.navigator
 		{
 			var uip:UserInputProperties;
 			
+			if (np.inTransition)
+				return;
+			
 			uip = hotKeys.getPropsByName(hke.message);
-
-			if (uip.activeForState == "all" || uip.activeForState == currentStateType)
+			
+			if (!np.inTransition && currentStateType != "uiControllerMethod" && (uip.activeForState == "all" || uip.activeForState == currentStateType))
 				onUserInput(uip);
 		}
 		
@@ -566,7 +570,7 @@ package com.zutalor.view.navigator
 			{
 				ap = np.answers.getByIndex(i);
 				timeStamp = TextUtil.makeCommaDelimited(ap.timestamp.split(" "));
-				answer =  ap.dataId + "," + ap.questionId + "," + escape(ap.answer) + "," + timeStamp;
+				answer =  ap.dataId + "," + ap.questionId + "," + '"' + escape(ap.answer) + '"' + "," + timeStamp;
 				if (ap.data)
 					answer += "," + ap.data;
 				

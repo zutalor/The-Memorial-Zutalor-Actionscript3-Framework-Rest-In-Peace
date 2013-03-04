@@ -61,58 +61,6 @@
 		 *
 		 * </listing>
 		 *
-		 * <p><strong>Supported Key Shortcuts for Key Sequences</strong></p>
-		 * <ul>
-		 * <li>BACKSPACE</li>
-		 * <li>CONTROL</li>
-		 * <li>CAPSLOCK</li>
-		 * <li>DELETE</li>
-		 * <li>DOWN</li>
-		 * <li>END</li>
-		 * <li>ENTER</li>
-		 * <li>ESC</li>
-		 * <li>F1</li>
-		 * <li>F2</li>
-		 * <li>F3</li>
-		 * <li>F4</li>
-		 * <li>F5</li>
-		 * <li>F6</li>
-		 * <li>F7</li>
-		 * <li>F8</li>
-		 * <li>F9</li>
-		 * <li>F10</li>
-		 * <li>F11</li>
-		 * <li>F12</li>
-		 * <li>F13</li>
-		 * <li>F14</li>
-		 * <li>F15</li>
-		 * <li>HOME</li>
-		 * <li>INSERT</li>
-		 * <li>LEFT</li>
-		 * <li>PAGEDOWN</li>
-		 * <li>PAGEUP</li>
-		 * <li>RIGHT</li>
-		 * <li>SHIFT</li>
-		 * <li>SPACE</li>
-		 * <li>TAB</li>
-		 * <li>UP</li>
-		 * <li>NUMPAD1</li>
-		 * <li>NUMPAD2</li>
-		 * <li>NUMPAD3</li>
-		 * <li>NUMPAD4</li>
-		 * <li>NUMPAD5</li>
-		 * <li>NUMPAD6</li>
-		 * <li>NUMPAD7</li>
-		 * <li>NUMPAD8</li>
-		 * <li>NUMPAD9</li>
-		 * <li>NUMPAD0</li>
-		 * <li>NUMPAD_ADD</li>
-		 * <li>NUMPAD_DIVIDE</li>
-		 * <li>NUMPAD_MULTIPLY</li>
-		 * <li>NUMPAD_SUBTRACT</li>
-		 * <li>NUMPAD_DECIMAL</li>
-		 * <li>NUMPAD_ENTER</li>
-		 * </ul>
 		 *
 		 */
 		public function  addMapping(obj:*,mapping:String,message:String):void
@@ -165,7 +113,7 @@
 			keys += "end+enter+esc";
 			keys += "+home+insert+left+pagedown+pageup+right+shift+space+tab+up";
 			keys += "numpad0+numpad1+numpad2+numpad3+numpad4+numpad5+numpad6+numpad7+numpad8+numpad9+";
-			keys += "numpadAdd+numpadDecimal+numpadDivide+numpadEnter+numpadMultiply+numpadSubtract";
+			keys += "numpadadd+numpaddecimal+numpaddivide+numpadenter+numpadmultiply+numpadsubtract";
 			
 			if (keys.indexOf(mapping) > -1)
 				return true;

@@ -1,18 +1,20 @@
-﻿package com.zutalor.utils 
+﻿package com.zutalor.utils
 {
 	/**
 	 * ...
 	 * @author Geoff Pepos
-	 * 
+	 *
 	 */
 	public class gDictionary
 	{
+		public var ignoreCaseInKey:Boolean = true;
+		
 		private var _keys:Vector.<Object>;
 		private var _values:Vector.<Object>;
 		private var _initialSize:int;
 		private var _fixed:Boolean;
 		
-		public function gDictionary(initialSize:int = 0, fixed:Boolean=false) 
+		public function gDictionary(initialSize:int = 0, fixed:Boolean=false)
 		{
 			_initialSize = initialSize;
 			_fixed = fixed;
@@ -38,7 +40,10 @@
 		{
 			var i:int;
 			
-			if (key is String)
+			if (!ignoreCaseInKey)
+				trace(key);
+				
+			if (key is String && ignoreCaseInKey)
 				key = key.toLowerCase();
 			
 			i = _keys.indexOf(key);
@@ -52,7 +57,7 @@
 			
 			if (newkey)
 			{
-				if (newkey is String)
+				if (newkey is String && ignoreCaseInKey)
 					newkey = newkey.toLowerCase();
 				
 				_keys[i] = newkey;
@@ -60,14 +65,14 @@
 			else
 				_keys[i] = key;
 				
-			return obj;	
+			return obj;
 		}
 
 		public function deleteByKey(key:*):void
 		{
 			var i:int;
 			
-			if (key is String)
+			if (key is String && ignoreCaseInKey)
 				key = key.toLowerCase();
 			
 			i = _keys.indexOf(key);
@@ -82,7 +87,7 @@
 		}
 		
 		public function deleteByIndex(index:int):void
-		{			
+		{
 			if (index < _keys.length)
 			{
 				_values[index] = null;
@@ -99,7 +104,7 @@
 			if (!key)
 				return null;
 			else
-				if (key is String)
+				if (key is String && ignoreCaseInKey)
 					key = key.toLowerCase();
 				
 				i = _keys.indexOf(key);
@@ -123,7 +128,7 @@
 				if (i != -1)
 					return _values[i];
 				else
-					return null;	
+					return null;
 		}
 		
 		public function getByIndex(index:int):*
@@ -146,14 +151,14 @@
 		{
 			if (key)
 			{
-				if (key is String)
+				if (key is String && ignoreCaseInKey)
 					key = key.toLowerCase();
 					
 				return _keys.indexOf(key);
 			}
 			else
 				return( -1);
-		}		
+		}
 		
 		public function get length():int
 		{

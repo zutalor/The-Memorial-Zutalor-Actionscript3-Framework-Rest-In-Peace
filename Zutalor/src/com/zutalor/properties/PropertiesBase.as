@@ -1,4 +1,4 @@
-﻿package com.zutalor.properties 
+﻿package com.zutalor.properties
 {
 	import com.zutalor.interfaces.IProperties;
 	import com.zutalor.properties.PropertyManager;
@@ -11,13 +11,15 @@
 	{
 		public var child:PropertyManager;
 		public var name:String;
+		public var ignoreCaseInKey:Boolean = true;
 		
 		public function PropertiesBase() {}
 		
 		public function parseXML(xml:XML):Boolean
-		{	
+		{
 			MapXML.attributesToClass(xml , this);
-			name = name.toLowerCase();
+			if (ignoreCaseInKey)
+				name = name.toLowerCase();
 			return true;
 		}
 	}
