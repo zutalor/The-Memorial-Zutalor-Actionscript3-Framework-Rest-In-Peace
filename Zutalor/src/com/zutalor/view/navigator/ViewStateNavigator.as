@@ -65,7 +65,7 @@ package com.zutalor.view.navigator
 			init();
 		}
 		
-		public function onUiControllerMethodCompleted(args:XMLList, data:String, id:String):void
+		public function onUiControllerMethodCompleted(args:XMLList, data:Object, id:String):void
 		{
 			np.data = data;
 			np.id = id;
@@ -381,15 +381,8 @@ package com.zutalor.view.navigator
 			date = new Date();
 			answer = new AnswerProperties();
 			
-			answer.answer = np.answer;
-			answer.questionId = np.tip.name;
-			answer.correctAnswer = np.correctAnswer;
-			answer.timestamp = date.toString();
-			
 			if (np.data)
 			{
-
-				answer.questionId = np.tip.name;
 				answer.dataId = np.id;
 				answer.data = np.data;
 			}
@@ -399,11 +392,20 @@ package com.zutalor.view.navigator
 				answer.data = "";
 			}
 			
+			answer.answer = np.answer;
+			answer.questionId = np.tip.name;
+			answer.timestamp = date.toString();
+			answer.questionId = np.tip.name;
+			
+			answer.correctAnswer = Object(uiController).getCorrectAnswer(answer);
+			
 			np.curAnswerKey = answer.questionId;
 			np.answers.insert(np.curAnswerKey, answer);
 			
+			
+			
 			if (!np.batchSubmit)
-				submitCurrentAnswer(np);
+				submitCurrentAnswer(answer);
 		}
 		
 		protected function onTextInput(uip:UserInputProperties):void
@@ -543,19 +545,8 @@ package com.zutalor.view.navigator
 				speak(key, key, onComplete, onCompleteArgs);
 		}
 		
-		protected function submitCurrentAnswer(np:NavigatorProperties):void
+		protected function submitCurrentAnswer(answer:AnswerProperties):void
 		{
-			var timeStamp:String;
-			var answer:String;
-			var ap:AnswerProperties;
-			
-			ap = np.answers.getByKey(np.curAnswerKey);
-			timeStamp = TextUtil.makeCommaDelimited(ap.timestamp.split(" "));
-			answer =  ap.dataId + "," + ap.questionId + "," + escape(ap.answer) + "," + timeStamp;
-	
-			if (ap.data)
-				answer += "," + ap.data;
-				
 			uiController[np.answerMethod](answer,
 							String(XML(np.tip.tMeta).state.@onCompleteState));
 		}
@@ -563,17 +554,11 @@ package com.zutalor.view.navigator
 		protected function batchSubmitAnswers():void
 		{
 			var timeStamp:String;
-			var answer:String;
+			var answer:AnswerProperties;
 				
-			var ap:AnswerProperties;
 			for (var i:int = 0; i < np.answers.length; i++)
 			{
-				ap = np.answers.getByIndex(i);
-				timeStamp = TextUtil.makeCommaDelimited(ap.timestamp.split(" "));
-				answer =  ap.dataId + "," + ap.questionId + "," + '"' + escape(ap.answer) + '"' + "," + timeStamp;
-				if (ap.data)
-					answer += "," + ap.data;
-				
+				answer = np.answers.getByIndex(i);
 				uiController[np.answerMethod](answer, String(XML(np.tip.tMeta).state.@onCompleteState));
 			}
 		}

@@ -1,4 +1,4 @@
-package com.zutalor.amfphp 
+package com.zutalor.amfphp
 {
 	import com.zutalor.utils.ShowError;
 	import flash.events.NetStatusEvent;
@@ -30,13 +30,13 @@ package com.zutalor.amfphp
 			return _gateway;
 		}
 
-		public function call(command:String, classAlias:String=null, Klass:Class=null, onSuccess:Function=null, onFailure:Function=null, ... args:*):void 
+		public function call(command:String, classAlias:String=null, Klass:Class=null, onSuccess:Function=null, onFailure:Function=null, ... args:*):void
 		{
 			var gw:NetConnection;
 			var res:Responder;
 			
 			if (!_gateway)
-				ShowError.fail(Remoting, "No Gateway defined in Remoting.");			
+				ShowError.fail(Remoting, "No Gateway defined in Remoting.");
 			
  			_onFailure = onFailure;
 			_onSuccess = onSuccess;
@@ -55,6 +55,7 @@ package com.zutalor.amfphp
 			function onResult(pVO:Object):void
 			{
 				cleanup();
+				trace("success", pVO);
 				if (_onSuccess != null)
 					_onSuccess(pVO);
 			}
@@ -68,23 +69,23 @@ package com.zutalor.amfphp
 			
 			function cleanup():void
 			{
-				gw.removeEventListener(NetStatusEvent.NET_STATUS, onNetStatus);	
+				gw.removeEventListener(NetStatusEvent.NET_STATUS, onNetStatus);
 				gw.close();
 				gw = null;
 				res = null;
 			}
-		}	
+		}
 			
 		public function onNetStatus(e:NetStatusEvent):void
 		{
 			switch (e.info.code)
-			{	
+			{
 				case "NetConnection.Call.Failed" :
 					if (_onFailure != null)
 						_onFailure(e.info.code);
 					break;
 			}
 			trace(e.info.code);
-		}			
+		}
 	}
 }

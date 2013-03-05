@@ -13,7 +13,7 @@ package com.zutalor.view.navigator
 		public var curAnswerKey:String;
 		public var history:Array;
 		public var answers:gDictionary;
-		public var data:String;
+		public var data:Object;
 		public var transitionNext:String;
 		public var transitionBack:String;
 		public var curTransitionType:String;
