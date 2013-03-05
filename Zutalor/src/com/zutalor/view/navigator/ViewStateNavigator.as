@@ -394,15 +394,16 @@ package com.zutalor.view.navigator
 			
 			answer.answer = np.answer;
 			answer.questionId = np.tip.name;
-			answer.timestamp = date.toString();
+			
+			answer.date = date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear();
+			answer.time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+			answer.UTCTimezoneOffset = String(date.getTimezoneOffset() / 60 * -1);
 			answer.questionId = np.tip.name;
 			
 			answer.correctAnswer = Object(uiController).getCorrectAnswer(answer);
 			
 			np.curAnswerKey = answer.questionId;
 			np.answers.insert(np.curAnswerKey, answer);
-			
-			
 			
 			if (!np.batchSubmit)
 				submitCurrentAnswer(answer);
