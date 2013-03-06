@@ -1,4 +1,4 @@
-﻿package com.zutalor.utils
+﻿package Zutalor.src.depreciated
 {
 	import com.greensock.TweenMax;
 	import flash.display.DisplayObject;
@@ -10,7 +10,7 @@
 	 * @author Geoff Pepos
 	 */
 
-	 
+	
 	public class AlignTo
 	{
 		public static const STAGE:String = "stage";
@@ -22,8 +22,8 @@
 		public static const CENTER:String = "center";
 		public static const TOP:String = "top";
 		public static const TOP_THIRD:String = "topThird";
-		public static const BOTTOM:String = "bottom";				
-		public static const BOTTOM_THIRD:String = "bottomThird";	
+		public static const BOTTOM:String = "bottom";
+		public static const BOTTOM_THIRD:String = "bottomThird";
 		
 		private static var _horizontalPosition:String;
 		private static var _verticalPosition:String;
@@ -34,13 +34,13 @@
 		private static var _scale:Number;
 		private static var _registrationIsAtCenter:Boolean;
 		
-		public static function sage(objectToAlign:DisplayObjectContainer, horizontalPosition:String, verticalPosition:String, 
+		public static function sage(objectToAlign:DisplayObjectContainer, horizontalPosition:String, verticalPosition:String,
 										hPadding:int=0, vPadding:int=0, scaleX:Number = 1, scaleY:Number = 1, registrationIsAtCenter:Boolean=false):void
 		{
 			_horizontalPosition = horizontalPosition;
 			_verticalPosition = verticalPosition;
 			_hPadding = hPadding * scaleX;
-			_vPadding = vPadding * scaleY;	
+			_vPadding = vPadding * scaleY;
 			
 			_width = objectToAlign.width;
 			_height = objectToAlign.height;
@@ -49,7 +49,7 @@
 			align(objectToAlign, objectToAlign.stage.stageWidth, objectToAlign.stage.stageHeight);
 		}
 
-		public static function diplayObject(objectToAlign:DisplayObject, objectToAlignTo:DisplayObject, horizontalPosition:String, 
+		public static function diplayObject(objectToAlign:DisplayObject, objectToAlignTo:DisplayObject, horizontalPosition:String,
 											verticalPosition:String, hPadding:int=0, vPadding:int=0, scale:Number = 1, registrationIsAtCenter:Boolean=false):void
 		{
 			_horizontalPosition = horizontalPosition;
@@ -59,8 +59,6 @@
 			
 			_width = objectToAlign.width;
 			_height = objectToAlign.height;
-			
-			trace(_width, _height);
 		
 			_registrationIsAtCenter = registrationIsAtCenter;
 
@@ -76,11 +74,11 @@
 			_vPadding = vPadding;
 			_width = objectToAlign.width;
 			_height = objectToAlign.height;
-			align(objectToAlign, width, height, 0, 0 );	
+			align(objectToAlign, width, height, 0, 0 );
 		}
 	
 		private static function align(objectToAlign:DisplayObject, destWidth:Number, destHeight:Number, offSetX:Number = 0, offSetY:Number = 0):void
-		{	
+		{
 			switch (_horizontalPosition)
 			{
 				case KEEP:
@@ -97,7 +95,7 @@
 				case LEFT_THIRD:
 					objectToAlign.x = (destWidth / 3) - (_width >> 1) + _hPadding;
 					break;
-				case RIGHT_THIRD:	
+				case RIGHT_THIRD:
 					objectToAlign.x = (destWidth / 3) + (destWidth / 3) - (_width >> 1) + _hPadding;
 					break;
 			}
@@ -117,7 +115,7 @@
 				case TOP_THIRD:
 					objectToAlign.y = (destHeight / 3) - (_height >> 1) + _vPadding;
 					break;
-				case BOTTOM_THIRD:	
+				case BOTTOM_THIRD:
 					objectToAlign.y = destHeight - (destHeight / 3) - (_height >> 1) + _vPadding;
 					break;
 			}

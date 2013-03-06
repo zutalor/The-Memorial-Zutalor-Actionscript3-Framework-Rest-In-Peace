@@ -22,6 +22,7 @@ package com.zutalor.synthesizer
 	public class Sounds
 	{
 	
+		public static var count:int;
 		protected static var _sampleMaps:PropertyManager;
 		protected var soundLoader:SoundLoader;
 		protected var presetLoader:PresetLoader;
@@ -69,7 +70,7 @@ package com.zutalor.synthesizer
 			var noteNumber:Number;
 			var sampleMap:SampleMap;
 			var url:String;
-			
+
 			sampleMap = _sampleMaps.getPropsByName(preset.soundName);
 			if (!sampleMap)
 				ShowError.fail(Sounds, "No samples for " + preset.soundName);
@@ -83,11 +84,12 @@ package com.zutalor.synthesizer
 			
 			if (preset.loopStart && preset.loopEnd)
 				setupLoop(audioSource, preset.loopStart, preset.loopEnd);
-			
+	
 			if (mods)
 				for (var i:int = 0; i < mods.length; i++)
+				{
 					SamplerSource(audioSource).pitchModulations.push(mods[i]);
-			
+				}
 			ampFilter = new AmpFilter(audioSource, eg);
 			return ampFilter;
 		}

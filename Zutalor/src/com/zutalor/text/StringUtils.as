@@ -1,14 +1,14 @@
 package com.zutalor.text
-{				
+{
 	import com.zutalor.utils.ShowError;
 
 	/**
 	 * The StringUtils class is a singleton that
 	 * contains utility methods for strings.
-	 * 
+	 *
 	 * <script src="http://mint.codeendeavor.com/?js" type="text/javascript"></script>
 	 */
-	final public class StringUtils 
+	final public class StringUtils
 	{
 		private const LTRIM_EXP:RegExp=/(\s|\n|\r|\t|\v)*$/;
 		private const RTRIM_EXP:RegExp=/^(\s|\n|\r|\t|\v)*/m;
@@ -19,10 +19,18 @@ package com.zutalor.text
 
 		public function StringUtils() {}
 		
+		public static function find(find:String, str:String):Boolean
+		{
+			if (str.indexOf(find) != -1)
+				return true;
+			else
+				return false;
+		}
+		
 		/**
 		 * Convert a style sheet formatted color (#ff0099) to
 		 * a whole integer.
-		 * 
+		 *
 		 * @param num The stylesheet formatted number.
 		 */
 		public static function styleSheetNumberToInt(num:String):int
@@ -34,7 +42,7 @@ package com.zutalor.text
 		/**
 		 * Converts a style sheet formatted color (#ff0099) to
 		 * 0xff0099 as a string.
-		 * 
+		 *
 		 * @param num The stylesheet formatted number.
 		 */
 		public static function styleSheetNumberTo0xHexString(num:String):String
@@ -44,7 +52,7 @@ package com.zutalor.text
 		
 		/**
 		 * Check whether a string is a valid email.
-		 * 
+		 *
 		 * @param str The email to evaluate.
 		 */
 		public static function isemail(str:String):Boolean
@@ -55,7 +63,7 @@ package com.zutalor.text
 		
 		/**
 		 * Check whether a string is a valid po box. (PO ,P O,P.O,P. O,p o,p.o,p. o,Box,Post Office,post office).
-		 * 
+		 *
 		 * @param address The string to evaluate.
 		 */
 		public static function ispobox(address:String):Boolean
@@ -63,15 +71,15 @@ package com.zutalor.text
 			var look:Array=["PO ","P O","P.O","P. O", "p o","p.o","p. o","Box","Post Office","post office"];
 			var len:Number=look.length;
 			var i:int;
-			for(i=0;i < len; i++) if(address.indexOf(look[i]) != -1) return true; 
+			for(i=0;i < len; i++) if(address.indexOf(look[i]) != -1) return true;
 			return false;
 		}
 		
 		/**
-		 * Check whether a state abbreviation is a valid state, according to the 
+		 * Check whether a state abbreviation is a valid state, according to the
 		 * usps list of abbreviations (http://www.usps.com/ncsc/lookups/abbr_state.txt) - including
 		 * military state abbreviations.
-		 * 
+		 *
 		 * @param state A state abbreviation to evaluate.
 		 * @param message A message to throw if the assertion evaluates to false.
 		 * @param exceptionType The exceptionType to throw if an exception is being thrown.
@@ -134,7 +142,7 @@ package com.zutalor.text
 		
 		/**
 		 * Check that a string is a valid http URL.
-		 * 
+		 *
 		 * @param str The string to evaluate.
 		 */
 		public static function isurl(str:String):Boolean
@@ -144,7 +152,7 @@ package com.zutalor.text
 		
 		/**
 		 * Check whether or not a string is a valid phone number.
-		 * 
+		 *
 		 * @param str The string to evaluate.
 		 */
 		public static function isphone(str:String):Boolean
@@ -155,7 +163,7 @@ package com.zutalor.text
 		
 		/**
 		 * Check whether or not a string is a valid file URI.
-		 * 
+		 *
 		 * @param str The string to evaluate.
 		 */
 		public static function isfileuri(str:String):Boolean
@@ -184,9 +192,9 @@ package com.zutalor.text
 		 * @param search The string to search in.
 		 * @param returnAfter The string in which everything after the last occurance will be returned.
 		 */
-		public static function afterLast(search:String, returnAfter:String):String 
+		public static function afterLast(search:String, returnAfter:String):String
 		{
-			if(search == null) return null; 
+			if(search == null) return null;
 			var idx:int=search.lastIndexOf(returnAfter);
 			if(idx == -1) return null;
 			idx += returnAfter.length;
@@ -199,7 +207,7 @@ package com.zutalor.text
 		 * @param search The string to search in.
 		 * @param returnBefore The string in which everything before the first occurance will be returned.
 		 */
-		public static function beforeFirst(search:String, returnBefore:String):String 
+		public static function beforeFirst(search:String, returnBefore:String):String
 		{
 			if(search == null) return null;
 			var idx:int=search.indexOf(returnBefore);
@@ -228,16 +236,16 @@ package com.zutalor.text
 		 * @param start The string to use as the start index.
 		 * @param end The string to use as the end index.
 		 */
-		public static function between(search:String, start:String, end:String):String 
+		public static function between(search:String, start:String, end:String):String
 		{
 			if(search == null) return null;
 			var str:String='';
 			var startIdx:int=search.indexOf(start);
-			if(startIdx != -1) 
+			if(startIdx != -1)
 			{
 				startIdx += start.length;
 				var endIdx:int=search.indexOf(end,startIdx);
-				if(endIdx != -1) str=search.substr(startIdx,endIdx - startIdx); 
+				if(endIdx != -1) str=search.substr(startIdx,endIdx - startIdx);
 			}
 			return str;
 		}
@@ -248,7 +256,7 @@ package com.zutalor.text
 		 * @param str The string.
 		 * @param allWords Whether or not all words will be capitalized.
 		 */
-		public static function capitalize(p_string:String, allWords:Boolean=false):String 
+		public static function capitalize(p_string:String, allWords:Boolean=false):String
 		{
 			var str:String=trimLeft(p_string);
 			if(allWords) return str.replace(/^.|\b./g,_upperCase);
@@ -266,10 +274,10 @@ package com.zutalor.text
 		 * @param p_string The string to break up.
 		 * @param p_len Maximum length of each block of text.
 		 * @param p_delim delimter to end text blocks on, default='.'
-		 * 
+		 *
 		 * @return Array
 		 */
-		public static function block(p_string:String, p_len:uint, p_delim:String="."):Array 
+		public static function block(p_string:String, p_len:uint, p_delim:String="."):Array
 		{
 			var arr:Array=new Array();
 			if(p_string == null || !contains(p_string,p_delim)) return arr;
@@ -296,7 +304,7 @@ package com.zutalor.text
 		 *
 		 * @param str The String whose beginning whitespace will be removed.
 		 */
-		public static function trimLeft(str:String):String 
+		public static function trimLeft(str:String):String
 		{
 			if(str == null) return '';
 			return str.replace(/^\s+/,'');
@@ -304,10 +312,10 @@ package com.zutalor.text
 
 		/**
 		 * Removes whitespace from the end of the specified string.
-		 * 
+		 *
 		 * @param str The String whose ending whitespace will be removed.
 		 */
-		public static function trimRight(str:String):String 
+		public static function trimRight(str:String):String
 		{
 			if(str == null) return '';
 			return str.replace(/\s+$/,'');
@@ -320,7 +328,7 @@ package com.zutalor.text
 		 * @param pattern The character or sub-string to count.
 		 * @param caseSensitive Whether or not the search is case sensitive.
 		 */
-		public static function countOf(search:String, pattern:String, caseSensitive:Boolean=true):uint 
+		public static function countOf(search:String, pattern:String, caseSensitive:Boolean=true):uint
 		{
 			if(search == null) return 0;
 			var char:String=escapePattern(pattern);
@@ -335,7 +343,7 @@ package com.zutalor.text
 		 * @param char Character for pad.
 		 * @param length Length to pad to.
 		 */
-		public static function padLeft(str:String, char:String, length:uint):String 
+		public static function padLeft(str:String, char:String, length:uint):String
 		{
 			var s:String=str;
 			while(s.length<length) s=char+s;
@@ -349,7 +357,7 @@ package com.zutalor.text
 		 * @param char Character for pad.
 		 * @param length Length to pad to.
 		 */
-		public static function padRight(str:String, char:String, length:uint):String 
+		public static function padRight(str:String, char:String, length:uint):String
 		{
 			var s:String=str;
 			while (s.length<length) s += char;
@@ -361,7 +369,7 @@ package com.zutalor.text
 		 *
 		 * @param str The string to proper case.
 		 */
-		public static function properCase(str:String):String 
+		public static function properCase(str:String):String
 		{
 			if(str == null) return null;
 			var st:String=str.toLowerCase().replace(/\b([^.?;!]+)/,capitalize);
@@ -375,7 +383,7 @@ package com.zutalor.text
 		 * @param pattern The string that will be removed from the input string.
 		 * @param caseSensitive Whether or not the replace is case sensitive.
 		 */
-		public static function remove(search:String, pattern:String, caseSensitive:Boolean=true):String 
+		public static function remove(search:String, pattern:String, caseSensitive:Boolean=true):String
 		{
 			if(search == null) return null;
 			var rem:String=escapePattern(pattern);
@@ -388,7 +396,7 @@ package com.zutalor.text
 		 *
 		 * @param str The String that will be reversed.
 		 */
-		public static function reverse(str:String):String 
+		public static function reverse(str:String):String
 		{
 			if(str == null) return null;
 			return str.split('').reverse().join('');
@@ -399,7 +407,7 @@ package com.zutalor.text
 		 *
 		 * @param str The String that will be reversed.
 		 */
-		public static function reverseWords(str:String):String 
+		public static function reverseWords(str:String):String
 		{
 			if(str == null) return '';
 			return str.split(/\s+/).reverse().join('');
@@ -411,7 +419,7 @@ package com.zutalor.text
 		 * @param source The source string.
 		 * @param target The target string.
 		 */
-		public static function similarity(source:String, target:String):Number 
+		public static function similarity(source:String, target:String):Number
 		{
 			var ed:uint=editDistance(source,target);
 			var maxLen:uint=Math.max(source.length,target.length);
@@ -427,7 +435,7 @@ package com.zutalor.text
 		 * @param source The source string.
 		 * @param target The target string.
 		 */
-		public static function editDistance(source:String, target:String):uint 
+		public static function editDistance(source:String, target:String):uint
 		{
 			var i:Number;
 			var j:Number;
@@ -446,10 +454,10 @@ package com.zutalor.text
 			for (i=1;i <= n; i++)
 			{
 				var s_i:String=source.charAt(i-1);
-				for(j=1;j <= m; j++) 
+				for(j=1;j <= m; j++)
 				{
 					var t_j:String=target.charAt(j-1);
-					if(s_i == t_j) cost=0; 
+					if(s_i == t_j) cost=0;
 					else cost=1;
 					d[i][j]=_minimum(d[i - 1][j] + 1,d[i][j - 1] + 1,d[i - 1][j - 1] + cost);
 				}
@@ -462,7 +470,7 @@ package com.zutalor.text
 		 *
 		 * @param str The source string.
 		 */
-		public static function swapCase(str:String):String 
+		public static function swapCase(str:String):String
 		{
 			if(str == null) return null;
 			return str.replace(/(\w)/,_swapCase);
@@ -473,7 +481,7 @@ package com.zutalor.text
 		 *
 		 * @param str The source string.
 		 */
-		public static function stripTags(str:String):String 
+		public static function stripTags(str:String):String
 		{
 			if(str == null) return null;
 			return str.replace(/<\/?[^>]+>/igm,'');
@@ -497,13 +505,13 @@ package com.zutalor.text
 		 * @param len The length the string should be shortend to.
 		 * @param suffix The string to append to the end of the truncated string.
 		 */
-		public static function truncate(str:String, len:uint, suffix:String="..."):String 
+		public static function truncate(str:String, len:uint, suffix:String="..."):String
 		{
 			if(str == null) return '';
 			if(!len) len=str.length;
 			len -= suffix.length;
 			var trunc:String=str;
-			if(trunc.length > len) 
+			if(trunc.length > len)
 			{
 				trunc=trunc.substr(0,len);
 				if(/[^\s]/.test(str.charAt(len))) trunc=trimRight(trunc.replace(/\w+$|\s+$/,''));
@@ -514,7 +522,7 @@ package com.zutalor.text
 
 		/**
 		 * Search for key in string.
-		 * 
+		 *
 		 * @param str The target string.
 		 * @param key The key to search for.
 		 * @param caseSensitive Whether or not the search is case sensitive.
@@ -531,7 +539,7 @@ package com.zutalor.text
 
 		/**
 		 * Does a case insensitive compare with two strings.
-		 * 
+		 *
 		 * @param s1 The first string.
 		 * @param s2 The second string.
 		 * @param caseSensitive Whether or not the comparison is case sensitive.
@@ -543,7 +551,7 @@ package com.zutalor.text
 
 		/**
 		 * Replace every instance of a string with something else
-		 * 
+		 *
 		 * @param str The string to search in.
 		 * @param oldChar The pattern to be removed.
 		 * @param newChar The new string to instert.
@@ -551,11 +559,11 @@ package com.zutalor.text
 		public static function replace(str:String, oldChar:String, newChar:String):String
 		{
 			return str.split(oldChar).join(newChar);
-		}		
+		}
 
 		/**
 		 * Remove spaces from a string.
-		 * 
+		 *
 		 * @param str The target string.
 		 */
 		public static function removeSpaces(str:String):String
@@ -565,17 +573,17 @@ package com.zutalor.text
 
 		/**
 		 * Remove tabs from a string.
-		 * 
+		 *
 		 * @param str The target string.
 		 */
 		public static function removeTabs(str:String):String
 		{
-			return replace(str,"	","");	
+			return replace(str,"	","");
 		}
 
 		/**
 		 * Remove whitespace, line feeds, carrige returns from a string.
-		 * 
+		 *
 		 * @param str The target string.
 		 */
 		public static function trimall(str:String):String
@@ -599,7 +607,7 @@ package com.zutalor.text
 
 		/**
 		 * Lower Camel Case a string.
-		 * 
+		 *
 		 * @param str The target string.
 		 */
 		public static function toLowerCamel(str:String):String
@@ -623,29 +631,29 @@ package com.zutalor.text
 
 		/**
 		 * Determines whether the specified string begins with the specified prefix.
-		 * 
+		 *
 		 * @param input The string to search.
 		 * @param prefix The prefix that will be tested against the string.
 		 */
 		public static function beginsWith(input:String, prefix:String):Boolean
-		{			
+		{
 			return (prefix == input.substring(0,prefix.length));
 		}
 
 		/**
 		 * Determines whether the specified string ends with the specified suffix.
-		 * 
+		 *
 		 * @param input The string to search.
 		 * @param prefix The suffic that will be tested against the string.
 		 */
 		public static function endsWith(input:String, suffix:String):Boolean
 		{
 			return (suffix == input.substring(input.length - suffix.length));
-		}			
+		}
 
 		/**
 		 * Format a number with commas - ie. 10000 -> 10,000
-		 * 
+		 *
 		 * @param nm A Number or a String that will cast to a Number.
 		 */
 		public static function commaFormatNumber(nm:Object):String
@@ -658,22 +666,22 @@ package com.zutalor.text
 				if(i % 3 == 0 && i > 0) outString="," + outString;
 				outString=tmp.substr(l - (i + 1),1) + outString;
 			}
-			return outString;		
+			return outString;
 		}
 
 		/**
 		 * Capitalize the first character in the string.
-		 * 
+		 *
 		 * @param str The string.
 		 */
 		public static function firstToUpper(str:String):String
 		{
 			return str.charAt(0).toUpperCase() + str.substr(1);
-		}	
+		}
 
 		/**
 		 * Transforms source String to per word capitalization.
-		 * 
+		 *
 		 * @param str The target string.
 		 */
 		public static function toTitleCase(str:String):String
@@ -684,7 +692,7 @@ package com.zutalor.text
 
 		/**
 		 * Encode HTML.
-		 * 
+		 *
 		 * @param s The target string that has HTML in it.
 		 */
 		public static function htmlEncode(s:String):String
@@ -704,7 +712,7 @@ package com.zutalor.text
 			s=replace(s,"†","&dagger;");
 			s=replace(s,"·","&middot;");
 			s=replace(s,"µ","&micro;");
-			s=replace(s,"«","&laquo;");	
+			s=replace(s,"«","&laquo;");
 			s=replace(s,"»","&raquo;");
 			s=replace(s,"•","&bull;");
 			s=replace(s,"°","&deg;");
@@ -714,7 +722,7 @@ package com.zutalor.text
 
 		/**
 		 * Decode HTML.
-		 * 
+		 *
 		 * @param s The target string that has HTML in it.
 		 */
 		public static function htmlDecode(s:String):String
@@ -734,7 +742,7 @@ package com.zutalor.text
 			s=replace(s,"&dagger;","†");
 			s=replace(s,"&middot;",'·');
 			s=replace(s,"&micro;","µ");
-			s=replace(s,"&laquo;","«");	
+			s=replace(s,"&laquo;","«");
 			s=replace(s,"&raquo;","»");
 			s=replace(s,"&bull;","•");
 			s=replace(s,"&deg;","°");
@@ -743,11 +751,11 @@ package com.zutalor.text
 			s=replace(s,"&rdquo;",'"');
 			s=replace(s,"&quot;",'"');
 			return s;
-		}		
+		}
 
 		/**
 		 * Sanitize <code>null</code> strings for display purposes.
-		 * 
+		 *
 		 * @param str The string.
 		 */
 		public static function sanitizeNull(str:String):String
@@ -757,9 +765,9 @@ package com.zutalor.text
 
 		/**
 		 * Strip the zero off floated numbers.
-		 * 
+		 *
 		 * @param n The target number.
-		 */	
+		 */
 		public static function stripZeroOnFloat(n:Number):String
 		{
 			var str:String="";
@@ -782,7 +790,7 @@ package com.zutalor.text
 		}
 		/**
 		 * Add zero in front of floated number.
-		 * 
+		 *
 		 * @param n The target number.
 		 */
 		public static function padZeroOnFloat(n:Number):String
@@ -792,12 +800,12 @@ package com.zutalor.text
 
 		/**
 		 * Remove scientific notation from very small floats when casting to String.
-		 * 
+		 *
 		 * @param n The target number.
-		 * 
+		 *
 		 * @example Using the StringUtils.floatToString method:
 		 * <listing>
-		 * var utils:Utilities=Utilities.gi();	
+		 * var utils:Utilities=Utilities.gi();
 		 * trace(String(0.0000001)); //returns 1e-7
 		 * trace(utils.string.floatToString(0.0000001)); //returns .00000001
 		 * </listing>
@@ -810,7 +818,7 @@ package com.zutalor.text
 
 		/**
 		 * Strip the zero off floated numbers and remove Scientific Notation.
-		 * 
+		 *
 		 * @param n The target number.
 		 */
 		public static function stripZeroAndRepairFloat(n:Number):String
@@ -827,18 +835,18 @@ package com.zutalor.text
 			else
 			{
 				tmp=String(n);
-				isZeroFloat=false;	
+				isZeroFloat=false;
 			}
 			// if we have a float strip the zero (or +=1) off!
 			var a:Array=tmp.split(".");
-			if(a.length > 1) str=(a[0] == "1" && isZeroFloat == true) ? "." + a[1] : tmp;				
+			if(a.length > 1) str=(a[0] == "1" && isZeroFloat == true) ? "." + a[1] : tmp;
 			else str=tmp;
 			return str;
 		}
 
 		/**
 		 * Generate a set of random characters.
-		 * 
+		 *
 		 * @param amount The number of characters to generate.
 		 */
 		public static function randChar(amount:Number):String
@@ -850,9 +858,9 @@ package com.zutalor.text
 
 		/**
 		 * Generate a set of random LowerCase characters.
-		 * 
+		 *
 		 * @param amount The number of characters to generate.
-		 */	
+		 */
 		public static function randLowerChar(amount:Number):String
 		{
 			var str:String="";
@@ -862,9 +870,9 @@ package com.zutalor.text
 
 		/**
 		 * Generate a set of random Number characters.
-		 * 
+		 *
 		 * @param amount The amount of numbers to generate.
-		 */		
+		 */
 		public static function randNum(amount:Number):String
 		{
 			var str:String="";
@@ -874,9 +882,9 @@ package com.zutalor.text
 
 		/**
 		 * Generate a set of random Special and Number characters.
-		 * 
+		 *
 		 * @param amount The number of characters to generate.
-		 */		
+		 */
 		public static function randSpecialChar(amount:Number):String
 		{
 			var str:String="";
@@ -886,7 +894,7 @@ package com.zutalor.text
 
 		/**
 		 * Detect HTML line breaks (&gt;br&lt;).
-		 * 
+		 *
 		 * @param str The target string.
 		 */
 		public static function hasBr(str:String):Boolean
@@ -896,7 +904,7 @@ package com.zutalor.text
 
 		/**
 		 * Convert single quotes to double quotes.
-		 * 
+		 *
 		 * @param str The target string.
 		 */
 		public static function toDoubleQuote(str:String):String
@@ -908,7 +916,7 @@ package com.zutalor.text
 
 		/**
 		 * Convert double quotes to single quotes.
-		 * 
+		 *
 		 * @param str The target string.
 		 */
 		public static function toSingleQuote(str:String):String
@@ -920,13 +928,13 @@ package com.zutalor.text
 
 		/**
 		 * Remove all formatting and return cleaned numbers from string.
-		 * 
+		 *
 		 * @param str The target string.
-		 * 
+		 *
 		 * @example	Using the StringUtils.toNumeric method:
-		 * <listing>	
+		 * <listing>
 		 * var utils:Utilities=Utilities.gi();
-		 * utils.string.toNumeric("123-123-1234"); //returns 1221231234 
+		 * utils.string.toNumeric("123-123-1234"); //returns 1221231234
 		 * </listing>
 		 */
 		public static function toNumeric(str:String):String
@@ -943,7 +951,7 @@ package com.zutalor.text
 
 		/**
 		 * Find the file type from a source path.
-		 * 
+		 *
 		 * @param source A full file url or path.
 		 */
 		public static function findFileType(source:String):String
@@ -958,21 +966,21 @@ package com.zutalor.text
 		
 		/**
 		 * Convert string or number to boolean
-		 * 
+		 *
 		 * @param s The string ("1", "true", "yes", "on").
-		 * 
+		 *
 		 * @example Using toBoolean:
-		 * <listing>	
+		 * <listing>
 		 * var utils:Utilities=Utilities.gi();
 		 * var b:Boolean=utils.convert.toBoolean("true");
 		 * </listing>
-		 * 
+		 *
 		 */
 		public static function toBoolean(s:String):Boolean
 		{
 			var b:String=String(s).toLowerCase();
 			if(b == "true" || b == "1" || b == "yes" || b == "on") return true;
-			else if (b=="" || b == "false" || b == "0" || b == "no" || b == "off") return false; 
+			else if (b=="" || b == "false" || b == "0" || b == "no" || b == "off") return false;
 			else ShowError.fail(StringUtils, "BoolConversion.toBoolean() could not convert input to a proper Boolean value");
 			return false;
 		}
@@ -995,7 +1003,7 @@ package com.zutalor.text
 		 * @private
 		 * only used internally, see net.guttershark.util.Assertions for a public version.
 		 */
-		private static function contains(p_string:String, p_char:String):Boolean 
+		private static function contains(p_string:String, p_char:String):Boolean
 		{
 			if(p_string == null) return false;
 			return p_string.indexOf(p_char) != -1;
@@ -1004,7 +1012,7 @@ package com.zutalor.text
 		/**
 		 * @private
 		 */
-		private static function escapePattern(p_pattern:String):String 
+		private static function escapePattern(p_pattern:String):String
 		{
 			// RM: might expose this one, I've used it a few times already.
 			return p_pattern.replace(/(\]|\[|\{|\}|\(|\)|\*|\+|\?|\.|\\)/g,'\\$1');
@@ -1013,7 +1021,7 @@ package com.zutalor.text
 		/**
 		 * @private
 		 */
-		private static function _minimum(a:uint, b:uint, c:uint):uint 
+		private static function _minimum(a:uint, b:uint, c:uint):uint
 		{
 			return Math.min(a,Math.min(b,Math.min(c,a)));
 		}
@@ -1041,7 +1049,7 @@ package com.zutalor.text
 		/**
 		 * @private
 		 */
-		private static function _upperCase(p_char:String, ...args):String 
+		private static function _upperCase(p_char:String, ...args):String
 		{
 			return p_char.toUpperCase();
 		}
@@ -1049,11 +1057,11 @@ package com.zutalor.text
 		/**
 		 * @private
 		 */
-		private static function _swapCase(p_char:String, ...args):String 
+		private static function _swapCase(p_char:String, ...args):String
 		{
 			var lowChar:String=p_char.toLowerCase();
 			var upChar:String=p_char.toUpperCase();
-			switch (p_char) 
+			switch (p_char)
 			{
 				case lowChar:
 					return upChar;

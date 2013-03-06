@@ -50,6 +50,16 @@ package Zutalor.src.com.zutalor.textToSpeech
 			samplePlayer.addEventListener(IOErrorEvent.IO_ERROR, speakWithTextToSpeech, false, 0, true);
 		}
 		
+		public function set samplePlayerSpeed(s:int):void
+		{
+			samplePlayer.speed = s;
+		}
+		
+		public function get samplePlayerSpeed():int
+		{
+			return samplePlayer.speed;
+		}
+		
 		public function set volume(v:Number):void
 		{
 			samplePlayer.volume = v;
@@ -218,7 +228,7 @@ package Zutalor.src.com.zutalor.textToSpeech
 			str = str.replace(r,"");
 			sa = str.split(" ");
 			wordcount += sa.length;
-			trace("Words Translated: " + wordcount);
+			//trace("Words Translated: " + wordcount);
 			
 			return str;
 		}

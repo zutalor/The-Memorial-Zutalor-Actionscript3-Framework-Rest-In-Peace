@@ -39,9 +39,6 @@
 		public function insert(key:*, obj:*, newkey:*=null):*
 		{
 			var i:int;
-			
-			if (!ignoreCaseInKey)
-				trace(key);
 				
 			if (key is String && ignoreCaseInKey)
 				key = key.toLowerCase();

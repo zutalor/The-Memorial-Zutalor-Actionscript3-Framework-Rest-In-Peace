@@ -41,7 +41,7 @@ package com.zutalor.audio
 				params = pParams.split(",");
 				xmlUrl = TextUtil.strip(params[0]);
 				assetPath = TextUtil.strip(params[1]);
-				synthesizer = new Synthesizer(AudioDescriptor.RATE_44100, 8192, 3);
+				synthesizer = new Synthesizer(AudioDescriptor.RATE_44100, 4096, 3);
 				synthesizer.sounds.load(xmlUrl, assetPath, pOnComplete);
 			}
 		}
@@ -136,6 +136,9 @@ package com.zutalor.audio
 				var duration:Number;
 				var startTimes:Array;
 				var maxTime:Number;
+				var tolerence:Number = .02;
+				var nextIncr:Number;
+				var lastIncr:Number;
 				
 				if (gs.reverse)
 					temp.reverse();
@@ -159,11 +162,20 @@ package com.zutalor.audio
 					note.hold = gs.preset.hold;
 					
 					startTimes[x] = startTime;
-
+					
 					if (variableTiming)
 					{
 						if (x < temp.length)
-							startTime +=  (1 -(Math.abs(temp[x] - temp[x + 1]))) / 20;
+						{
+							nextIncr =  (1 -(Math.abs(temp[x] - temp[x + 1]))) / 20;
+							if (! isNaN(nextIncr))
+							{
+								startTime += nextIncr;
+								lastIncr = startTime;
+							}
+							else
+								startTime += lastIncr;
+						}
 					}
 					else
 						startTime = gs.preset.noteTiming * x;

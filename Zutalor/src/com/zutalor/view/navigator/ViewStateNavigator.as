@@ -45,9 +45,11 @@ package com.zutalor.view.navigator
 		
 		protected var allowAnswerChanging:Boolean = true;
 		protected var promptId:String;
+		protected var promptCancelled:Boolean;
 
 		protected var KEYSTROKE_DELAY_BEFORE_SAYING_WORD:int = 1500;
 		protected var DELAY_FROM_LAST_KEYSTROKE_BEFORE_SAYING_PROMPT:int = 5000;
+		protected var PROMPT_DELAY_ON_ANSWER:int = 2000;
 		
 		protected static const PUNCTUATION:Array = ["'", "*", ";", ":", "-", "}", "{", "+", "_", ")",
 													"(", "?", ".", ",", '"', "[" , "]", "~", "`",
@@ -75,24 +77,28 @@ package com.zutalor.view.navigator
 		public function activateState(id:String):void
 		{
 			var t:Transition;
+			var tempTip:TranslateItemProperties;
 
 			if (!np.inTransition)
 			{
 				np.inTransition = true;
 				stop();
-				np.tip = Translate.presets.getItemPropsByName(Translate.language, id);
-				uiController.getValueObject().prompt = "";
-				uiController.getValueObject().inputText = inputText = "";
-				uiController.onModelChange();
+				tempTip = Translate.presets.getItemPropsByName(Translate.language, id);
 				
-				if (!np.tip)
+				if (!tempTip)
 				{
 					trace("State not found: " + id);
+					np.inTransition = false;
 					return;
 				}
+			
+				np.tip = tempTip;
 				np.history.push(np.tip.name);
 				uiController.getValueObject().text = textToSpeechUtils.getTextForDisplay(np.tip.tText);
 				uiController.onModelChange("text");
+				uiController.getValueObject().prompt = "";
+				uiController.getValueObject().inputText = inputText = "";
+				uiController.onModelChange();
 				
 				if (np.curTransitionType)
 				{
@@ -126,8 +132,6 @@ package com.zutalor.view.navigator
 				np.data = "";
 				uiController[XML(np.tip.tMeta).state.@method](XML(np.tip.tMeta).state);
 			}
-			else if (np.batchSubmit && currentStateType == "submitAnswers")
-				batchSubmitAnswers();
 			else
 			{
 				if (currentStateType == "textInput")
@@ -140,6 +144,24 @@ package com.zutalor.view.navigator
 						promptId = currentStateType;
 				
 				sayText();
+				checkForMethodCall();
+			}
+		}
+		
+		protected function checkForMethodCall():void
+		{
+			var method:String;
+			var params:String;
+			
+			method = String(XML(np.tip.tMeta).state.@method);
+			params = String(XML(np.tip.tMeta).state.@methodParams);
+			
+			if (method)
+			{
+				if (params)
+					uiController[method](params);
+				else
+					uiController[method]();
 			}
 		}
 		
@@ -179,6 +201,7 @@ package com.zutalor.view.navigator
 				textToSpeechUrl = Application.settings.textToSpeechApiUrlPC;
 				
 			textToSpeech = new TextToSpeech(textToSpeechUrl);
+			textToSpeech.samplePlayerSpeed = 1024;
 			textToSpeechUtils = new TextToSpeechUtils();
 			errorPlayer = new SamplePlayer();
 			textToSpeech.enabled = Application.settings.enableTextToSpeech;
@@ -220,13 +243,15 @@ package com.zutalor.view.navigator
 		protected function onHotKey(hke:HotKeyEvent):void
 		{
 			var uip:UserInputProperties;
-			
+
+			textToSpeech.stop();
 			if (np.inTransition)
 				return;
 			
 			uip = hotKeys.getPropsByName(hke.message);
 			
-			if (!np.inTransition && currentStateType != "uiControllerMethod" && (uip.activeForState == "all" || uip.activeForState == currentStateType))
+			if (!np.inTransition && currentStateType != "uiControllerMethod"
+									&& (uip.activeForState == "all" || uip.activeForState == currentStateType))
 				onUserInput(uip);
 		}
 		
@@ -300,7 +325,6 @@ package com.zutalor.view.navigator
 			var asa:Array;
 			var l:int;
 			
-			
 			if (currentStateType == "page")
 			{
 				activateNextState(uip);
@@ -326,6 +350,7 @@ package com.zutalor.view.navigator
 		
 		protected function onMultipleChoice(uip:UserInputProperties, stateType:String):void
 		{
+			var promptDelay:int;
 			
 			if (stateType == "confirmation")
 				np.answerIndex = np.confirmationAnswers.indexOf(uip.name.toLowerCase());
@@ -340,10 +365,13 @@ package com.zutalor.view.navigator
 				np.correctAnswer = XML(np.tip.tText)..answers.@correctAnswer;
 				np.answer = np.answerText.substr(0, 1).toUpperCase();
 				
-				if (allowAnswerChanging)
+				if (XML(np.tip.tMeta).state.@noPromptDelay != "true")
+					promptDelay = PROMPT_DELAY_ON_ANSWER;
+				
+				if (promptId != "none")
 					speak(np.answerText, XML(np.tip.tText)..Q[np.answerIndex].@sound, sayPrompt, "onAnswered");
 				else
-					speakKey(np.answerText.substr(0, 1), validateInput, uip);
+					speak(np.answerText, XML(np.tip.tText)..Q[np.answerIndex].@sound);
 			}
 		}
 		
@@ -402,11 +430,13 @@ package com.zutalor.view.navigator
 			
 			answer.correctAnswer = Object(uiController).getCorrectAnswer(answer);
 			
+			if (answer.correctAnswer && answer.answer == answer.correctAnswer)
+				answer.answerIsCorrect = "Y";
+			
 			np.curAnswerKey = answer.questionId;
 			np.answers.insert(np.curAnswerKey, answer);
-			
-			if (!np.batchSubmit)
-				submitCurrentAnswer(answer);
+
+			submitCurrentAnswer(answer);
 		}
 		
 		protected function onTextInput(uip:UserInputProperties):void
@@ -454,7 +484,7 @@ package com.zutalor.view.navigator
 		{
 			uiController.getValueObject().inputText =  "<P>" + textToSpeechUtils.getTextForDisplay(inputText) + "</P>";
 			uiController.onModelChange("inputText");
-			np.answer = np.answerText =inputText;
+			np.answer = np.answerText = inputText;
 			np.correctAnswer = null;
 		}
 		
@@ -552,19 +582,8 @@ package com.zutalor.view.navigator
 							String(XML(np.tip.tMeta).state.@onCompleteState));
 		}
 		
-		protected function batchSubmitAnswers():void
-		{
-			var timeStamp:String;
-			var answer:AnswerProperties;
-				
-			for (var i:int = 0; i < np.answers.length; i++)
-			{
-				answer = np.answers.getByIndex(i);
-				uiController[np.answerMethod](answer, String(XML(np.tip.tMeta).state.@onCompleteState));
-			}
-		}
-		
-		protected function speak(text:String, soundName:String, onComplete:Function = null, onCompleteArgs:* = null):void
+		protected function speak(text:String, soundName:String, onComplete:Function = null,
+													onCompleteArgs:* = null):void
 		{
 			if (soundName)
 				soundName = np.soundPath + soundName.toLowerCase() + np.soundExt;
@@ -575,11 +594,10 @@ package com.zutalor.view.navigator
 		protected function sayPrompt(id:String, onComplete:Function = null, onCompleteArgs:* = null):void
 		{
 			var tip:TranslateItemProperties;
-			
 			tip = Translate.presets.getItemPropsByName(Translate.language, id);
-			
 			if (tip)
 			{
+
 				uiController.getValueObject().prompt = textToSpeechUtils.getTextForDisplay(tip.tText);
 				uiController.onModelChange("prompt");
 				uiController.vc.getItemByName("prompt").alpha = 0;

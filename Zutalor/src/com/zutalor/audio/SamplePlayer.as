@@ -14,7 +14,7 @@ package com.zutalor.audio
 
 	public final class SamplePlayer extends EventDispatcher
 	{
-		public var speed:int = 4096;
+		public var speed:int;
 	
 		private const SAMPLERATE:Number = 44.1;
 		private var bufferSize: int;
@@ -75,12 +75,8 @@ package com.zutalor.audio
 				
 			if (soundClass)
 			{
-				playing = soundLoaded = true;
 				inputSound = new soundClass();
-				inputSound.addEventListener(IOErrorEvent.IO_ERROR, onIOError, false, 0, true);
-				channel = inputSound.play();
-				volume = vol;
-				channel.addEventListener(Event.SOUND_COMPLETE, onPlaybackComplete, false, 0, true);
+				onLoaded();
 			}
 			else
 			{
@@ -176,6 +172,8 @@ package com.zutalor.audio
 
 		private function extract(target: ByteArray, length:int):void
 		{
+			var amplitude:Number;
+			
 			while(playing && 0 < length)
 			{
 				if (samplesPosition + length > samplesTotal)
