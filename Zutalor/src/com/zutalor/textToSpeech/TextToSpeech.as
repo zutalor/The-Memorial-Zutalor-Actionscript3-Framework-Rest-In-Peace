@@ -50,14 +50,14 @@ package Zutalor.src.com.zutalor.textToSpeech
 			samplePlayer.addEventListener(IOErrorEvent.IO_ERROR, speakWithTextToSpeech, false, 0, true);
 		}
 		
-		public function set samplePlayerSpeed(s:int):void
+		public function set tempo(t:Number):void
 		{
-			samplePlayer.speed = s;
+			samplePlayer.tempo = t;
 		}
 		
-		public function get samplePlayerSpeed():int
+		public function get tempo():Number
 		{
-			return samplePlayer.speed;
+			return samplePlayer.tempo;
 		}
 		
 		public function set volume(v:Number):void
@@ -76,8 +76,9 @@ package Zutalor.src.com.zutalor.textToSpeech
 			this.onComplete = onComplete;
 			this.onCompleteArgs = onCompleteArgs;
 			this.text = text;
-			
-			soundClass = EmbeddedResources.getClass(text);
+
+			if (text)
+				soundClass = EmbeddedResources.getClass(text);
 		
 			if (url || soundClass)
 				samplePlayer.play(url, soundClass, onComplete, onCompleteArgs);

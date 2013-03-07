@@ -78,7 +78,9 @@ package com.zutalor.view.navigator
 		{
 			var t:Transition;
 			var tempTip:TranslateItemProperties;
-
+			
+			textToSpeech.stop();
+			
 			if (!np.inTransition)
 			{
 				np.inTransition = true;
@@ -201,7 +203,7 @@ package com.zutalor.view.navigator
 				textToSpeechUrl = Application.settings.textToSpeechApiUrlPC;
 				
 			textToSpeech = new TextToSpeech(textToSpeechUrl);
-			textToSpeech.samplePlayerSpeed = 1024;
+			textToSpeech.tempo = 1.2;
 			textToSpeechUtils = new TextToSpeechUtils();
 			errorPlayer = new SamplePlayer();
 			textToSpeech.enabled = Application.settings.enableTextToSpeech;
@@ -244,7 +246,6 @@ package com.zutalor.view.navigator
 		{
 			var uip:UserInputProperties;
 
-			textToSpeech.stop();
 			if (np.inTransition)
 				return;
 			
@@ -297,6 +298,14 @@ package com.zutalor.view.navigator
 					break;
 				case "next" :
 					validateInput(uip);
+					break;
+				case "faster" :
+					if (textToSpeech.tempo < 2.7)
+						textToSpeech.tempo += .1;
+					break;
+				case "slower" :
+					if (textToSpeech.tempo > .3)
+						textToSpeech.tempo -= .1;
 					break;
 				default :
 					onAnswer();
