@@ -25,8 +25,8 @@ package com.zutalor.controllers.base
 		public function UiControllerBase() {}
 		
 		final public function init(params:Object):void
-		{	
-			if (!vc) // only first view of the model gets privelages to grab the controller. 
+		{
+			if (!vc) // only first view of the model gets privelages to grab the controller.
 							// Other controllers accessed with controller registry.
 			{
 				_vController = params["controller"];
@@ -35,10 +35,15 @@ package com.zutalor.controllers.base
 			{
 				NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 				NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, onDeactivate);
-				NativeApplication.nativeApplication.addEventListener(Event.EXITING, onExiting); 
+				NativeApplication.nativeApplication.addEventListener(Event.EXITING, onExiting);
 			}
         }
 
+		public function logEvent(e:String):void
+		{
+			
+		}
+		
         private function onKeyDown(e:KeyboardEvent):void
         {
 			e.preventDefault();
@@ -86,9 +91,9 @@ package com.zutalor.controllers.base
 			
 		}
 		
-		public function onExiting(e:Event):void 
+		public function onExiting(e:Event):void
 		{
-		}						
+		}
 		
 		public function get vc():ViewController
 		{
@@ -119,7 +124,7 @@ package com.zutalor.controllers.base
 		{
 			_vController.onModelError(responds);
 			Logger.add(responds);
-		}	
+		}
 		
 		public function hideView(view:String, useTransition:Boolean=true):Boolean
 		{
@@ -146,7 +151,7 @@ package com.zutalor.controllers.base
 			}
 			else
 				return false;
-		}	
+		}
 		
 		public function onItemFocusIn(params:*):void
 		{

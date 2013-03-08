@@ -1,4 +1,4 @@
-package com.zutalor.components.html 
+package com.zutalor.components.html
 {
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.components.text.Text;
@@ -14,8 +14,8 @@ package com.zutalor.components.html
 	 * ...
 	 * @author Geoff
 	 */
-	public class Html extends Text implements IComponent 
-	{	
+	public class Html extends Text implements IComponent
+	{
 		public function Html(name:String)
 		{
 			super(name);
@@ -30,6 +30,7 @@ package com.zutalor.components.html
 			else
 			{
 				textField.htmlText = textField.text;
+				textField.selectable = false;
 				if (vip.styleSheetName)
 					StyleSheets.apply(textField, vip.styleSheetName, int(vip.width));
 				else
@@ -48,7 +49,7 @@ package com.zutalor.components.html
 				value = "";
 				
 			textField.htmlText = value;
-			StyleSheets.apply(textField, vip.styleSheetName, int(vip.width));			
+			StyleSheets.apply(textField, vip.styleSheetName, int(vip.width));
 		}
 		
 		public function loadHtml(url:String, textField:TextField = null, width:int = 0, stylesheet:String = null):void

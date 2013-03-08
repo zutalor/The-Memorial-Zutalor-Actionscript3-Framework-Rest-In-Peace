@@ -1,4 +1,4 @@
-package com.zutalor.components.text 
+package com.zutalor.components.text
 {
 	import com.zutalor.components.base.Component;
 	import com.zutalor.interfaces.IComponent;
@@ -10,8 +10,8 @@ package com.zutalor.components.text
 	 * ...
 	 * @author Geoff
 	 */
-	public class Text extends Component implements IComponent 
-	{		
+	public class Text extends Component implements IComponent
+	{
 		protected var textField:TextField;
 		
 		private static var _textAttributes:PropertyManager;
@@ -24,7 +24,7 @@ package com.zutalor.components.text
 		}
 		
 		public static function registerTextAttributes(options:Object):void
-		{	
+		{
 			if (!_textAttributes)
 			{
 				_textAttributes = new PropertyManager(TextAttributeProperties);
@@ -41,6 +41,15 @@ package com.zutalor.components.text
 			_textFormats.parseXML(options.xml[options.nodeId]);
 		}
 		
+		public function set selectable(s:Boolean):void
+		{
+			textField.selectable = s;
+		}
+		
+		public function get selectable():Boolean
+		{
+			return textField.selectable;
+		}
 		
 		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{

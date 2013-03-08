@@ -142,6 +142,10 @@ package com.zutalor.view.navigator
 					StageRef.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 					StageRef.stage.addEventListener(KeyboardEvent.KEY_UP, captureTextInput, false, 0, true);
 				}
+				//else if (currentStateType == "page")
+				//	uiController.logEvent("page: " + np.tip.name);
+				
+				
 				if (!promptId)
 						promptId = currentStateType;
 				
@@ -302,10 +306,12 @@ package com.zutalor.view.navigator
 				case "faster" :
 					if (textToSpeech.tempo < 2.7)
 						textToSpeech.tempo += .1;
+					uiController.logEvent("Tempo Change: " + textToSpeech.tempo.toPrecision(2));
 					break;
 				case "slower" :
 					if (textToSpeech.tempo > .3)
 						textToSpeech.tempo -= .1;
+					uiController.logEvent("Tempo Change: " + textToSpeech.tempo.toPrecision(2));
 					break;
 				default :
 					onAnswer();

@@ -144,13 +144,15 @@ package com.zutalor.audio
 		
 		private function onLoaded(e:Event = null):void
 		{
-			removeloadListeners();
-			samplesTotal = inputSound.length * SAMPLERATE;
-			
-			if (samplesTotal)
-				channel = filter.play(inputSound, outputSound, stopAndCallOnComplete);
-			else
-				stopAndCallOnComplete();
+			 try {
+				removeloadListeners();
+				samplesTotal = inputSound.length * SAMPLERATE;
+				
+				if (samplesTotal)
+					channel = filter.play(inputSound, outputSound, stopAndCallOnComplete);
+				else
+					stopAndCallOnComplete();
+			} catch (e:Error) { };
 		}
 		
 		private function removeloadListeners():void
