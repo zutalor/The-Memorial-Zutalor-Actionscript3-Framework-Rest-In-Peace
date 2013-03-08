@@ -111,6 +111,13 @@ package com.zutalor.view.navigator
 					initializeState();
 			}
 		}
+		
+		public function deactivate():void
+		{
+			StageRef.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			KeyListeners(false)
+		}
+		
 		protected function initializeState():void
 		{
 
@@ -222,7 +229,7 @@ package com.zutalor.view.navigator
 			np.confirmationAnswers = tMeta.settings.@confirmationAnswers;
 			np.answerMethod = tMeta.settings.@answerMethod;
 			initUserInput();
-			activateState(tMeta.settings.@firstPage);
+			activateState(tMeta.settings.@firstState);
 		}
 		
 		protected function initUserInput():void
@@ -243,7 +250,10 @@ package com.zutalor.view.navigator
 		protected function onKeyUp(ke:KeyboardEvent):void
 		{
 			if (!np.inTransition && hkm.keyInvalidated && currentStateType != "uiControllerMethod")
-				sayError("Unrecognized");
+			{
+				if (ke.charCode)
+					sayError("Unrecognized");
+			}
 		}
 		
 		protected function onHotKey(hke:HotKeyEvent):void
@@ -258,6 +268,8 @@ package com.zutalor.view.navigator
 			if (!np.inTransition && currentStateType != "uiControllerMethod"
 									&& (uip.activeForState == "all" || uip.activeForState == currentStateType))
 				onUserInput(uip);
+			else
+				trace(currentStateType);
 		}
 		
 		protected function checkForKeystrokePause():void
