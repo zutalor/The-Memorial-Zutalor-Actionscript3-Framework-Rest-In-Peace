@@ -2,6 +2,7 @@ package Zutalor.src.com.zutalor.textToSpeech
 {
 	import com.zutalor.audio.SamplePlayer;
 	import com.zutalor.text.TextUtil;
+	import com.zutalor.utils.Call;
 	import com.zutalor.utils.EmbeddedResources;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
@@ -68,6 +69,18 @@ package Zutalor.src.com.zutalor.textToSpeech
 		public function get volume():Number
 		{
 			return samplePlayer.volume;
+		}
+		
+		public function preloadText(text:String, url:String, onComplete:Function = null, onCompleteArgs:*= null):void
+		{
+			samplePlayer.volume = 0;
+			sayText(text, url, done);
+			
+			function done():void
+			{
+				samplePlayer.volume = 1;
+				Call.method(onComplete, onCompleteArgs);
+			}
 		}
 		
 		public function sayText(text:String, url:String, onComplete:Function = null, onCompleteArgs:* = null):void
@@ -137,13 +150,7 @@ package Zutalor.src.com.zutalor.textToSpeech
 				
 		public function callOnComplete():void
 		{
-			if (onComplete != null)
-			{
-				if (onCompleteArgs)
-					onComplete(onCompleteArgs);
-				else
-					onComplete();
-			}
+			Call.method(onComplete, onCompleteArgs);
 		}
 		
 		public function stop():void

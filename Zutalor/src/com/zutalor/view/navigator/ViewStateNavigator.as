@@ -13,6 +13,7 @@ package com.zutalor.view.navigator
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.text.TextUtil;
+	import com.zutalor.transition.BitMapSlide;
 	import com.zutalor.transition.Transition;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.translate.TranslateItemProperties;
@@ -39,6 +40,8 @@ package com.zutalor.view.navigator
 		protected var tMeta:XML;
 		protected var uip:UserInputProperties;
 		protected var currentStateType:String;
+		protected var bitMapSlide:BitMapSlide;
+		protected var transition:Transition
 		
 		protected var wordHasBeenSaid:Boolean;
 		protected var keyPressInvalidated:Boolean;
@@ -50,6 +53,8 @@ package com.zutalor.view.navigator
 		protected var KEYSTROKE_DELAY_BEFORE_SAYING_WORD:int = 1500;
 		protected var DELAY_FROM_LAST_KEYSTROKE_BEFORE_SAYING_PROMPT:int = 5000;
 		protected var PROMPT_DELAY_ON_ANSWER:int = 2000;
+		
+		public static const TAB:int = 9;
 		
 		protected static const PUNCTUATION:Array = ["'", "*", ";", ":", "-", "}", "{", "+", "_", ")",
 													"(", "?", ".", ",", '"', "[" , "]", "~", "`",
@@ -67,6 +72,15 @@ package com.zutalor.view.navigator
 			init();
 		}
 		
+		public function speak(text:String, soundName:String, onComplete:Function = null,
+													onCompleteArgs:* = null):void
+		{
+			if (soundName)
+				soundName = np.soundPath + soundName.toLowerCase() + np.soundExt;
+				
+			textToSpeech.sayText(text, soundName, onComplete, onCompleteArgs);
+		}
+
 		public function onUiControllerMethodCompleted(args:XMLList, data:Object, id:String):void
 		{
 			np.data = data;
@@ -76,7 +90,6 @@ package com.zutalor.view.navigator
 		
 		public function activateState(id:String):void
 		{
-			var t:Transition;
 			var tempTip:TranslateItemProperties;
 			
 			textToSpeech.stop();
@@ -97,30 +110,33 @@ package com.zutalor.view.navigator
 				np.tip = tempTip;
 				np.history.push(np.tip.name);
 				uiController.getValueObject().text = textToSpeechUtils.getTextForDisplay(np.tip.tText);
-				uiController.onModelChange("text");
 				uiController.getValueObject().prompt = "";
 				uiController.getValueObject().inputText = inputText = "";
-				uiController.onModelChange();
 				
 				if (np.curTransitionType)
 				{
-					t = new Transition();
-					t.simpleRender(uiController.vc.container,np.curTransitionType, "in", initializeState);
+					
+					bitMapSlide.out(uiController.vc.container, np.curTransitionType);
+					transition.simpleRender(uiController.vc.container, np.curTransitionType, "in", initializeState);
+					uiController.onModelChange();
 				}
 				else
+				{
+					uiController.onModelChange();
 					initializeState();
+				}
 			}
 		}
 		
 		public function deactivate():void
 		{
 			StageRef.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-			KeyListeners(false)
+			StageRef.stage.removeEventListener(KeyboardEvent.KEY_UP, captureTextInput);
+			KeyListeners(false);
 		}
 		
 		protected function initializeState():void
 		{
-
 			np.inTransition = false;
 			promptId = String(XML(np.tip.tMeta).state.@prompt);
 			currentStateType = String(XML(np.tip.tMeta).state.@type);
@@ -207,6 +223,8 @@ package com.zutalor.view.navigator
 			np.answers = new gDictionary();
 			np.history = [];
 			hkm = HotKeyManager.gi();
+			bitMapSlide = new BitMapSlide();
+			transition = new Transition();
 		
 			if (AirStatus.isMobile)
 				textToSpeechUrl = Application.settings.textToSpeechApiUrlMobile;
@@ -249,17 +267,18 @@ package com.zutalor.view.navigator
 		
 		protected function onKeyUp(ke:KeyboardEvent):void
 		{
-			if (!np.inTransition && hkm.keyInvalidated && currentStateType != "uiControllerMethod")
-			{
-				if (ke.charCode)
-					sayError("Unrecognized");
-			}
+			if (!np.inTransition
+					&& hkm.keyInvalidated
+					&& currentStateType != "uiControllerMethod"
+					&& ke.charCode && ke.charCode != TAB)
+						sayError("Unrecognized");
 		}
 		
 		protected function onHotKey(hke:HotKeyEvent):void
 		{
 			var uip:UserInputProperties;
 
+			hkm.clearKeys();
 			if (np.inTransition)
 				return;
 			
@@ -607,15 +626,6 @@ package com.zutalor.view.navigator
 		{
 			uiController[np.answerMethod](answer,
 							String(XML(np.tip.tMeta).state.@onCompleteState));
-		}
-		
-		protected function speak(text:String, soundName:String, onComplete:Function = null,
-													onCompleteArgs:* = null):void
-		{
-			if (soundName)
-				soundName = np.soundPath + soundName.toLowerCase() + np.soundExt;
-				
-			textToSpeech.sayText(text, soundName, onComplete, onCompleteArgs);
 		}
 		
 		protected function sayPrompt(id:String, onComplete:Function = null, onCompleteArgs:* = null):void
