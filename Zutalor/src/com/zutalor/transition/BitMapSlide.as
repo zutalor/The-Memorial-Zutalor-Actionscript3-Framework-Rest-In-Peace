@@ -23,7 +23,7 @@ package com.zutalor.transition
 			onResize();
 		}
 		
-		private function onResize():void
+		private function onResize(e:Event = null):void
 		{
 			bmd = new BitmapData(StageRef.stage.stageWidth, StageRef.stage.stageHeight);
 		}

@@ -60,6 +60,7 @@
 		private var _bootXmlUrl:String;
 		private var _currentOrientation:String;
 		private var _ip:String;
+		private var _agent:String;
 		private var _inlineXML:XML;
 		private var splash:Bitmap;
 
@@ -75,7 +76,7 @@
 			_presets.parseXML(options.xml[options.nodeId]);
 		}
 		
-		public function AppController(bootXmlUrl:String, ip:String, inlineXML:XML, splashClassName:String=null, loadingSoundClassName:String=null)
+		public function AppController(bootXmlUrl:String, ip:String, agent:String, inlineXML:XML, splashClassName:String=null, loadingSoundClassName:String=null)
 		{
 			var samplePlayer:SamplePlayer;
 			
@@ -87,6 +88,7 @@
 			
 			_splashEmbedClassName = splashClassName;
 			_ip = ip;
+			_agent = agent;
 			_bootXmlUrl = bootXmlUrl;
 			
 			function disposeSamplePlayer():void
@@ -315,6 +317,9 @@
 			
 			if (_ip)
 				ap.ip = _ip;
+				
+			if (_agent)
+				ap.agent = _agent;
 
 			_appStateCallStack = new gDictionary();
 			StageRef.stage.addEventListener(StageVideoAvailabilityEvent.STAGE_VIDEO_AVAILABILITY,onStageVideoAbility);

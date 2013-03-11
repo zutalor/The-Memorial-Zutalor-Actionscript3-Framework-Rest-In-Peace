@@ -14,6 +14,7 @@
 		public var appName:String;
 		public var version:String;
 		public var ip:String;
+		public var agent:String;
 		public var designWidth:int;
 		public var designHeight:int;
 		public var colorTheme:String;
@@ -30,8 +31,8 @@
 		public var systemXmlPath:String;
 		public var appXmlUrls:String;
 		public var systemXmlUrls:String;
-		public var textToSpeechApiUrlMobile:String;
-		public var textToSpeechApiUrlPC:String;
+		public var textToSpeechDirectApi:String;
+		public var textToSpeechProxyApi:String;
 		public var enableTextToSpeech:Boolean;
 		public var stageVideoAvailable:Boolean;
 		public var useStageVideoIfAvailable:Boolean;

@@ -51,11 +51,13 @@ package com.zutalor.application
 			Plugins.registerClassAndCreateCachedInstance(DialogController);
 		}
 		
-		public function start(bootXmlUrl:String, inlineXML:XML = null, splashEmbedClassName:String=null, loadingSoundClassName:String = null):void
+		public function start(bootXmlUrl:String, inlineXML:XML = null, splashEmbedClassName:String = null,
+																	loadingSoundClassName:String = null):void
 		{
 			var paramObj:Object
 			var url:String;
 			var ip:String;
+			var agent:String;
 			
 			parent.root.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR,
 																							onUncaughtError);
@@ -63,6 +65,7 @@ package com.zutalor.application
 				paramObj = LoaderInfo(this.root.loaderInfo).parameters;
 				url = String(paramObj["url"]);
 				ip = String(paramObj["ip"]);
+				agent = String(paramObj["agent"]);
 			} catch (e:*) { }
 		
 			if (url != "undefined" && url != "/" && url != null)
@@ -70,9 +73,13 @@ package com.zutalor.application
 			
 			if (ip == "undefined")
 				ip = "IP unknown";
+			
+			if (agent == "undefined")
+				agent = "Agent Undefined";
 				
-			_appController = new AppController(bootXmlUrl, ip, inlineXML, splashEmbedClassName, loadingSoundClassName);
-			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			_appController = new AppController(bootXmlUrl, ip, agent, inlineXML, splashEmbedClassName,
+																						loadingSoundClassName);
+					addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
 		private function onAddedToStage(e:Event):void

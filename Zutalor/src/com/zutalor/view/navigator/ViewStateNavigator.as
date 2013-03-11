@@ -12,6 +12,7 @@ package com.zutalor.view.navigator
 	import com.zutalor.gesture.UserInputProperties;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.PropertyManager;
+	import com.zutalor.text.StringUtils;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.transition.BitMapSlide;
 	import com.zutalor.transition.Transition;
@@ -20,10 +21,12 @@ package com.zutalor.view.navigator
 	import com.zutalor.utils.EmbeddedResources;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.HotKeyManager;
+	import com.zutalor.utils.Logger;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.MathG;
 	import com.zutalor.utils.StageRef;
 	import flash.events.KeyboardEvent;
+	import flash.system.Capabilities;
 	import Zutalor.src.com.zutalor.textToSpeech.TextToSpeech;
 	import Zutalor.src.com.zutalor.textToSpeech.TextToSpeechUtils;
 	
@@ -86,6 +89,17 @@ package com.zutalor.view.navigator
 			np.data = data;
 			np.id = id;
 			activateState(args.@onCompleteState);
+		}
+		
+		public function playEmbedded(errorAudioClassName:String):void
+		{
+			textToSpeech.volume = 0;
+			samplePlayer.play(null, EmbeddedResources.getClass(errorAudioClassName), resetVolume );
+			
+			function resetVolume():void
+			{
+				textToSpeech.volume = 1;
+			}
 		}
 		
 		public function activateState(id:String):void
@@ -226,10 +240,11 @@ package com.zutalor.view.navigator
 			bitMapSlide = new BitMapSlide();
 			transition = new Transition();
 		
-			if (AirStatus.isMobile)
-				textToSpeechUrl = Application.settings.textToSpeechApiUrlMobile;
+			Logger.eTrace("Agent " + Application.settings.agent);
+			if (StringUtils.find("Windows", Capabilities.os) && Capabilities.playerType != "Desktop")
+				textToSpeechUrl = Application.settings.textToSpeechProxyApi;
 			else
-				textToSpeechUrl = Application.settings.textToSpeechApiUrlPC;
+				textToSpeechUrl = Application.settings.textToSpeechDirectApi;
 				
 			textToSpeech = new TextToSpeech(textToSpeechUrl);
 			textToSpeech.tempo = 1.2;
@@ -271,7 +286,7 @@ package com.zutalor.view.navigator
 					&& hkm.keyInvalidated
 					&& currentStateType != "uiControllerMethod"
 					&& ke.charCode && ke.charCode != TAB)
-						sayError("Unrecognized");
+						playEmbedded("Unrecognized");
 		}
 		
 		protected function onHotKey(hke:HotKeyEvent):void
@@ -279,17 +294,13 @@ package com.zutalor.view.navigator
 			var uip:UserInputProperties;
 
 			hkm.clearKeys();
-			if (hke.message == "cancel")
-			{
-				textToSpeech.stop();
-				return;
-			}
+			
 			if (np.inTransition)
 				return;
 			
 			uip = hotKeys.getPropsByName(hke.message);
 			
-			if (!np.inTransition && currentStateType != "uiControllerMethod"
+			if (currentStateType != "uiControllerMethod"
 									&& (uip.activeForState == "all" || uip.activeForState == currentStateType))
 				onUserInput(uip);
 			else
@@ -327,6 +338,10 @@ package com.zutalor.view.navigator
 			
 			switch (uip.action)
 			{
+				case "cancel" :
+					textToSpeech.stop();
+					uiController.stop();
+					break;
 				case "exit" :
 					uiController.exit();
 					break;
@@ -409,7 +424,7 @@ package com.zutalor.view.navigator
 				np.answerIndex = np.multipleChoiceAnswers.indexOf(uip.name.toLowerCase());
 
 			if (XML(np.tp.tText)..Q[np.answerIndex] == undefined)
-				sayError("Unrecognized");
+				playEmbedded("Unrecognized");
 			else
 			{
 				np.answerText = String(XML(np.tp.tText)..Q[np.answerIndex]);
@@ -537,17 +552,6 @@ package com.zutalor.view.navigator
 			uiController.onModelChange("inputText");
 			np.answer = np.answerText = inputText;
 			np.correctAnswer = null;
-		}
-		
-		protected function sayError(errorAudioClassName:String):void
-		{
-			textToSpeech.volume = 0;
-			samplePlayer.play(null, EmbeddedResources.getClass(errorAudioClassName), resetVolume );
-			
-			function resetVolume():void
-			{
-				textToSpeech.volume = 1;
-			}
 		}
 		
 		protected function sayText():void
