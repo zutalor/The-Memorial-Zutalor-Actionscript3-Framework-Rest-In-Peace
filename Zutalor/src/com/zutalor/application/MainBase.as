@@ -108,8 +108,8 @@
 			
 			Properties.register(Application, "appSettings");
 			Properties.register(AppController, "appStates");
+			Properties.register(Translate, "translations");
 			Properties.register(ViewController, "views", "view");
-			Properties.register(Translate, "translations", "language");
 			Properties.register(Sequence, "sequences", "sequence");
 			Properties.register(Graphic, "graphicStylePresets", null, Graphic.registerStylePresets);
 			Properties.register(Graphic, "graphics", "graphic", Graphic.registerGraphicPresets);

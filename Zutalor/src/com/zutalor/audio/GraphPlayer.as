@@ -9,6 +9,8 @@ package com.zutalor.audio
 	
 	public class GraphPlayer
 	{
+		public var isPlaying:Boolean;
+		
 		public var synthesizer:Synthesizer;
 		public var xmlUrl:String;
 		public var assetPath:String;
@@ -16,10 +18,10 @@ package com.zutalor.audio
 	
 		public var variableTiming:Boolean = true;
 		public var variablePitch:Boolean = true;
-		public var totalTime:Number = 10;
+		public var totalTime:Number = 20;
 				
 		private var _intitialized:Boolean;
-		private var _isPlaying:Boolean;
+
 		public var  curGraphData:Array;
 		private var _onComplete:Function;
 		private var _numTracks:int;
@@ -51,7 +53,7 @@ package com.zutalor.audio
 			if (synthesizer)
 				synthesizer.sequencer.stop();
 			
-			_isPlaying = false;
+			isPlaying = false;
 		}
 						
 		public function play(graphCollection:Array, samples:int, onComplete:Function):void
@@ -71,7 +73,7 @@ package com.zutalor.audio
 			synthesizer.sequencer.stop();
 			max = [];
 			curGraphData = [];
-			_isPlaying = true;
+			isPlaying = true;
 			
 			assignData();
 			scaleAudioData();
@@ -126,7 +128,7 @@ package com.zutalor.audio
 			
 			function playbackComplete():void
 			{
-				_isPlaying = false;
+				isPlaying = false;
 				_onComplete();
 			}
 				

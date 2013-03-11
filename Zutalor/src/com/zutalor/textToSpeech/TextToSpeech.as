@@ -107,7 +107,11 @@ package Zutalor.src.com.zutalor.textToSpeech
 		
 		protected function makeURL(text:String):String
 		{
-			return apiUrl + unescape(text);
+			var str:String
+			str = apiUrl + "Hello";
+			//str = apiUrl + escape(text);
+			return str;
+			
 			//return apiUrl 	+ "&format=" + format + "&frequency=" + frequency + "&bitrate"
 			//				+ bitrate + "&bitdepth" + bitdepth
 			//				+ "&voice=" + voice + "&speed=" + speed + "&pitch=" + pitch + "&text=" + unescape(text);

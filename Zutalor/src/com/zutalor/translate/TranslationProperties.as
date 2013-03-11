@@ -1,4 +1,4 @@
-﻿package com.zutalor.translate 
+﻿package com.zutalor.translate
 {
 	import com.zutalor.interfaces.IProperties;
 	import com.zutalor.properties.PropertiesBase;
@@ -7,13 +7,13 @@
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class TranslateItemProperties extends PropertiesBase implements IProperties
+	public class TranslationProperties extends PropertiesBase implements IProperties
 	{
 		public var tText:String;
 		public var tMeta:String;
 		public var sound:String;
 		
-		public function TranslateItemProperties() { }
+		public function TranslationProperties() { }
 		
 		override public function parseXML(xml:XML):Boolean
 		{
@@ -25,7 +25,7 @@
 			if (String(xml.tMeta))
 				tMeta = xml.tMeta;
 				
-			return true;	
+			return true;
 		}
 	}
 }

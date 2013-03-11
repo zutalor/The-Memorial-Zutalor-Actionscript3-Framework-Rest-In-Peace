@@ -1,9 +1,6 @@
 package com.zutalor.translate
 {
-	import com.zutalor.translate.TranslateItemProperties;
-	import com.zutalor.translate.TranslateProperties;
-	import com.zutalor.properties.NestedPropsManager;
-	import com.zutalor.utils.ShowError;
+	import com.zutalor.properties.PropertyManager;
 	
 	/**
 	 * ...
@@ -11,41 +8,25 @@ package com.zutalor.translate
 	 */
 	public class Translate
 	{
-		private static var _language:String;
-		private static var _tip:TranslateItemProperties;
+		protected static var _presets:PropertyManager;
+		protected static var _tp:TranslationProperties;
 		
-		private static var _presets:NestedPropsManager;
-				
 		public static function registerPresets(options:Object):void
 		{
 			if (!_presets)
-				_presets = new NestedPropsManager();
+				_presets = new PropertyManager(TranslationProperties);
 			
-			_presets.parseXML(TranslateProperties, TranslateItemProperties, options.xml[options.nodeId], options.childNodeId, 
-																							options.xml[options.childNodeId]);
+			_presets.parseXML(options.xml[options.nodeId]);
 		}
 		
-		public static function get presets():NestedPropsManager
+		public static function get presets():PropertyManager
 		{
 			return _presets;
 		}
 		
-		public static function set language(l:String):void
-		{
-			if (_presets.getPropsById(l))
-				_language = l;
-			else
-				ShowError.fail(Translate,"Language " + l + " not defined.");
-		}
-		
-		public static function get language():String
-		{
-			return _language;
-		}
-		
 		public static function getNumItems(id:String):int
 		{
-			return _presets.getNumItems(id);
+			return _presets.length;
 		}
 		
 		public static function text(item:String):String
@@ -54,11 +35,11 @@ package com.zutalor.translate
 
 			if (item)
 			{
-				_tip = _presets.getItemPropsByName(_language, item);				
-				if (_tip)
+				_tp = _presets.getPropsByName(item);
+				if (_tp)
 				{
-					if (_tip.tText)
-						text = _tip.tText;
+					if (_tp.tText)
+						text = _tp.tText;
 				}
 				else
 					text = item;
@@ -68,19 +49,19 @@ package com.zutalor.translate
 		
 		public static function getSoundName(item:String):String
 		{
-			_tip = _presets.getItemPropsByName(_language, item);
-			if (_tip)
-				return _tip.sound;
+			_tp = _presets.getPropsByName(item);
+			if (_tp)
+				return _tp.sound;
 			else
 				return "";
 		}
 		
 		public static function getMetaByName(name:String):String
 		{
-			_tip = _presets.getItemPropsByName(_language, name);
-			if (_tip)
-				if (_tip.tMeta)
-					return _tip.tMeta;
+			_tp = _presets.getPropsByName(name);
+			if (_tp)
+				if (_tp.tMeta)
+					return _tp.tMeta;
 				else
 					return "";
 			else
@@ -89,13 +70,11 @@ package com.zutalor.translate
 		
 		public static function getMetaByIndex(index:int):String
 		{
-			var tp:TranslateItemProperties;
-			
-			tp = _presets.getItemPropsByIndex(_language, index);
-			if (tp)
-				return getMetaByName(tp.name);
+			_tp = _presets.getPropsByIndex(index);
+			if (_tp)
+				return getMetaByName(_tp.name);
 			else
-				return null;
+				return "";
 		}
 	}
 }

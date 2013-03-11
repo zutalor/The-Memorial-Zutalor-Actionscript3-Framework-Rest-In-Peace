@@ -1,6 +1,7 @@
 package com.zutalor.audio
 {
 	import com.ryanberdeen.soundtouch.SoundTouch;
+	import com.zutalor.utils.Call;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
@@ -68,20 +69,13 @@ package com.zutalor.audio
 				{
 					inputSound.close();
 				}
-				catch (e:Error)
-				{
-				}
-				;
+				catch (e:Error) { }
 				
 				try
 				{
 					outputSound.close();
 				}
-				catch (e:Error)
-				{
-				}
-				;
-				
+				catch (e:Error) { }
 			}
 			
 			if (soundClass)
@@ -127,14 +121,7 @@ package com.zutalor.audio
 		private function stopAndCallOnComplete():void
 		{
 			stopSound();
-	
-			if (onComplete != null)
-			{
-				if (onCompleteArgs)
-					onComplete(onCompleteArgs);
-				else
-					onComplete();
-			}
+			Call.method(onComplete, onCompleteArgs);
 		}
 		
 		private function stopSound():void

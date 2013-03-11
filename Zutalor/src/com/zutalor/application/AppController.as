@@ -321,8 +321,6 @@
 			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, onSWFAddressFirstBroadcast);
 			MasterClock.initialize();
 			Remoting.gateway = ap.gateway;
-
-			Translate.language = ap.language;
 			Color.theme = ap.colorTheme;
 
 			if (ap.spinnerGraphicId)
