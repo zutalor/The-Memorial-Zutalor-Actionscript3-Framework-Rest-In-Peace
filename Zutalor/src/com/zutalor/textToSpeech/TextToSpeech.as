@@ -4,6 +4,7 @@ package Zutalor.src.com.zutalor.textToSpeech
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.utils.Call;
 	import com.zutalor.utils.EmbeddedResources;
+	import com.zutalor.utils.MasterClock;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.net.URLLoader;
@@ -69,6 +70,16 @@ package Zutalor.src.com.zutalor.textToSpeech
 		public function get volume():Number
 		{
 			return samplePlayer.volume;
+		}
+		
+		public function pause():void
+		{
+			samplePlayer.pause();
+		}
+		
+		public function rewind():void
+		{
+			samplePlayer.rewind();
 		}
 		
 		public function preloadText(text:String, url:String, onComplete:Function = null, onCompleteArgs:*= null):void
@@ -142,7 +153,7 @@ package Zutalor.src.com.zutalor.textToSpeech
 					if (i < l && !stopped)
 					{
 						sentences[i] = cleanString(sentences[i]);
-						say(sentences[i++], sayNextSentence);
+						say(sentences[i++], sayNextSentence, onRewindToBeginning);
 					}
 					else
 						callOnComplete();
@@ -150,13 +161,22 @@ package Zutalor.src.com.zutalor.textToSpeech
 			}
 			else
 				callOnComplete();
+				
+			function onRewindToBeginning():void
+			{
+				if (i > 1)
+				{
+					i -= 2;
+					sayNextSentence();
+				}
+			}
+				
+			function callOnComplete():void
+			{
+				Call.method(onComplete, onCompleteArgs);
+			}
 		}
 				
-		public function callOnComplete():void
-		{
-			Call.method(onComplete, onCompleteArgs);
-		}
-		
 		public function stop():void
 		{
 			stopped = true;
@@ -170,7 +190,7 @@ package Zutalor.src.com.zutalor.textToSpeech
 				
 		// PRIVATE METHODS
 		
-		private function say(text:String, onSayComplete:Function):void
+		private function say(text:String, onSayComplete:Function, onRewindToBeginning:Function = null):void
 		{
 			var url:String;
 			
@@ -186,7 +206,7 @@ package Zutalor.src.com.zutalor.textToSpeech
 			}
 			
 			url = makeURL(text);
-			samplePlayer.play(url, null, checkforError);
+			samplePlayer.play(url, null, checkforError, null, onRewindToBeginning);
 			
 			function checkforError():void
 			{

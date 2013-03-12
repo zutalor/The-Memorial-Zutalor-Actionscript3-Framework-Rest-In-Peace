@@ -22,10 +22,11 @@ package com.ryanberdeen.soundtouch {
     import flash.utils.ByteArray;
 
     public class FifoSampleBuffer {
+		
         private var _vector:Vector.<Number>;
         private var _position:uint;
         private var _frameCount:uint;
-
+		
         public function FifoSampleBuffer() {
             _vector = new Vector.<Number>();
         }
@@ -122,10 +123,12 @@ package com.ryanberdeen.soundtouch {
         public function extract(output:ByteArray, position:uint, numFrames:uint):void {
             var sourceOffset:uint = startIndex + position * 2;
             var numSamples:uint = numFrames * 2;
-            for (var i:uint = 0; i < numSamples; i++) {
-                output.writeFloat(_vector[i + sourceOffset]);
-            }
-        }
+			
+            for (var i:uint = 0; i < numSamples; i++)
+			{
+				output.writeFloat(_vector[i + sourceOffset]);
+			}
+		}
 
         public function ensureCapacity(numFrames:uint):void {
             rewind();

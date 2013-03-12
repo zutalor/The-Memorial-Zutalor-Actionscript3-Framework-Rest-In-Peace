@@ -17,6 +17,8 @@
 * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+//Mod by GPepos 3/11/13
+
 package com.zutalor.audio {
 	import com.greensock.TweenMax;
 	import com.ryanberdeen.soundtouch.IFifoSamplePipe;
@@ -39,28 +41,33 @@ package com.zutalor.audio {
         private var _position:int;
 		private var samplesTotal:int;
 		private var onComplete:Function;
+		private var onRewindToBeginning:Function;
 		private var outputSound:Sound;
 		private var channel:SoundChannel;
-		
+		private var paused:Boolean;
+		private var pausePosition:int;
+	
 		public var onCompleteDelay:int = 700;
 
         public function SimpleFilter(pipe:IFifoSamplePipe) {
             super(pipe, BLOCK_SIZE);
         }
 		
-		public function play(sourceSound:Sound, outputSound:Sound, onComplete:Function):SoundChannel
+		public function play(sourceSound:Sound, outputSound:Sound, onComplete:Function,
+															onRewindToBeginning:Function = null):SoundChannel
 		{
 			this.outputSound = outputSound;
 			this.sourceSound = sourceSound;
             this.onComplete = onComplete;
+			this.onRewindToBeginning = onRewindToBeginning;
 			this.historyBufferSize = 22050;
             _sourcePosition = 0;
-            outputBufferPosition = 0;
 			samplesTotal = (this.sourceSound.length * SAMPLERATE) - 1;
 			outputSound.addEventListener(SampleDataEvent.SAMPLE_DATA, handleSampleData, false, 0, true);
 			channel = outputSound.play();
 			volume = 0;
 			TweenMax.to(this, .3, { volume:1 } );
+			paused = false;
 			return channel;
 		}
 		
@@ -77,6 +84,7 @@ package com.zutalor.audio {
 		public function stop():void
 		{
 			clear();
+			pausePosition = 0;
 			if (outputSound)
 			{
 				MasterClock.unRegisterCallback(callComplete);
@@ -84,20 +92,63 @@ package com.zutalor.audio {
 			}
 		}
 		
-        public function get position():int {
+		public function rewind():void
+		{
+			var newPosition:int;
+			newPosition = sourcePosition - (BLOCK_SIZE * 32);
+			
+			if (newPosition < 0)
+			{
+				if (onRewindToBeginning != null)
+					onRewindToBeginning();
+					
+				sourcePosition = 0;
+			}
+			else
+				sourcePosition = newPosition;
+		}
+		
+		public function pause():void
+		{
+			if (!paused)
+			{
+				paused = true
+				pausePosition = outputBufferPosition;
+				channel.stop();
+			}
+			else
+			{
+				paused = false;
+				channel = outputSound.play();
+				outputBufferPosition = pausePosition;
+			}
+		}
+		
+        public function get position():int
+		{
             return _position;
         }
 
         public function set position(position:int):void {
-            if (position > _position) {
-                throw new RangeError('New position may not be greater than current position');
+		
+			var newOutputBufferPosition:int
+
+			if (position > samplesTotal)
+			{
+               trace("position is larger than samples total");
             }
-            var newOutputBufferPosition:int = outputBufferPosition - (_position - position);
-            if (newOutputBufferPosition < 0) {
-                throw new RangeError('New position falls outside of history buffer');
-            }
-            outputBufferPosition = newOutputBufferPosition;
-            _position = position;
+			else
+			{
+				newOutputBufferPosition = outputBufferPosition - (_position - position);
+				if (newOutputBufferPosition < 0) {
+					trace('New position falls outside of history buffer');
+				}
+				else
+				{
+					outputBufferPosition = newOutputBufferPosition;
+					_position = position;
+				}
+			}
         }
 
         public function get sourcePosition():int {
@@ -118,19 +169,24 @@ package com.zutalor.audio {
 
         public function extract(target:ByteArray, numFrames:int):int {
 			
-            fillOutputBuffer(outputBufferPosition + numFrames);
+			var currentFrames:int;
+			var numFramesExtracted:int;
 
-            var numFramesExtracted:int = Math.min(numFrames, outputBuffer.frameCount - outputBufferPosition);
-            outputBuffer.extract(target, outputBufferPosition, numFramesExtracted);
-
-            var currentFrames:int = outputBufferPosition + numFramesExtracted;
+			fillOutputBuffer(outputBufferPosition + numFrames);
+				
+			numFramesExtracted = Math.min(numFrames, outputBuffer.frameCount - outputBufferPosition);
+				
+			outputBuffer.extract(target, outputBufferPosition, numFramesExtracted);
+			
+            currentFrames = outputBufferPosition + numFramesExtracted;
             outputBufferPosition = Math.min(historyBufferSize, currentFrames);
             outputBuffer.receive(Math.max(currentFrames - historyBufferSize, 0));
 
-            _position += numFramesExtracted;
+			_position += numFramesExtracted;
 			
 			if (_sourcePosition >= samplesTotal)
 			{
+				paused = false;
 				outputSound.removeEventListener(SampleDataEvent.SAMPLE_DATA, handleSampleData);
 				MasterClock.callOnce(callComplete, onCompleteDelay);
 			}

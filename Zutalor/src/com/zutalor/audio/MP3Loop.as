@@ -18,7 +18,7 @@ package
 	 * Playback MP3-Loop (gapless)
 	 *
 	 * This source code enable sample exact looping of MP3.
-	 * 
+	 *
 	 * http://blog.andre-michelle.com/2010/playback-mp3-loop-gapless/
 	 *
 	 * Tested with samplingrate 44.1 KHz
@@ -147,6 +147,8 @@ package
 			}
 		}
 
+						silent( event.data, bufferSize );
+		
 		private function silent( target:ByteArray, length:int ):void
 		{
 			target.position = 0;

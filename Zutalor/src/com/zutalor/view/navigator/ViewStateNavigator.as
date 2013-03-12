@@ -301,7 +301,7 @@ package com.zutalor.view.navigator
 			uip = hotKeys.getPropsByName(hke.message);
 			
 			if (currentStateType != "uiControllerMethod"
-									&& (uip.activeForState == "all" || uip.activeForState == currentStateType))
+									&& (uip.activeForStateType == "all" || uip.activeForStateType == currentStateType))
 				onUserInput(uip);
 			else
 				trace(currentStateType);
@@ -363,6 +363,9 @@ package com.zutalor.view.navigator
 					if (textToSpeech.tempo > .3)
 						textToSpeech.tempo -= .1;
 					uiController.logEvent("Tempo Change: " + textToSpeech.tempo.toPrecision(2));
+					break;
+				case "pause" :
+					textToSpeech.rewind();
 					break;
 				default :
 					onAnswer();

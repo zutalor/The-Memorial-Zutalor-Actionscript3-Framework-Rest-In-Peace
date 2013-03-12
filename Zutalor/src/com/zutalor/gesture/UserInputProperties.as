@@ -7,7 +7,7 @@ package com.zutalor.gesture
 	 */
 	public class UserInputProperties extends PropertiesBase
 	{
-		public var activeForState:String;
+		public var activeForStateType:String;
 		public var action:String;
 		public var up:String;
 		public var down:String;
