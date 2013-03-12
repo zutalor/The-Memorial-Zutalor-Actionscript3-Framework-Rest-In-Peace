@@ -1,5 +1,6 @@
 package com.zutalor.application
 {
+	import com.adobe.swffocus.SWFFocus;
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.controllers.DialogController;
 	import com.zutalor.events.AppEvent;
@@ -79,11 +80,12 @@ package com.zutalor.application
 				
 			_appController = new AppController(bootXmlUrl, ip, agent, inlineXML, splashEmbedClassName,
 																						loadingSoundClassName);
-					addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
 		private function onAddedToStage(e:Event):void
 		{
+			SWFFocus.init(stage);
 			StageRef.stage = stage;
 			stage.stageFocusRect = false;
 			stage.scaleMode = StageScaleMode.NO_SCALE;

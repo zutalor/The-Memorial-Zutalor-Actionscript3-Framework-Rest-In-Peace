@@ -222,7 +222,7 @@ package com.adobe.swffocus
 										};
 										
 										o.parentNode.insertBefore(a,o);
-										o.className+=' swfPrev-'+pId;
+										o.className+='swfPrev-'+pId;
 									}
 								};
 								
@@ -275,7 +275,7 @@ package com.adobe.swffocus
 						"window.blurredSwfId='';"+
 						
 						"var i,j,k,oE,o,pE,p,st,ti,a,d,s,t,cN,pId,nId,rpId,rnId;" +
-						"var wk = RegExp(' AppleWebKit/').test(navigator.userAgent) && RegExp('Mac').test(navigator.platform);" +
+						"var wk = RegExp('AppleWebKit/').test(navigator.userAgent) && RegExp('Mac').test(navigator.platform);" +
 						
 						"if(wk)" +
 						"{" +
@@ -404,7 +404,7 @@ package com.adobe.swffocus
 											"};" +
 											
 											"o.parentNode.insertBefore(a,o);" +
-											"o.className+=' swfPrev-'+pId;" +
+											"o.className+='swfPrev-'+pId;" +
 										"}" +
 									"};" +
 									
@@ -579,7 +579,7 @@ package com.adobe.swffocus
 		 */
 		private function stage_onActivateEvent(e:Event):void
 		{
-			//trace("stage: Event." + e.type.toUpperCase() + " ");
+			eTrace("stage: Event." + e.type.toUpperCase() + " ");
 			if (_lastFocus) _stage.focus = null;
 			switch(e.type){
 				case Event.ACTIVATE :
@@ -603,7 +603,7 @@ package com.adobe.swffocus
 			if (idNext)
 				_idNext = idNext;
 			
-			// eTrace("setFocusIds("+_idPrev+", "+_idNext+")");
+			eTrace("setFocusIds("+_idPrev+", "+_idNext+")");
 		}
 		
 		/**

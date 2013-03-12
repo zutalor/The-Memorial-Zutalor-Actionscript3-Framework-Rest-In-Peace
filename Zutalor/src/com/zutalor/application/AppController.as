@@ -1,5 +1,6 @@
 ﻿package com.zutalor.application
 {
+	import air.update.descriptors.ConfigurationDescriptor;
 	import com.asual.swfaddress.SWFAddress;
 	import com.asual.swfaddress.SWFAddressEvent;
 	import com.greensock.TweenMax;
@@ -63,6 +64,7 @@
 		private var _agent:String;
 		private var _inlineXML:XML;
 		private var splash:Bitmap;
+		private var _loadingSoundClassName:String;
 
 		private const DEBUG_ANALYTICS:Boolean =  false;
 		
@@ -78,28 +80,29 @@
 		
 		public function AppController(bootXmlUrl:String, ip:String, agent:String, inlineXML:XML, splashClassName:String=null, loadingSoundClassName:String=null)
 		{
-			var samplePlayer:SamplePlayer;
-			
-			if (loadingSoundClassName)
-			{
-				samplePlayer = new SamplePlayer();
-				samplePlayer.play(null, EmbeddedResources.getClass(loadingSoundClassName), disposeSamplePlayer);
-			}
-			
 			_splashEmbedClassName = splashClassName;
+			_loadingSoundClassName = loadingSoundClassName;
 			_ip = ip;
 			_agent = agent;
 			_bootXmlUrl = bootXmlUrl;
+		}
+		
+		public function initialize():void
+		{
+			var samplePlayer:SamplePlayer;
+			
+			if (_loadingSoundClassName)
+			{
+				samplePlayer = new SamplePlayer();
+				samplePlayer.play(null, EmbeddedResources.getClass(_loadingSoundClassName), disposeSamplePlayer);
+			}
 			
 			function disposeSamplePlayer():void
 			{
 				samplePlayer.dispose();
 				samplePlayer = null;
 			}
-		}
-		
-		public function initialize():void
-		{
+			
 			if (_splashEmbedClassName)
 				showSplash();
 				
@@ -108,6 +111,8 @@
 			AppXmlLoader.init(_bootXmlUrl, _inlineXML, init);
 		}
 		
+// PRIVATE METHODS
+
 		private function showSplash():void
 		{
 			splash = EmbeddedResources.createInstance(_splashEmbedClassName);
@@ -116,8 +121,6 @@
 			splash.y = (StageRef.stage.fullScreenHeight - splash.height) / 2;
 			TweenMax.from(splash, 1, { alpha:0 } );
 		}
-		
-		// PRIVATE METHODS
 		
 		private function onCloseView(e:Event):void
 		{
@@ -331,7 +334,6 @@
 			if (ap.spinnerGraphicId)
 				Spinner.init(ap.spinnerGraphicId, EmbeddedResources.getClass(ap.spinnerSoundClassName), ap.spinnerGraphicCyclesPerSecond);
 				
-			
 			if (ap.googleAnalyticsAccount && AirStatus.isNativeApplication || DEBUG_ANALYTICS)
 			{
 				Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.INITIALIZE,

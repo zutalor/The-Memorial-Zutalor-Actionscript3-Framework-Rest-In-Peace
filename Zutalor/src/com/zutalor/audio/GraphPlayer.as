@@ -47,6 +47,14 @@ package com.zutalor.audio
 				synthesizer.sounds.load(xmlUrl, assetPath, pOnComplete);
 			}
 		}
+		
+		public function pause():void
+		{
+			if (synthesizer)
+				synthesizer.sequencer.pause();
+				
+			
+		}
 				
 		public function stop():void
 		{

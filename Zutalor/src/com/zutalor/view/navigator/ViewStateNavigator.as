@@ -241,7 +241,7 @@ package com.zutalor.view.navigator
 			transition = new Transition();
 		
 			Logger.eTrace("Agent " + Application.settings.agent);
-			if (StringUtils.find("Windows", Capabilities.os) && Capabilities.playerType != "Desktop")
+			if (StringUtils.find("MSIE", Capabilities.os) && Capabilities.playerType != "Desktop")
 				textToSpeechUrl = Application.settings.textToSpeechProxyApi;
 			else
 				textToSpeechUrl = Application.settings.textToSpeechDirectApi;
@@ -262,7 +262,9 @@ package com.zutalor.view.navigator
 			np.confirmationAnswers = tMeta.settings.@confirmationAnswers;
 			np.answerMethod = tMeta.settings.@answerMethod;
 			initUserInput();
-			activateState(tMeta.settings.@firstState);
+			trace(tMeta.settings.@firstState);
+			if (String(tMeta.settings.@firstState))
+				activateState(tMeta.settings.@firstState);
 		}
 		
 		protected function initUserInput():void

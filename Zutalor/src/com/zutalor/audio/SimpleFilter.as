@@ -1,44 +1,47 @@
 /*
-* SoundTouch AS3 audio processing library
-* Copyright (c) Ryan Berdeen (mod by pepos)
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 2.1 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this library; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+ * SoundTouch AS3 audio processing library
+ * Copyright (c) Ryan Berdeen (mod by pepos)
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 
 //Mod by GPepos 3/11/13
 
-package com.zutalor.audio {
+package com.zutalor.audio
+{
 	import com.greensock.TweenMax;
 	import com.ryanberdeen.soundtouch.IFifoSamplePipe;
 	import com.zutalor.utils.MasterClock;
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
-    import flash.events.SampleDataEvent;
-    import flash.media.Sound;
+	import flash.events.SampleDataEvent;
+	import flash.media.Sound;
 	import flash.media.SoundChannel;
 	import flash.media.SoundTransform;
-    import flash.utils.ByteArray;
-
-    public class SimpleFilter extends FilterSupport {
+	import flash.utils.ByteArray;
+	
+	public class SimpleFilter extends FilterSupport
+	{
 		
-		private const BLOCK_SIZE: int = 2048;
+		private const BLOCK_SIZE:int = 2048;
 		private const SAMPLERATE:Number = 44.1;
 		private var sourceSound:Sound;
-        private var historyBufferSize:int;
-        private var _sourcePosition:int;
-        private var outputBufferPosition:int;
-        private var _position:int;
+		private var historyBufferSize:int;
+		private var _sourcePosition:int;
+		private var outputBufferPosition:int;
+		private var _position:int;
 		private var samplesTotal:int;
 		private var onComplete:Function;
 		private var onRewindBeforeStart:Function;
@@ -46,20 +49,20 @@ package com.zutalor.audio {
 		private var channel:SoundChannel;
 		private var _paused:Boolean;
 		private var pausePosition:int;
-	
+		
 		public var onCompleteDelay:int = 700;
 		public var rewindToStart:Boolean = true;
-
-        public function SimpleFilter(pipe:IFifoSamplePipe) {
-            super(pipe, BLOCK_SIZE);
-        }
 		
-		public function play(sourceSound:Sound, outputSound:Sound, onComplete:Function,
-															onRewindBeforeStart:Function = null, start:Number = 0):SoundChannel
+		public function SimpleFilter(pipe:IFifoSamplePipe)
+		{
+			super(pipe, BLOCK_SIZE);
+		}
+		
+		public function play(sourceSound:Sound, outputSound:Sound, onComplete:Function, onRewindBeforeStart:Function = null, start:Number = 0):SoundChannel
 		{
 			this.outputSound = outputSound;
 			this.sourceSound = sourceSound;
-            this.onComplete = onComplete;
+			this.onComplete = onComplete;
 			this.onRewindBeforeStart = onRewindBeforeStart;
 			this.historyBufferSize = 22050;
 			samplesTotal = (this.sourceSound.length * SAMPLERATE) - 1;
@@ -68,11 +71,11 @@ package com.zutalor.audio {
 				_sourcePosition = samplesTotal - Math.abs(start) * SAMPLERATE * 1000;
 			else
 				_sourcePosition = start * SAMPLERATE * 1000;
-				
+			
 			outputSound.addEventListener(SampleDataEvent.SAMPLE_DATA, handleSampleData, false, 0, true);
 			channel = outputSound.play();
 			volume = 0;
-			TweenMax.to(this, .3, { volume:1 } );
+			TweenMax.to(this, .3, {volume: 1});
 			_paused = false;
 			return channel;
 		}
@@ -108,14 +111,14 @@ package com.zutalor.audio {
 			var newPosition:int;
 			if (_paused)
 				pause();
-				
+			
 			newPosition = sourcePosition - (SAMPLERATE * 1000);
 			
 			if (newPosition < 0)
 			{
 				if (onRewindBeforeStart != null)
 					onRewindBeforeStart();
-					
+				
 				sourcePosition = 0;
 			}
 			else if (rewindToStart)
@@ -135,28 +138,34 @@ package com.zutalor.audio {
 			else
 			{
 				_paused = false;
-				channel = outputSound.play();
-				outputBufferPosition = pausePosition;
+				try
+				{
+					channel = outputSound.play();
+					outputBufferPosition = pausePosition;
+				}
+				catch (e:Event) { }			
 			}
 		}
 		
-        public function get position():int
+		public function get position():int
 		{
-            return _position;
-        }
-
-        public function set position(position:int):void {
+			return _position;
+		}
 		
+		public function set position(position:int):void
+		{
+			
 			var newOutputBufferPosition:int
-
+			
 			if (position > samplesTotal)
 			{
-               trace("position is larger than samples total");
-            }
+				trace("position is larger than samples total");
+			}
 			else
 			{
 				newOutputBufferPosition = outputBufferPosition - (_position - position);
-				if (newOutputBufferPosition < 0) {
+				if (newOutputBufferPosition < 0)
+				{
 					trace('New position falls outside of history buffer');
 				}
 				else
@@ -165,39 +174,43 @@ package com.zutalor.audio {
 					_position = position;
 				}
 			}
-        }
-
-        public function get sourcePosition():int {
-            return _sourcePosition;
-        }
-
-        public function set sourcePosition(sourcePosition:int):void {
-            clear();
-            _sourcePosition = sourcePosition;
-        }
-
-        override protected function fillInputBuffer(numFrames:int):void {
-            var bytes:ByteArray = new ByteArray();
-            var numFramesExtracted:uint = sourceSound.extract(bytes, numFrames, _sourcePosition);
-            _sourcePosition += numFramesExtracted;
+		}
+		
+		public function get sourcePosition():int
+		{
+			return _sourcePosition;
+		}
+		
+		public function set sourcePosition(sourcePosition:int):void
+		{
+			clear();
+			_sourcePosition = sourcePosition;
+		}
+		
+		override protected function fillInputBuffer(numFrames:int):void
+		{
+			var bytes:ByteArray = new ByteArray();
+			var numFramesExtracted:uint = sourceSound.extract(bytes, numFrames, _sourcePosition);
+			_sourcePosition += numFramesExtracted;
 			inputBuffer.putBytes(bytes);
-        }
-
-        public function extract(target:ByteArray, numFrames:int):int {
+		}
+		
+		public function extract(target:ByteArray, numFrames:int):int
+		{
 			
 			var currentFrames:int;
 			var numFramesExtracted:int;
-
+			
 			fillOutputBuffer(outputBufferPosition + numFrames);
-				
+			
 			numFramesExtracted = Math.min(numFrames, outputBuffer.frameCount - outputBufferPosition);
-				
+			
 			outputBuffer.extract(target, outputBufferPosition, numFramesExtracted);
 			
-            currentFrames = outputBufferPosition + numFramesExtracted;
-            outputBufferPosition = Math.min(historyBufferSize, currentFrames);
-            outputBuffer.receive(Math.max(currentFrames - historyBufferSize, 0));
-
+			currentFrames = outputBufferPosition + numFramesExtracted;
+			outputBufferPosition = Math.min(historyBufferSize, currentFrames);
+			outputBuffer.receive(Math.max(currentFrames - historyBufferSize, 0));
+			
 			_position += numFramesExtracted;
 			
 			if (_sourcePosition >= samplesTotal)
@@ -206,22 +219,24 @@ package com.zutalor.audio {
 				outputSound.removeEventListener(SampleDataEvent.SAMPLE_DATA, handleSampleData);
 				MasterClock.callOnce(callComplete, onCompleteDelay);
 			}
-            return numFramesExtracted;
-        }
+			return numFramesExtracted;
+		}
 		
 		private function callComplete():void
 		{
 			clear();
 			onComplete();
 		}
-
-        public function handleSampleData(e:SampleDataEvent):void {
+		
+		public function handleSampleData(e:SampleDataEvent):void
+		{
 			extract(e.data, BLOCK_SIZE);
-        }
-
-        override public function clear():void {
-            super.clear();
-            outputBufferPosition = 0;
-        }
-    }
+		}
+		
+		override public function clear():void
+		{
+			super.clear();
+			outputBufferPosition = 0;
+		}
+	}
 }
