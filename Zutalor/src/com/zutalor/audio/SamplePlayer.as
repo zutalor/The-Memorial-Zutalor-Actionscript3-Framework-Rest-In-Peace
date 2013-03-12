@@ -26,6 +26,7 @@ package com.zutalor.audio
 		private var soundTouch:SoundTouch
 		private var filter:SimpleFilter;
 		private var samplesTotal:int;
+		private var start:Number;
 		
 		public var soundLoaded:Boolean;
 		
@@ -56,14 +57,20 @@ package com.zutalor.audio
 			return soundTouch.tempo;
 		}
 		
+		public function get paused():Boolean
+		{
+			return filter.paused;
+		}
+		
 		public function play(url:String, soundClass:Class = null, onComplete:Function = null,
-									onCompleteArgs:* = null, onRewindToBeginning:Function = null):void
+									onCompleteArgs:* = null, onRewindToBeginning:Function = null, start:Number = 0):void
 		{
 			stopSound();
 			soundLoaded = false;
 			this.onComplete = onComplete;
 			this.onCompleteArgs = onCompleteArgs;
 			this.onRewindToBeginning = onRewindToBeginning;
+			this.start = start;
 			
 			if (channel)
 			{
@@ -149,7 +156,7 @@ package com.zutalor.audio
 				samplesTotal = inputSound.length * SAMPLERATE;
 				
 				if (samplesTotal)
-					channel = filter.play(inputSound, outputSound, stopAndCallOnComplete, onRewindToBeginning);
+					channel = filter.play(inputSound, outputSound, stopAndCallOnComplete, onRewindToBeginning, start);
 				else
 					stopAndCallOnComplete();
 					

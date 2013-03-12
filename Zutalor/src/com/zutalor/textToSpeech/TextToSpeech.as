@@ -34,6 +34,9 @@ package Zutalor.src.com.zutalor.textToSpeech
 		private var stopped:Boolean;
 		private var samplePlayer:SamplePlayer;
 		private var text:String;
+		private var start:Number;
+		
+		public var rewindToStart:Boolean = true;
 		
 		public function TextToSpeech(apiUrl:String, voice:String = "usenglishfemale", speed:String = "0",
 															pitch:String = "100", format:String = "mp3",
@@ -75,6 +78,11 @@ package Zutalor.src.com.zutalor.textToSpeech
 		public function pause():void
 		{
 			samplePlayer.pause();
+		}
+		
+		public function get paused():Boolean
+		{
+			return samplePlayer.paused;
 		}
 		
 		public function rewind():void
@@ -146,6 +154,7 @@ package Zutalor.src.com.zutalor.textToSpeech
 				sentences = text.split(".");
 				
 				l = sentences.length;
+				start = 0;
 				sayNextSentence();
 				
 				function sayNextSentence():void
@@ -167,6 +176,11 @@ package Zutalor.src.com.zutalor.textToSpeech
 				if (i > 1)
 				{
 					i -= 2;
+					if (rewindToStart)
+						start = 0;
+					else
+						start = -1.0;
+					
 					sayNextSentence();
 				}
 			}
@@ -206,7 +220,8 @@ package Zutalor.src.com.zutalor.textToSpeech
 			}
 			
 			url = makeURL(text);
-			samplePlayer.play(url, null, checkforError, null, onRewindToBeginning);
+			samplePlayer.play(url, null, checkforError, null, onRewindToBeginning, start);
+			start = 0;
 			
 			function checkforError():void
 			{

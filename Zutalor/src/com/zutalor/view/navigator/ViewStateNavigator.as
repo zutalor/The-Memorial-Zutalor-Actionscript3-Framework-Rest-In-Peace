@@ -338,10 +338,6 @@ package com.zutalor.view.navigator
 			
 			switch (uip.action)
 			{
-				case "cancel" :
-					textToSpeech.stop();
-					uiController.stop();
-					break;
 				case "exit" :
 					uiController.exit();
 					break;
@@ -355,17 +351,24 @@ package com.zutalor.view.navigator
 					validateInput(uip);
 					break;
 				case "faster" :
+					if (textToSpeech.paused)
+						break;
 					if (textToSpeech.tempo < 2.7)
 						textToSpeech.tempo += .1;
 					uiController.logEvent("Tempo Change: " + textToSpeech.tempo.toPrecision(2));
 					break;
 				case "slower" :
+					if (textToSpeech.paused)
+						break;
 					if (textToSpeech.tempo > .3)
 						textToSpeech.tempo -= .1;
 					uiController.logEvent("Tempo Change: " + textToSpeech.tempo.toPrecision(2));
 					break;
-				case "pause" :
+				case "rewind" :
 					textToSpeech.rewind();
+					break;
+				case "pause" :
+					textToSpeech.pause();
 					break;
 				default :
 					onAnswer();

@@ -41,34 +41,45 @@ package com.zutalor.audio {
         private var _position:int;
 		private var samplesTotal:int;
 		private var onComplete:Function;
-		private var onRewindToBeginning:Function;
+		private var onRewindBeforeStart:Function;
 		private var outputSound:Sound;
 		private var channel:SoundChannel;
-		private var paused:Boolean;
+		private var _paused:Boolean;
 		private var pausePosition:int;
 	
 		public var onCompleteDelay:int = 700;
+		public var rewindToStart:Boolean = true;
 
         public function SimpleFilter(pipe:IFifoSamplePipe) {
             super(pipe, BLOCK_SIZE);
         }
 		
 		public function play(sourceSound:Sound, outputSound:Sound, onComplete:Function,
-															onRewindToBeginning:Function = null):SoundChannel
+															onRewindBeforeStart:Function = null, start:Number = 0):SoundChannel
 		{
 			this.outputSound = outputSound;
 			this.sourceSound = sourceSound;
             this.onComplete = onComplete;
-			this.onRewindToBeginning = onRewindToBeginning;
+			this.onRewindBeforeStart = onRewindBeforeStart;
 			this.historyBufferSize = 22050;
-            _sourcePosition = 0;
 			samplesTotal = (this.sourceSound.length * SAMPLERATE) - 1;
+			
+			if (start < 0)
+				_sourcePosition = samplesTotal - Math.abs(start) * SAMPLERATE * 1000;
+			else
+				_sourcePosition = start * SAMPLERATE * 1000;
+				
 			outputSound.addEventListener(SampleDataEvent.SAMPLE_DATA, handleSampleData, false, 0, true);
 			channel = outputSound.play();
 			volume = 0;
 			TweenMax.to(this, .3, { volume:1 } );
-			paused = false;
+			_paused = false;
 			return channel;
+		}
+		
+		public function get paused():Boolean
+		{
+			return _paused;
 		}
 		
 		public function set volume(v:Number):void
@@ -95,30 +106,35 @@ package com.zutalor.audio {
 		public function rewind():void
 		{
 			var newPosition:int;
-			newPosition = sourcePosition - (BLOCK_SIZE * 32);
+			if (_paused)
+				pause();
+				
+			newPosition = sourcePosition - (SAMPLERATE * 1000);
 			
 			if (newPosition < 0)
 			{
-				if (onRewindToBeginning != null)
-					onRewindToBeginning();
+				if (onRewindBeforeStart != null)
+					onRewindBeforeStart();
 					
 				sourcePosition = 0;
 			}
+			else if (rewindToStart)
+				sourcePosition = 0;
 			else
 				sourcePosition = newPosition;
 		}
 		
 		public function pause():void
 		{
-			if (!paused)
+			if (!_paused)
 			{
-				paused = true
+				_paused = true
 				pausePosition = outputBufferPosition;
 				channel.stop();
 			}
 			else
 			{
-				paused = false;
+				_paused = false;
 				channel = outputSound.play();
 				outputBufferPosition = pausePosition;
 			}
@@ -186,7 +202,7 @@ package com.zutalor.audio {
 			
 			if (_sourcePosition >= samplesTotal)
 			{
-				paused = false;
+				_paused = false;
 				outputSound.removeEventListener(SampleDataEvent.SAMPLE_DATA, handleSampleData);
 				MasterClock.callOnce(callComplete, onCompleteDelay);
 			}
