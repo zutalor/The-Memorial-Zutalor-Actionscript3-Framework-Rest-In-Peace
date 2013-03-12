@@ -91,14 +91,16 @@ package com.zutalor.view.navigator
 			activateState(args.@onCompleteState);
 		}
 		
-		public function playEmbedded(errorAudioClassName:String):void
+		public function playEmbedded(audioClassName:String, onComplete:Function = null):void
 		{
 			textToSpeech.volume = 0;
-			samplePlayer.play(null, EmbeddedResources.getClass(errorAudioClassName), resetVolume );
+			samplePlayer.play(null, EmbeddedResources.getClass(audioClassName), resetVolume );
 			
 			function resetVolume():void
 			{
 				textToSpeech.volume = 1;
+				if (onComplete != null)
+					onComplete();
 			}
 		}
 		
