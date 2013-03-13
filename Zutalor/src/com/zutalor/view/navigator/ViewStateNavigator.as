@@ -522,6 +522,8 @@ package com.zutalor.view.navigator
 				onComplete();
 		}
 		
+		
+		
 		protected function onTextInput(uip:UserInputProperties):void
 		{
 			var key:String;
