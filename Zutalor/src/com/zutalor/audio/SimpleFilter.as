@@ -51,7 +51,7 @@ package com.zutalor.audio
 		private var pausePosition:int;
 		
 		public var onCompleteDelay:int = 700;
-		public var rewindToStart:Boolean = true;
+		public var rewindToStart:Boolean;
 		
 		public function SimpleFilter(pipe:IFifoSamplePipe)
 		{
@@ -143,7 +143,7 @@ package com.zutalor.audio
 					channel = outputSound.play();
 					outputBufferPosition = pausePosition;
 				}
-				catch (e:Event) { }			
+				catch (e:Event) { }
 			}
 		}
 		

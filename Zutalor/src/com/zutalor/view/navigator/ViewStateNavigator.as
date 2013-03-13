@@ -504,15 +504,15 @@ package com.zutalor.view.navigator
 			answer.UTCTimezoneOffset = String(date.getTimezoneOffset() / 60 * -1);
 			answer.questionId = np.tp.name;
 			
-			answer.correctAnswer = Object(uiController).getCorrectAnswer(answer);
-			
-			if (answer.correctAnswer && answer.answer == answer.correctAnswer)
-				answer.answerIsCorrect = "Y";
-			
+			Object(uiController).getCorrectAnswer(answer, answer.answer, returnAnswerTo);
+
 			np.curAnswerKey = answer.questionId;
 			np.answers.insert(np.curAnswerKey, answer);
 
-			submitCurrentAnswer(answer);
+			function returnAnswerTo():void
+			{
+				submitCurrentAnswer(answer);
+			}
 		}
 		
 		protected function onTextInput(uip:UserInputProperties):void

@@ -36,7 +36,7 @@ package Zutalor.src.com.zutalor.textToSpeech
 		private var text:String;
 		private var start:Number;
 		
-		public var rewindToStart:Boolean = true;
+		public var rewindToStart:Boolean;
 		
 		public function TextToSpeech(apiUrl:String, voice:String = "usenglishfemale", speed:String = "0",
 															pitch:String = "100", format:String = "mp3",
