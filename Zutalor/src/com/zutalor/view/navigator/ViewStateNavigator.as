@@ -416,12 +416,16 @@ package com.zutalor.view.navigator
 			
 			if (np.answer)
 			{
-				saveAnswer(np);
+				saveAnswer(np, onAnswerComplete);
 				np.answer = null;
-				activateNextState(uip);
 			}
 			else
 				speak("Please answer.", "pleaseanswer");
+				
+			function onAnswerComplete():void
+			{
+				activateNextState(uip);
+			}
 		}
 		
 		protected function onMultipleChoice(uip:UserInputProperties, stateType:String):void
@@ -477,7 +481,7 @@ package com.zutalor.view.navigator
 			}
 		}
 		
-		protected function saveAnswer(np:NavigatorProperties):void
+		protected function saveAnswer(np:NavigatorProperties, onComplete:Function):void
 		{
 			var answer:AnswerProperties;
 			var date:Date;
@@ -504,15 +508,18 @@ package com.zutalor.view.navigator
 			answer.UTCTimezoneOffset = String(date.getTimezoneOffset() / 60 * -1);
 			answer.questionId = np.tp.name;
 			
-			Object(uiController).getCorrectAnswer(answer, answer.answer, returnAnswerTo);
+			answer.correctAnswer = Object(uiController).getCorrectAnswer(answer);
 
 			np.curAnswerKey = answer.questionId;
 			np.answers.insert(np.curAnswerKey, answer);
+			submitCurrentAnswer(answer);
 
-			function returnAnswerTo():void
-			{
-				submitCurrentAnswer(answer);
-			}
+			if (answer.correctAnswer && answer.answer == answer.correctAnswer)
+				speak("Your answer was correct; congratulations!", null, onComplete);
+			else if (answer.correctAnswer && answer.answer != answer.correctAnswer)
+				speak("Your answer was not right; better luck next time.", null, onComplete);
+			else
+				onComplete();
 		}
 		
 		protected function onTextInput(uip:UserInputProperties):void
