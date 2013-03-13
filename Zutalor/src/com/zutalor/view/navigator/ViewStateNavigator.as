@@ -9,6 +9,7 @@ package com.zutalor.view.navigator
 	import com.zutalor.audio.SamplePlayer;
 	import com.zutalor.controllers.base.UiControllerBase;
 	import com.zutalor.events.HotKeyEvent;
+	import com.zutalor.file.FileSaver;
 	import com.zutalor.gesture.UserInputProperties;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.PropertyManager;
@@ -52,6 +53,8 @@ package com.zutalor.view.navigator
 		protected var allowAnswerChanging:Boolean = true;
 		protected var promptId:String;
 		protected var promptCancelled:Boolean;
+		
+		private var createCacheFiles:Boolean = true;
 
 		protected var KEYSTROKE_DELAY_BEFORE_SAYING_WORD:int = 1500;
 		protected var DELAY_FROM_LAST_KEYSTROKE_BEFORE_SAYING_PROMPT:int = 5000;
@@ -78,9 +81,14 @@ package com.zutalor.view.navigator
 		public function speak(text:String, soundName:String, onComplete:Function = null,
 													onCompleteArgs:* = null):void
 		{
-			if (soundName)
+			var fileSaver:FileSaver;
+			
+			if (soundName && createCacheFiles)
+			{
+				fileSaver = new FileSaver();
 				soundName = np.soundPath + soundName.toLowerCase() + np.soundExt;
-				
+				fileSaver.withoutDialog(textToSpeech.makeURL(text), soundName);
+			}	
 			textToSpeech.sayText(text, soundName, onComplete, onCompleteArgs);
 		}
 
@@ -181,9 +189,6 @@ package com.zutalor.view.navigator
 					StageRef.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 					StageRef.stage.addEventListener(KeyboardEvent.KEY_UP, captureTextInput, false, 0, true);
 				}
-				//else if (currentStateType == "page")
-				//	uiController.logEvent("page: " + np.tp.name);
-				
 				
 				if (!promptId)
 						promptId = currentStateType;
@@ -264,7 +269,6 @@ package com.zutalor.view.navigator
 			np.confirmationAnswers = tMeta.settings.@confirmationAnswers;
 			np.answerMethod = tMeta.settings.@answerMethod;
 			initUserInput();
-			trace(tMeta.settings.@firstState);
 			if (String(tMeta.settings.@firstState))
 				activateState(tMeta.settings.@firstState);
 		}
@@ -415,10 +419,7 @@ package com.zutalor.view.navigator
 			}
 			
 			if (np.answer)
-			{
 				saveAnswer(np, onAnswerComplete);
-				np.answer = null;
-			}
 			else
 				speak("Please answer.", "pleaseanswer");
 				
@@ -513,16 +514,15 @@ package com.zutalor.view.navigator
 			np.curAnswerKey = answer.questionId;
 			np.answers.insert(np.curAnswerKey, answer);
 			submitCurrentAnswer(answer);
+			np.answer = "";
 
-			if (answer.correctAnswer && answer.answer == answer.correctAnswer)
-				speak("Your answer was correct; congratulations!", null, onComplete);
-			else if (answer.correctAnswer && answer.answer != answer.correctAnswer)
-				speak("Your answer was not right; better luck next time.", null, onComplete);
-			else
+			if (!answer.correctAnswer)
 				onComplete();
+			else if (answer.answer == answer.correctAnswer)
+				sayPrompt("correct", onComplete);
+			else
+				sayPrompt("incorrect", onComplete);
 		}
-		
-		
 		
 		protected function onTextInput(uip:UserInputProperties):void
 		{
@@ -558,7 +558,7 @@ package com.zutalor.view.navigator
 					inputText += " ";
 					speakKey(" ", sayLastWord);
 					break;
-				case "enter" :
+				case "rewind" :
 					sayAnswer();
 					break;
 			}

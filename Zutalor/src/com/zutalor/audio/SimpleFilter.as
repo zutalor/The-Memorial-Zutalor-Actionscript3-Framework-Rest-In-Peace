@@ -141,9 +141,9 @@ package com.zutalor.audio
 				try
 				{
 					channel = outputSound.play();
-					outputBufferPosition = pausePosition;
 				}
-				catch (e:Event) { }
+				catch (e:Error) { }
+				outputBufferPosition = pausePosition;
 			}
 		}
 		

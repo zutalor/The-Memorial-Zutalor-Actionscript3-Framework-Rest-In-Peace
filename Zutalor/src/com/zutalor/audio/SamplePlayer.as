@@ -62,6 +62,11 @@ package com.zutalor.audio
 			return filter.paused;
 		}
 		
+		public function cancelCallback():void
+		{
+			onComplete = null;
+		}
+		
 		public function play(url:String, soundClass:Class = null, onComplete:Function = null,
 									onCompleteArgs:* = null, onRewindToBeginning:Function = null, start:Number = 0):void
 		{

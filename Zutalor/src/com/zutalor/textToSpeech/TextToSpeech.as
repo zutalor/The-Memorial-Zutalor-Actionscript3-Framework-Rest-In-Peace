@@ -1,6 +1,7 @@
 package Zutalor.src.com.zutalor.textToSpeech
 {
 	import com.zutalor.audio.SamplePlayer;
+	import com.zutalor.file.FileSaver;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.utils.Call;
 	import com.zutalor.utils.EmbeddedResources;
@@ -35,6 +36,7 @@ package Zutalor.src.com.zutalor.textToSpeech
 		private var samplePlayer:SamplePlayer;
 		private var text:String;
 		private var start:Number;
+		private var url:String;
 		
 		public var rewindToStart:Boolean;
 		
@@ -53,6 +55,12 @@ package Zutalor.src.com.zutalor.textToSpeech
 			this.bitdepth = bitdepth;
 			samplePlayer = new SamplePlayer();
 			samplePlayer.addEventListener(IOErrorEvent.IO_ERROR, speakWithTextToSpeech, false, 0, true);
+		}
+		
+		public function cancelCallback():void
+		{
+			onComplete = null;
+			samplePlayer.cancelCallback();
 		}
 		
 		public function set tempo(t:Number):void
@@ -92,6 +100,7 @@ package Zutalor.src.com.zutalor.textToSpeech
 		
 		public function preloadText(text:String, url:String, onComplete:Function = null, onCompleteArgs:*= null):void
 		{
+			cancelCallback();
 			samplePlayer.volume = 0;
 			sayText(text, url, done);
 			
@@ -108,7 +117,9 @@ package Zutalor.src.com.zutalor.textToSpeech
 			this.onComplete = onComplete;
 			this.onCompleteArgs = onCompleteArgs;
 			this.text = text;
-
+			this.url = url;
+			cancelCallback();
+			
 			if (text)
 				soundClass = EmbeddedResources.getClass(text);
 		
@@ -120,11 +131,11 @@ package Zutalor.src.com.zutalor.textToSpeech
 		
 		protected function speakWithTextToSpeech(e:IOErrorEvent = null):void
 		{
-			speak(text, onComplete, onCompleteArgs);
+			speak(text, onComplete, onCompleteArgs);	
 		}
 		
 		
-		protected function makeURL(text:String):String
+		public function makeURL(text:String):String
 		{
 			var sa:Array;
 			
@@ -220,6 +231,7 @@ package Zutalor.src.com.zutalor.textToSpeech
 			}
 			
 			url = makeURL(text);
+			
 			samplePlayer.play(url, null, checkforError, null, onRewindToBeginning, start);
 			start = 0;
 			

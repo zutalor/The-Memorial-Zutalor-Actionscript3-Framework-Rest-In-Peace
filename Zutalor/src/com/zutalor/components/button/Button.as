@@ -45,9 +45,6 @@
 
 			super.render(viewItemProperties);
 			
-			if (vip.presetId == "return-up")
-				trace();
-			
 			_bp = ButtonProperties(_presets.getPropsByName(vip.presetId));
 			
 			_up = makeButtonState(_bp.upId);
