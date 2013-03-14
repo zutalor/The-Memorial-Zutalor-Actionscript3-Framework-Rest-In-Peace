@@ -29,9 +29,8 @@ package com.zutalor.audio
 		
 		public function GraphPlayer() { }
 		
-		public function initialize(pParams:String, pGraphingFunctions:Array, pMaxGraphs:int, pOnComplete:Function = null):void
+		public function initialize(xmlUrl:String, assetPath:String, pGraphingFunctions:Array, pMaxGraphs:int, pOnComplete:Function = null):void
 		{
-			var params:Array;
 			var gs:GraphSettings;
 
 			if (!_intitialized)
@@ -40,9 +39,8 @@ package com.zutalor.audio
 				graphingFunctions = pGraphingFunctions;
 				_onComplete = pOnComplete;
 
-				params = pParams.split(",");
-				xmlUrl = TextUtil.strip(params[0]);
-				assetPath = TextUtil.strip(params[1]);
+				this.xmlUrl = xmlUrl;
+				this.assetPath = assetPath;
 				synthesizer = new Synthesizer(AudioDescriptor.RATE_44100, 4096, 3);
 				synthesizer.sounds.load(xmlUrl, assetPath, pOnComplete);
 			}

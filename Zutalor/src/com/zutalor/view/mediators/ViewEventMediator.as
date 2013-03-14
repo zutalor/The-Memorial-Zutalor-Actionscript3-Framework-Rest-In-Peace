@@ -404,6 +404,7 @@ package com.zutalor.view.mediators
 							break;
 						case ViewItemProperties.VIEWITEM_METHOD :
 							viewItemMethodCall();
+							break;
 						case ViewItemProperties.URL :
 							url();
 							break;

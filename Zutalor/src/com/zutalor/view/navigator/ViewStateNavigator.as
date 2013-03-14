@@ -9,7 +9,6 @@ package com.zutalor.view.navigator
 	import com.zutalor.audio.SamplePlayer;
 	import com.zutalor.controllers.base.UiControllerBase;
 	import com.zutalor.events.HotKeyEvent;
-	import com.zutalor.file.FileSaver;
 	import com.zutalor.gesture.UserInputProperties;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.PropertyManager;
@@ -81,18 +80,9 @@ package com.zutalor.view.navigator
 		public function speak(text:String, soundName:String, onComplete:Function = null,
 													onCompleteArgs:* = null):void
 		{
-			var fileSaver:FileSaver;
-			
 			if (soundName)
 				soundName = np.soundPath + soundName.toLowerCase() + np.soundExt;
 				
-			if (createCacheFiles && soundName)
-			{
-				fileSaver = new FileSaver();
-				text = textToSpeechUtils.cleanString(textToSpeechUtils.getTextForDisplay(text));
-				fileSaver.withoutDialog(textToSpeech.makeURL(text), soundName);
-			}
-			
 			textToSpeech.sayText(text, soundName, onComplete, onCompleteArgs);
 		}
 

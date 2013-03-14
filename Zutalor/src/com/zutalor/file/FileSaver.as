@@ -1,6 +1,7 @@
 package com.zutalor.file 
 {
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.events.IOErrorEvent;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
@@ -13,7 +14,7 @@ package com.zutalor.file
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class FileSaver 
+	public class FileSaver extends EventDispatcher
 	{
 		
 		public function FileSaver() 
@@ -61,7 +62,7 @@ package com.zutalor.file
 				fileStream.open(file, FileMode.WRITE);
 				fileStream.writeBytes(fileData, 0, fileData.length);
 				fileStream.close();
-				trace("The file is written.");
+				dispatchEvent(new Event(Event.COMPLETE));
 			}
 		}
 	}

@@ -26,7 +26,7 @@ package Zutalor.src.com.zutalor.textToSpeech
 			str = sa.join(" ");
 			sa = str.split("  ");
 			str = sa.join(" ");
-			r = new RegExp(/[^a-zA-Z 0-9]+/g) ;
+			//r = new RegExp(/[^a-zA-Z 0-9.!?]+/g) ;
 			str = str.replace(r,"");
 			return str;
 		}
