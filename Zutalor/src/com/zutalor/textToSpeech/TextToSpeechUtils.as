@@ -14,6 +14,23 @@ package Zutalor.src.com.zutalor.textToSpeech
 			
 		}
 		
+		public function cleanString(str:String):String
+		{
+			var r:RegExp;
+			var sa:Array;
+			
+			str = TextUtil.stripSurroundedBy(str, "<", ">");
+			sa = str.split("\r");
+			str = sa.join(" ");
+			sa = str.split("   ");
+			str = sa.join(" ");
+			sa = str.split("  ");
+			str = sa.join(" ");
+			r = new RegExp(/[^a-zA-Z 0-9]+/g) ;
+			str = str.replace(r,"");
+			return str;
+		}
+		
 		public function getTextForSpeech(text:String):String
 		{
 			if (text)

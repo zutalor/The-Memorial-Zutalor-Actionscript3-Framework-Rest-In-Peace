@@ -37,6 +37,7 @@ package Zutalor.src.com.zutalor.textToSpeech
 		private var text:String;
 		private var start:Number;
 		private var url:String;
+		private var textToSpeechUtils:TextToSpeechUtils;
 		
 		public var rewindToStart:Boolean;
 		
@@ -45,6 +46,7 @@ package Zutalor.src.com.zutalor.textToSpeech
 															frequency:String = "44100", bitrate:String = "64",
 															bitdepth:String="16")
 		{
+			textToSpeechUtils = new TextToSpeechUtils();
 			this.apiUrl = apiUrl;
 			this.voice = voice;
 			this.speed = speed; // -10 to 10
@@ -100,7 +102,6 @@ package Zutalor.src.com.zutalor.textToSpeech
 		
 		public function preloadText(text:String, url:String, onComplete:Function = null, onCompleteArgs:*= null):void
 		{
-			cancelCallback();
 			samplePlayer.volume = 0;
 			sayText(text, url, done);
 			
@@ -118,7 +119,6 @@ package Zutalor.src.com.zutalor.textToSpeech
 			this.onCompleteArgs = onCompleteArgs;
 			this.text = text;
 			this.url = url;
-			cancelCallback();
 			
 			if (text)
 				soundClass = EmbeddedResources.getClass(text);
@@ -131,7 +131,7 @@ package Zutalor.src.com.zutalor.textToSpeech
 		
 		protected function speakWithTextToSpeech(e:IOErrorEvent = null):void
 		{
-			speak(text, onComplete, onCompleteArgs);	
+			speak(text, onComplete, onCompleteArgs);
 		}
 		
 		
@@ -172,7 +172,7 @@ package Zutalor.src.com.zutalor.textToSpeech
 				{
 					if (i < l && !stopped)
 					{
-						sentences[i] = cleanString(sentences[i]);
+						sentences[i] = textToSpeechUtils.cleanString(sentences[i]);
 						say(sentences[i++], sayNextSentence, onRewindToBeginning);
 					}
 					else
@@ -268,28 +268,6 @@ package Zutalor.src.com.zutalor.textToSpeech
 					}
 				}
 			}
-		}
-		
-		private function cleanString(str:String):String
-		{
-			var r:RegExp;
-			var s:String
-			var sa:Array;
-			
-			str = TextUtil.stripSurroundedBy(str, "<", ">");
-			sa = str.split("\r");
-			str = sa.join(" ");
-			sa = str.split("   ");
-			str = sa.join(" ");
-			sa = str.split("  ");
-			str = sa.join(" ");
-			r = new RegExp(/[^a-zA-Z 0-9]+/g) ;
-			str = str.replace(r,"");
-			sa = str.split(" ");
-			wordcount += sa.length;
-			//trace("Words Translated: " + wordcount);
-			
-			return str;
 		}
 		
 		private function rand(min:Number,max:Number=NaN):int

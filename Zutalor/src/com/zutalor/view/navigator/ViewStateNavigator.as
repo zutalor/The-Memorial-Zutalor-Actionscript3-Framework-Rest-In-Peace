@@ -54,7 +54,7 @@ package com.zutalor.view.navigator
 		protected var promptId:String;
 		protected var promptCancelled:Boolean;
 		
-		private var createCacheFiles:Boolean = true;
+		private var createCacheFiles:Boolean;
 
 		protected var KEYSTROKE_DELAY_BEFORE_SAYING_WORD:int = 1500;
 		protected var DELAY_FROM_LAST_KEYSTROKE_BEFORE_SAYING_PROMPT:int = 5000;
@@ -83,12 +83,16 @@ package com.zutalor.view.navigator
 		{
 			var fileSaver:FileSaver;
 			
-			if (soundName && createCacheFiles)
+			if (soundName)
+				soundName = np.soundPath + soundName.toLowerCase() + np.soundExt;
+				
+			if (createCacheFiles && soundName)
 			{
 				fileSaver = new FileSaver();
-				soundName = np.soundPath + soundName.toLowerCase() + np.soundExt;
+				text = textToSpeechUtils.cleanString(textToSpeechUtils.getTextForDisplay(text));
 				fileSaver.withoutDialog(textToSpeech.makeURL(text), soundName);
-			}	
+			}
+			
 			textToSpeech.sayText(text, soundName, onComplete, onCompleteArgs);
 		}
 
@@ -247,12 +251,11 @@ package com.zutalor.view.navigator
 			bitMapSlide = new BitMapSlide();
 			transition = new Transition();
 		
-			Logger.eTrace("Agent " + Application.settings.agent);
 			if (StringUtils.find("MSIE", Capabilities.os) && Capabilities.playerType != "Desktop")
 				textToSpeechUrl = Application.settings.textToSpeechProxyApi;
 			else
 				textToSpeechUrl = Application.settings.textToSpeechDirectApi;
-				
+			
 			textToSpeech = new TextToSpeech(textToSpeechUrl);
 			textToSpeech.tempo = 1.2;
 			textToSpeechUtils = new TextToSpeechUtils();
@@ -260,6 +263,10 @@ package com.zutalor.view.navigator
 			textToSpeech.enabled = Application.settings.enableTextToSpeech;
 			
 			tMeta = XML(Translate.getMetaByName("settings"));
+			
+			if (tMeta.settings.@createCacheFiles == "true")
+				createCacheFiles = true;
+			
 			np.transitionNext = tMeta.settings.@transitionNext;
 			np.transitionBack = tMeta.settings.@transitionBack;
 			np.promptState = tMeta.settings.@promptState;
@@ -419,14 +426,9 @@ package com.zutalor.view.navigator
 			}
 			
 			if (np.answer)
-				saveAnswer(np, onAnswerComplete);
+				saveAnswer(np.nextState);
 			else
 				speak("Please answer.", "pleaseanswer");
-				
-			function onAnswerComplete():void
-			{
-				activateNextState(uip);
-			}
 		}
 		
 		protected function onMultipleChoice(uip:UserInputProperties, stateType:String):void
@@ -482,7 +484,7 @@ package com.zutalor.view.navigator
 			}
 		}
 		
-		protected function saveAnswer(np:NavigatorProperties, onComplete:Function):void
+		protected function saveAnswer(nextState:String):void
 		{
 			var answer:AnswerProperties;
 			var date:Date;
@@ -516,12 +518,13 @@ package com.zutalor.view.navigator
 			submitCurrentAnswer(answer);
 			np.answer = "";
 
+			textToSpeech.cancelCallback();
 			if (!answer.correctAnswer)
-				onComplete();
+				activateState(nextState);
 			else if (answer.answer == answer.correctAnswer)
-				sayPrompt("correct", onComplete);
+				samplePlayer.play(null, EmbeddedResources.getClass("Correct"), activateState, nextState);
 			else
-				sayPrompt("incorrect", onComplete);
+				samplePlayer.play(null, EmbeddedResources.getClass("Incorrect"), activateState, nextState);
 		}
 		
 		protected function onTextInput(uip:UserInputProperties):void
@@ -669,7 +672,6 @@ package com.zutalor.view.navigator
 				speak(textToSpeechUtils.getTextForSpeech(tp.tText), tp.sound, onComplete, onCompleteArgs);
 			}
 		}
-				// UTILITY
 		
 		protected function stop():void
 		{

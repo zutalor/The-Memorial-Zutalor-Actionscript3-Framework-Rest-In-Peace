@@ -55,7 +55,6 @@ package com.zutalor.amfphp
 			function onResult(pVO:Object):void
 			{
 				cleanup();
-				trace(pVO);
 				if (_onSuccess != null)
 					_onSuccess(pVO);
 			}

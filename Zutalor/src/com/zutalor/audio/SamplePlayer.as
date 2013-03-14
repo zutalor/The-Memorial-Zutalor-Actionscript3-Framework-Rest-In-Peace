@@ -106,7 +106,10 @@ package com.zutalor.audio
 				inputSound = new Sound();
 				inputSound.addEventListener(Event.COMPLETE, onLoaded, false, 0, true);
 				inputSound.addEventListener(IOErrorEvent.IO_ERROR, onIOError, false, 0, true);
-				inputSound.load(new URLRequest(url));
+				if (!url)
+					stopAndCallOnComplete();
+				else
+					inputSound.load(new URLRequest(url));
 			}
 		}
 		
@@ -156,7 +159,7 @@ package com.zutalor.audio
 		
 		private function onLoaded(e:Event = null):void
 		{
-			 try {
+			try {
 				removeloadListeners();
 				samplesTotal = inputSound.length * SAMPLERATE;
 				
