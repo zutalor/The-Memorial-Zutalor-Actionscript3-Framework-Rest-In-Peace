@@ -232,18 +232,21 @@ package Zutalor.src.com.zutalor.textToSpeech
 			
 			url = makeURL(text);
 			
-			samplePlayer.play(url, null, checkforError, null, onRewindToBeginning, start);
+			samplePlayer.play(url, null, callOnComplete, null, onRewindToBeginning, start);
 			start = 0;
 			
-			function checkforError():void
+			function callOnComplete():void
 			{
-				var urlLoader:URLLoader;
-				
 				if (onSayComplete != null)
 				{
 					onSayComplete();
 					onSayComplete = null;
 				}
+			}
+			
+			function checkForError():void // optional not using right now..for use with ispeech.org api.
+			{
+				var urlLoader:URLLoader;
 				
 				if (!samplePlayer.soundLoaded)
 				{

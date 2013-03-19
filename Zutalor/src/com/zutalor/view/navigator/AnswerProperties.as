@@ -13,6 +13,7 @@ package com.zutalor.view.navigator
 		public var UTCTimezoneOffset:String;
 		public var timestamp:String;
 		public var questionId:String;
+		public var secondsToAnswer:String;
 		public var answer:String;
 		public var correctAnswer:String;
 		public var dataId:String;

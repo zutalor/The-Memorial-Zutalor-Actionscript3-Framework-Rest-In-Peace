@@ -144,9 +144,9 @@ package com.zutalor.audio
 				var duration:Number;
 				var startTimes:Array;
 				var maxTime:Number;
-				var tolerence:Number = .02;
 				var nextIncr:Number;
 				var lastIncr:Number;
+				var distance:Number;
 				
 				if (gs.reverse)
 					temp.reverse();
@@ -175,7 +175,8 @@ package com.zutalor.audio
 					{
 						if (x < temp.length)
 						{
-							nextIncr =  (1 -(Math.abs(temp[x] - temp[x + 1]))) / 20;
+							distance = 1 - (Math.abs(temp[x] - temp[x + 1]));
+							nextIncr =  distance / 20;
 							if (! isNaN(nextIncr))
 							{
 								startTime += nextIncr;

@@ -3,6 +3,7 @@
 	import com.zutalor.events.HotKeyEvent;
 	import flash.events.EventDispatcher;
 	import flash.events.KeyboardEvent;
+	import flash.external.ExternalInterface;
 	import flash.ui.Keyboard;
 	import flash.utils.clearTimeout;
 	import flash.utils.Dictionary;
@@ -23,17 +24,70 @@
 		private var sequencesByScope:Dictionary;
 		private var tmpDict:Dictionary;
 		private var keysDown:String;
+		private var keyUpRegistry:gDictionary
 		
 		private static var _instance:HotKeyManager;
 
 		public function HotKeyManager()
 		{
 			Singleton.assertSingle(HotKeyManager);
+			init();
+		}
+		
+		private function init():void
+		{
 			keyMappings=new Dictionary();
 			sequenceMessages=new Dictionary();
 			tmpDict=new Dictionary();
 			sequencesByScope=new Dictionary();
-			keysDown="";
+			keysDown = "";
+			keyUpRegistry = new gDictionary();
+			
+			if (ExternalInterface.available)
+			{
+				Logger.eTrace("adding callback");
+				ExternalInterface.addCallback('keyEvent',keyEvent);
+			}
+		}
+		
+		public function registerOnKeyUp(callback:Function):void
+		{
+			keyUpRegistry.insert(callback, callback);
+		}
+		
+		public function unregisterOnKeyUp(callback:Function):void
+		{
+			keyUpRegistry.deleteByKey(callback);
+		}
+		
+		private function keyEvent(keycode:String, charCode:String, altPressed:String, //this is called from JS in the web page.
+										ctrlPressed:String, keyDown:String):void
+		{
+			var ke:KeyboardEvent;
+			var type:String;
+			var alt:Boolean;
+			var ctrl:Boolean;
+			
+			if (altPressed == "true")
+				alt = true;
+			if (ctrlPressed == "true")
+				ctrl = true;
+			
+			if (keyDown == "true")
+				type = KeyboardEvent.KEY_DOWN;
+			else
+				type = KeyboardEvent.KEY_UP;
+				
+			ke = new KeyboardEvent(type, true, false, uint(charCode), uint(keycode), 0, ctrl, alt);
+			
+			if (type == KeyboardEvent.KEY_DOWN)
+				onKeyDownForSequence(ke);
+			else
+			{
+				Logger.eTrace("Key: " + keycode + " " + charCode + " " + ctrlPressed + " " + keyDown);
+				onKeyUp(ke);
+				onKeyUpForSequence(ke);
+			}
 		}
 		
 		public static function gi():HotKeyManager
@@ -65,6 +119,7 @@
 		 */
 		public function  addMapping(obj:*,mapping:String,message:String):void
 		{
+			obj = StageRef.stage;
 			if(obj is Array)
 			{
 				var l:int=obj.length;
@@ -82,6 +137,7 @@
 		
 		public function  removeMapping(obj:*, mapping:String):void
 		{
+			obj = StageRef.stage;
 			if(obj is Array)
 			{
 				var i:int=0;
@@ -162,17 +218,29 @@
 		
 		private function onKeyUp(ke:KeyboardEvent):void
 		{
-			var scope:* = ke.target.stage;
+			var scope:* = StageRef.stage;
 			
-			if(!keyMappings[scope]) return;
-
-			if (keyMappings[scope][ke.charCode])
+			if(keyMappings[scope] && keyMappings[scope][ke.charCode])
 				dispatchMessage(keyMappings[scope][ke.charCode]);
+				
+			callOnKeyUp(ke);
+		}
+		
+		private function callOnKeyUp(ke:KeyboardEvent):void
+		{
+			var keyUpFunc:Function;
+			
+			for (var i:int = 0; i < keyUpRegistry.length; i++)
+			{
+				keyUpFunc = keyUpRegistry.getByIndex(i) as Function;
+				if (keyUpFunc != null)
+					keyUpFunc(ke);
+			}
 		}
 		
 		private function onKeyUpForSequence(ke:KeyboardEvent):void
 		{
-			var scope:* =ke.target.stage;
+			var scope:* = StageRef.stage;
 			var char:String = KeyUtils.shortCutForKeyCode(ke.keyCode);
 			if (char == null)
 				char=String.fromCharCode(ke.charCode);
@@ -190,7 +258,7 @@
 		
 		private function onKeyDownForSequence(ke:KeyboardEvent):void
 		{
-			var scope:* = ke.target.stage;
+			var scope:* = StageRef.stage;
 			keyInvalidated = true;
 			
 			if(!sequenceMessages[scope]) return;

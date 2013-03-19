@@ -27,6 +27,7 @@ package com.zutalor.view.navigator
 	import com.zutalor.utils.StageRef;
 	import flash.events.KeyboardEvent;
 	import flash.system.Capabilities;
+	import flash.utils.getTimer;
 	import Zutalor.src.com.zutalor.textToSpeech.TextToSpeech;
 	import Zutalor.src.com.zutalor.textToSpeech.TextToSpeechUtils;
 	
@@ -44,7 +45,7 @@ package com.zutalor.view.navigator
 		protected var uip:UserInputProperties;
 		protected var currentStateType:String;
 		protected var bitMapSlide:BitMapSlide;
-		protected var transition:Transition
+		protected var transition:Transition;
 		
 		protected var wordHasBeenSaid:Boolean;
 		protected var keyPressInvalidated:Boolean;
@@ -53,7 +54,7 @@ package com.zutalor.view.navigator
 		protected var promptId:String;
 		protected var promptCancelled:Boolean;
 		
-		private var createCacheFiles:Boolean;
+		private var questionStartTime:int;
 
 		protected var KEYSTROKE_DELAY_BEFORE_SAYING_WORD:int = 1500;
 		protected var DELAY_FROM_LAST_KEYSTROKE_BEFORE_SAYING_PROMPT:int = 5000;
@@ -120,7 +121,6 @@ package com.zutalor.view.navigator
 				
 				if (!tempTp)
 				{
-					trace("State not found: " + id);
 					np.inTransition = false;
 					return;
 				}
@@ -148,8 +148,10 @@ package com.zutalor.view.navigator
 		
 		public function deactivate():void
 		{
-			StageRef.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-			StageRef.stage.removeEventListener(KeyboardEvent.KEY_UP, captureTextInput);
+			hkm.unregisterOnKeyUp(onKeyUp);
+			hkm.unregisterOnKeyUp(captureTextInput);
+			//StageRef.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			//StageRef.stage.removeEventListener(KeyboardEvent.KEY_UP, captureTextInput);
 			KeyListeners(false);
 		}
 		
@@ -167,7 +169,8 @@ package com.zutalor.view.navigator
 
 			MasterClock.unRegisterCallback(checkForKeystrokePause);
 			MasterClock.unRegisterCallback(checkForUserDelay);
-			StageRef.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp, false, 0, true);
+			hkm.registerOnKeyUp(onKeyUp);
+			//StageRef.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp, false, 0, true);
 
 			if (currentStateType == "uiControllerMethod")
 			{
@@ -180,12 +183,18 @@ package com.zutalor.view.navigator
 				if (currentStateType == "textInput")
 				{
 					MasterClock.registerCallback(checkForKeystrokePause, true, KEYSTROKE_DELAY_BEFORE_SAYING_WORD);
-					StageRef.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-					StageRef.stage.addEventListener(KeyboardEvent.KEY_UP, captureTextInput, false, 0, true);
+					
+					hkm.unregisterOnKeyUp(onKeyUp);
+					hkm.registerOnKeyUp(captureTextInput);
+					//StageRef.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+					//StageRef.stage.addEventListener(KeyboardEvent.KEY_UP, captureTextInput, false, 0, true);
 				}
 				
 				if (!promptId)
 						promptId = currentStateType;
+				
+				if (currentStateType == "textInput" || currentStateType == "multipleChoice" || currentStateType == "confirmation")
+					questionStartTime = getTimer();
 				
 				sayText();
 				checkForMethodCall();
@@ -241,7 +250,7 @@ package com.zutalor.view.navigator
 			bitMapSlide = new BitMapSlide();
 			transition = new Transition();
 		
-			if (StringUtils.find("MSIE", Capabilities.os) && Capabilities.playerType != "Desktop")
+			if (StringUtils.find("MSIE", Application.settings.agent) && Capabilities.playerType != "Desktop")
 				textToSpeechUrl = Application.settings.textToSpeechProxyApi;
 			else
 				textToSpeechUrl = Application.settings.textToSpeechDirectApi;
@@ -253,10 +262,6 @@ package com.zutalor.view.navigator
 			textToSpeech.enabled = Application.settings.enableTextToSpeech;
 			
 			tMeta = XML(Translate.getMetaByName("settings"));
-			
-			if (tMeta.settings.@createCacheFiles == "true")
-				createCacheFiles = true;
-			
 			np.transitionNext = tMeta.settings.@transitionNext;
 			np.transitionBack = tMeta.settings.@transitionBack;
 			np.promptState = tMeta.settings.@promptState;
@@ -417,8 +422,8 @@ package com.zutalor.view.navigator
 			
 			if (np.answer)
 				saveAnswer(np.nextState);
-			else
-				speak("Please answer.", "pleaseanswer");
+			//else
+			//	speak("Please answer.", "pleaseanswer");
 		}
 		
 		protected function onMultipleChoice(uip:UserInputProperties, stateType:String):void
@@ -478,6 +483,7 @@ package com.zutalor.view.navigator
 		{
 			var answer:AnswerProperties;
 			var date:Date;
+			var secs:Number;
 		
 			date = new Date();
 			answer = new AnswerProperties();
@@ -492,7 +498,11 @@ package com.zutalor.view.navigator
 				answer.questionId = np.tp.name;
 				answer.data = "";
 			}
-			
+			secs = (getTimer() - questionStartTime) / 1000;
+			answer.secondsToAnswer = secs.toFixed(2);
+			if (answer.answer == answer.correctAnswer)
+				answer.answerIsCorrect = "Y";
+				
 			answer.answer = np.answer;
 			answer.questionId = np.tp.name;
 			
@@ -509,6 +519,7 @@ package com.zutalor.view.navigator
 			np.answer = "";
 
 			textToSpeech.cancelCallback();
+			textToSpeech.stop();
 			if (!answer.correctAnswer)
 				activateState(nextState);
 			else if (answer.answer == answer.correctAnswer)

@@ -13,6 +13,8 @@
 	{
 		public var appName:String;
 		public var version:String;
+		public var release:String;
+		public var production:Boolean;
 		public var ip:String;
 		public var agent:String;
 		public var designWidth:int;
