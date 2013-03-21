@@ -407,7 +407,7 @@ package com.zutalor.view.navigator
 			var asa:Array;
 			var l:int;
 			
-			if (currentStateType == "page")
+			if (!currentStateType || currentStateType == "page")
 			{
 				activateNextState(uip);
 				return;
@@ -422,8 +422,8 @@ package com.zutalor.view.navigator
 			
 			if (np.answer)
 				saveAnswer(np.nextState);
-			//else
-			//	speak("Please answer.", "pleaseanswer");
+			else
+				speak("Please answer.", "pleaseanswer");
 		}
 		
 		protected function onMultipleChoice(uip:UserInputProperties, stateType:String):void
@@ -500,9 +500,7 @@ package com.zutalor.view.navigator
 			}
 			secs = (getTimer() - questionStartTime) / 1000;
 			answer.secondsToAnswer = secs.toFixed(2);
-			if (answer.answer == answer.correctAnswer)
-				answer.answerIsCorrect = "Y";
-				
+			
 			answer.answer = np.answer;
 			answer.questionId = np.tp.name;
 			
@@ -512,6 +510,10 @@ package com.zutalor.view.navigator
 			answer.questionId = np.tp.name;
 			
 			answer.correctAnswer = Object(uiController).getCorrectAnswer(answer);
+			if (answer.correctAnswer && answer.answer == answer.correctAnswer)
+				answer.answerIsCorrect = "Y";
+			else if (answer.correctAnswer && answer.answer != answer.correctAnswer)
+				answer.answerIsCorrect = "N";
 
 			np.curAnswerKey = answer.questionId;
 			np.answers.insert(np.curAnswerKey, answer);

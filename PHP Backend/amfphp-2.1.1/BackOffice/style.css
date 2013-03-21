@@ -1,0 +1,137 @@
+* {
+	font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #FFFFFF;
+	margin: 0px;
+	padding: 0px;
+}
+
+html, body {
+	background: #333333;
+}
+
+a {
+	color: #C4D6DC;
+	text-decoration: none;
+        cursor:pointer;
+}
+
+.warning{
+    color:yellow;
+    
+}
+
+input {
+	background: none;
+	padding: 5px;
+	border: 1px solid #525252;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;
+	margin: 5px;
+}
+
+.static {
+	background: #000000;
+	height: 20px;
+	padding: 20px;
+	padding-top: 10px;
+	border-bottom: 1px solid #525252;
+	font-size: 24px;
+} 
+
+.static b {
+	font-size: 24px;
+	color: #C4D6DC;
+} 
+
+.static ul {
+	float: right;
+	list-style-type: none;
+	margin-top: 7px;
+}
+
+.errorMessage{
+    color:red;
+}
+.static a{
+	padding-right: 20px;
+    
+}
+
+.static ul li {
+	float: left;
+	margin-left: 20px;
+}
+
+#signin {
+	float: left;
+	margin-left: 20px;
+}
+.menu {
+	padding: 11px;
+	background: #525252;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;
+}
+
+.left{
+    float: left;
+    margin: 20px;
+}
+.menu li {
+	margin-left: 15px;
+	margin-bottom: 10px;
+}
+
+.menu li b {
+	font-size: 14px;
+}
+
+.menu li ul {
+	padding-left: 15px;
+}
+
+.menu li ul li {
+	margin-left: 0px;
+	margin-bottom: 2px;
+}
+
+.userInput {
+	float: left;
+	margin-top: 20px;
+}
+
+
+.userInput h3 {
+	background: #525252;
+	padding: 10px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;
+	font-size: 14px;
+	margin-bottom: 10px;
+}
+
+.userInput form {
+	margin-bottom: 20px;
+}
+
+
+.underline {
+   text-decoration: underline;
+}
+
+#signin input{
+    margin-left: 0;
+    margin-right: 0;
+}
+#signin input[type="submit"] {
+    font-weight: bold;
+    float: right;
+}
+
+#serviceMethods{
+    margin-top: 20px;
+}

@@ -60,34 +60,52 @@
 			keyUpRegistry.deleteByKey(callback);
 		}
 		
-		private function keyEvent(keycode:String, charCode:String, altPressed:String, //this is called from JS in the web page.
-										ctrlPressed:String, keyDown:String):void
+		//this is called from JS in the web page.
+		private function keyEvent(keycode:String, charCode:String, ctrlPressed:String, altPressed:String,
+																	shiftPressed:String, keyDown:String):void
 		{
 			var ke:KeyboardEvent;
 			var type:String;
 			var alt:Boolean;
 			var ctrl:Boolean;
+			var shift:Boolean;
+			var char:String;
 			
 			if (altPressed == "true")
 				alt = true;
 			if (ctrlPressed == "true")
 				ctrl = true;
+			if (shiftPressed == "true")
+				shift = true;
 			
 			if (keyDown == "true")
 				type = KeyboardEvent.KEY_DOWN;
 			else
 				type = KeyboardEvent.KEY_UP;
+			
 				
-			ke = new KeyboardEvent(type, true, false, uint(charCode), uint(keycode), 0, ctrl, alt);
+			if (!shift && charCode)
+			{
+				
+				char = String.fromCharCode(charCode);
+				if (char)
+					charCode = String(char.toLowerCase().charCodeAt(0));
+					
+				Logger.eTrace(charCode);
+
+			}
+			
+			ke = new KeyboardEvent(type, true, false, uint(charCode), uint(keycode), 0, ctrl, alt, shift);
 			
 			if (type == KeyboardEvent.KEY_DOWN)
 				onKeyDownForSequence(ke);
 			else
 			{
-				Logger.eTrace("Key: " + keycode + " " + charCode + " " + ctrlPressed + " " + keyDown);
+				Logger.eTrace("Key: " + keycode + " " + charCode + " " + ctrlPressed + " " + shiftPressed);
 				onKeyUp(ke);
 				onKeyUpForSequence(ke);
 			}
+			
 		}
 		
 		public static function gi():HotKeyManager

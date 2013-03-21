@@ -1,4 +1,4 @@
-package com.zutalor.file 
+package com.zutalor.file
 {
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -17,19 +17,12 @@ package com.zutalor.file
 	public class FileSaver extends EventDispatcher
 	{
 		
-		public function FileSaver() 
+		public function FileSaver()
 		{
 			
 		}
 		
-		public function withDialog(url:String, dest:String):void
-		{
-			var request:URLRequest = new URLRequest(url);
-			var fileRef:FileReference = new FileReference();
-			fileRef.download(request, dest);
-		}
-		
-		public function withoutDialog(url:String, dest:String):void
+		public function copyFile(url:String, dest:String):void
 		{
 		
 			var urlReq:URLRequest = new URLRequest(url);
@@ -54,7 +47,7 @@ package com.zutalor.file
 			}
 
 			function writeAirFile():void
-			{ 
+			{
 				// Change the folder path to whatever you want plus name your mp3
 				// If the folder or folders does not exist it will create it.
 				var file:File = File.userDirectory.resolvePath(dest);
