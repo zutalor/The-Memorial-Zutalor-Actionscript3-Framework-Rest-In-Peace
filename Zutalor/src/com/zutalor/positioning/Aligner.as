@@ -40,7 +40,7 @@ package com.zutalor.positioning
 				alignInRect(displayObject, width, height, align, hPad, vPad);
 		}
 		
-		private function fitIntoRect(displayObject : DisplayObject, width:Number, height:Number, align : String = "center", hPad:int = 0, vPad:int = 0, fillRect : Boolean = false, applyTransform : Boolean = true) : void
+		private function fitIntoRect(displayObject : DisplayObject, width:Number, height:Number, align : String = "top-left", hPad:int = 0, vPad:int = 0, fillRect : Boolean = false, applyTransform : Boolean = true) : void
 		{
 			var matrix : Matrix = new Matrix();
 			

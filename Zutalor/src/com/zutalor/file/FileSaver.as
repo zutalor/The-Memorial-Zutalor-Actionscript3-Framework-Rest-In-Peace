@@ -17,46 +17,101 @@ package com.zutalor.file
 	public class FileSaver extends EventDispatcher
 	{
 		
-		public function FileSaver()
+		private var urlReq:URLRequest;
+		private var urlStream:URLStream;
+		private var fileData:ByteArray;
+		private var dest:String;
+		private var destDir:String;
+		
+		public static const DESKTOP:String = "desktop";
+		public static const APPLICATION:String = "application";
+		public static const APP_STORAGE:String = "storage";
+		public static const DOCUMENTS:String = "documents";
+		public static const USER:String = "user";
+		
+		public function FileSaver():void
 		{
 			
 		}
 		
-		public function copyFile(url:String, dest:String):void
+		public function dispose():void
 		{
+			removeListeners();
+		}
 		
-			var urlReq:URLRequest = new URLRequest(url);
-			var urlStream:URLStream = new URLStream();
-			var fileData:ByteArray = new ByteArray();
-			urlStream.addEventListener(Event.COMPLETE, loaded, false, 0, true);
+		public function saveData(fileData:ByteArray, dest:String, destDirectory:String = "desktop"):void
+		{
+			this.dest = dest;
+			this.fileData = fileData;
+			this.destDir = destDirectory;
+			writeAirFile();
+		}
+		
+		public function copyFile(url:String, dest:String, destDirectory:String="desktop"):void
+		{
+			this.dest = dest;
+			this.destDir = destDirectory;
+			
+			urlReq = new URLRequest(url);
+			urlStream= new URLStream();
+			fileData = new ByteArray();
+			urlStream.addEventListener(Event.COMPLETE, onLoaded, false, 0, true);
 			urlStream.addEventListener(IOErrorEvent.IO_ERROR, onError, false, 0, true);
-			
 			urlStream.load(urlReq);
-
-			function onError(e:IOErrorEvent):void
-			{
-				trace(e);
-			}
-
-			function loaded(event:Event):void
-			{
-				urlStream.removeEventListener(Event.COMPLETE, loaded);
-				urlStream.removeEventListener(IOErrorEvent.IO_ERROR, onError);
-				urlStream.readBytes(fileData, 0, urlStream.bytesAvailable);
-				writeAirFile();
-			}
-
-			function writeAirFile():void
-			{
-				// Change the folder path to whatever you want plus name your mp3
-				// If the folder or folders does not exist it will create it.
-				var file:File = File.userDirectory.resolvePath(dest);
-				var fileStream:FileStream = new FileStream();
-				fileStream.open(file, FileMode.WRITE);
-				fileStream.writeBytes(fileData, 0, fileData.length);
-				fileStream.close();
-				dispatchEvent(new Event(Event.COMPLETE));
-			}
 		}
+		
+		private function onError(e:IOErrorEvent):void
+		{
+			removeListeners();
+			trace(e);
+		}
+
+		private function onLoaded(event:Event):void
+		{
+			removeListeners();
+			urlStream.readBytes(fileData, 0, urlStream.bytesAvailable);
+			writeAirFile();
+		}
+
+		private function writeAirFile():void
+		{
+
+			var file:File;
+			var fileStream:FileStream = new FileStream();
+			
+			switch(destDir)
+			{
+				case APP_STORAGE :
+					file = File.applicationStorageDirectory;
+					break;
+				case DESKTOP :
+					file = File.desktopDirectory;
+					break;
+				case APPLICATION :
+					file = File.applicationDirectory;
+					break;
+				case DOCUMENTS :
+					file = File.documentsDirectory;
+					break;
+				case USER :
+					file = File.userDirectory;
+					break;
+			}
+			
+			file = file.resolvePath(dest);
+			fileStream.open(file, FileMode.WRITE);
+			fileStream.writeBytes(fileData, 0, fileData.length);
+			fileStream.close();
+			dispatchEvent(new Event(Event.COMPLETE));
+		}
+		
+		private function removeListeners():void
+		{
+			if (urlStream)
+			{
+				urlStream.removeEventListener(Event.COMPLETE, onLoaded);
+				urlStream.removeEventListener(IOErrorEvent.IO_ERROR, onError);
+			}
+		}		
 	}
 }
