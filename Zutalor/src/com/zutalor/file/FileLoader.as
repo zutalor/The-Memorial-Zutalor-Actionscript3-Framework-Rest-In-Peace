@@ -21,7 +21,6 @@ package com.zutalor.file
 		
 		public function selectFile(title:String="Select", fileFilter:String = "*.*"):void
 		{
-			this.charSet = charSet;
 			file = File.desktopDirectory;
 			file.addEventListener( Event.SELECT, onFileSelect, false, 0, true );
 			file.browseForOpen(title, [new FileFilter( title, fileFilter )] );
@@ -36,7 +35,6 @@ package com.zutalor.file
 		private function onLoadComplete( event:Event ):void
 		{
 			data = file.data.readMultiByte( file.data.bytesAvailable, charSet);
-			trace(data);
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
 	}
