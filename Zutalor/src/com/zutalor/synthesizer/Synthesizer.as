@@ -72,9 +72,8 @@ package com.zutalor.synthesizer
 				note = Math.round(note);
 		
 			if (envelopeGenerators[curVoice])	
-			{
 				envelopeGenerators[curVoice].destroy();
-			}	
+			
 			if (preset.monophonic)
 				for (var i:int = 0; i < curVoice; i++)
 					if (preset.name && audioPlayers[i].preset == preset.name)
@@ -84,8 +83,8 @@ package com.zutalor.synthesizer
 			
 			voice = sounds.getVoice(preset, note, envelopeGenerators[curVoice], mods);
 			
-			audioPlayers[curVoice].play(voice);
 			audioPlayers[curVoice].preset = preset.name;
+			audioPlayers[curVoice].play(voice);
 			
 			if (curVoice < maxVoices - 1)
 				curVoice++;

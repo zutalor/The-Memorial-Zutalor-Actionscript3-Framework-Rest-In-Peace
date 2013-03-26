@@ -50,8 +50,6 @@ package com.zutalor.audio
 		{
 			if (synthesizer)
 				synthesizer.sequencer.pause();
-				
-			
 		}
 				
 		public function stop():void

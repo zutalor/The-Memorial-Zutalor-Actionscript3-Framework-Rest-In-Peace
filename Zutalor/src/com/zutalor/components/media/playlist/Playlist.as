@@ -147,7 +147,7 @@ package com.zutalor.components.media.playlist
 				pip = _presets.getItemPropsByIndex(playlistName, i);
 				if (pip.hotkey)
 				{
-					_hkm.addMapping(StageRef.stage, pip.hotkey, pip.name);
+					_hkm.addMapping(pip.hotkey, pip.name);
 				}					
 				_clipNames.push(pip.name);
 			}

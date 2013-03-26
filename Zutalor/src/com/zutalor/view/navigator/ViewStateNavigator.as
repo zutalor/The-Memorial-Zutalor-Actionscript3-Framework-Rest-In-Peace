@@ -62,6 +62,9 @@ package com.zutalor.view.navigator
 		
 		public static const TAB:int = 9;
 		
+		public var lastAction:String;
+		public var currentState:String;
+		
 		protected static const PUNCTUATION:Array = ["'", "*", ";", ":", "-", "}", "{", "+", "_", ")",
 													"(", "?", ".", ",", '"', "[" , "]", "~", "`",
 													"!", "@", "#", "$", "%", "^", "=", "<", ">", "/", "\\", "|", "&" , " "];
@@ -112,7 +115,6 @@ package com.zutalor.view.navigator
 			var tempTp:TranslationProperties;
 			
 			textToSpeech.stop();
-			
 			if (!np.inTransition)
 			{
 				np.inTransition = true;
@@ -124,7 +126,8 @@ package com.zutalor.view.navigator
 					np.inTransition = false;
 					return;
 				}
-			
+				
+				currentState = id;
 				np.tp = tempTp;
 				np.history.push(np.tp.name);
 				uiController.getValueObject().text = textToSpeechUtils.getTextForDisplay(np.tp.tText);
@@ -150,8 +153,6 @@ package com.zutalor.view.navigator
 		{
 			hkm.unregisterOnKeyUp(onKeyUp);
 			hkm.unregisterOnKeyUp(captureTextInput);
-			//StageRef.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-			//StageRef.stage.removeEventListener(KeyboardEvent.KEY_UP, captureTextInput);
 			KeyListeners(false);
 		}
 		
@@ -170,8 +171,7 @@ package com.zutalor.view.navigator
 			MasterClock.unRegisterCallback(checkForKeystrokePause);
 			MasterClock.unRegisterCallback(checkForUserDelay);
 			hkm.registerOnKeyUp(onKeyUp);
-			//StageRef.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp, false, 0, true);
-
+			
 			if (currentStateType == "uiControllerMethod")
 			{
 				stop();
@@ -186,8 +186,6 @@ package com.zutalor.view.navigator
 					
 					hkm.unregisterOnKeyUp(onKeyUp);
 					hkm.registerOnKeyUp(captureTextInput);
-					//StageRef.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-					//StageRef.stage.addEventListener(KeyboardEvent.KEY_UP, captureTextInput, false, 0, true);
 				}
 				
 				if (!promptId)
@@ -230,9 +228,9 @@ package com.zutalor.view.navigator
 			{
 				userInputProperties = hotKeys.getPropsByIndex(i);
 				if (add)
-					hkm.addMapping(StageRef.stage, userInputProperties.name, userInputProperties.name);
+					hkm.addMapping(userInputProperties.name, userInputProperties.name);
 				else
-					hkm.removeMapping(StageRef.stage, userInputProperties.name);
+					hkm.removeMapping(userInputProperties.name);
 			}
 		}
 										
@@ -346,6 +344,7 @@ package com.zutalor.view.navigator
 			else
 				tMeta = XML(Translate.getMetaByName(np.tp.name));
 			
+			lastAction = uip.action;
 			switch (uip.action)
 			{
 				case "exit" :

@@ -39,7 +39,7 @@ package com.zutalor.controllers.base
 			}
         }
 
-		public function logEvent(e:String):void
+		public function logEvent(e:String, data:* = null):void
 		{
 			
 		}

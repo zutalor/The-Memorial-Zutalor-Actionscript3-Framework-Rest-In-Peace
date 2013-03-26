@@ -1,6 +1,7 @@
 ﻿package com.zutalor.utils
 {
 	import com.zutalor.events.HotKeyEvent;
+	import flash.display.DisplayObject;
 	import flash.events.EventDispatcher;
 	import flash.events.KeyboardEvent;
 	import flash.external.ExternalInterface;
@@ -26,6 +27,8 @@
 		private var keysDown:String;
 		private var keyUpRegistry:gDictionary
 		
+		public var scope:DisplayObject;
+		
 		private static var _instance:HotKeyManager;
 
 		public function HotKeyManager()
@@ -42,6 +45,7 @@
 			sequencesByScope=new Dictionary();
 			keysDown = "";
 			keyUpRegistry = new gDictionary();
+			scope = StageRef.stage;
 			
 			if (ExternalInterface.available)
 			{
@@ -135,39 +139,24 @@
 		 *
 		 *
 		 */
-		public function  addMapping(obj:*,mapping:String,message:String):void
+		public function  addMapping(mapping:String,message:String):void
 		{
-			obj = StageRef.stage;
-			if(obj is Array)
-			{
-				var l:int=obj.length;
-				var i:int=0;
-				for(i; i < l; i++) addMapping(obj[i],mapping,message);
-				return;
-			}
 			if (mapping.length == 1)
-				addCharMapping(obj,mapping,message);
+				addCharMapping(mapping, message);
 			else if (isShortcutForKeycode(mapping))
-				addSequenceMapping(obj,mapping,message);
+				addSequenceMapping(mapping,message);
 			else if (mapping.indexOf("+") > -1)
-				addSequenceMapping(obj,mapping,message);
+				addSequenceMapping(mapping,message);
 		}
 		
-		public function  removeMapping(obj:*, mapping:String):void
+		public function  removeMapping(mapping:String):void
 		{
-			obj = StageRef.stage;
-			if(obj is Array)
-			{
-				var i:int=0;
-				var l:int=obj.length;
-				for(i;i<l;i++) removeMapping(obj[i],mapping);
-			}
 			if (mapping.length == 1)
-				removeCharMapping(obj, mapping);
+				removeCharMapping(mapping);
 			else if (mapping.indexOf("+") > -1)
-				removeSequenceMapping(obj, mapping);
+				removeSequenceMapping(mapping);
 			else if (isShortcutForKeycode(mapping))
-				removeSequenceMapping(obj,mapping);
+				removeSequenceMapping(mapping);
 		
 			clearKeys();
 		}
@@ -195,7 +184,7 @@
 				return false;
 		}
 		
-		private function addCharMapping(scope:*, char:String, message:String):void
+		private function addCharMapping(char:String, message:String):void
 		{
 			if(!keyMappings[scope])
 			{
@@ -205,7 +194,7 @@
 			keyMappings[scope][char.charCodeAt(0)]=message;
 		}
 		
-		private function addSequenceMapping(scope:*,sequence:String,message:String):void
+		private function addSequenceMapping(sequence:String,message:String):void
 		{
 			if(!sequenceMessages[scope])
 			{
@@ -220,7 +209,7 @@
 			sequenceMessages[scope][sequence]['message']=message;
 		}
 		
-		private function removeCharMapping(scope:*, char:String):void
+		private function removeCharMapping(char:String):void
 		{
 			if (!keyMappings[scope])
 				return;
@@ -229,15 +218,13 @@
 			keyMappings[scope][char]=null;
 		}
 		
-		private function removeSequenceMapping(scope:*, mapping:String):void
+		private function removeSequenceMapping(mapping:String):void
 		{
 			sequenceMessages[scope][mapping]=null;
 		}
 		
 		private function onKeyUp(ke:KeyboardEvent):void
 		{
-			var scope:* = StageRef.stage;
-			
 			if(keyMappings[scope] && keyMappings[scope][ke.charCode])
 				dispatchMessage(keyMappings[scope][ke.charCode]);
 				
@@ -258,7 +245,6 @@
 		
 		private function onKeyUpForSequence(ke:KeyboardEvent):void
 		{
-			var scope:* = StageRef.stage;
 			var char:String = KeyUtils.shortCutForKeyCode(ke.keyCode);
 			if (char == null)
 				char=String.fromCharCode(ke.charCode);
@@ -276,7 +262,6 @@
 		
 		private function onKeyDownForSequence(ke:KeyboardEvent):void
 		{
-			var scope:* = StageRef.stage;
 			keyInvalidated = true;
 			
 			if(!sequenceMessages[scope]) return;
