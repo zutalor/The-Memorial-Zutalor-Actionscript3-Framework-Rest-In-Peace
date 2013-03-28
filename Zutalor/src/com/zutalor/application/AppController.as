@@ -1,6 +1,5 @@
 ﻿package com.zutalor.application
 {
-	import air.update.descriptors.ConfigurationDescriptor;
 	import com.asual.swfaddress.SWFAddress;
 	import com.asual.swfaddress.SWFAddressEvent;
 	import com.greensock.TweenMax;
