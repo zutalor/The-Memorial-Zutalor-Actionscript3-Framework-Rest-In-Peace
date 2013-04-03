@@ -13,7 +13,7 @@
 		{
 			if (arr1.length != arr2.length) return false;
 			
-			for (var i:int = 0; i < arr1.length; i++) 
+			for (var i:int = 0; i < arr1.length; i++)
 				if (arr1[i] != arr2[i]) return false;
 			
 			return true;
@@ -25,7 +25,7 @@
 				if (a[i] == value)
 					return i;
 					
-			return 0;		
+			return 0;
 		}
 		
 		public static function nullValues(... rest):void
@@ -83,7 +83,7 @@
 		}
 		
 		public static function fitUnevenDistribution(x:Array, y:Array, dest:Array, start:int, end:int):Array
-		{			
+		{
 			if (end == int.MAX_VALUE)
 				end = x.length;
 				
@@ -96,7 +96,7 @@
 				dest[i + 1] = y[i];
 			}
 			return dest;
-		}		
+		}
 		
 		public static function linearConversion(oldValues:Array, oldMin:Number, oldMax:Number, newMin:Number, newMax:Number):Array
 		{
@@ -104,9 +104,9 @@
 			
 			ret = [];
 			for (var i:int = 0; i < oldValues.length; i++)
-				ret[i] = (((oldValues[i] - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) + newMin; 
+				ret[i] = (((oldValues[i] - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) + newMin;
 				
-			return ret;	
+			return ret;
 		}
 		
 		public static function compress(oldValues:Array, oldMin:Number, oldMax:Number, newMin:Number, newMax:Number, scale:Number):Array
@@ -121,7 +121,7 @@
 			return ret;
 		}
 		
-		public static function getMax(a:Array):uint
+		public static function getMax(a:Array):Number
 		{
 			var max:Number = 0;
 			
@@ -129,11 +129,11 @@
 				if (a[i] > max)
 					max = a[i];
 					
-			return max;	
+			return max;
 		}
 		
 			
-		public static function getMin(a:Array):uint
+		public static function getMin(a:Array):Number
 		{
 			var min:Number = 0;
 			
@@ -141,12 +141,12 @@
 				if (a[i] < min)
 					min = a[i];
 					
-			return min;	
+			return min;
 		}
 		
 		public static function mix(a:Array, b:Array, mixA:Number=1, mixB:Number=1, bOffset:uint=0):Array
 		{
-			var mix:Array;	
+			var mix:Array;
 			var i:uint;
 			
 			mix = [];
@@ -173,16 +173,15 @@
 					for (var i:int = 0; i < iterations; i++)
 					{
 						noise = MathG.randFloat(min, max) * fade;
-						data[c] += noise;	
-						fade *= fallOff;	
+						data[c] += noise;
+						fade *= fallOff;
 					}
 				}
-			
 		}
 		
 		public static function shuffle(a:Array, startIndex:int = 0, endIndex:int = 0):void
 		{
-			if (endIndex == 0) 
+			if (endIndex == 0)
 				endIndex = a.length-1;
 			
 			for (var i:int = endIndex; i > startIndex; i--)
@@ -193,6 +192,6 @@
 				a[i] = a[randomNumber];
 				a[randomNumber] = tmp;
 			}
-		}		
+		}
 	}
 }

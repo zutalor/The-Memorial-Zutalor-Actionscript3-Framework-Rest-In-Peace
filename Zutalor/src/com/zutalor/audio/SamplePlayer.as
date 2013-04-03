@@ -164,7 +164,10 @@ package com.zutalor.audio
 				samplesTotal = inputSound.length * SAMPLERATE;
 				
 				if (samplesTotal)
+				{
 					channel = filter.play(inputSound, outputSound, stopAndCallOnComplete, onRewindToBeginning, start);
+					volume = vol;
+				}
 				else
 					stopAndCallOnComplete();
 					

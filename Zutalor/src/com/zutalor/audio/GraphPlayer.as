@@ -6,6 +6,7 @@ package com.zutalor.audio
 	import com.zutalor.synthesizer.Synthesizer;
 	import com.zutalor.text.TextUtil;
 	import com.zutalor.utils.ArrayUtils;
+	import com.zutalor.utils.MathG;
 	
 	public class GraphPlayer
 	{
@@ -69,6 +70,7 @@ package com.zutalor.audio
 			var temp:Array;
 			var note:Note;
 			var t:Track;
+			var maxValue:Number;
 
 			_onComplete = onComplete;
 			_numTracks = graphCollection.length;
@@ -78,9 +80,7 @@ package com.zutalor.audio
 			max = [];
 			curGraphData = [];
 			isPlaying = true;
-			
 			assignData();
-			scaleAudioData();
 			renderGraphs();
 			
 			synthesizer.sequencer.renderTracks(_numTracks);
@@ -167,7 +167,7 @@ package com.zutalor.audio
 					note.release = gs.preset.release;
 					note.hold = gs.preset.hold;
 					
-					startTimes[x] = startTime;
+					startTimes[x] = Math.abs(startTime);
 					
 					if (variableTiming)
 					{
@@ -189,7 +189,8 @@ package com.zutalor.audio
 				}
 				
 				maxTime = ArrayUtils.getMax(startTimes);
-				startTimes = ArrayUtils.linearConversion(startTimes, 0, maxTime, 0, totalTime);
+				
+				startTimes = ArrayUtils.linearConversion(startTimes, 0, maxTime, 0, gs.totalTime);
 				
 				for (x = 0; x < startTimes.length; x++)
 				{

@@ -1,4 +1,4 @@
-﻿package com.zutalor.components.media.base 
+﻿package com.zutalor.components.media.base
 {
 	import com.greensock.TweenMax;
 	import com.zutalor.components.base.Component;
@@ -22,7 +22,7 @@
 	 * @author Geoff Pepos
 	 */
 	public class MediaPlayer extends Component implements IMediaPlayer, IComponent
-	{	
+	{
 		protected var mediaController:MediaController;
 		protected var _volume:Number;
 		private var _url:String;
@@ -50,7 +50,7 @@
 		}
 		
 		public static function registerPresets(options:Object):void
-		{	
+		{
 			if (!presets)
 				presets = new PropertyManager(MediaProperties);
 			
@@ -66,8 +66,8 @@
 			if (!mpp)
 				ShowError.fail(MediaPlayer,"No media preset " + vip.url);
 			
-			volume = mpp.volume;	
-			load(vip.url, int(vip.width), int(vip.height), vip.x, vip.y);		
+			volume = mpp.volume;
+			load(vip.url, int(vip.width), int(vip.height), vip.x, vip.y);
 			
 			if (vip.url)
 			{
@@ -84,24 +84,25 @@
 				}
 			}
 			else
-				visible = false;	
+				visible = false;
 		}
 		
 		// PROTECTED METHODS
 				
 		protected function onLoadProgress(e:MediaLoadProgressEvent):void { }
-		protected function setPlayPauseButton(e:Event = null):void { }	
+		protected function setPlayPauseButton(e:Event = null):void { }
 		
 		protected function initialize(_playerType:String, mediaController:MediaController):void
 		{
 			endVariance = 0;
-			_playerType = _playerType;	
-			this.mediaController = mediaController;	
+			_playerType = _playerType;
+			this.mediaController = mediaController;
 			mediaController.view = this;
 			mediaController.addEventListener(MediaEvent.COMPLETE, onPlayComplete);
 			mediaController.addEventListener(MediaEvent.STOP, onPlayComplete);
 			mediaController.addEventListener(MediaEvent.BUFFER_FULL, onBufferFull, false, 0, true);
 			mediaController.addEventListener(MediaEvent.BUFFER_EMPTY, onBufferEmpty, false, 0, true);
+			start = 0;
 		}
 		
 		protected function onPlayStarted(me:MediaEvent=null):void
@@ -125,19 +126,19 @@
 			if (mediaController.totalTime)
 				onTotalTimeFound()
 			else
-				MasterClock.registerCallback(onTotalTimeFound, true, 1000);		
+				MasterClock.registerCallback(onTotalTimeFound, true, 1000);
 				
-			setPlayPauseButton();	
-		}		
+			setPlayPauseButton();
+		}
 		
 		// PUBLIC METHODS
 		
 		public function load(url:String, width:int, height:int, x:int=0, y:int=0):void
-		{				
+		{
 			_url = url;
 			mediaController.returnToZeroOnStop = true;
 			mediaController.load(url, width, height, x, y);
-		}	
+		}
 		
 		public function play():void
 		{
@@ -147,16 +148,19 @@
 			{
 				_savedVolume = volume;
 				volume = 0;
-			}	
+			}
+			else
+				volume = _volume;
+			
 			
 			if (!fadeOut)
 				fadeOut = 0;
 
-			mediaController.addEventListener(MediaEvent.PLAY, onPlayStarted);			
+			mediaController.addEventListener(MediaEvent.PLAY, onPlayStarted);
 			
-			if (startDelay) 
+			if (startDelay)
 				MasterClock.callOnce(onPlayDelayed, startDelay * 1000);
-			else	
+			else
 				mediaController.play(start);
 				
 			setPlayPauseButton();
@@ -174,7 +178,7 @@
 		}
 				
 		override public function stop(fadeOut:Number = 0):void
-		{	
+		{
 			MasterClock.unRegisterCallback(onEndClip);
 			MasterClock.unRegisterCallback(onOverLapClip);
 			
@@ -207,7 +211,7 @@
 		public function set totalTime(n:Number):void
 		{
 			mediaController.totalTime = n;
-		}		
+		}
 		
 		public function get isPlaying():Boolean
 		{
@@ -226,13 +230,13 @@
 		}
 
 		override public function dispose():void
-		{	
-			mediaController.stop();			
+		{
+			mediaController.stop();
 			mediaController.removeEventListener(MediaEvent.COMPLETE, onPlayComplete);
 			mediaController.removeEventListener(MediaEvent.STOP, onPlayComplete);
 			mediaController.dispose();
-			mediaController = null;			
-		}		
+			mediaController = null;
+		}
 						
 		// PRIVATE METHODS
 		
@@ -245,10 +249,9 @@
 			{
 				MasterClock.unRegisterCallback(onTotalTimeFound);
 				end = mediaController.totalTime - mediaController.currentTime - start - endVariance;
-	
 				if (overlap)
 				{
-					interval = end - overlap; 
+					interval = end - overlap;
 					MasterClock.registerCallback(onOverLapClip, true, interval * 1000);
 				}
 				interval = end - fadeOut;
@@ -297,8 +300,8 @@
 		{
 			Spinner.hide();
 			mediaController.volume = mediaController.view.alpha = 1;
-			setPlayPauseButton();							
-		}	
+			setPlayPauseButton();
+		}
 		
 		private function onPlayComplete(me:MediaEvent):void
 		{
@@ -307,7 +310,7 @@
 
 			if (loop || loop == -1)
 			{
-				if (loopDelay) 
+				if (loopDelay)
 				{
 					//TODO Looping
 					//loopDelayTimer = new Timer(loopDelay * 1000);
@@ -322,8 +325,8 @@
 			if (loop > 0)
 				loop--;
 		}
-		/*			
-		private function onLoopDelayComplete(e:TimerEvent):void 
+		/*
+		private function onLoopDelayComplete(e:TimerEvent):void
 		{
 			loopDelayTimer.removeEventListener(TimerEvent.TIMERCOMPLETE, onLoopDelayComplete);
 			loopDelayTimer = null;
@@ -331,7 +334,7 @@
 			if (url.indexOf(EMBEDDED) != -1)
 				play();
 			else
-				seek(0);			
+				seek(0);
 		}
 		*/
 				

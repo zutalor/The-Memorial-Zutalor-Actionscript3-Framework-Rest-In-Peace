@@ -92,13 +92,12 @@
 			stream.bufferTime = bufferSecs;
 			
 			s = StageRef.stage;
-			if (Application.settings.stageVideoAvailable && Application.settings.useStageVideoIfAvailable)
+			if (Application.settings.stageVideoAvailable)
 			{
 				trace("using stage video");
 				sv = ObjectPool.getStageVideo();
 				sv.addEventListener(StageVideoEvent.RENDER_STATE, onStageVideoStateChange);
 				sv.attachNetStream(stream);
-				trace("using stage video");
 			}
 			else
 			{

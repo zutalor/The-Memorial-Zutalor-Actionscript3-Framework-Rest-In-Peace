@@ -9,6 +9,7 @@ package com.zutalor.gesture
 	{
 		public var activeForStateType:String;
 		public var action:String;
+		public var state:String;
 		public var up:String;
 		public var down:String;
 		public var left:String;

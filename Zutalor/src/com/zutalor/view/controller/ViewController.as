@@ -26,20 +26,20 @@
 	import flash.geom.Point;
 
 	public class ViewController implements IDisposable
-	{		
+	{
 		private var onComplete:Function;
 		private var viewRenderer:ViewRenderer;
 		private var defaultVO:*;
 	
-		public var filters:Array;	
+		public var filters:Array;
 		public var viewEventMediator:ViewEventMediator;
 		public var viewItemPositioner:ViewItemPositioner;
 		public var viewId:String;
-		public var numViewItems:int;		
-		public var vp:ViewProperties;	
+		public var numViewItems:int;
+		public var vp:ViewProperties;
 		public var itemWithFocus:Component;
-		public var itemWithFocusIndex:int;		
-		public var onStatus:Function;		
+		public var itemWithFocusIndex:int;
+		public var onStatus:Function;
 		public var viewModelMediator:ViewModelMediator;
 		public var dragger:Dragger;
 		public var draggableDict:gDictionary;
@@ -53,7 +53,7 @@
 			if (!_presets)
 				_presets = new NestedPropsManager();
 			
-			_presets.parseXML(ViewProperties, ViewItemProperties, options.xml[options.nodeId], options.childNodeId, 
+			_presets.parseXML(ViewProperties, ViewItemProperties, options.xml[options.nodeId], options.childNodeId,
 																				options.xml[options.childNodeId]);
 		}
 		
@@ -63,11 +63,11 @@
 		}
 	
 		public function load(vc:ViewContainer, pViewId:String, appState:String, pOnComplete:Function):void
-		{	
+		{
 			viewId = pViewId;
 			onComplete = pOnComplete;
 			vp = presets.getPropsById(viewId);
-			filters = [];		
+			filters = [];
 
 			if (!vp)
 				ShowError.fail(ViewController,"No view properties for viewId: " + viewId);
@@ -84,7 +84,7 @@
 				viewModelMediator = new ViewModelMediator(this);
 			}
 			
-			numViewItems = presets.getNumItems(viewId);	
+			numViewItems = presets.getNumItems(viewId);
 			viewEventMediator = new ViewEventMediator(this);
 			viewItemPositioner = new ViewItemPositioner(vp.container, vp.width, vp.height);
 			viewRenderer = new ViewRenderer(this);
@@ -122,7 +122,7 @@
 		public function setModelValue(itemName:String, val:*):void
 		{
 			if (defaultVO)
-			{	
+			{
 				defaultVO[itemName] = val;
 				copyModelToView(itemName);
 			}
@@ -142,7 +142,7 @@
 				itemWithFocusIndex = getItemIndexByName(itemName);
 				Focus.show(itemWithFocus, vp.container);
 			}
-			else	
+			else
 			{
 				itemWithFocus = getItemByIndex(0);
 				itemWithFocusIndex = 0;
@@ -198,7 +198,7 @@
 					ShowError.fail(ViewController,"invalid item name " + itemName + " for view: " + viewId);
 			}
 			else
-				for (var i:int = 0; i < numViewItems; i++) 
+				for (var i:int = 0; i < numViewItems; i++)
 				{
 					vip = presets.getItemPropsByIndex(viewId, i);
 					if (vip.voName)
@@ -227,7 +227,7 @@
 					ShowError.fail(ViewController, "Invalid item name " + itemName + " for view: " + viewId);
 			}
 			else
-				for (var i:int = 0; i < numViewItems; i++) 
+				for (var i:int = 0; i < numViewItems; i++)
 				{
 					vip = presets.getItemPropsByIndex(viewId, i);
 					if (vip.voName)
@@ -236,7 +236,7 @@
 						viewModelMediator.copyValueObjectToViewItem(vip, item);
 					}
 				}
-		}	
+		}
 		
 		public function setStatus(s:String):void
 		{
@@ -247,9 +247,9 @@
 		public function onModelError(responds:Object=null):void
 		{
 			setStatus(String(responds));
-		}		
+		}
 		
-		// PUBLIC STOP & CLEANUP (WHEN VIEW CONTAINER IS CLOSED) 
+		// PUBLIC STOP & CLEANUP (WHEN VIEW CONTAINER IS CLOSED)
 				
 		public function stop(fadeSeconds:Number = 0):void
 		{
@@ -293,8 +293,8 @@
 			filters = null;
 			numViewItems = 0;
 			viewModelMediator = null;
-			viewEventMediator = null;		
-			Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.DISPOSE)			
+			viewEventMediator = null;
+			Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.DISPOSE)
 		}
 		
 		// GET THE UI ITEM's OBJECT OR PROPERTIES
@@ -334,7 +334,7 @@
 		
 		// VIEW DISPLAY RELATED METHODS
 		
-		public function setItemAlpha(itemName:String, a:Number):void		
+		public function setItemAlpha(itemName:String, a:Number):void
 		{
 			var vip:ViewItemProperties;
 			var item:Component;
@@ -344,6 +344,12 @@
 				item = vp.container.getChildByName(itemName) as Component;
 				if (item)
 					item.alpha = a;
+		}
+		
+		public function setAllItemVisibility(visible:Boolean):void
+		{
+			for (var i:int = 0; i < numViewItems; i ++)
+				vp.container.getChildAt(i).visible = visible;
 		}
 		
 		public function setItemVisibility(name:String, visible:Boolean = true, fade:int = 0, delay:int = 0):void
@@ -368,7 +374,7 @@
 		{
 			var item:Component;
 			
-			item = getItemByName(itemName); 
+			item = getItemByName(itemName);
 			if (item.alpha == 0 || item.visible == false)
 				item.enabled = false;
 			
@@ -408,7 +414,7 @@
 		public function dispatchUiEvent(eventType:String):void
 		{
 			vp.container.dispatchEvent(new UIEvent(eventType, vp.container.name));
-		}				
+		}
 
 		public function registerDraggableObject(co:ContainerObject):void
 		{
@@ -417,7 +423,7 @@
 				dragger = new Dragger(vp.container, onPositionUpdate);
 				draggableDict = new gDictionary();
 				dragger.initialize(vp.width, vp.height, vp.width, vp.height);
-			}	
+			}
 			draggableDict.insert(co, true);
 		}
 		

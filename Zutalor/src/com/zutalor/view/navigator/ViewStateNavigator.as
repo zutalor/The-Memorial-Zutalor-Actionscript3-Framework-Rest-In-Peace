@@ -33,11 +33,12 @@ package com.zutalor.view.navigator
 	
 	public class ViewStateNavigator
 	{
-		protected var textToSpeech:TextToSpeech;
+		public var textToSpeech:TextToSpeech;
+		public var hkm:HotKeyManager;
+		
 		protected var samplePlayer:SamplePlayer;
 		protected var textToSpeechUtils:TextToSpeechUtils;
 		protected var uiController:UiControllerBase;
-		protected var hkm:HotKeyManager;
 		protected var hotKeys:PropertyManager;
 		protected var inputText:String;
 		protected var np:NavigatorProperties;
@@ -153,7 +154,7 @@ package com.zutalor.view.navigator
 		{
 			hkm.unregisterOnKeyUp(onKeyUp);
 			hkm.unregisterOnKeyUp(captureTextInput);
-			KeyListeners(false);
+			keyListeners(false);
 		}
 		
 		protected function initializeState():void
@@ -194,6 +195,10 @@ package com.zutalor.view.navigator
 				if (currentStateType == "textInput" || currentStateType == "multipleChoice" || currentStateType == "confirmation")
 					questionStartTime = getTimer();
 				
+					
+				if (currentStateType == "page")
+					uiController.logEvent("Page: " + currentState);
+					
 				sayText();
 				checkForMethodCall();
 			}
@@ -218,7 +223,7 @@ package com.zutalor.view.navigator
 		
 		// PROTECTED METHODS
 		
-		protected function KeyListeners(add:Boolean):void
+		protected function keyListeners(add:Boolean):void
 		{
 			var l:int;
 			var userInputProperties:UserInputProperties;
@@ -285,7 +290,7 @@ package com.zutalor.view.navigator
 			hotKeys = new PropertyManager(UserInputProperties);
 			hotKeys.ignoreCaseInKey = false;
 			hotKeys.parseXML(tMeta.hotkeys, "keystroke");
-			KeyListeners(true);
+			keyListeners(true);
 		}
 		
 		protected function onKeyUp(ke:KeyboardEvent):void
@@ -308,11 +313,12 @@ package com.zutalor.view.navigator
 			
 			uip = hotKeys.getPropsByName(hke.message);
 			
-			if (currentStateType != "uiControllerMethod"
+			if (uip.state)
+				activateState(uip.state);
+			else if (currentStateType != "uiControllerMethod"
 									&& (uip.activeForStateType == "all" || uip.activeForStateType == currentStateType))
 				onUserInput(uip);
-			else
-				trace(currentStateType);
+		
 		}
 		
 		protected function checkForKeystrokePause():void
@@ -483,7 +489,7 @@ package com.zutalor.view.navigator
 			var answer:AnswerProperties;
 			var date:Date;
 			var secs:Number;
-		
+	
 			date = new Date();
 			answer = new AnswerProperties();
 			
@@ -519,14 +525,12 @@ package com.zutalor.view.navigator
 			submitCurrentAnswer(answer);
 			np.answer = "";
 
-			textToSpeech.cancelCallback();
-			textToSpeech.stop();
 			if (!answer.correctAnswer)
 				activateState(nextState);
 			else if (answer.answer == answer.correctAnswer)
-				samplePlayer.play(null, EmbeddedResources.getClass("Correct"), activateState, nextState);
+				speak(null, "correct", activateState, nextState);
 			else
-				samplePlayer.play(null, EmbeddedResources.getClass("Incorrect"), activateState, nextState);
+				speak(null, "incorrect", activateState, nextState);
 		}
 		
 		protected function onTextInput(uip:UserInputProperties):void

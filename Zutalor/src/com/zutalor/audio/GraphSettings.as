@@ -19,6 +19,7 @@ package com.zutalor.audio
 		public var speed:Number;
 		public var range:Number;
 		public var reverse:Boolean;
+		public var totalTime:int;
 		
 		public function GraphSettings() { }
 	}
