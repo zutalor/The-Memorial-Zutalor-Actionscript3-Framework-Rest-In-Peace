@@ -162,6 +162,11 @@ package com.zutalor.controllers.base
 		{
 			
 		}
+		
+		public function onKey(key:*):void
+		{
+			
+		}
 				
 		public function valueUpdated(params:*):void
 		{

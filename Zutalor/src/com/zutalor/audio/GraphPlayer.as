@@ -61,7 +61,7 @@ package com.zutalor.audio
 			isPlaying = false;
 		}
 						
-		public function play(graphCollection:Array, samples:int, onComplete:Function):void
+		public function play(graphCollection:Array, samples:int, onComplete:Function = null):void
 		{
 			var gs:GraphSettings;
 			var max:Array;
@@ -133,7 +133,8 @@ package com.zutalor.audio
 			function playbackComplete():void
 			{
 				isPlaying = false;
-				_onComplete();
+				if (_onComplete != null)
+					_onComplete();
 			}
 				
 			function makeNotes():void

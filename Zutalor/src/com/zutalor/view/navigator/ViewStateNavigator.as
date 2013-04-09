@@ -313,9 +313,11 @@ package com.zutalor.view.navigator
 			
 			uip = hotKeys.getPropsByName(hke.message);
 			
-			if (uip.state)
+			if (uip.action == "sendKeystroke")
+				uiController.onKey(hke.message);
+			else if (uip.state)
 				activateState(uip.state);
-			else if (currentStateType != "uiControllerMethod"
+			else if (currentStateType != "uiControllerMethod" && currentStateType != "uiControllerMethod"
 									&& (uip.activeForStateType == "all" || uip.activeForStateType == currentStateType))
 				onUserInput(uip);
 		
