@@ -331,7 +331,8 @@
 			Color.theme = ap.colorTheme;
 
 			if (ap.spinnerGraphicId)
-				Spinner.init(ap.spinnerGraphicId, EmbeddedResources.getClass(ap.spinnerSoundClassName), ap.spinnerGraphicCyclesPerSecond);
+				Spinner.init(ap.spinnerGraphicId, ap.spinnerGraphicCyclesPerSecond,
+						EmbeddedResources.getClass(ap.spinnerSoundClassName), ap.spinnerSoundInterval);
 				
 			if (ap.googleAnalyticsAccount && AirStatus.isNativeApplication || DEBUG_ANALYTICS)
 			{

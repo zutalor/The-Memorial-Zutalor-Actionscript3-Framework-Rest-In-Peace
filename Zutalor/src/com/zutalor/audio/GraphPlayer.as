@@ -124,7 +124,7 @@ package com.zutalor.audio
 				{
 					gs = graphCollection[i];
 					t = synthesizer.tracks.getByIndex(i);
-					temp = ArrayUtils.compress(curGraphData[i], 0, ArrayUtils.getMax(data[i]), gs.preset.lowNote, gs.preset.highNote, gs.noteScaling);
+					temp = ArrayUtils.compress(curGraphData[i], 0, ArrayUtils.getMax(curGraphData[i]), gs.preset.lowNote, gs.preset.highNote, gs.noteScaling);
 					t.preset = gs.preset;
 					t.mute = gs.preset.mute;
 					makeNotes();

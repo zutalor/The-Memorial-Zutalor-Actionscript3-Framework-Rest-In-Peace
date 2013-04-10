@@ -7,6 +7,7 @@ package com.zutalor.widgets
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.events.Event;
+	import flash.utils.getTimer;
 	
 	public class Spinner
 	{
@@ -18,13 +19,15 @@ package com.zutalor.widgets
 		private static var samplePlayer:SamplePlayer;
 		private static var _spinnerSoundClass:Class;
 		private static var _tweenKilled:Boolean;
+		private static var _startTime:int;
+		private static var _soundInterval:int;
 
 		public function Spinner()
 		{
 			
 		}
 
-		public static function init(spinnerGraphicId:String, spinnerSoundClass:Class, rotationCyclesPerSecond:Number = 2):void
+		public static function init(spinnerGraphicId:String, rotationCyclesPerSecond:Number = 2, spinnerSoundClass:Class = null, soundInterval:int = 0):void
 		{
 			if (spinnerSoundClass)
 			{
@@ -32,6 +35,7 @@ package com.zutalor.widgets
 				samplePlayer = new SamplePlayer();
 			}
 			_rotIncr = 360 / StageRef.stage.frameRate * rotationCyclesPerSecond;
+			_soundInterval = soundInterval;
 			s = StageRef.stage;
 			canvas = new Sprite();
 			_spinGraphic = new Graphic("spinner");
@@ -43,7 +47,7 @@ package com.zutalor.widgets
 			canvas.addChild(_spinGraphic);
 		}
 		
-		public static function show(delay:int=0, x:int=0, y:int=0):void
+		public static function show(delaySecs:Number=0, x:int=0, y:int=0):void
 		{
 			
 			if (_spinGraphic)
@@ -51,9 +55,6 @@ package com.zutalor.widgets
 				hide();
 					
 				s.addChild(canvas);
-				
-				if (_rotIncr)
-					StageRef.stage.addEventListener(Event.ENTER_FRAME, rotate);
 				
 				if (x)
 				{
@@ -68,26 +69,40 @@ package com.zutalor.widgets
 				_spinGraphic.visible = true;
 				_spinGraphic.alpha = 0;
 				_tweenKilled = false;
-				_myTween = TweenMax.to(_spinGraphic, 1, { delay:delay, onComplete:playAudio, alpha:1 } );
-			}
-			
-			function playAudio():void
-			{
-				if (!_tweenKilled && _spinnerSoundClass)
-					samplePlayer.play(null, _spinnerSoundClass);
+				if (samplePlayer)
+					samplePlayer.volume = 1;
+				
+				_myTween = TweenMax.to(_spinGraphic, 1, { delay:delaySecs, onComplete:addFrameListener, alpha:1 } );
+				
+				function addFrameListener():void
+				{
+					if (_rotIncr)
+						StageRef.stage.addEventListener(Event.ENTER_FRAME, rotate);
+				}
 			}
 		}
+		
+		private static function playAudio():void
+		{
+			_startTime = getTimer();
+			if (!_tweenKilled && _spinnerSoundClass)
+				samplePlayer.play(null, _spinnerSoundClass);
+		}
 				
-		public static function rotate(e:Event):void
+		private static function rotate(e:Event):void
 		{
 			canvas.rotation += _rotIncr;
+			if (_soundInterval && (getTimer() - _startTime > _soundInterval))
+				playAudio();
 		}
 		
 		public static function hide():void
 		{
 			if (_spinnerSoundClass)
+			{
+				samplePlayer.volume = 0;
 				samplePlayer.stop();
-			
+			}
 			if (_spinGraphic)
 			{
 				if (_spinGraphic.visible == true)
