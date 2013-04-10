@@ -59,6 +59,7 @@ package com.zutalor.audio
 				synthesizer.sequencer.stop();
 			
 			isPlaying = false;
+			_onComplete = null;
 		}
 						
 		public function play(graphCollection:Array, samples:int, onComplete:Function = null):void
@@ -140,7 +141,6 @@ package com.zutalor.audio
 			function makeNotes():void
 			{
 				var startTime:Number = 0;
-				var duration:Number;
 				var startTimes:Array;
 				var maxTime:Number;
 				var nextIncr:Number;

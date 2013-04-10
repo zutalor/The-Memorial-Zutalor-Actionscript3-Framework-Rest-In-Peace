@@ -12,6 +12,7 @@ package com.zutalor.synthesizer
 	import com.zutalor.synthesizer.properties.Track;
 	import com.zutalor.utils.gDictionary;
 	import flash.events.Event;
+	import flash.utils.getTimer;
 	
 	/**
 	 * ...
@@ -199,7 +200,7 @@ package com.zutalor.synthesizer
 		private function reset():void
 		{
 			var i:int;
-				
+			
 			if (listPerformance)
 			{
 				for (i = 0; i < envelopeGenerators.length; i++)

@@ -28,6 +28,7 @@ package com.zutalor.view.navigator
 		public var correctAnswer:String;
 		public var answerText:String;
 		public var answerIndex:int;
+		public var promptId:String;
 		public var nextState:String;
 		public var backState:String;
 		public var answerMethod:String;

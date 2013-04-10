@@ -18,6 +18,7 @@ package com.zutalor.view.navigator
 	import com.zutalor.transition.Transition;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.translate.TranslationProperties;
+	import com.zutalor.utils.Call;
 	import com.zutalor.utils.EmbeddedResources;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.HotKeyManager;
@@ -52,7 +53,6 @@ package com.zutalor.view.navigator
 		protected var keyPressInvalidated:Boolean;
 		
 		protected var allowAnswerChanging:Boolean = true;
-		protected var promptId:String;
 		protected var promptCancelled:Boolean;
 		
 		private var questionStartTime:int;
@@ -85,10 +85,31 @@ package com.zutalor.view.navigator
 		public function speak(text:String, soundName:String, onComplete:Function = null,
 													onCompleteArgs:* = null):void
 		{
-			if (soundName)
-				soundName = np.soundPath + soundName.toLowerCase() + np.soundExt;
+			var sounds:Array;
+			var curSound:int;
+			
+			sounds = soundName.split(",");
+			
+			if (sounds)
+				playSound();
+			else if (text)
+				textToSpeech.sayText(text, soundName, onComplete, onCompleteArgs);
 				
-			textToSpeech.sayText(text, soundName, onComplete, onCompleteArgs);
+			function playSound():void
+			{
+				if (curSound < sounds.length)
+				{
+					soundName = np.soundPath + sounds[curSound++].toLowerCase() + np.soundExt;
+					textToSpeech.sayText(null, soundName, playSound);
+				}
+				else
+				{
+					if (onCompleteArgs)
+						onComplete(onCompleteArgs)
+					else if (onComplete != null)
+						onComplete();
+				}
+			}
 		}
 
 		public function onUiControllerMethodCompleted(args:XMLList, data:Object, id:String):void
@@ -114,6 +135,7 @@ package com.zutalor.view.navigator
 		public function activateState(id:String):void
 		{
 			var tempTp:TranslationProperties;
+			var merge:String;
 			
 			textToSpeech.stop();
 			if (!np.inTransition)
@@ -131,22 +153,24 @@ package com.zutalor.view.navigator
 				currentState = id;
 				np.tp = tempTp;
 				np.history.push(np.tp.name);
+				
+				merge = String((XML(np.tp.tMeta).state.@merge));
+				
+				if (merge)
+					mergeStates(merge);
+
 				uiController.getValueObject().text = textToSpeechUtils.getTextForDisplay(np.tp.tText);
 				uiController.getValueObject().prompt = "";
 				uiController.getValueObject().inputText = inputText = "";
+				uiController.onModelChange();
 				
 				if (np.curTransitionType)
 				{
-					
 					bitMapSlide.out(uiController.vc.container, np.curTransitionType);
 					transition.simpleRender(uiController.vc.container, np.curTransitionType, "in", initializeState);
-					uiController.onModelChange();
 				}
 				else
-				{
-					uiController.onModelChange();
 					initializeState();
-				}
 			}
 		}
 		
@@ -157,10 +181,61 @@ package com.zutalor.view.navigator
 			keyListeners(false);
 		}
 		
+		private function mergeStates(merge:String):void
+		{
+			var tempTp:TranslationProperties;
+			var merges:Array;
+			var tText:String;
+			var tMeta:String;
+			
+			merges = merge.split(",");
+			
+			for (var i:int = 0; i < merge.length; i++)
+			{
+				tempTp = Translate.presets.getPropsByName(merges[i]);
+				if (tempTp)
+					combine();
+			}
+			
+			function combine():void
+			{
+				if (tempTp.sound)
+					np.tp.sound = "," + tempTp.sound;
+					
+				if (tempTp.tMeta)
+					tMeta = TextUtil.strip(tempTp.tMeta, "<tMeta>");
+				
+				if (tempTp.tText)
+					tText = TextUtil.strip(tempTp.tText, "<tText>");
+				
+				if (tMeta)
+				{
+					np.tp.tMeta = TextUtil.strip(np.tp.tMeta, "</tMeta>");
+					
+					if (np.tp.tMeta)
+						np.tp.tMeta += tMeta;
+					else
+						np.tp.tMeta = "<tMeta>" + tMeta;
+				}
+				
+				if (tText)
+				{
+					np.tp.tText = TextUtil.strip(np.tp.tText, "</tText>");
+					
+					if (np.tp.tText)
+						np.tp.tText += tText;
+					else
+						np.tp.tText = "<tText>" + tText;
+				}
+				trace(np.tp.tText);
+			}
+		}
+		
 		protected function initializeState():void
 		{
 			np.inTransition = false;
-			promptId = String(XML(np.tp.tMeta).state.@prompt);
+			
+			np.promptId = String(XML(np.tp.tMeta).state.@prompt);
 			currentStateType = String(XML(np.tp.tMeta).state.@type);
 			np.answerStates = String(XML(np.tp.tMeta).state.@answerStates);
 			np.nextState = String(XML(np.tp.tMeta).state.@next);
@@ -189,8 +264,8 @@ package com.zutalor.view.navigator
 					hkm.registerOnKeyUp(captureTextInput);
 				}
 				
-				if (!promptId)
-						promptId = currentStateType;
+				if (!np.promptId)
+						np.promptId = currentStateType;
 				
 				if (currentStateType == "textInput" || currentStateType == "multipleChoice" || currentStateType == "confirmation")
 					questionStartTime = getTimer();
@@ -332,7 +407,7 @@ package com.zutalor.view.navigator
 		protected function checkForUserDelay():void
 		{
 			stopUserDelayTimer();
-			sayPrompt(promptId, restartUserDelayTimer);
+			sayPrompt(np.promptId, restartUserDelayTimer);
 		}
 		
 		protected function stopUserDelayTimer():void
@@ -453,7 +528,7 @@ package com.zutalor.view.navigator
 				if (XML(np.tp.tMeta).state.@noPromptDelay != "true")
 					promptDelay = PROMPT_DELAY_ON_ANSWER;
 				
-				if (promptId != "none")
+				if (np.promptId != "none")
 					speak(np.answerText, XML(np.tp.tText)..Q[np.answerIndex].@sound, sayPrompt, "onAnswered");
 				else
 					speak(np.answerText, XML(np.tp.tText)..Q[np.answerIndex].@sound);
@@ -586,7 +661,7 @@ package com.zutalor.view.navigator
 		
 		protected function sayText():void
 		{
-			speak(textToSpeechUtils.getTextForSpeech(np.tp.tText), np.tp.sound, sayPrompt, promptId);
+			speak(textToSpeechUtils.getTextForSpeech(np.tp.tText), np.tp.sound, sayPrompt, np.promptId);
 		}
 		
 		protected function sayAnswer():void
