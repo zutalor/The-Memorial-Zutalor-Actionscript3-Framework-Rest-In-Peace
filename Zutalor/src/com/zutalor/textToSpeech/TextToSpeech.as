@@ -162,11 +162,15 @@ package Zutalor.src.com.zutalor.textToSpeech
 				if (enableRandomVoices)
 					voice = country[rand(0, 1)] + gender[rand(0, 1)];
 
-				sentences = text.split(".");
-				
-				l = sentences.length;
-				start = 0;
-				sayNextSentence();
+				if (!text)
+					callOnComplete();
+				else
+				{
+					sentences = text.split(".");
+					l = sentences.length;
+					start = 0;
+					sayNextSentence();
+				}
 				
 				function sayNextSentence():void
 				{

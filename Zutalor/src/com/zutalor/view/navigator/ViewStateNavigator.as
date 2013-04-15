@@ -87,20 +87,25 @@ package com.zutalor.view.navigator
 		{
 			var sounds:Array;
 			var curSound:int;
+			var numSounds:int;
 			
-			sounds = soundName.split(",");
-			
-			if (sounds)
-				playSound();
-			else if (text)
-				textToSpeech.sayText(text, soundName, onComplete, onCompleteArgs);
+			if (soundName)
+			{
+				sounds = soundName.split(",");
+				loopThroughSounds();
+			}
+			else
+				textToSpeech.sayText(text, null, onComplete, onCompleteArgs);
 				
-			function playSound():void
+			function loopThroughSounds():void
 			{
 				if (curSound < sounds.length)
 				{
 					soundName = np.soundPath + sounds[curSound++].toLowerCase() + np.soundExt;
-					textToSpeech.sayText(null, soundName, playSound);
+					if (curSound == 1)
+						textToSpeech.sayText(text, soundName, loopThroughSounds);
+					else
+						textToSpeech.sayText(null, soundName, loopThroughSounds);
 				}
 				else
 				{
@@ -156,9 +161,11 @@ package com.zutalor.view.navigator
 				
 				merge = String((XML(np.tp.tMeta).state.@merge));
 				
-				if (merge)
+				if (!np.tp.alreadyMerged && merge)
+				{
+					np.tp.alreadyMerged = true;
 					mergeStates(merge);
-
+				}
 				uiController.getValueObject().text = textToSpeechUtils.getTextForDisplay(np.tp.tText);
 				uiController.getValueObject().prompt = "";
 				uiController.getValueObject().inputText = inputText = "";
@@ -227,7 +234,6 @@ package com.zutalor.view.navigator
 					else
 						np.tp.tText = "<tText>" + tText;
 				}
-				trace(np.tp.tText);
 			}
 		}
 		

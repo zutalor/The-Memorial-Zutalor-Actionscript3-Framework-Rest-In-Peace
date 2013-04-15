@@ -19,7 +19,6 @@ package com.zutalor.audio
 	
 		public var variableTiming:Boolean = true;
 		public var variablePitch:Boolean = true;
-		public var totalTime:Number = 20;
 				
 		private var _intitialized:Boolean;
 
@@ -62,7 +61,7 @@ package com.zutalor.audio
 			_onComplete = null;
 		}
 						
-		public function play(graphCollection:Array, samples:int, onComplete:Function = null):void
+		public function play(graphCollection:Array, samples:int, onComplete:Function = null, onCompleteArgs:* = null):void
 		{
 			var gs:GraphSettings;
 			var max:Array;
@@ -135,7 +134,12 @@ package com.zutalor.audio
 			{
 				isPlaying = false;
 				if (_onComplete != null)
-					_onComplete();
+				{
+					if (onCompleteArgs)
+						_onComplete(onCompleteArgs);
+					else
+						_onComplete();
+				}
 			}
 				
 			function makeNotes():void
