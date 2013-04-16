@@ -31,6 +31,7 @@ package com.zutalor.view.navigator
 		public var promptId:String;
 		public var nextState:String;
 		public var backState:String;
+		public var stepState:String;
 		public var answerMethod:String;
 			
 		public function NavigatorProperties() { }

@@ -18,7 +18,7 @@ package com.zutalor.components.media.playlist
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class AiClipPlayer extends EventDispatcher implements IDisposable 
+	public class AiClipPlayer extends EventDispatcher implements IDisposable
 	{
 		public var clipSelector:Function;
 
@@ -31,7 +31,7 @@ package com.zutalor.components.media.playlist
 		private var _currentContext:String;
 		private var _players:gDictionary;
 		private var _playing:int;
-		private var _ppm:NestedPropsManager;	
+		private var _ppm:NestedPropsManager;
 		private var _clipIndex:int;
 		private var _volume:Number;
 		
@@ -92,12 +92,12 @@ package com.zutalor.components.media.playlist
 			
 			for (var i:int = 0; i < len; i++)
 			{
-				p = _players.getByIndex(i);					
+				p = _players.getByIndex(i);
 				p.stop(fade);
 			}
 			if (fade)
 				MasterClock.callOnce(onStopComplete, fade * 1000);
-			else 
+			else
 				onStopComplete();
 		}
 		
@@ -127,7 +127,7 @@ package com.zutalor.components.media.playlist
 		public function start(volume:Number):void
 		{
 			_volume = volume;
-			_stopped = false;	
+			_stopped = false;
 			MasterClock.registerCallback(onTimer, true, TIMER_INTERVAL);
 			playNext(); // starts the automatic cycle.
 		}
@@ -148,43 +148,43 @@ package com.zutalor.components.media.playlist
 						cueClipsToPlay("playnext");
 						
 					if (MathG.rand(1, _sp.oddsOfPlaying) == MathG.rand(1, _sp.oddsOfPlaying))
-					{	
+					{
 						if (!_sp.allowRepeats)
 							if (_clipsAlreadyPlayed.count(_currentContext) == _clipsToPlay.length) // we've played each one with no repeats, so reset.
 							{
 								_clipsAlreadyPlayed.deleteByValue(_currentContext);
-								cueClipsToPlay("not allow repeats");		
-							}	
-						do 
+								cueClipsToPlay("not allow repeats");
+							}
+						do
 						{
-							name = _cueList.shift();		
+							name = _cueList.shift();
 							if (!_sp.allowRepeats)
 								if (!_clipsAlreadyPlayed.getByKey(name))
 								{
 									_clipsAlreadyPlayed.insert(name, _currentContext);
-									break;	
-								}	
+									break;
+								}
 								
-						} while (_cueList.length);						
+						} while (_cueList.length);
 					}
 							
-					p = getClipAndPlayIt(name);				
+					p = getClipAndPlayIt(name);
 			
 					if (!p)
 					{
 						MasterClock.registerCallback(onTimer, true, 50);
 						_playing--;
-					}	
-					else	
+					}
+					else
 					{
-						MasterClock.registerCallback(onTimer, true, TIMER_INTERVAL);										
+						MasterClock.registerCallback(onTimer, true, TIMER_INTERVAL);
 						p.addEventListener(MediaEvent.PLAY, onPlayStarted, false, 0, true);
 						p.x = _sp.playlist.x;
 						p.y = _sp.playlist.y;
 						
 						if (_sp.overlap)
 							p.addEventListener(MediaEvent.OVERLAP, cueNext, false, 0, true);
-						else	
+						else
 							p.addEventListener(MediaEvent.COMPLETE, cueNext, false, 0, true);
 					}
 					
@@ -195,7 +195,7 @@ package com.zutalor.components.media.playlist
 		private function onPlayStarted(e:MediaEvent):void
 		{
 			e.target.removeEventListener(MediaEvent.PLAY, onPlayStarted);
-			trace("started", e.target.name, e.target);
+			//trace("started", e.target.name, e.target);
 			dispatchEvent(new MediaEvent(MediaEvent.PLAY));
 		}
 		
@@ -217,7 +217,7 @@ package com.zutalor.components.media.playlist
 					_playing--;
 			}
 			
-			if (!_stopped) 
+			if (!_stopped)
 				if (_cueList.length < _sp.clipsCacheSize)
 				{
 					if (_clipIndex == _clipsToPlay.length)
@@ -289,9 +289,9 @@ package com.zutalor.components.media.playlist
 										
 					cueClipsToPlay("get clip and play it");
 				}
-			}		
+			}
 			return p;
-		}		
+		}
 				
 		private function fillClipCache():void
 		{
@@ -299,12 +299,12 @@ package com.zutalor.components.media.playlist
 			var a:Array;
 			var i:int;
 			
-			_cueList = [];	
+			_cueList = [];
 			if (_clipsToPlay.length)
 			{
 				if (_sp.clipsCacheSize)
 				{
-					a = [];	
+					a = [];
 					for (i = 0; i < _clipsToPlay.length; i++)
 						a[i] = i;
 					
@@ -313,7 +313,7 @@ package com.zutalor.components.media.playlist
 					for (i = 0; i < _clipsToPlay.length; i++)
 					{
 						pip = _ppm.getItemPropsByName(_sp.playlist.playlistName, _clipsToPlay[a[i]]);
-						_cueList.push(pip.name);	
+						_cueList.push(pip.name);
 					}
 				}
 			}

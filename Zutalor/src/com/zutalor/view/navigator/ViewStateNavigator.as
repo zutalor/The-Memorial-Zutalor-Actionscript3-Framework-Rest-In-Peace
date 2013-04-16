@@ -246,6 +246,7 @@ package com.zutalor.view.navigator
 			np.answerStates = String(XML(np.tp.tMeta).state.@answerStates);
 			np.nextState = String(XML(np.tp.tMeta).state.@next);
 			np.backState = String(XML(np.tp.tMeta).state.@back);
+			np.stepState = String(XML(np.tp.tMeta).state.@step);
 			
 			if (String(XML(np.tp.tMeta).state.@includeUiControllerData) != "true")
 				np.data = null;
@@ -443,6 +444,7 @@ package com.zutalor.view.navigator
 					activateState("goodbye");
 					break;
 				case "back" :
+				case "step" :
 					activateNextState(uip);
 					break;
 				case "next" :
@@ -546,6 +548,18 @@ package com.zutalor.view.navigator
 			np.curTransitionType = np.transitionNext;
 			switch (uip.action)
 			{
+				case "step" :
+					if (np.stepState)
+					{
+						np.curTransitionType = np.transitionBack;
+						activateState(np.stepState);
+					}
+					else
+					{
+						np.curTransitionType = null;
+						activateState(np.tp.name);
+					}
+					break;
 				case "back" :
 					if (np.backState)
 					{

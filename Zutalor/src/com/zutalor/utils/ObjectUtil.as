@@ -57,14 +57,14 @@
 				
 				if (clone)
 				{
-					copyData(source, clone);
+					copy(source, clone);
 				}
 			}
 			
 			return clone;
 		}
 		
-		public static function copyData(source:Object, destination:Object):void
+		public static function copy(source:Object, destination:Object):void
 		{
 			
 			//copies data from commonly named properties and getter/setter pairs
