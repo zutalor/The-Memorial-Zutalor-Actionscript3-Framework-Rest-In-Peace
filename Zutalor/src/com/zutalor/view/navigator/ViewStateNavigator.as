@@ -82,6 +82,11 @@ package com.zutalor.view.navigator
 			init();
 		}
 		
+		public function startInteraction():void
+		{
+			initUserInput();
+		}
+		
 		public function speak(text:String, soundName:String, onComplete:Function = null,
 													onCompleteArgs:* = null):void
 		{
@@ -355,7 +360,6 @@ package com.zutalor.view.navigator
 			np.multipleChoiceAnswers = tMeta.settings.@multipleChoiceAnswers;
 			np.confirmationAnswers = tMeta.settings.@confirmationAnswers;
 			np.answerMethod = tMeta.settings.@answerMethod;
-			initUserInput();
 			if (String(tMeta.settings.@firstState))
 				activateState(tMeta.settings.@firstState);
 		}
@@ -762,7 +766,7 @@ package com.zutalor.view.navigator
 							String(XML(np.tp.tMeta).state.@onCompleteState));
 		}
 		
-		protected function sayPrompt(id:String, onComplete:Function = null, onCompleteArgs:* = null):void
+		public function sayPrompt(id:String, onComplete:Function = null, onCompleteArgs:* = null):void
 		{
 			var tp:TranslationProperties;
 			tp = Translate.presets.getPropsByName(id);
