@@ -15,7 +15,7 @@ package com.zutalor.audio
 		public var synthesizer:Synthesizer;
 		public var xmlUrl:String;
 		public var assetPath:String;
-		private var data:Vector.<Array>;
+		public var data:Vector.<Array>;
 	
 		public var variableTiming:Boolean = true;
 		public var variablePitch:Boolean = true;
@@ -65,7 +65,7 @@ package com.zutalor.audio
 		{
 			var gs:GraphSettings;
 			var max:Array;
-			var curMax:Number;
+			var curMax:Number = 0;
 			var maxIndx:int;
 			var temp:Array;
 			var note:Note;
@@ -81,6 +81,7 @@ package com.zutalor.audio
 			curGraphData = [];
 			isPlaying = true;
 			assignData();
+			scaleAudioData();
 			renderGraphs();
 			
 			synthesizer.sequencer.renderTracks(_numTracks);
