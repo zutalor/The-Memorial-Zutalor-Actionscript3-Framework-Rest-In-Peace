@@ -36,6 +36,7 @@ package com.zutalor.view.navigator
 	{
 		public var textToSpeech:TextToSpeech;
 		public var hkm:HotKeyManager;
+		public var currentStateType:String;
 		
 		protected var samplePlayer:SamplePlayer;
 		protected var textToSpeechUtils:TextToSpeechUtils;
@@ -45,7 +46,7 @@ package com.zutalor.view.navigator
 		protected var np:NavigatorProperties;
 		protected var tMeta:XML;
 		protected var uip:UserInputProperties;
-		protected var currentStateType:String;
+		
 		protected var bitMapSlide:BitMapSlide;
 		protected var transition:Transition;
 		
@@ -147,6 +148,7 @@ package com.zutalor.view.navigator
 			var tempTp:TranslationProperties;
 			var merge:String;
 			
+			MasterClock.unRegisterCallback(sayText);
 			textToSpeech.stop();
 			if (!np.inTransition)
 			{
@@ -244,6 +246,9 @@ package com.zutalor.view.navigator
 		
 		protected function initializeState():void
 		{
+			var repeatText:String;
+			var repeatDelay:int;
+			
 			np.inTransition = false;
 			
 			np.promptId = String(XML(np.tp.tMeta).state.@prompt);
@@ -252,6 +257,10 @@ package com.zutalor.view.navigator
 			np.nextState = String(XML(np.tp.tMeta).state.@next);
 			np.backState = String(XML(np.tp.tMeta).state.@back);
 			np.stepState = String(XML(np.tp.tMeta).state.@step);
+			repeatText = String(XML(np.tp.tMeta).state.@repeatText);
+			repeatDelay = int(XML(np.tp.tMeta).state.@repeatDelay);
+			if (!repeatDelay)
+				repeatDelay = 3000;
 			
 			if (String(XML(np.tp.tMeta).state.@includeUiControllerData) != "true")
 				np.data = null;
@@ -275,6 +284,11 @@ package com.zutalor.view.navigator
 					hkm.unregisterOnKeyUp(onKeyUp);
 					hkm.registerOnKeyUp(captureTextInput);
 				}
+				else
+				{
+					hkm.registerOnKeyUp(onKeyUp);
+					hkm.unregisterOnKeyUp(captureTextInput);
+				}
 				
 				if (!np.promptId)
 						np.promptId = currentStateType;
@@ -282,15 +296,17 @@ package com.zutalor.view.navigator
 				if (currentStateType == "textInput" || currentStateType == "multipleChoice" || currentStateType == "confirmation")
 					questionStartTime = getTimer();
 				
-					
 				if (currentStateType == "page")
 					uiController.logEvent("Page: " + currentState);
-					
+				
+				if (repeatText)
+					MasterClock.registerCallback(sayText, true, repeatDelay);
+				
 				sayText();
 				checkForMethodCall();
 			}
 		}
-		
+				
 		protected function checkForMethodCall():void
 		{
 			var method:String;
@@ -386,6 +402,8 @@ package com.zutalor.view.navigator
 					&& currentStateType != "uiControllerMethod"
 					&& ke.charCode && ke.charCode != TAB)
 						playEmbedded("Unrecognized");
+						
+			hkm.clearKeys();
 		}
 		
 		protected function onHotKey(hke:HotKeyEvent):void
@@ -403,7 +421,7 @@ package com.zutalor.view.navigator
 				uiController.onKey(hke.message);
 			else if (uip.state)
 				activateState(uip.state);
-			else if (currentStateType != "uiControllerMethod" && currentStateType != "uiControllerMethod"
+			else if (currentStateType != "uiControllerMethod"
 									&& (uip.activeForStateType == "all" || uip.activeForStateType == currentStateType))
 				onUserInput(uip);
 		
@@ -448,6 +466,8 @@ package com.zutalor.view.navigator
 					activateState("goodbye");
 					break;
 				case "back" :
+					activateNextState(uip);
+					break;
 				case "step" :
 					activateNextState(uip);
 					break;

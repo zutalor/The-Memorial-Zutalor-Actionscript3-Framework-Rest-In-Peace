@@ -180,7 +180,9 @@ package com.zutalor.audio
 						if (x < temp.length)
 						{
 							distance = 1 - (Math.abs(temp[x] - temp[x + 1]));
-							nextIncr =  distance / 100;
+							trace(distance);
+							nextIncr =  distance / 10000;
+
 							if (! isNaN(nextIncr))
 							{
 								startTime += nextIncr;
