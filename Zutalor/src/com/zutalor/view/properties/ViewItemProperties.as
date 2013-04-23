@@ -1,4 +1,4 @@
-﻿package com.zutalor.view.properties  
+﻿package com.zutalor.view.properties
 {
 	import com.zutalor.interfaces.IProperties;
 	import com.zutalor.path.Path;
@@ -11,7 +11,7 @@
 	 */
 	
 	public class ViewItemProperties extends PropertiesBase implements IProperties
-	{	
+	{
 		// item type
 		public static const STATUS:String = "status";
 		public static const PROPERTY:String = "property";
@@ -22,7 +22,7 @@
 		public static const URL:String = "url";
 		public static const PLUGIN_METHOD:String = "pluginMethodCall";
 		public static const CONTAINER_METHOD:String = "containerMethodCall";
-		public static const VIEWITEM_METHOD:String = "viewItemMethodCall";	
+		public static const VIEWITEM_METHOD:String = "viewItemMethodCall";
 		
 		public var type:String;
 		public var presetId:String;
@@ -61,6 +61,7 @@
 		public var rotationY:Number;
 		public var rotationZ:Number;
 		public var alpha:Number;
+		public var parent:String;
 		
 		public var validate:String;
 		public var required:Boolean;
@@ -76,14 +77,14 @@
 		public var onPress:String;
 		public var pressTarget:String;
 		public var pressAction:String;
-		public var pressActionOptions:String;			
+		public var pressActionOptions:String;
 		
 		public var hotkey:String;
 		
 		public var mediaPreset:String;
 		public var playlistName:String;
 		
-		public var transitionPreset:String;	
+		public var transitionPreset:String;
 		public var transitionDelay:Number;
 
 		public var filterPreset:String;
@@ -97,7 +98,7 @@
 			MapXML.attributesToClass(xml , this);
 
 			if (!alpha)
-				alpha = 1;	
+				alpha = 1;
 			
 			if (String(xml.@path))
 				url = Path.getPath(String(xml.@path)) + xml.@url;
@@ -107,7 +108,7 @@
 			if (text)
 				text = text.split("\\n").join("\n");
 				
-			return true;	
+			return true;
 		}
 	}
 }

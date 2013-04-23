@@ -1,27 +1,33 @@
-package com.zutalor.positioning 
+package com.zutalor.positioning
 {
 	/**
 	 * uk.soulwire.utils.display.DisplayUtils
-	 * 
+	 *
 	 * @version v1.0
 	 * @since May 26, 2009
-	 * 
+	 *
 	 * @author Justin Windle, Mod by Pepos (added fitInto and made this not a static class
 	 * @see http://blog.soulwire.co.uk
-	 * 
-	 * 
+	 *
+	 *
 	 * Licensed under a Creative Commons Attribution 3.0 License
 	 * http://creativecommons.org/licenses/by/3.0/
 	 */
-	 
+	
+	import com.zutalor.utils.Scale;
 	import flash.display.DisplayObject;
 	import flash.geom.Matrix;
 
 	public class Aligner
-	{	
+	{
 		public static const BOTTOM : String = "bottom";
 		public static const BOTTOM_LEFT : String = "bottom-left";
 		public static const BOTTOM_RIGHT : String = "bottom-right";
+		public static const BOTTOM_ONE_FIFTH:String = "bottom-one-fifth";
+		public static const BOTTOM_TWO_FIFTH:String = "bottom-two-fifth";
+		public static const BOTTOM_THREE_FIFTH:String = "bottom-three-fifth";
+		public static const BOTTOM_FOUR_FIFTH:String = "bottom-four-fifth";
+
 		public static const LEFT : String = "left";
 		public static const CENTER : String = "center";
 		public static const RIGHT : String = "right";
@@ -66,21 +72,20 @@ package com.zutalor.positioning
 			var tX : Number = 0.0;
 			var tY : Number = 0.0;
 			
-			switch(align)
+			trace(align);
+			switch(align) // x
 			{
 				case LEFT :
 				case TOP_LEFT :
 				case BOTTOM_LEFT :
 					tX = 0.0;
 					break;
-					
 				case RIGHT :
 				case TOP_RIGHT :
 				case BOTTOM_RIGHT :
 					tX = w - wR;
 					break;
-					
-				case CENTER : 					
+				case CENTER :
 					tX = 0.5 * (wR - w);
 					break;
 				default :
@@ -88,7 +93,7 @@ package com.zutalor.positioning
 					break;
 			}
 			
-			switch(align)
+			switch(align) // y
 			{
 				case TOP :
 				case TOP_LEFT :
@@ -97,12 +102,11 @@ package com.zutalor.positioning
 					break;
 					
 				case BOTTOM :
-				case BOTTOM_LEFT :
-				case BOTTOM_RIGHT :
+
 					tY = h - hR;
 					break;
 					
-				case CENTER : 					
+				case CENTER :
 					tY = 0.5 * (hR - h);
 					break;
 				default :
@@ -116,7 +120,7 @@ package com.zutalor.positioning
 				tY += vPad * s;
 			
 				
-			if (s != 1) 
+			if (s != 1)
 			{
 				matrix.scale(s, s);
 				matrix.translate(tX, tY);
@@ -159,6 +163,7 @@ package com.zutalor.positioning
 			else
 				scale = 1;
 			
+			var colSize:Number = wR / 5;
 			switch(align)
 			{
 				case LEFT :
@@ -166,14 +171,24 @@ package com.zutalor.positioning
 				case BOTTOM_LEFT :
 					tX = 0.0;
 					break;
-					
+				case BOTTOM_ONE_FIFTH :
+					tX = colSize - (wD * .5);
+					break;
+				case BOTTOM_TWO_FIFTH :
+					tX = (colSize * 2) - (wD * .5);
+					break;
+				case BOTTOM_THREE_FIFTH :
+					tX = (colSize * 3) - (wD * .5);
+					break;
+				case BOTTOM_FOUR_FIFTH :
+					tX = (colSize * 4) - (wD * .5);
+					break;
 				case RIGHT :
 				case TOP_RIGHT :
 				case BOTTOM_RIGHT :
 					tX = wR - wD
 					break;
-					
-				default : 					
+				default :
 					tX = 0.5 * (wR - wD);
 					break;
 			}
@@ -189,10 +204,16 @@ package com.zutalor.positioning
 				case BOTTOM :
 				case BOTTOM_LEFT :
 				case BOTTOM_RIGHT :
+				case BOTTOM_LEFT :
+				case BOTTOM_RIGHT :
+				case BOTTOM_ONE_FIFTH :
+				case BOTTOM_TWO_FIFTH :
+				case BOTTOM_THREE_FIFTH :
+				case BOTTOM_FOUR_FIFTH :
 					tY = hR - hD;
 					break;
 					
-				default : 					
+				default :
 					tY = 0.5 * (hR - hD);
 					break;
 			}

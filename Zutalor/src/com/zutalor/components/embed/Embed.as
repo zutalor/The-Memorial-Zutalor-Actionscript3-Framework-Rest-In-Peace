@@ -1,17 +1,16 @@
-package com.zutalor.components.embed 
+package com.zutalor.components.embed
 {
 	import com.zutalor.components.base.Component;
 	import com.zutalor.interfaces.IComponent;
-	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.utils.EmbeddedResources;
+	import com.zutalor.view.properties.ViewItemProperties;
 	import flash.display.Bitmap;
-	import flash.geom.Matrix;
 	/**
 	 * ...
 	 * @author Geoff
 	 */
-	public class Embed extends Component implements IComponent 
-	{	
+	public class Embed extends Component implements IComponent
+	{
 		public function Embed(name:String)
 		{
 			super(name);

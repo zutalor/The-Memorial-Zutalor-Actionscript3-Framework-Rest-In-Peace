@@ -1,4 +1,4 @@
-package com.zutalor.view.rendering 
+package com.zutalor.view.rendering
 {
 	import adobe.utils.CustomActions;
 	import com.zutalor.components.base.Component;
@@ -48,13 +48,13 @@ package com.zutalor.view.rendering
 			
 			if (vip.width)
 				if (vip.width == "auto")
-					viewItem.width = _width - hPad - x;
-				else	
+					viewItem.width = _width;
+				else
 					viewItem.width = width;
 					
 			if (vip.height)
 				if (vip.height == "auto")
-					viewItem.height = _width - vPad - y;
+					viewItem.height = _width;
 				else
 					viewItem.height = height;
 						
@@ -64,7 +64,7 @@ package com.zutalor.view.rendering
 			{
 				viewItem.x = x + hPad;
 				viewItem.y = y + vPad;
-			}				
+			}
 			
 			if (vip.rotation)
 				viewItem.rotation = vip.rotation;
@@ -87,7 +87,7 @@ package com.zutalor.view.rendering
 				viewItem.scaleX = viewItem.scaleY = vip.scale;
 
 			if (vip.hidden)
-				viewItem.visible = false;		
+				viewItem.visible = false;
 		}
 	}
 }

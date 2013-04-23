@@ -348,7 +348,7 @@
 		
 		public function setAllItemVisibility(visible:Boolean):void
 		{
-			for (var i:int = 0; i < numViewItems; i ++)
+			for (var i:int = 0; i < vp.container.numChildren; i ++)
 				vp.container.getChildAt(i).visible = visible;
 		}
 		

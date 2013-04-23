@@ -9,13 +9,13 @@ package com.zutalor.view.rendering
 
 	public class ViewItemRenderer
 	{
-		private var onItemRendered:Function;	
+		private var onItemRendered:Function;
 		private var filterApplier:Function;
 		private var positioner:Function;
 		private var container:Container;
 
-		public function ViewItemRenderer(c:Container, filterApplier:Function, positioner:Function = null) 
-		{	
+		public function ViewItemRenderer(c:Container, filterApplier:Function, positioner:Function = null)
+		{
 			this.onItemRendered = onItemRendered;
 			this.filterApplier = filterApplier;
 			this.positioner = positioner;
@@ -43,7 +43,7 @@ package com.zutalor.view.rendering
 				viewItem.tabEnabled = true;
 				viewItem.tabIndex = vip.tabIndex;
 				viewItem.focusRect = true;
-			}	
+			}
 			
 			if (vip.tapAction)
 				viewItem.buttonMode = true;
@@ -53,7 +53,10 @@ package com.zutalor.view.rendering
 				
 			if (vip.text)
 				viewItem.value = vip.text;
-			
+				
+			if (vip.parent)
+				Container(container.getChildByName(vip.parent)).addChild(viewItem);
+				
 			return viewItem;
 		}
 	}
