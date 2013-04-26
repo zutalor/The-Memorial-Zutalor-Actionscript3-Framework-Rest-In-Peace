@@ -2,7 +2,6 @@
 {
 	import com.gskinner.utils.IDisposable;
 	import com.zutalor.containers.base.ContainerObject;
-	import com.zutalor.positioning.Arranger;
 	import com.zutalor.containers.utils.ObjectRemover;
 	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.StageRef;
@@ -21,13 +20,11 @@
 		
 		public const HORIZONTAL:String = "horizontal";
 		public const VERTICAL:String = "vertical";
-		private var _arranger:Arranger;
 		
-		public function Container(containerName:String) 
+		public function Container(containerName:String)
 		{
 			if (containerName)
 				name = containerName;
-			_arranger = new Arranger(this);
 		}
 		
 		public function autoArrangeChildren(options:Object):void
@@ -42,7 +39,7 @@
 			if ("padding" in options)
 				padding = options["padding"];
 				
-			if ("orientation" in options)	
+			if ("orientation" in options)
 				orientation = options["orientation"];
 				
 			for (i = 0; i < numChildren; i++)
@@ -50,9 +47,9 @@
 				if (orientation == HORIZONTAL)
 				{
 					if (padding && padding < 1)
-						padding *= w; 
+						padding *= w;
 					
-					if (i) 
+					if (i)
 						w += padding;
 					
 					child = getChildAt(i);
@@ -62,7 +59,7 @@
 				else
 				{
 					if (padding && padding < 1)
-						padding *= h; 
+						padding *= h;
 
 					if (i) // no front padding on first entry
 						h += padding;
@@ -74,11 +71,6 @@
 			}
 			if (numChildren)
 				contentChanged();
-		}
-		
-		public function get arranger():Arranger
-		{
-			return _arranger;
 		}
 		
 		public function callContainerMethod(method:String, params:String):void

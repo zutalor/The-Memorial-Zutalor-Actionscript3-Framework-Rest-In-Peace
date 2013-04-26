@@ -218,19 +218,17 @@
 			if (itemName)
 			{
 				vip = presets.getItemPropsByName(viewId, itemName);
-				if (vip.voName)
+				if (vip && vip.voName)
 				{
 					item = vp.container.getChildByName(itemName) as Component;
 					viewModelMediator.copyValueObjectToViewItem(vip, item);
 				}
-				else
-					ShowError.fail(ViewController, "Invalid item name " + itemName + " for view: " + viewId);
 			}
 			else
 				for (var i:int = 0; i < numViewItems; i++)
 				{
 					vip = presets.getItemPropsByIndex(viewId, i);
-					if (vip.voName)
+					if (vip && vip.voName)
 					{
 						item = vp.container.getChildAt(i) as Component;
 						viewModelMediator.copyValueObjectToViewItem(vip, item);
@@ -278,7 +276,7 @@
 				dragger = null;
 				draggableDict = null;
 			}
-			ViewControllerRegistry.unregisterController(viewId);
+			ViewControllerRegistry.unRegisterController(viewId);
 			
 			viewEventMediator.itemListenerCleanup();
 			viewEventMediator.removeListenersFromContainer(container);
@@ -289,7 +287,6 @@
 				for (i = 0; i < numFilters; i++)
 					filters[i].dispose();
 			}
-			vp.container.dispose();
 			filters = null;
 			numViewItems = 0;
 			viewModelMediator = null;

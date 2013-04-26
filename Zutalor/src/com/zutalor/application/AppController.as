@@ -276,8 +276,8 @@
 				dispatchEvent(new AppEvent(AppEvent.STATE_CHANGE));
 				if (appStateProps.type == AppStateProperties.SEQUENCE)
 				{
-						_loadingSequence = new Sequence();
-						_loadingSequence.play(appStateProps.sequenceName, this, stateChangeComplete);
+					_loadingSequence = new Sequence();
+					_loadingSequence.play(appStateProps.sequenceName, this, stateChangeComplete);
 				}
 				else if (appStateProps.viewId && !_appStateCallStack.getByKey(_curAppState))
 				{

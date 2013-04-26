@@ -4,6 +4,7 @@
 	import com.zutalor.components.graphic.Graphic;
 	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.components.label.Label;
+	import com.zutalor.positioning.Aligner;
 	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.text.StringUtils;
 	import com.zutalor.view.properties.ViewItemProperties;
@@ -58,7 +59,7 @@
 				
 			_sb = new SimpleButton(_up, _over, _down, _up);
 			addChild(_sb);
-			vip.text = StringUtils.stripLeadingSpaces(vip.text);			
+			vip.text = StringUtils.stripLeadingSpaces(vip.text);
 			vip.hPad = _bp.hPad;
 			vip.vPad = _bp.vPad;
 
@@ -69,8 +70,7 @@
 			
 			_textAttributes = [_bp.textAttributesUp, _bp.textAttributesOver, _bp.textAttributesDown, _bp.textAttributesDisabled];
 			buttonStates = [_up, _over, _down, _disabled];
-			_buttonLabels = [new Label(name), new Label(name), new Label(name), new Label(name)];
-			
+		
 			if (vip.width)
 				width = int(vip.width);
 			else if (_bp.width)
@@ -80,27 +80,40 @@
 				height = int(vip.height);
 			else if (_bp.height)
 				height = _bp.height;
-				
-			vip.textAttributes = _textAttributes[i];
 			
 			if (vip.text)
-				_sb.name = vip.text;	
+			{
+				_sb.name = vip.text;
+				createLabels();
+			}
 			else
 				_sb.name = name;
 			
-			for (var i:int = 0; i < 4; i++)
+			function createLabels():void
 			{
-				label = _buttonLabels[i];
-				label.render(vip);
-				buttonStates[i].addChild(label);
-				_buttonLabels[i] = label;
-				aligner.alignObject(label, width, height, _bp.align, _bp.hPad, _bp.vPad);
+				var aligner:Aligner;
+				
+				aligner = new Aligner();
+				_buttonLabels = [new Label(name), new Label(name), new Label(name), new Label(name)];
+				
+				for (var i:int = 0; i < 4; i++)
+				{
+					label = _buttonLabels[i];
+					label.render(vip);
+					buttonStates[i].addChild(label);
+					_buttonLabels[i] = label;
+					aligner.alignObject(label, width, height, _bp.align, _bp.hPad, _bp.vPad);
+				}
 			}
 		}
 		
 		public function set labelText(text:String):void
 		{
 			var label:Label;
+			var aligner:Aligner;
+				
+			aligner = new Aligner();
+			
 			if (_buttonLabels)
 			{
 				for (var i:int = 0; i < 4; i++)
@@ -144,7 +157,7 @@
 			if (!value)
 				_sb.upState = _disabled;
 			else
-				_sb.upState = _up;		
+				_sb.upState = _up;
 		}
 		
 		private function makeButtonState(presetId:String):Graphic

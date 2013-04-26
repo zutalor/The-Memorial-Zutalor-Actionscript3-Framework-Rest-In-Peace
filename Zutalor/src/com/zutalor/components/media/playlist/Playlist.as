@@ -1,5 +1,6 @@
 package com.zutalor.components.media.playlist
 {
+	import com.hurlant.math.BigInteger;
 	import com.zutalor.components.base.Component;
 	import com.zutalor.components.media.base.MediaPlayer;
 	import com.zutalor.components.media.base.MediaProperties;
@@ -22,7 +23,7 @@ package com.zutalor.components.media.playlist
 	 * @author Geoff Pepos
 	 */
 	public class Playlist extends Component implements IComponent
-	{	
+	{
 		public static const IMAGE:String = "image";
 		public static const VIDEO:String = "video";
 		public static const MC:String = "mc";
@@ -52,7 +53,7 @@ package com.zutalor.components.media.playlist
 		public var loopCount:int;
 		
 		private var _startTimeMs:Number;
-		private var _totalTimeMs:Number;		
+		private var _totalTimeMs:Number;
 		// ai properties
 		private var _minClips:int;
 		private var _maxClips:int;
@@ -60,7 +61,7 @@ package com.zutalor.components.media.playlist
 		private var _clipsCacheSize:int;
 		private var _numPlaylistItems:int;
 		private var _endIndex:int;
-		private var _currentPlaylistIndex:int;	
+		private var _currentPlaylistIndex:int;
 		
 		public var hasStarted:Boolean;
 		public var _isPlaying:Boolean;
@@ -70,12 +71,69 @@ package com.zutalor.components.media.playlist
 		private var _state:PlaylistMediaState;
 		private var _width:Number;
 		private var _height:Number;
+		private var _x:Number;
+		private var _y:Number;
 		
-		private static var _presets:NestedPropsManager; 
+		private static var _presets:NestedPropsManager;
 				
 		public function Playlist(name:String)
 		{
 			super(name);
+			_x = _y = _width = _height = 0;
+		}
+		
+		override public function set x(n:Number):void
+		{
+			var p:MediaPlayer;
+			
+			_x = n;
+			for (var i:int = 0; i < _players.length; i++)
+			{
+				p = _players.getByIndex(i);
+				p.x = n;
+			}
+		}
+		
+		override public function get x():Number
+		{
+			return _x;
+		}
+		
+		override public function set y(n:Number):void
+		{
+			var p:MediaPlayer;
+			
+			_y = n;
+			for (var i:int = 0; i < _players.length; i++)
+			{
+				p = _players.getByIndex(i);
+				p.y = n;
+			}
+		}
+		
+		override public function get y():Number
+		{
+			return _y;
+		}
+		
+		override public function set width(n:Number):void
+		{
+			_width = n;
+		}
+		
+		override public function set height(n:Number):void
+		{
+			_height = n;
+		}
+		
+		override public function get width():Number
+		{
+			return _width;
+		}
+		
+		override public function get height():Number
+		{
+			return _height;
 		}
 		
 		public static function registerPresets(options:Object):void
@@ -83,7 +141,7 @@ package com.zutalor.components.media.playlist
 			if (!_presets)
 				_presets = new NestedPropsManager();
 			
-			_presets.parseXML(PlaylistProperties, PlaylistItemProperties, options.xml[options.nodeId], options.childNodeId, 
+			_presets.parseXML(PlaylistProperties, PlaylistItemProperties, options.xml[options.nodeId], options.childNodeId,
 																							options.xml[options.childNodeId]);
 		}
 		
@@ -92,7 +150,7 @@ package com.zutalor.components.media.playlist
 			return _presets;
 		}
 				
-		override public function render(viewItemProperties:ViewItemProperties = null):void 
+		override public function render(viewItemProperties:ViewItemProperties = null):void
 		{
 			super.render(viewItemProperties);
 			
@@ -114,10 +172,10 @@ package com.zutalor.components.media.playlist
 			sp.overlap = _pp.overlap;
 			_state.initialize(sp,_players);
 			
-			MasterClock.registerCallback(onTimer, false, TIMER_INTERVAL);	
-			_numPlaylistItems = _presets.getNumItems(playlistName);	
+			MasterClock.registerCallback(onTimer, false, TIMER_INTERVAL);
+			_numPlaylistItems = _presets.getNumItems(playlistName);
 			
-			_endIndex = _numPlaylistItems;	
+			_endIndex = _numPlaylistItems;
 			_currentPlaylistIndex = _pp.startIndex;
 			
 			if (!_pp.endIndex)
@@ -129,18 +187,18 @@ package com.zutalor.components.media.playlist
 				_endIndex = _pp.startIndex + 1;
 				
 			if (_endIndex > _numPlaylistItems)
-				_endIndex = _numPlaylistItems;	
+				_endIndex = _numPlaylistItems;
 		
 			if (_pp.ai)
 			{
 				_minClips = _pp.minClips;
-				_maxClips = _pp.maxClips;				
+				_maxClips = _pp.maxClips;
 				_oddsOfPlaying = _pp.oddsOfPlaying;
 				_clipsCacheSize = _maxClips + 1;
 				
 				_aiPlayer = new AiClipPlayer();
 				_clipNames =  [];
-			}	
+			}
 			
 			for (i = 0; i < _numPlaylistItems; i++)
 			{
@@ -148,13 +206,13 @@ package com.zutalor.components.media.playlist
 				if (pip.hotkey)
 				{
 					_hkm.addMapping(pip.hotkey, pip.name);
-				}					
+				}
 				_clipNames.push(pip.name);
 			}
 				
-			initAi();	
+			initAi();
 			if (_pp.autoPlay)
-			{			
+			{
 				_isPlaying = true;
 				if (_pp.ai)
 				{
@@ -163,11 +221,11 @@ package com.zutalor.components.media.playlist
 				}
 				else
 				{
-					playNext();	
+					playNext();
 					_autoPlaying = true;
 				}
 				_autoPlaying = true;
-			}	
+			}
 
 		}
 		
@@ -187,7 +245,7 @@ package com.zutalor.components.media.playlist
 				sp.oddsOfPlaying = _oddsOfPlaying;
 				sp.clipsCacheSize = _clipsCacheSize;
 				sp.minClips = _minClips;
-				sp.maxClips = _maxClips;						
+				sp.maxClips = _maxClips;
 				sp.playlist = this;
 				sp.clipFadeOut = _pp.clipFadeOut;
 				sp.overlap = _pp.overlap;
@@ -202,7 +260,7 @@ package com.zutalor.components.media.playlist
 			MasterClock.unRegisterCallback(onTimer);
 		}
 		
-		public function get numPlaylistItems():int 
+		public function get numPlaylistItems():int
 		{
 			return _numPlaylistItems;
 		}
@@ -244,26 +302,25 @@ package com.zutalor.components.media.playlist
 				if (_pp.ai)
 					startAi();
 				else
-					playNext();	
+					playNext();
 			}
 			else if (_isPaused)
 			{
 				_isPaused = false;
 			
-				numPlayers = _players.length;	
+				numPlayers = _players.length;
 				for (i = 0; i < numPlayers; i++)
 				{
 					p = _players.getByIndex(i);
-					p.play();			
-				}			
+					p.x = _x;
+					p.y = _y;
+					p.play();
+				}
 			}
 			_startTimeMs = getTimer();
 			MasterClock.start(onTimer);
 			if (_pp.ai)
 				_aiPlayer.playNext();
-
-			width = _width;
-			height = _height;
 		}
 		
 		public function pause():void
@@ -276,13 +333,13 @@ package com.zutalor.components.media.playlist
 			_isPaused = true;
 			MasterClock.stop(onTimer);
 			
-			numPlayers = _players.length;	
+			numPlayers = _players.length;
 			for (var i:int = 0; i < numPlayers; i++)
 			{
 				p = _players.getByIndex(i);
 				if (p.name.indexOf(RECYCLE) == -1)
 					if (p.isPlaying)
-						p.pause();			
+						p.pause();
 			}
 		}
 		
@@ -309,12 +366,12 @@ package com.zutalor.components.media.playlist
 			
 			if (_pp.ai)
 			{
-				if (_aiPlayer) 
+				if (_aiPlayer)
 					_aiPlayer.stop(fadeOut);
-			}				
+			}
 			else
 			{
-				numPlayers = _players.length;	
+				numPlayers = _players.length;
 				
 				for (i = 0; i < numPlayers; i++)
 				{
@@ -345,9 +402,9 @@ package com.zutalor.components.media.playlist
 		// PRIVATE METHODS
 		
 		private function onStopComplete():void
-		{			
+		{
 			dispatchEvent(new MediaEvent(MediaEvent.COMPLETE));
-		}	
+		}
 		
 		private function onTimer():void
 		{
@@ -394,7 +451,7 @@ package com.zutalor.components.media.playlist
 				me.target.removeEventListener(MediaEvent.OVERLAP, playNext);
 				
 			if (_currentPlaylistIndex < _endIndex)
-			{		
+			{
 				pip = _presets.getItemPropsByIndex(vip.playlistName, _currentPlaylistIndex);
 				
 				if (!_players.getByKey(pip.name))
@@ -405,7 +462,7 @@ package com.zutalor.components.media.playlist
 						p.addEventListener(MediaEvent.OVERLAP, playNext, false, 0, true);
 						_currentPlaylistIndex++;
 					}
-				}			
+				}
 			}
 			
 			if (_currentPlaylistIndex == _endIndex)
@@ -431,7 +488,7 @@ package com.zutalor.components.media.playlist
 		}
 				
 		public function playbackControl(stateOrItemName:String):void
-		{	
+		{
 			var p:MediaPlayer;
 			
 			switch (stateOrItemName)
@@ -447,12 +504,12 @@ package com.zutalor.components.media.playlist
 					break;
 				case UIEvent.STOP_ALL :
 					stop();
-					break;					
+					break;
 				case UIEvent.NEXT :
 					if (_currentPlaylistIndex < _endIndex)
 					{
 						if (_state.curItemName)
-						{	
+						{
 							p = _players.getByKey(_state.curItemName);
 							if (p)
 								p.stop(_pp.clipFadeOut);
@@ -466,12 +523,12 @@ package com.zutalor.components.media.playlist
 						if (_currentPlaylistIndex == 1)
 							_currentPlaylistIndex = 0;
 						else if (_currentPlaylistIndex > 1)
-							_currentPlaylistIndex -= 2;						
+							_currentPlaylistIndex -= 2;
 						else if (_pp.loop)
 							_currentPlaylistIndex = _endIndex - 1;
 						
 						if (_state.curItemName)
-						{	
+						{
 							p = _players.getByKey(_state.curItemName);
 							if (p)
 								p.stop(_pp.clipFadeOut);
@@ -510,17 +567,17 @@ package com.zutalor.components.media.playlist
 			}
 		}
 		
-		public function get playerType():String 
+		public function get playerType():String
 		{
 			return MediaProperties.PLAYER_PLAYLIST;
 		}
 		
-		public function get view():DisplayObject 
+		public function get view():DisplayObject
 		{
 			return this;
 		}
 		
-		public function get isPlaying():Boolean 
+		public function get isPlaying():Boolean
 		{
 			return _isPlaying;
 		}

@@ -91,7 +91,7 @@
 			stream.client = this;
 			stream.bufferTime = bufferSecs;
 			
-			s = StageRef.stage;
+		/*	s = StageRef.stage;
 			if (Application.settings.stageVideoAvailable)
 			{
 				trace("using stage video");
@@ -101,9 +101,9 @@
 			}
 			else
 			{
-				sv = null;
+				sv = null;*/
 				getSoftwarePlayer();
-			}
+		//	}
 			
 			function getSoftwarePlayer():void
 			{

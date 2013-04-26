@@ -1,4 +1,4 @@
-package com.zutalor.view.controller 
+package com.zutalor.view.controller
 {
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.utils.gDictionary;
@@ -24,11 +24,11 @@ package com.zutalor.view.controller
 		public static function registerController(id:String, controller:ViewController):void
 		{
 			_controllerDictionary.insert(id, controller);
-		}	
+		}
 		
-		public static function unregisterController(id:String):void
+		public static function unRegisterController(id:String):void
 		{
 			_controllerDictionary.deleteByKey(id);
-		}				
+		}
 	}
 }

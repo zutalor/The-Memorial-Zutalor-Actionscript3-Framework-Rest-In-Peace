@@ -1,10 +1,8 @@
-package com.zutalor.components.base 
+package com.zutalor.components.base
 {
-	import com.zutalor.positioning.Aligner;
-	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.containers.Container;
-	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.events.UIEvent;
+	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import flash.geom.Matrix;
 	/**
@@ -15,13 +13,11 @@ package com.zutalor.components.base
 	{
 		private var _value:*;
 		public var vip:ViewItemProperties;
-		protected var aligner:Aligner;
 
 		public function Component(containerName:String)
 		{
 			super(containerName);
 			vip = new ViewItemProperties();
-			aligner = new Aligner();
 			cacheAsBitmap = true;
 			cacheAsBitmapMatrix = new Matrix();
 		}

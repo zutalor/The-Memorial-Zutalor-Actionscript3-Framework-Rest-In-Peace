@@ -54,7 +54,7 @@ package com.zutalor.view.rendering
 					
 			if (vip.height)
 				if (vip.height == "auto")
-					viewItem.height = _width;
+					viewItem.height = _height;
 				else
 					viewItem.height = height;
 						
