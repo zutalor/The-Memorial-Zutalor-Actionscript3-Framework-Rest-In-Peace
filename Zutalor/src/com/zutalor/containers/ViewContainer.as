@@ -11,12 +11,10 @@
 	public class ViewContainer extends Container implements IContainerObject
 	{
 		public var viewController:ViewController;
-		public var arranger:Arranger;
-				
+		
 		public function ViewContainer(containerName:String)
 		{
 			super(containerName);
-			arranger = new Arranger(this);
 		}
 		
 		public function callViewItemMethod(viewItem:String, method:String, params:String):void

@@ -2,10 +2,8 @@ package com.zutalor.application
 {
 	import com.adobe.swffocus.SWFFocus;
 	import com.zutalor.air.AirStatus;
-	import com.zutalor.controllers.DialogController;
 	import com.zutalor.events.AppEvent;
 	import com.zutalor.loaders.URL;
-	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.widgets.Dialog;
@@ -46,10 +44,6 @@ package com.zutalor.application
 
 		}
 		
-		private function init():void
-		{
-		}
-		
 		public function start(bootXmlUrl:String, inlineXML:XML = null, splashEmbedClassName:String = null,
 																	loadingSoundClassName:String = null):void
 		{
@@ -62,10 +56,8 @@ package com.zutalor.application
 																							onUncaughtError);
 			
 		    initFlashVars();
-			_appController = new AppController(bootXmlUrl, ip, agent, inlineXML, splashEmbedClassName,
-																						loadingSoundClassName);
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-
+		
 			function initFlashVars():void
 			{
 				try {
@@ -78,42 +70,35 @@ package com.zutalor.application
 				if (url != "undefined" && url != "/" && url != null)
 					URL.open("/#/" + url.substring(1), "_self");
 				
-				if (ip == "undefined")
+				if (!ip || ip == "undefined")
 					ip = "IP unknown";
 				
-				if (agent == "undefined")
+				if (!agent || agent == "undefined")
 					agent = "Agent Undefined";
 			}
-		}
-		
-		private function onAddedToStage(e:Event):void
-		{
-			SWFFocus.init(stage);
-			StageRef.stage = stage;
-			stage.stageFocusRect = false;
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP_LEFT;
-			for (var i:int = 0; i < stage.numChildren; i++)
-				stage.getChildAt(i).visible = false;
 			
-			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			_appController.addEventListener(AppEvent.INITIALIZED, onInitialized);
-			_appController.initialize();
+			function onAddedToStage(e:Event):void
+			{
+				removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+				SWFFocus.init(stage);
+				StageRef.stage = stage;
+				stage.stageFocusRect = false;
+				stage.scaleMode = StageScaleMode.NO_SCALE;
+				stage.align = StageAlign.TOP_LEFT;
+				for (var i:int = 0; i < stage.numChildren; i++)
+					stage.getChildAt(i).visible = false;
+				
+				_appController = new AppController(bootXmlUrl, ip, agent, inlineXML, splashEmbedClassName, loadingSoundClassName);
+				_appController.addEventListener(AppEvent.INITIALIZED, onInitialized);
+			}
 		}
-	
+
 		private function onInitialized(e:Event):void
 		{
 			_appController.removeEventListener(AppEvent.INITIALIZED, onInitialized);
-			initPlugins();
 			dispatchEvent(new AppEvent(AppEvent.INITIALIZED));
 		}
 		
-		private function initPlugins():void
-		{
-			AirStatus.initialize();
-			Plugins.registerClassAndCreateCachedInstance(DialogController);
-		}
-			
 		private function onUncaughtError(e:UncaughtErrorEvent):void
 		{
 			e.preventDefault();

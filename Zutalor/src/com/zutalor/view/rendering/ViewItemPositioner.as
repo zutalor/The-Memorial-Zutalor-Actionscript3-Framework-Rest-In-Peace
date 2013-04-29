@@ -48,13 +48,13 @@ package com.zutalor.view.rendering
 			
 			if (vip.width)
 				if (vip.width == "auto")
-					viewItem.width = _width;
+					viewItem.width = _width - x - hPad;
 				else
 					viewItem.width = width;
 					
 			if (vip.height)
 				if (vip.height == "auto")
-					viewItem.height = _height;
+					viewItem.height = _height - y - vPad;
 				else
 					viewItem.height = height;
 						

@@ -1,6 +1,9 @@
 package com.zutalor.application
 {
 	import com.google.analytics.debug.Label;
+	import com.zutalor.air.AirPlugin;
+	import com.zutalor.air.AirStatus;
+	import com.zutalor.analytics.Analytics;
 	import com.zutalor.components.button.Button;
 	import com.zutalor.components.embed.Embed;
 	import com.zutalor.components.graphic.Graphic;
@@ -21,6 +24,7 @@ package com.zutalor.application
 	import com.zutalor.containers.ParallaxContainer;
 	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.containers.ViewContainer;
+	import com.zutalor.controllers.DialogController;
 	import com.zutalor.filters.Glow;
 	import com.zutalor.filters.Shadow;
 	import com.zutalor.gesture.DoubleTapGesture;
@@ -43,27 +47,36 @@ package com.zutalor.application
 		
 		public function AppPlugins()
 		{
-		
+			init();
 		}
 		
-		public function register():void
+		private function init():void
 		{
-			if (false)
-			{
-				GestureListener.register(PanGesture);
-				GestureListener.register(SwipeGesture);
-				GestureListener.register(DoubleTapGesture);
-				GestureListener.register(TapGesture);
-				GestureListener.register(LongPressGesture);
-				GestureListener.register(RotateGesture);
-				GestureListener.register(TransformGesture);
-				GestureListener.register(ZoomGesture);
-			}
+			
+			Plugins.registerClassAndCreateCachedInstance(AirPlugin);
+			AirStatus.initialize();
+			
+			GestureListener.register(PanGesture);
+			GestureListener.register(SwipeGesture);
+			GestureListener.register(DoubleTapGesture);
+			GestureListener.register(TapGesture);
+			GestureListener.register(LongPressGesture);
+			GestureListener.register(RotateGesture);
+			GestureListener.register(TransformGesture);
+			GestureListener.register(ZoomGesture);
+		
+			Plugins.registerClassAndCreateCachedInstance(Analytics);
+			Plugins.registerClassAndCreateCachedInstance(DialogController);
 			Plugins.registerClass(ViewContainer);
+			Plugins.registerClass(Container);
+			Plugins.registerClass(Text);
+			Plugins.registerClass(Label);
+			Plugins.registerClass(Embed);
+			Plugins.registerClass(Graphic);
+			Plugins.registerClass(Shadow);
+	
 			Plugins.registerClass(ScrollingContainer);
 			Plugins.registerClass(ParallaxContainer);
-			Plugins.registerClass(Container);
-			
 			Plugins.registerClass(Button);
 			Plugins.registerClass(Html);
 			Plugins.registerClass(Toggle);
@@ -71,20 +84,14 @@ package com.zutalor.application
 			Plugins.registerClass(RadioGroup);
 			Plugins.registerClass(Slider);
 			Plugins.registerClass(Stepper);
-			Plugins.registerClass(Text);
-			Plugins.registerClass(Label);
-			Plugins.registerClass(Embed);
-			Plugins.registerClass(Graphic);
 			Plugins.registerClass(List);
 			Plugins.registerClass(VideoPlayer);
 			Plugins.registerClass(AudioPlayer);
 			Plugins.registerClass(Playlist);
 			Plugins.registerClass(WebBridge);
 			Plugins.registerClass(BasicListItemRenderer);
-			Plugins.registerClass(Shadow);
 			Plugins.registerClass(Glow);
 		}
-	
 	}
 
 }

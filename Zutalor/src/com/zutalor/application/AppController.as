@@ -17,7 +17,6 @@
 	import com.zutalor.properties.NestedPropsManager;
 	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.sequence.Sequence;
-	import com.zutalor.translate.Translate;
 	import com.zutalor.utils.EmbeddedResources;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.MasterClock;
@@ -84,9 +83,12 @@
 			_ip = ip;
 			_agent = agent;
 			_bootXmlUrl = bootXmlUrl;
+			initialize();
 		}
 		
-		public function initialize():void
+// PRIVATE METHODS
+		
+		private function initialize():void
 		{
 			var samplePlayer:SamplePlayer;
 			
@@ -109,15 +111,13 @@
 			MasterClock.defaultInterval = 1000 / StageRef.stage.frameRate;
 			AppXmlLoader.init(_bootXmlUrl, _inlineXML, init);
 		}
-		
-// PRIVATE METHODS
 
 		private function showSplash():void
 		{
 			splash = EmbeddedResources.createInstance(_splashEmbedClassName);
 			StageRef.stage.addChild(splash);
-			splash.x = (StageRef.stage.fullScreenWidth - splash.width) / 2;
-			splash.y = (StageRef.stage.fullScreenHeight - splash.height) / 2;
+			splash.x = (StageRef.stage.stageWidth - splash.width) / 2;
+			splash.y = (StageRef.stage.stageHeight - splash.height) / 2;
 			TweenMax.from(splash, 1, { alpha:0 } );
 		}
 		
@@ -190,7 +190,6 @@
 				if (ap.googleAnalyticsAccount && AirStatus.isNativeApplication || DEBUG_ANALYTICS)
 					Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.TRACK_PAGE_VIEW,
 																			{ page:state } );
-																			
 				changeAppState(state);
 			}
 		}
@@ -239,27 +238,6 @@
 			}
 		}
 		
-		private function loadFirstPage():void
-		{
-			if (_firstState)
-				changeAppState(_firstState);
-			else
-			{
-				SWFAddress.setTitle(ap.appName);
-				SWFAddress.setValue("");
-			}
-			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, onSWFAddressChange);
-			dispatchEvent(new AppEvent(AppEvent.INITIALIZED));
-			if (splash)
-			{
-				TweenMax.to(splash, .1, { alpha:0, onComplete:removeSplash } );
-			}
-			function removeSplash():void
-			{
-				StageRef.stage.removeChild(splash);
-			}
-		}
-		
 		private function processStateChange():void
 		{
 			var viewCreator:ViewCreator;
@@ -291,6 +269,7 @@
 					_curViewProps.mediaPreset = appStateProps.mediaPreset;
 					viewCreator.create(appStateProps.viewId, appStateProps.name, onAppContainerLoadComplete);
 					viewCreator.container.addEventListener(UIEvent.CLOSE, onCloseView, false, 0, true);
+					
 				}
 			}
 		}
@@ -308,13 +287,18 @@
 				_curViewProps = vpm.getPropsById(curContainerLoading);
 				curContainerLoading = "";
 				dispatchEvent(new Event(Event.COMPLETE));
+				vu.arrangeViewContainers();
 			}
 		}
 		
 		private function init():void
 		{
+			var appPlugins:AppPlugins;
+
 			ap = Application.settings;
-			vu = ViewUtils.gi();
+			vu = new ViewUtils();
+			appPlugins = new AppPlugins();
+			
 			vpm = ViewController.presets;
 			
 			if (_ip)
@@ -324,8 +308,9 @@
 				ap.agent = _agent;
 
 			_appStateCallStack = new gDictionary();
+
 			StageRef.stage.addEventListener(StageVideoAvailabilityEvent.STAGE_VIDEO_AVAILABILITY,onStageVideoAbility);
-			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, onSWFAddressFirstBroadcast);
+		
 			MasterClock.initialize();
 			Remoting.gateway = ap.gateway;
 			Color.theme = ap.colorTheme;
@@ -347,6 +332,7 @@
 			MasterClock.registerCallback(checkOrientation, true, 500);
 			vu.onStageResize();
 			StyleSheets.loadCss(onInitComplete);
+			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, onSWFAddressFirstBroadcast);
 		}
 		
 		private function onInitComplete():void
@@ -358,6 +344,28 @@
 			}
 			else
 				loadFirstPage();
+		}
+		
+		private function loadFirstPage():void
+		{
+			if (_firstState)
+				changeAppState(_firstState);
+			else
+			{
+				SWFAddress.setTitle(ap.appName);
+				SWFAddress.setValue("");
+			}
+			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, onSWFAddressChange);
+			dispatchEvent(new AppEvent(AppEvent.INITIALIZED));
+			if (splash)
+			{
+				TweenMax.to(splash, .1, { alpha:0, onComplete:removeSplash } );
+			}
+			
+			function removeSplash():void
+			{
+				StageRef.stage.removeChild(splash);
+			}
 		}
 	}
 }

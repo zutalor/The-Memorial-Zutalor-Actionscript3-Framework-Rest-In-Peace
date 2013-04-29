@@ -20,8 +20,7 @@ package com.zutalor.view.mediators
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.properties.ViewItemProperties;
-	import com.zutalor.view.utils.ViewCloser;
-	import com.zutalor.view.utils.ViewUtils;
+	import com.zutalor.view.properties.ViewProperties;
 	import com.zutalor.widgets.Focus;
 	import flash.events.Event;
 	import flash.events.FocusEvent;
@@ -38,7 +37,6 @@ package com.zutalor.view.mediators
 		public var vc:ViewController;
 		
 		private var _vpm:NestedPropsManager;
-		private var _vu:ViewUtils;
 		private var _hkm:HotKeyManager;
 		private var _itemsSkipped:int;
 		private var _numItems:int;
@@ -54,7 +52,6 @@ package com.zutalor.view.mediators
 		private function _init():void
 		{
 			_vpm = ViewController.presets;
-			_vu = ViewUtils.gi();			
 			_hkm = HotKeyManager.gi();
 		}
 		
@@ -152,14 +149,14 @@ package com.zutalor.view.mediators
 						_itemsSkipped++;
 						onHotKey(e);
 					}
-					else	
+					else
 						_itemsSkipped--;
 				}
 			}
 			else if (_itemsSkipped < _numItems)
 			{
 				_itemsSkipped++;
-				onHotKey(e); 	
+				onHotKey(e);
 			}
 			else
 				_itemsSkipped--;
@@ -266,7 +263,7 @@ package com.zutalor.view.mediators
 			{
 				switch (e.message)
 				{
-					case "left": 
+					case "left":
 						if (getQualifiedClassName(vc.itemWithFocus).indexOf("RadioGroup") > -1)
 						{
 							if (r.radioIndex > 0)
@@ -275,7 +272,7 @@ package com.zutalor.view.mediators
 								r.radioIndex = r.numButtons - 1;
 						}
 						break;
-					case "right": 
+					case "right":
 						if (getQualifiedClassName(vc.itemWithFocus).indexOf("RadioGroup") > -1)
 						{
 							if (r.radioIndex < r.numButtons - 1)
@@ -286,7 +283,7 @@ package com.zutalor.view.mediators
 						break;
 						
 						break;
-					case "down": 
+					case "down":
 						if (vc.itemWithFocusIndex < _numItems - 1)
 							vc.itemWithFocusIndex++;
 						else
@@ -294,7 +291,7 @@ package com.zutalor.view.mediators
 						
 						validateSelection(e);
 						break;
-					case "up": 
+					case "up":
 						if (vc.itemWithFocusIndex > 0)
 							vc.itemWithFocusIndex--;
 						else
@@ -303,7 +300,7 @@ package com.zutalor.view.mediators
 						validateSelection(e);
 						break;
 					
-					case "space": 
+					case "space":
 						if (getQualifiedClassName(vc.itemWithFocus).indexOf("Button") > -1)
 							onTap(null, vc.itemWithFocus.name);
 						else if (getQualifiedClassName(vc.itemWithFocus).indexOf("Toggle") > -1)
@@ -313,7 +310,7 @@ package com.zutalor.view.mediators
 							vc.viewModelMediator.copyViewItemToValueObject(vip, vc.container.getChildByName(vip.name));
 						}
 						break;
-					default: 
+					default:
 						tmp = vc.getItemByName(e.message);
 						if (tmp)
 							if (tmp.visible && tmp.alpha > 0)
@@ -352,6 +349,57 @@ package com.zutalor.view.mediators
 			}
 		}
 		
+		private function callViewItemMethod(viewName:String, viewItem:String, method:String, params:String):void
+		{
+			var vp:ViewProperties;
+			
+			vp = ViewController.presets.getPropsById(viewName);
+			vp.container.callViewItemMethod(viewItem, method, params);
+		}
+		
+		private function callViewContainerMethod(viewName:String, method:String, params:String):void
+		{
+			var vp:ViewProperties;
+			
+			vp = ViewController.presets.getPropsById(viewName); //TODO Error check
+			vp.container.callContainerMethod(method, params);
+		}
+		
+		private function zoom(uie:UIEvent=null, type:String=null, viewName:String = null):void
+		{
+			var vp:ViewProperties;
+			var c:*;
+			var vName:String;
+			var zType:String;
+			var oldScrollX:Number;
+			var oldScrollY:Number;
+			
+			if (viewName)
+				vName = viewName;
+			else
+				vName = uie.target.name;
+				
+			if (type)
+				zType = type;
+			else
+				zType = uie.type;
+				
+			vp = ViewController.presets.getPropsById(vName);
+			c = vp.container;
+			
+			if (zType == UIEvent.ZOOM_IN)
+			{
+				c.width += c.width * .1;
+				c.height += c.height * .1;
+			}
+			else
+			{
+				c.width -= c.width * .1;
+				c.height -= c.height * .1;
+			}
+			vp.container.contentChanged();
+		}
+		
 		private function onTap(me:MouseEvent = null, targetName:String = null):void
 		{
 			var vip:ViewItemProperties;
@@ -360,7 +408,7 @@ package com.zutalor.view.mediators
 			var containerNames:Array;
 			var events:Array;
 			var eventIndx:int;
-			var target:String;	
+			var target:String;
 			
 			if (targetName != null)
 				eventTargetName = targetName;
@@ -385,7 +433,7 @@ package com.zutalor.view.mediators
 						containerNames = [];
 						containerNames.push(vc.container.name);
 					}
-					else	
+					else
 						containerNames = vip.tapContainerNames.split(",");
 
 					switch (vip.onTap)
@@ -419,14 +467,14 @@ package com.zutalor.view.mediators
 					
 					function appStateChange():void
 					{
-						vc.container.dispatchEvent(new UIEvent(UIEvent.APP_STATE_SELECTED, 
+						vc.container.dispatchEvent(new UIEvent(UIEvent.APP_STATE_SELECTED,
 																vc.container.name, vip.tapAction));
 					}
 					
 					function viewItemMethodCall():void
 					{
 						for (i = 0; i < containerNames.length; i++)
-							_vu.callViewItemMethod(containerNames[i], vip.tapTarget, vip.tapAction, vip.tapActionOptions);
+							callViewItemMethod(containerNames[i], vip.tapTarget, vip.tapAction, vip.tapActionOptions);
 					}
 					
 					function PluginMethodCall():void
@@ -447,7 +495,7 @@ package com.zutalor.view.mediators
 					function containerMethodCall():void
 					{
 						for (i = 0; i < containerNames.length; i++)
-							_vu.callViewContainerMethod(containerNames[i], vip.tapAction, vip.tapActionOptions);
+							callViewContainerMethod(containerNames[i], vip.tapAction, vip.tapActionOptions);
 					}
 						
 					function uiEvent():void
@@ -457,46 +505,46 @@ package com.zutalor.view.mediators
 						
 						switch (vip.tapAction)
 						{
-							case UIEvent.CREATE: 
-							case UIEvent.UPDATE: 
+							case UIEvent.CREATE:
+							case UIEvent.UPDATE:
 								if (vc.viewModelMediator.validate())
 									if (vip.tapActionOptions)
 										Plugins.callMethod(dest, vip.tapAction, vip.tapActionOptions);
 									else
 										Plugins.callMethod(dest, vip.tapAction);
 								break;
-							case UIEvent.ZOOM_IN: 
-							case UIEvent.ZOOM_OUT: 
+							case UIEvent.ZOOM_IN:
+							case UIEvent.ZOOM_OUT:
 								for (i = 0; i < containerNames.length; i++)
-									_vu.zoom(null, vip.tapAction, containerNames[i]);
+									zoom(null, vip.tapAction, containerNames[i]);
 								break;
-							case UIEvent.NATIVE_WINDOW_CLOSE: 
+							case UIEvent.NATIVE_WINDOW_CLOSE:
 								if (AirStatus.isNativeApplication)
 									Plugins.callMethod(PluginClasses.AIR_PLUGIN, PluginMethods.NW_CLOSE);
 								break;
-							case UIEvent.NATIVE_APPLICATION_EXIT: 
+							case UIEvent.NATIVE_APPLICATION_EXIT:
 								if (AirStatus.isNativeApplication)
 									Plugins.callMethod(PluginClasses.AIR_PLUGIN, PluginMethods.NATIVE_APP_EXIT);
 								break;
-							case UIEvent.NATIVE_WINDOW_MAXIMIZE: 
+							case UIEvent.NATIVE_WINDOW_MAXIMIZE:
 								if (AirStatus.isNativeApplication)
 									Plugins.callMethod(PluginClasses.AIR_PLUGIN, PluginMethods.NW_MAXIMIZE);
 								break;
-							case UIEvent.NATIVE_WINDOW_MINIMIZE: 
+							case UIEvent.NATIVE_WINDOW_MINIMIZE:
 								if (AirStatus.isNativeApplication)
 									Plugins.callMethod(PluginClasses.AIR_PLUGIN, PluginMethods.NW_MINIMIZE);
 								break;
-							case UIEvent.FULLSCREEN: 
-								FullScreen.toggle();	
+							case UIEvent.FULLSCREEN:
+								FullScreen.toggle();
 								break;
-							default: 
+							default:
 								var c:ViewContainer = ViewController.presets.getPropsById(containerNames[i]).container;
 								for (i = 0; i < containerNames.length; i++)
 									c.dispatchEvent(new UIEvent(vip.tapAction, containerNames[i], vc.vp.appState));
-						}						
+						}
 					}
 				}
 			}
-		}		
+		}
 	}
 }

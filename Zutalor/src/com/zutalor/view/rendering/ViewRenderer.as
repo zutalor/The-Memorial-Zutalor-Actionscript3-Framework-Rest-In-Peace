@@ -1,4 +1,4 @@
-package com.zutalor.view.rendering 
+package com.zutalor.view.rendering
 {
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.transition.TransitionTypes;
@@ -10,17 +10,17 @@ package com.zutalor.view.rendering
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class ViewRenderer 
+	public class ViewRenderer
 	{
 		
-		private var viewItemFilterApplier:ViewItemFilterApplier;	
+		private var viewItemFilterApplier:ViewItemFilterApplier;
 		private var viewItemRenderer:ViewItemRenderer;
 		private var vc:ViewController;
 		private var vp:ViewProperties;
 		private var itemIndex:int;
 		private var onComplete:Function;
 		
-		public function ViewRenderer(vc:ViewController) 
+		public function ViewRenderer(vc:ViewController)
 		{
 			this.vc = vc;
 			vp = vc.vp;
@@ -30,9 +30,9 @@ package com.zutalor.view.rendering
 		{
 			this.onComplete = onComplete;
 			viewItemFilterApplier = new ViewItemFilterApplier(vc.filters);
-			viewItemRenderer = new ViewItemRenderer(vp.container, viewItemFilterApplier.applyFilters, 
+			viewItemRenderer = new ViewItemRenderer(vp.container, viewItemFilterApplier.applyFilters,
 																				vc.viewItemPositioner.positionItem);
-			renderNextViewItem();																				
+			renderNextViewItem();
 		}
 		
 		public function dispose():void
@@ -42,7 +42,7 @@ package com.zutalor.view.rendering
 		}
 		
 		private function renderNextViewItem():void
-		{	
+		{
 			var vip:ViewItemProperties;
 			var viewItem:*;
 			
@@ -54,10 +54,10 @@ package com.zutalor.view.rendering
 				
 				viewItem = viewItemRenderer.renderItem(vip);
 				if (vip.draggable)
-					vc.registerDraggableObject(viewItem);		
+					vc.registerDraggableObject(viewItem);
 					
 				renderNextViewItem();
-			}	
+			}
 			else
 				viewPopulateComplete();
 		}
@@ -67,14 +67,12 @@ package com.zutalor.view.rendering
 			var i:int;
 			var l:int;
 			var nc:int;
-			var viewItemTransition:ViewItemTransition;	
+			var viewItemTransition:ViewItemTransition;
 
-			var vip:ViewItemProperties;			
+			var vip:ViewItemProperties;
 			nc = vc.container.numChildren;
-			vc.viewEventMediator.itemListenerSetup();				
+			vc.viewEventMediator.itemListenerSetup();
 			vc.viewEventMediator.addListenersToContainer(vp.container);
-			vp.container.arranger.resize(vp.resizeMode);
-			vp.container.arranger.alignToStage(vp.align, vp.hPad, vp.vPad);
 
 			for (i = 0; i < nc; i++)
 			{
@@ -92,7 +90,7 @@ package com.zutalor.view.rendering
 				else
 					Plugins.callMethod(vp.uiControllerInstanceName, vp.initialMethod);
 			}
-			onComplete();	
+			onComplete();
 		}
 	}
 }

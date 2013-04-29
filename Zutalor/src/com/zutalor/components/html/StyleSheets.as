@@ -1,4 +1,4 @@
-package com.zutalor.components.html 
+package com.zutalor.components.html
 {
 	import com.zutalor.loaders.URLLoaderG;
 	import com.zutalor.properties.PropertyManager;
@@ -16,13 +16,13 @@ package com.zutalor.components.html
 	 * @author Geoff Pepos
 	 */
 	public class StyleSheets
-	{	
+	{
 		private static var _numLoaded:int;
 		private static var _onComplete:Function;
 		private static var _presets:PropertyManager;
 		
 		public static function registerPresets(options:Object):void
-		{	
+		{
 			if (!_presets)
 				_presets = new PropertyManager(CssProperties);
 			
@@ -31,7 +31,7 @@ package com.zutalor.components.html
 		
 		public static function apply(textField:TextField, stylesheet:String, width:Number = 0):void
 		{
-			textField.styleSheet = getStyleSheetById(stylesheet);	
+			textField.styleSheet = getStyleSheetById(stylesheet);
 			textField.type = TextFieldType.DYNAMIC;
 			textField.autoSize = TextFieldAutoSize.LEFT;
 			textField.embedFonts = true;
@@ -44,7 +44,7 @@ package com.zutalor.components.html
 		}
 		
 		public static function loadCss(onComplete:Function = null):void
-		{	
+		{
 			_onComplete = onComplete;
 			_numLoaded = 0;
 			for (var i:int = 0; i < _presets.length; i++)
@@ -52,7 +52,7 @@ package com.zutalor.components.html
 		}
 		
 		private static function loadFile(indx:int):void
-		{		
+		{
 			var cssProps:CssProperties;
 			cssProps = _presets.getPropsByIndex(indx);
 
@@ -104,7 +104,7 @@ package com.zutalor.components.html
 			if (!cssProps)
 				ShowError.fail(StyleSheets,"StyleSheet not found: " + id);
 			
-			s = cssProps.styleSheet;	
+			s = cssProps.styleSheet;
 				
 			var names:Array=s.styleNames;
 			var i:int=0;

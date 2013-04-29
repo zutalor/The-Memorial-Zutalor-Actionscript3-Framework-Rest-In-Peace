@@ -7,8 +7,8 @@ package com.zutalor.positioning
 	 * ...
 	 * @author Geoff
 	 */
-	public class Arranger 
-	{	
+	public class Arranger
+	{
 		public static const SCALE:String = "scale";
 		public static const KEEP:String = "keep";
 		public static const RESIZE_TO_STAGE:String = "resizeToStage";
@@ -16,18 +16,17 @@ package com.zutalor.positioning
 		public static const STRETCH_TO_STAGE:String = "stretchToStage";
 		public static const HORIZONTAL:String = "horizontal";
 		public static const VERTICAL:String = "vertical";
-		public static const GRID:String = "grid";		
+		public static const GRID:String = "grid";
 		
 		private var aligner:Aligner;
 		private var obj:ContainerObject;
 		
-		public function Arranger(containerObject:ContainerObject)
+		public function Arranger()
 		{
-			obj = containerObject;
 			aligner = new Aligner();
 		}
 				
-		public function alignToStage(align:String, hPad:int, vPad:int):void
+		public function alignToStage(obj:ContainerObject, align:String, hPad:int, vPad:int):void
 		{
 			var sw:Number;
 			var sh:Number;
@@ -39,7 +38,7 @@ package com.zutalor.positioning
 				aligner.alignObject(obj, sw, sh, align, hPad, vPad);
 		}
 		
-		public function resize(resizeMode:String):void
+		public function resize(obj:ContainerObject, resizeMode:String):void
 		{
 			var fillRect:Boolean;
 			if (resizeMode == STRETCH_TO_STAGE)
@@ -48,10 +47,10 @@ package com.zutalor.positioning
 			switch (resizeMode)
 			{
 				case SCALE :
-					obj.scaleX = obj.scaleY = Scale.curAppScale;						
+					obj.scaleX = obj.scaleY = Scale.curAppScale;
 					break;
 				case RESIZE_TO_STAGE :
-					obj.width = StageRef.stage.stageWidth;				
+					obj.width = StageRef.stage.stageWidth;
 					obj.height = StageRef.stage.stageHeight;
 					break;
 				case FIT_TO_STAGE :
@@ -61,7 +60,7 @@ package com.zutalor.positioning
 			}
 		}
 		
-		public function align(align:String, width:Number, height:Number, hPad:Number = 0, vPad:Number = 0, filRect:Boolean = false):void
+		public function align(obj:ContainerObject, align:String, width:Number, height:Number, hPad:Number = 0, vPad:Number = 0, filRect:Boolean = false):void
 		{
 			aligner.alignObject(obj, width, height, align, hPad, vPad, filRect);
 		}
