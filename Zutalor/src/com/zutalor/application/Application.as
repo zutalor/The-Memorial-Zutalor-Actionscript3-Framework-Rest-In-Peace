@@ -43,13 +43,11 @@ package com.zutalor.application
 		
 		public function Application()
 		{
-			init();
+
 		}
 		
 		private function init():void
 		{
-			AirStatus.initialize();
-			Plugins.registerClassAndCreateCachedInstance(DialogController);
 		}
 		
 		public function start(bootXmlUrl:String, inlineXML:XML = null, splashEmbedClassName:String = null,
@@ -62,25 +60,30 @@ package com.zutalor.application
 			
 			parent.root.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR,
 																							onUncaughtError);
-			try {
-				paramObj = LoaderInfo(this.root.loaderInfo).parameters;
-				url = String(paramObj["url"]);
-				ip = String(paramObj["ip"]);
-				agent = String(paramObj["agent"]);
-			} catch (e:*) { }
-		
-			if (url != "undefined" && url != "/" && url != null)
-				URL.open("/#/" + url.substring(1), "_self");
 			
-			if (ip == "undefined")
-				ip = "IP unknown";
-			
-			if (agent == "undefined")
-				agent = "Agent Undefined";
-				
+		    initFlashVars();
 			_appController = new AppController(bootXmlUrl, ip, agent, inlineXML, splashEmbedClassName,
 																						loadingSoundClassName);
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+
+			function initFlashVars():void
+			{
+				try {
+					paramObj = LoaderInfo(this.root.loaderInfo).parameters;
+					url = String(paramObj["url"]);
+					ip = String(paramObj["ip"]);
+					agent = String(paramObj["agent"]);
+				} catch (e:*) { }
+			
+				if (url != "undefined" && url != "/" && url != null)
+					URL.open("/#/" + url.substring(1), "_self");
+				
+				if (ip == "undefined")
+					ip = "IP unknown";
+				
+				if (agent == "undefined")
+					agent = "Agent Undefined";
+			}
 		}
 		
 		private function onAddedToStage(e:Event):void
@@ -101,7 +104,14 @@ package com.zutalor.application
 		private function onInitialized(e:Event):void
 		{
 			_appController.removeEventListener(AppEvent.INITIALIZED, onInitialized);
+			initPlugins();
 			dispatchEvent(new AppEvent(AppEvent.INITIALIZED));
+		}
+		
+		private function initPlugins():void
+		{
+			AirStatus.initialize();
+			Plugins.registerClassAndCreateCachedInstance(DialogController);
 		}
 			
 		private function onUncaughtError(e:UncaughtErrorEvent):void
