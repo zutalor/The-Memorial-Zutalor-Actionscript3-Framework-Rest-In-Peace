@@ -38,7 +38,7 @@ package com.zutalor.positioning
 		public static const FIT : String = "fit";
 		public static const SCALE : String = "scale";
 		
-		public function alignObject(displayObject:DisplayObject, width:Number, height:Number, align:String, hPad:int = 0, vPad:int = 0, fillRect:Boolean = false, applyTransfrom:Boolean = true): void
+		public function alignObject(displayObject:DisplayObject, width:Number, height:Number, align:String, hPad:Number = 0, vPad:Number = 0, fillRect:Boolean = false, applyTransfrom:Boolean = true): void
 		{
 			if (align == FIT)
 				fitIntoRect(displayObject, width, height, align, hPad, vPad, fillRect, applyTransfrom);
@@ -132,7 +132,7 @@ package com.zutalor.positioning
 			}
 		}
 		
-		private function alignInRect(displayObject : DisplayObject, width:Number, height:Number, align : String = "center", hPad:int = 0, vPad:int = 0):void
+		private function alignInRect(displayObject : DisplayObject, width:Number, height:Number, align : String = "center", hPad:Number = 0, vPad:Number = 0):void
 		{
 			var scaleX:Number;
 			var scaleY:Number;

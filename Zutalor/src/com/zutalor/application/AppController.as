@@ -20,6 +20,7 @@
 	import com.zutalor.utils.EmbeddedResources;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.MasterClock;
+	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.properties.ViewProperties;
@@ -286,7 +287,6 @@
 				_curViewProps = vpm.getPropsById(curContainerLoading);
 				curContainerLoading = "";
 				dispatchEvent(new Event(Event.COMPLETE));
-				vu.arrangeViewContainers();
 			}
 		}
 		
@@ -308,7 +308,8 @@
 
 			_appStateCallStack = new gDictionary();
 
-			StageRef.stage.addEventListener(StageVideoAvailabilityEvent.STAGE_VIDEO_AVAILABILITY,onStageVideoAbility);
+			StageRef.stage.addEventListener(StageVideoAvailabilityEvent.STAGE_VIDEO_AVAILABILITY, onStageVideoAbility);
+			vu.calcScale();
 			StageRef.stage.addEventListener(Event.RESIZE, vu.onStageResize);
 			MasterClock.initialize();
 			Remoting.gateway = ap.gateway;

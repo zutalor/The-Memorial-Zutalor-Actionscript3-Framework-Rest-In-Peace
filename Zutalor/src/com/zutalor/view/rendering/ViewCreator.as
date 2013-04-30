@@ -5,6 +5,8 @@
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.filters.Filters;
 	import com.zutalor.plugin.Plugins;
+	import com.zutalor.positioning.Aligner;
+	import com.zutalor.positioning.Arranger;
 	import com.zutalor.transition.TransitionTypes;
 	import com.zutalor.objectPool.ObjectPool;
 	import com.zutalor.utils.ShowError;
@@ -37,14 +39,14 @@
 		}
 				
 		public function create(viewId:String, appState:String = null, onComplete:Function=null):void
-		{	
+		{
 			var Klass:Class;
 			
 			if (!viewId)
 				ShowError.fail(ViewCreator,"View Id cannot be null: " + viewId);
 
 			_onComplete = onComplete;
-			vp = ViewController.presets.getPropsById(viewId);		
+			vp = ViewController.presets.getPropsById(viewId);
 			
 			Klass = Plugins.getClass(Container.VIEW_CONTAINER);
 			vp.container = c = new Klass(vp.name);
@@ -55,27 +57,30 @@
 			if (_parent)
 				_parent.addChild(vp.container);
 			else
-				StageRef.stage.addChild(vp.container);		
+				StageRef.stage.addChild(vp.container);
 		
-			c.viewController.load(c, viewId, appState, viewCreateComplete);					
-		}	
+			c.viewController.load(c, viewId, appState, viewCreateComplete);
+		}
 		
 		protected function viewCreateComplete():void
 		{
-			var vt:ViewTransition;	
+			var vt:ViewTransition;
+			var arranger:Arranger;
 			
-
+			arranger = new Arranger();
 			if (!vp.width  || !vp.height)
 			{
 				vp.width = vp.container.width;
 				vp.height = vp.container.height;
-			}	
+			}
 			
 			applySettings();
 			
 			if (!vp.transitionPreset)
 				vp.transitionPreset = "fade";
 			
+			arranger.resize(vp.container, vp.resizeMode);
+			arranger.alignToStage(vp.container, vp.align, vp.hPad, vp.vPad);
 			vt = new ViewTransition();
 			vt.render(vp, TransitionTypes.IN);
 			if (_onComplete != null)
@@ -104,10 +109,10 @@
 			if (vp.z)
 				c.z = vp.z
 
-			if (vp.rotX)	
+			if (vp.rotX)
 				c.rotationX = vp.rotX;
 			if (vp.rotY)
-				c.rotationY = vp.rotY;	
+				c.rotationY = vp.rotY;
 			if (vp.rotZ)
 				c.rotationZ = vp.rotZ;
 				

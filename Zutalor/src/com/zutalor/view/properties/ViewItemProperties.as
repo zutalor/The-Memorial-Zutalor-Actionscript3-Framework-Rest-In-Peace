@@ -41,8 +41,8 @@
 		public var textAttributes:String;
 		public var styleSheetName:String;
 		
-		public var width:String; // yes string because it can be either "auto" or a number.
-		public var height:String; // same as above
+		public var width:Number;
+		public var height:Number;
 		public var scale:Number;
 		public var align:String;
 		public var tabIndex:int;

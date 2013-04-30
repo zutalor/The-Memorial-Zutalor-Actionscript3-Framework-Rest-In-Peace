@@ -2,6 +2,7 @@
 {
 	import com.greensock.TweenMax;
 	import com.gskinner.utils.IDisposable;
+	import com.zutalor.application.Application;
 	import com.zutalor.components.base.Component;
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.ViewContainer;
@@ -84,6 +85,12 @@
 				viewModelMediator = new ViewModelMediator(this);
 			}
 			
+			if (vp.width <= 1)
+				vp.width = Application.settings.designWidth * vp.width;
+
+			if (vp.height <= 1)
+				vp.height = Application.settings.designHeight * vp.height;
+				
 			numViewItems = presets.getNumItems(viewId);
 			viewEventMediator = new ViewEventMediator(this);
 			viewItemPositioner = new ViewItemPositioner(vp.container, vp.width, vp.height);

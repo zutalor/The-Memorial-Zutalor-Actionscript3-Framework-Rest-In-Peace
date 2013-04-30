@@ -1,4 +1,4 @@
-﻿package com.zutalor.view.transition 
+﻿package com.zutalor.view.transition
 {
 	import com.zutalor.transition.Transition;
 	import com.zutalor.objectPool.ObjectPool;
@@ -8,7 +8,7 @@
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class ViewTransition 
+	public class ViewTransition
 	{
 		
 		public function render(vp:ViewProperties, transitionType:String, onComplete:Function = null):void
@@ -22,11 +22,11 @@
 					transition.simpleRender(vp.container, vp.transitionPreset,  transitionType, onComplete);
 				else
 					if (onComplete != null)
-						onComplete();				
+						onComplete();
 			}
 			else
 				if (onComplete != null)
 					onComplete();
-		}	
-	}	
+		}
+	}
 }

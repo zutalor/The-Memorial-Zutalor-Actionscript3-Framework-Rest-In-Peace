@@ -64,12 +64,12 @@ package com.zutalor.components.graphic
 			if (!_graphics)
 				_graphics = new NestedPropsManager();
 			
-			_graphics.parseXML(GraphicProperties, GraphicItemProperties, options.xml[options.nodeId], options.childNodeId, 
+			_graphics.parseXML(GraphicProperties, GraphicItemProperties, options.xml[options.nodeId], options.childNodeId,
 																							options.xml[options.childNodeId]);
 		}
 		
 		override public function render(viewItemProperties:ViewItemProperties = null):void
-		{	
+		{
 			super.render(viewItemProperties);
 			if (vip.transitionDelay)
 				MasterClock.callOnce(_render, vip.transitionDelay * 1000);
@@ -94,8 +94,8 @@ package com.zutalor.components.graphic
 			if (numItems == 0)
 				ShowError.fail(Graphic,"No items to render for: " + vip.presetId);
 				
-			renderNextItem();			
-		}	
+			renderNextItem();
+		}
 		
 		private function renderNextItem():void
 		{
@@ -122,9 +122,9 @@ package com.zutalor.components.graphic
 						item = embed(gri);
 						item.name = name;
 						break;
-					case Graphic.LABEL :	
+					case Graphic.LABEL :
 						item = label(gri);
-						break;	
+						break;
 					case Graphic.GRAPHIC : // nested graphic!
 						item = new Graphic(gri.name);
 						Graphic(item).vip.presetId = gri.presetId;
@@ -139,7 +139,7 @@ package com.zutalor.components.graphic
 			}
 		}
 				
-		private function onItemRenderComplete(item:ContainerObject, gri:GraphicItemProperties):void 
+		private function onItemRenderComplete(item:ContainerObject, gri:GraphicItemProperties):void
 		{
 			if (gri.rotation)
 				item.rotationAroundCenter = gri.rotation;
@@ -154,16 +154,16 @@ package com.zutalor.components.graphic
 				item.blendMode = gri.blendMode;
 				
 			if (gri.scale)
-				item.scaleX = item.scaleY = gri.scale;			
+				item.scaleX = item.scaleY = gri.scale;
 			
 			if (gri.filterPreset)
 			{
 				var filters:Filters = new Filters();
-				filters.add(this, gri.filterPreset);		
+				filters.add(this, gri.filterPreset);
 			}
 
 			if (gri.scale9Data)
-				item.scale9Grid = getScale9GridRect(gri.scale9Data); 
+				item.scale9Grid = getScale9GridRect(gri.scale9Data);
 			
 			item.x += gri.hPad;
 			item.y += gri.vPad;
@@ -191,7 +191,7 @@ package com.zutalor.components.graphic
 				MasterClock.callOnce(transitionOut, grp.lifeTime * 1000);
 				
 			if (onRenderCompleteCallback != null)
-					onRenderCompleteCallback();	
+					onRenderCompleteCallback();
 			
 			function transitionOut():void
 			{
@@ -204,7 +204,7 @@ package com.zutalor.components.graphic
 				if (onLifeTimeCompleteCallback != null)
 					onLifeTimeCompleteCallback();
 			}
-		}		
+		}
 		
 		private function draw(gri:GraphicItemProperties):ContainerObject
 		{
@@ -233,7 +233,7 @@ package com.zutalor.components.graphic
 					{
 						coords.push(0);
 						coords.push(0);
-					}							
+					}
 					item.graphics.drawRoundRect(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
 					if (!gri.scale9Data)
 						item.scale9Grid = createScale9Grid(coords);
@@ -244,11 +244,11 @@ package com.zutalor.components.graphic
 				case Graphic.CIRCLE :
 					item.graphics.drawCircle(coords[0], coords[1], coords[2]);
 					break;
-				case Graphic.PATH :	
+				case Graphic.PATH :
 					commands = new Vector.<int>;
 					if (gri.commands)
 					{
-						commandsStr = gri.commands.split(","); 
+						commandsStr = gri.commands.split(",");
 						for (i = 0; i < commandsStr.length; i++)
 							commands.push(commandsStr[i]);
 					}
@@ -278,11 +278,11 @@ package com.zutalor.components.graphic
 			width = coords[2];
 			height = coords[3];
 			
-			rect = new Rectangle(coords[0] + adjustWidth, 
-								 coords[1] + adjustHeight, 
-								 width + coords[0] - (adjustWidth * 2), 
+			rect = new Rectangle(coords[0] + adjustWidth,
+								 coords[1] + adjustHeight,
+								 width + coords[0] - (adjustWidth * 2),
 								 height + coords[1] - (adjustHeight * 2));
-			return rect;					 
+			return rect;
 		}
 		
 		private function embed(gri:GraphicItemProperties):ContainerObject
@@ -300,8 +300,8 @@ package com.zutalor.components.graphic
 			var label:Label = new Label(vip.name);
 			label.vip.text = Translate.text(gri.tKey);
 			label.vip.textAttributes  = gri.textAttributes;
-			label.vip.width = String(gri.width);
-			label.vip.height = String(gri.height);
+			label.vip.width = gri.width;
+			label.vip.height = gri.height;
 			label.vip.hPad = gri.hPad;
 			label.vip.vPad = gri.vPad;
 			label.render();
@@ -326,11 +326,11 @@ package com.zutalor.components.graphic
 			lineColor = getColor(grs.lineColor);
 				
 			function getColor(color:String):uint
-			{		
+			{
 				if (color && color.indexOf("0x") == -1)
 					return Color.getColor(Color.theme, color);
 				else
-					return uint(color);		
+					return uint(color);
 			}
 			
 			if (grs.thickness)
@@ -341,10 +341,10 @@ package com.zutalor.components.graphic
 			else if (grs.fillType)
 			{
 				var matrix:Matrix = new Matrix();
-				var data:Array = gri.data.split(",");		
+				var data:Array = gri.data.split(",");
 				if (data && data.length >= 4)
 				{
-					matrix.createGradientBox(data[2],data[3], grs.rotation * Math.PI/180);							
+					matrix.createGradientBox(data[2],data[3], grs.rotation * Math.PI/180);
 					g.beginGradientFill(grs.fillType, grs.colorsArray, grs.alphasArray, grs.ratiosArray, matrix, grs.spreadMethod);
 				}
 			}
@@ -366,7 +366,7 @@ package com.zutalor.components.graphic
 					scale9Data[i] = int(scale9Data[i]);
 					
 				return new Rectangle(scale9Data[0], scale9Data[1], scale9Data[2], scale9Data[3]);
-			}	
+			}
 			else
 				return null;
 		}

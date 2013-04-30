@@ -26,16 +26,25 @@ package com.zutalor.components.html
 			super.render(viewItemProperties);
 			editable = false;
 			if (vip.url)
-				loadHtml(vip.url);
+				loadHtml(vip.url, textField, width, vip.styleSheetName);
 			else
 			{
 				textField.htmlText = textField.text;
 				textField.selectable = false;
-				if (vip.styleSheetName)
-					StyleSheets.apply(textField, vip.styleSheetName, int(vip.width));
-				else
-					ShowError.fail(Html, "No stylesheet defined for: " + vip.name);
+				applyStylesheet();
 			}
+		}
+		
+		override public function set width(w:Number):void
+		{
+			super.width = w;
+			applyStylesheet();
+		}
+		
+		override public function set height(h:Number):void
+		{
+			super.height = h;
+			applyStylesheet();
 		}
 		
 		override public function get value():*
@@ -68,9 +77,7 @@ package com.zutalor.components.html
 				event.target.close();
 				if (textField)
 				{
-					if (stylesheet)
-						StyleSheets.apply(textField, stylesheet, width);
-					
+					applyStylesheet();
 					textField.htmlText = event.target.data;
 					textField.height = textField.textHeight;
 					smoothHtmlBitmaps(textField);
@@ -78,7 +85,15 @@ package com.zutalor.components.html
 			}
 		}
 		
-		public function smoothHtmlBitmaps(txt:TextField):void
+		private function applyStylesheet():void
+		{
+			if (vip.styleSheetName)
+				StyleSheets.apply(textField, vip.styleSheetName, vip.width);
+			else
+				trace("no sylesheet: " + vip.name);
+		}
+		
+		private function smoothHtmlBitmaps(txt:TextField):void
 		{
 			var bm:Bitmap;
 			var xml:XML;

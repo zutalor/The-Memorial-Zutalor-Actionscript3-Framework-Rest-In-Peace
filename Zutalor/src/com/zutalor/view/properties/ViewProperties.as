@@ -1,4 +1,4 @@
-﻿package com.zutalor.view.properties 
+﻿package com.zutalor.view.properties
 {
 	import com.zutalor.application.Application;
 	import com.zutalor.containers.ViewContainer;
@@ -18,10 +18,10 @@
 		public var styleSheetName:String;
 		public var contentPersists:Boolean;
 		public var resizeMode:String;
-		public var width:int;
-		public var height:int;
-		public var hPad:int;
-		public var vPad:int;
+		public var width:Number;
+		public var height:Number;
+		public var hPad:Number;
+		public var vPad:Number;
 		public var align:String;
 		public var x:Number = 0;
 		public var y:Number = 0;
@@ -38,23 +38,23 @@
 		public var gravity:Number = 0;
 		public var scale:Number = 0
 		public var alpha:Number = 1;
-		public var blendMode:String;	
+		public var blendMode:String;
 		public var transitionPreset:String;
 		public var mediaPreset:String;
 		public var appState:String;
-		public var filterPreset:String;		
+		public var filterPreset:String;
 		public var container:ViewContainer;
 		
 		public function ViewProperties() {}
 		
 		override public function parseXML(xml:XML):Boolean
-		{	
-			MapXML.attributesToClass(xml , this); 
+		{
+			MapXML.attributesToClass(xml , this);
 			name = name.toLowerCase();
 			if (!styleSheetName)
 				styleSheetName = Application.settings.defaultStyleSheetName;
 				
 			return true;
 		}
-	}	
+	}
 }

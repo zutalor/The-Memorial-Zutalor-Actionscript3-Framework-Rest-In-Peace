@@ -85,6 +85,7 @@ package com.zutalor.application
 				stage.stageFocusRect = false;
 				stage.scaleMode = StageScaleMode.NO_SCALE;
 				stage.align = StageAlign.TOP_LEFT;
+				
 				for (var i:int = 0; i < stage.numChildren; i++)
 					stage.getChildAt(i).visible = false;
 				

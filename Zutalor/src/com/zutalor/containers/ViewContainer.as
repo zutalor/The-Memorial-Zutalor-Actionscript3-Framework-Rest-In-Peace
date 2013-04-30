@@ -17,6 +17,11 @@
 			super(containerName);
 		}
 		
+		override public function set x(n:Number):void
+		{
+			super.x = n;
+		}
+		
 		public function callViewItemMethod(viewItem:String, method:String, params:String):void
 		{
 			var item:*;

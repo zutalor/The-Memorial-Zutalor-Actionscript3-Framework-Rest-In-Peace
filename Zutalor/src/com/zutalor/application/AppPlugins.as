@@ -1,6 +1,5 @@
 package com.zutalor.application
 {
-	import com.google.analytics.debug.Label;
 	import com.zutalor.air.AirPlugin;
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.analytics.Analytics;
@@ -10,6 +9,7 @@ package com.zutalor.application
 	import com.zutalor.components.group.ComponentGroup;
 	import com.zutalor.components.group.RadioGroup;
 	import com.zutalor.components.html.Html;
+	import com.zutalor.components.label.Label;
 	import com.zutalor.components.list.BasicListItemRenderer;
 	import com.zutalor.components.list.List;
 	import com.zutalor.components.media.audio.AudioPlayer;
