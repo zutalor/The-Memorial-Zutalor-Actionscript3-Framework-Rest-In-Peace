@@ -31,8 +31,8 @@ package com.zutalor.positioning
 			var sw:Number;
 			var sh:Number;
 			
-			sw = StageRef.stage.stageWidth;
-			sh = StageRef.stage.stageHeight;
+			sw = StageRef.stage.fullScreenWidth;
+			sh = StageRef.stage.fullScreenHeight;
 			
 			if (align)
 				aligner.alignObject(obj, sw, sh, align, hPad, vPad);

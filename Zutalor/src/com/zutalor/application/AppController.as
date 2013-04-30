@@ -42,7 +42,7 @@
 
 	public class AppController extends EventDispatcher
 	{
-		private var vu:ViewUtils;
+		public var vu:ViewUtils;
 		
 		private var appStateProps:AppStateProperties;
 		private var curContainerLoading:String;
@@ -269,7 +269,6 @@
 					_curViewProps.mediaPreset = appStateProps.mediaPreset;
 					viewCreator.create(appStateProps.viewId, appStateProps.name, onAppContainerLoadComplete);
 					viewCreator.container.addEventListener(UIEvent.CLOSE, onCloseView, false, 0, true);
-					
 				}
 			}
 		}
@@ -310,7 +309,7 @@
 			_appStateCallStack = new gDictionary();
 
 			StageRef.stage.addEventListener(StageVideoAvailabilityEvent.STAGE_VIDEO_AVAILABILITY,onStageVideoAbility);
-		
+			StageRef.stage.addEventListener(Event.RESIZE, vu.onStageResize);
 			MasterClock.initialize();
 			Remoting.gateway = ap.gateway;
 			Color.theme = ap.colorTheme;
@@ -328,9 +327,7 @@
 			}
 			
 			StageRef.stage.addEventListener(UIEvent.APP_STATE_SELECTED, onStateChangeEvent);
-			StageRef.stage.addEventListener(Event.RESIZE, vu.onStageResize);
 			MasterClock.registerCallback(checkOrientation, true, 500);
-			vu.onStageResize();
 			StyleSheets.loadCss(onInitComplete);
 			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, onSWFAddressFirstBroadcast);
 		}
@@ -361,7 +358,6 @@
 			{
 				TweenMax.to(splash, .1, { alpha:0, onComplete:removeSplash } );
 			}
-			
 			function removeSplash():void
 			{
 				StageRef.stage.removeChild(splash);

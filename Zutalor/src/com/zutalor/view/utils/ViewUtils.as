@@ -33,11 +33,16 @@
 			views = ViewController.presets;
 		}
 		
+		public function calcScale():void
+		{
+			Scale.calcAppScale(StageRef.stage, Application.settings.designWidth, Application.settings.designHeight);
+			Scale.constrainAppScaleRatio();
+		}
+		
 		public function onStageResize(e:Event = null):void
 		{
 			Mouse.show();
-			Scale.calcAppScale(StageRef.stage, Application.settings.designWidth, Application.settings.designHeight);
-			Scale.constrainAppScaleRatio();
+			calcScale();
 			arrangeViewContainers();
 		}
 		
@@ -56,8 +61,10 @@
 				{
 					vp = views.getPropsById(c.name);
 					if (vp)
+					{
 						arranger.resize(vp.container, vp.resizeMode);
 						arranger.alignToStage(vp.container, vp.align, vp.hPad, vp.vPad);
+					}
 						
 				} catch (e:Error) {}
 			}
