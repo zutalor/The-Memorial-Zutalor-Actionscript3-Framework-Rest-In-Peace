@@ -179,9 +179,8 @@ package com.zutalor.audio
 					{
 						if (x < temp.length)
 						{
-							distance = 1 - (Math.abs(temp[x] - temp[x + 1]));
-							trace(distance);
-							nextIncr =  distance / 10000;
+							distance = 1 - Math.abs((temp[x + 1]) - temp[x]);
+							nextIncr =  distance * 5;
 
 							if (! isNaN(nextIncr))
 							{

@@ -84,6 +84,7 @@
 			_ip = ip;
 			_agent = agent;
 			_bootXmlUrl = bootXmlUrl;
+			_inlineXML = inlineXML;
 			initialize();
 		}
 		
@@ -328,7 +329,7 @@
 			}
 			
 			StageRef.stage.addEventListener(UIEvent.APP_STATE_SELECTED, onStateChangeEvent);
-			MasterClock.registerCallback(checkOrientation, true, 500);
+			//MasterClock.registerCallback(checkOrientation, true, 500);
 			StyleSheets.loadCss(onInitComplete);
 			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, onSWFAddressFirstBroadcast);
 		}

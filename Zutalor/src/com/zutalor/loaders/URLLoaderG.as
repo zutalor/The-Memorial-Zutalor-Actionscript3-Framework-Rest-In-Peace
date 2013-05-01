@@ -18,7 +18,7 @@ package com.zutalor.loaders
 	{
 		private var _loader:URLLoader;
 		private var _data:*;
-		private var _url:String;
+		private var _url:String = "";
 		private var _callback:Function;
 		private var _error:Boolean;
 		
@@ -54,7 +54,7 @@ package com.zutalor.loaders
 			_error = false;
 		}
 		
-		public function get url():String 
+		public function get url():String
 		{
 			return _url;
 		}
@@ -81,7 +81,7 @@ package com.zutalor.loaders
 		{
 			_error = true;
 			_callback(this);
-		}		
+		}
 		
 		private function onHttpStatus(e:HTTPStatusEvent):void
 		{
@@ -103,5 +103,5 @@ package com.zutalor.loaders
 			_loader.removeEventListener(IOErrorEvent.VERIFY_ERROR, errorExit);
 			_loader.removeEventListener(ProgressEvent.PROGRESS, onProgress);
 		}
-	}	
+	}
 }

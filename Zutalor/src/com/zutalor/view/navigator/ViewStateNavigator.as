@@ -2,15 +2,12 @@
 package com.zutalor.view.navigator
 {
 	import com.greensock.TweenMax;
-	import com.hurlant.util.der.ObjectIdentifier;
-	import com.zutalor.air.AirStatus;
 	import com.zutalor.application.Application;
 	import com.zutalor.audio.GraphSettings;
 	import com.zutalor.audio.SamplePlayer;
 	import com.zutalor.controllers.base.UiControllerBase;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.gesture.UserInputProperties;
-	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.text.StringUtils;
 	import com.zutalor.text.TextUtil;
@@ -18,14 +15,10 @@ package com.zutalor.view.navigator
 	import com.zutalor.transition.Transition;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.translate.TranslationProperties;
-	import com.zutalor.utils.Call;
 	import com.zutalor.utils.EmbeddedResources;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.HotKeyManager;
-	import com.zutalor.utils.Logger;
 	import com.zutalor.utils.MasterClock;
-	import com.zutalor.utils.MathG;
-	import com.zutalor.utils.StageRef;
 	import flash.events.KeyboardEvent;
 	import flash.system.Capabilities;
 	import flash.utils.getTimer;
@@ -180,7 +173,7 @@ package com.zutalor.view.navigator
 				
 				if (np.curTransitionType)
 				{
-					bitMapSlide.out(uiController.vc.container, np.curTransitionType);
+					bitMapSlide.out(np.curTransitionType);
 					transition.simpleRender(uiController.vc.container, np.curTransitionType, "in", initializeState);
 				}
 				else
@@ -204,7 +197,7 @@ package com.zutalor.view.navigator
 			
 			merges = merge.split(",");
 			
-			for (var i:int = 0; i < merge.length; i++)
+			for (var i:int = 0; i < merges.length; i++)
 			{
 				tempTp = Translate.presets.getPropsByName(merges[i]);
 				if (tempTp)
@@ -214,7 +207,10 @@ package com.zutalor.view.navigator
 			function combine():void
 			{
 				if (tempTp.sound)
-					np.tp.sound = "," + tempTp.sound;
+					if (np.tp.sound)
+						np.tp.sound = "," + tempTp.sound;
+					else
+						np.tp.sound = tempTp.sound;
 					
 				if (tempTp.tMeta)
 					tMeta = TextUtil.strip(tempTp.tMeta, "<tMeta>");

@@ -24,6 +24,7 @@
 	import com.zutalor.transition.Transition;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.view.controller.ViewController;
+	import flash.utils.getTimer;
 
 	/**
 	 * ...
@@ -37,10 +38,9 @@
 		public var splashClassName:String;
 		public var loadingSoundClassName:String;
 		
-		public function MainBase()
-		{
-			initialize();
-		}
+		private var date:Date;
+		
+		public function MainBase() { }
 				
 		protected function initialize():void
 		{
@@ -70,6 +70,11 @@
 			Properties.register(FuzzyFilter, "glowPresets");
 			Properties.register(FuzzyFilter, "shadowPresets");
 			
+			if (bootXMLUrl)
+			{
+				date = new Date();
+				bootXMLUrl += "?t=" + date.getTime();
+			}
 			super.start(bootXMLUrl, inlineXML, splashClassName, loadingSoundClassName);
 		}
 	}

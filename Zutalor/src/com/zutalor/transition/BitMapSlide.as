@@ -28,11 +28,11 @@ package com.zutalor.transition
 			bmd = new BitmapData(StageRef.stage.stageWidth, StageRef.stage.stageHeight);
 		}
 		
-		public function out(container:DisplayObject, transition:String):void
+		public function out(transition:String):void
 		{
 			var transType:String;
 			
-			bmd.draw(container);
+			bmd.draw(StageRef.stage);
 			bm.bitmapData = bmd;
 			bm.visible = true;
 			StageRef.stage.addChild(bm);

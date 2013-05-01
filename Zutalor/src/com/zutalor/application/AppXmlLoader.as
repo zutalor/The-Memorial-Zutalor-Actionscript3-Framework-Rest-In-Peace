@@ -1,9 +1,10 @@
-package com.zutalor.application 
+package com.zutalor.application
 {
 	import com.zutalor.loaders.URLLoaderG;
 	import com.zutalor.properties.Properties;
 	import com.zutalor.text.StringUtils;
 	import com.zutalor.utils.ShowError;
+	import flash.utils.getTimer;
 
 	/**
 	 * ...
@@ -19,8 +20,16 @@ package com.zutalor.application
 		private static var _onComplete:Function;
 		private static var _initialized:Boolean;
 		
+		private static var _cacheBuster:String;
+		
 		public static function init(bootXmlUrl:String, inlineXML:XML, onComplete:Function):void
 		{
+			var date:Date;
+			
+			date = new Date();
+			
+			_cacheBuster = "?t=" + date.getTime();
+			
 			if (_initialized)
 			{
 				if (onComplete != null)
@@ -29,7 +38,7 @@ package com.zutalor.application
 			}
 			
 			_onComplete = onComplete;
-			_loaders = [];		
+			_loaders = [];
 			
 			if (inlineXML)
 				parseProps(inlineXML);
@@ -41,7 +50,7 @@ package com.zutalor.application
 		private static function loadBootXml(url:String):void
 		{
 			var loaderG:URLLoaderG = new URLLoaderG();
-			loaderG.load(url, onBootLoaded);
+			loaderG.load(url + _cacheBuster, onBootLoaded);
 		}
 		
 		private static function onBootLoaded(lg:URLLoaderG):void
@@ -66,7 +75,7 @@ package com.zutalor.application
 				urls = Application.settings.systemXmlUrls.split(",");
 				path = Application.settings.systemXmlPath;
 				addPath(path, urls);
-			}	
+			}
 			
 			if (Application.settings.appXmlUrls)
 			{
@@ -80,7 +89,7 @@ package com.zutalor.application
 			for (var i:int = 0; i < _xmlFiles; i++)
 			{
 				_loaders[i] = new URLLoaderG();
-				_loaders[i].load(urls[i], onLoadComplete);
+				_loaders[i].load(urls[i] + _cacheBuster, onLoadComplete);
 			}
 			
 			function addPath(path:String, a:Array):Array
@@ -88,7 +97,7 @@ package com.zutalor.application
 				for (var i:int = 0; i < a.length; i++)
 					a[i] = path + StringUtils.stripLeadingSpaces(a[i]);
 				
-				return a;	
+				return a;
 			}
 		}
 		
@@ -113,7 +122,7 @@ package com.zutalor.application
 		}
 		
 		private static function parseProps(xml:XML):void
-		{	
+		{
 			Properties.parseXML(xml);
 		}
 	}
