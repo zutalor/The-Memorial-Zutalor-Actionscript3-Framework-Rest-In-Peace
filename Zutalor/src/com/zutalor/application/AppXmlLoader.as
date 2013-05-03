@@ -13,6 +13,7 @@ package com.zutalor.application
 	public class AppXmlLoader
 	{
 		public static var pr:*;
+		public static var useCacheBuster:Boolean = false;
 		
 		private static var _xmlFiles:int;
 		private static var _xmlFilesProcessed:int;
@@ -26,16 +27,20 @@ package com.zutalor.application
 		{
 			var date:Date;
 			
-			date = new Date();
-			
-			_cacheBuster = "?t=" + date.getTime();
-			
 			if (_initialized)
 			{
 				if (onComplete != null)
 					onComplete();
 				return;
 			}
+			
+			if (useCacheBuster)
+			{
+				date = new Date();
+				_cacheBuster = "?t=" + date.getTime();
+			}
+			else
+				_cacheBuster = "";
 			
 			_onComplete = onComplete;
 			_loaders = [];

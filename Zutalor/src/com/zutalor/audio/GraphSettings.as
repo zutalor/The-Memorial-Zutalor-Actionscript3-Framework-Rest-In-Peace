@@ -18,6 +18,8 @@ package com.zutalor.audio
 		public var graph:int;
 		public var speed:Number;
 		public var range:Number;
+		public var pan:Number = 0;
+		public var gain:Number = 0;
 		public var reverse:Boolean;
 		public var variableTiming:Boolean;
 		public var noteType:String;

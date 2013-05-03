@@ -38,7 +38,6 @@
 		public var textToSpeechProxyApi:String;
 		public var enableTextToSpeech:Boolean;
 		public var stageVideoAvailable:Boolean;
-		public var useStageVideoIfAvailable:Boolean;
 		public var showFocus:Boolean;
 				
 		//air & phone related

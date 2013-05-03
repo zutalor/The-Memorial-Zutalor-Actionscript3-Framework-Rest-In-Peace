@@ -28,7 +28,7 @@
 			var l:int;
 			var func:Function;
 			var p:PresetRegistryProperties;
-			
+		
 			l = _registry.length;
 			
 			for (var i:int = 0; i < l; i++)

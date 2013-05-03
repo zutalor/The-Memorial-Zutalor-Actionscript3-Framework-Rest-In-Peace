@@ -1,5 +1,10 @@
-﻿package com.zutalor.application
+package com.zutalor.application
 {
+	import com.zutalor.properties.Properties;
+	import com.zutalor.application.AppController;
+	import com.zutalor.application.Application;
+	import com.zutalor.plugin.Plugins;
+	import com.zutalor.utils.EmbeddedResources;
 	import com.zutalor.air.AirPlugin;
 	import com.zutalor.analytics.Analytics;
 	import com.zutalor.application.Application;
@@ -25,24 +30,55 @@
 	import com.zutalor.translate.Translate;
 	import com.zutalor.view.controller.ViewController;
 	import flash.utils.getTimer;
-
+	import com.zutalor.air.AirPlugin;
+	import com.zutalor.air.AirStatus;
+	import com.zutalor.analytics.Analytics;
+	import com.zutalor.components.button.Button;
+	import com.zutalor.components.embed.Embed;
+	import com.zutalor.components.graphic.Graphic;
+	import com.zutalor.components.group.ComponentGroup;
+	import com.zutalor.components.group.RadioGroup;
+	import com.zutalor.components.html.Html;
+	import com.zutalor.components.label.Label;
+	import com.zutalor.components.list.BasicListItemRenderer;
+	import com.zutalor.components.list.List;
+	import com.zutalor.components.media.audio.AudioPlayer;
+	import com.zutalor.components.media.playlist.Playlist;
+	import com.zutalor.components.media.video.VideoPlayer;
+	import com.zutalor.components.slider.Slider;
+	import com.zutalor.components.stepper.Stepper;
+	import com.zutalor.components.text.Text;
+	import com.zutalor.components.toggle.Toggle;
+	import com.zutalor.components.web.WebBridge;
+	import com.zutalor.containers.Container;
+	import com.zutalor.containers.ParallaxContainer;
+	import com.zutalor.containers.ScrollingContainer;
+	import com.zutalor.containers.ViewContainer;
+	import com.zutalor.controllers.DialogController;
+	import com.zutalor.filters.Glow;
+	import com.zutalor.filters.Shadow;
+	import com.zutalor.gesture.DoubleTapGesture;
+	import com.zutalor.gesture.GestureListener;
+	import com.zutalor.plugin.Plugins;
+	import org.gestouch.gestures.LongPressGesture;
+	import org.gestouch.gestures.PanGesture;
+	import org.gestouch.gestures.RotateGesture;
+	import org.gestouch.gestures.SwipeGesture;
+	import org.gestouch.gestures.TapGesture;
+	import org.gestouch.gestures.TransformGesture;
+	import org.gestouch.gestures.ZoomGesture;
 	/**
 	 * ...
-	 * @author Geoff Pepos
+	 * @author Geoff
 	 */
-	
-	public class MainBase extends Application
+	public class AppPresetInitializer
 	{
-		public var bootXMLUrl:String;
-		public var inlineXML:XML;
-		public var splashClassName:String;
-		public var loadingSoundClassName:String;
+		public function AppPresetInitializer()
+		{
+			initializePresets();
+		}
 		
-		private var date:Date;
-		
-		public function MainBase() { }
-				
-		protected function initialize():void
+		private function initializePresets():void
 		{
 			Properties.register(Path, "paths");
 			Properties.register(Application, "appSettings");
@@ -69,13 +105,6 @@
 			Properties.register(Filters, "filters", "filter");
 			Properties.register(FuzzyFilter, "glowPresets");
 			Properties.register(FuzzyFilter, "shadowPresets");
-			
-			if (bootXMLUrl)
-			{
-				date = new Date();
-				bootXMLUrl += "?t=" + date.getTime();
-			}
-			super.start(bootXMLUrl, inlineXML, splashClassName, loadingSoundClassName);
 		}
 	}
 }

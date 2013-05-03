@@ -293,12 +293,9 @@
 		
 		private function init():void
 		{
-			var appPlugins:AppPlugins;
-
 			ap = Application.settings;
 			vu = new ViewUtils();
-			appPlugins = new AppPlugins();
-			
+
 			vpm = ViewController.presets;
 			
 			if (_ip)

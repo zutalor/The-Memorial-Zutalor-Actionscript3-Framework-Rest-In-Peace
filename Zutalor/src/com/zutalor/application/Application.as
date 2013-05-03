@@ -1,12 +1,15 @@
 package com.zutalor.application
 {
 	import com.adobe.swffocus.SWFFocus;
+	import com.zutalor.air.AirPlugin;
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.events.AppEvent;
 	import com.zutalor.loaders.URL;
+	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.widgets.Dialog;
+	import com.zutalor.widgets.RunTimeTrace;
 	import flash.desktop.NativeApplication;
 	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
@@ -44,41 +47,47 @@ package com.zutalor.application
 
 		}
 		
-		public function start(bootXmlUrl:String, inlineXML:XML = null, splashEmbedClassName:String = null,
-																	loadingSoundClassName:String = null):void
+		protected function start(bootXmlUrl:String, inlineXML:XML = null, splashEmbedClassName:String = null,
+																							loadingSoundClassName:String = null, PresetInitializer:Class = null):void
 		{
 			var paramObj:Object
 			var url:String;
 			var ip:String;
 			var agent:String;
+			var appPresetInitializer:AppPresetInitializer;
 			
 			parent.root.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR,
 																							onUncaughtError);
-			
-		    initFlashVars();
-			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			if (PresetInitializer)
+				appPresetInitializer = new PresetInitializer();
+			else
+				appPresetInitializer = new AppPresetInitializer();
+				
+			Plugins.registerClassAndCreateCachedInstance(AirPlugin);
+			AirStatus.initialize();
+																									
+			try {
+				paramObj = LoaderInfo(this.root.loaderInfo).parameters;
+				url = String(paramObj["url"]);
+				ip = String(paramObj["ip"]);
+				agent = String(paramObj["agent"]);
+			} catch (e:*) { }
 		
-			function initFlashVars():void
-			{
-				try {
-					paramObj = LoaderInfo(this.root.loaderInfo).parameters;
-					url = String(paramObj["url"]);
-					ip = String(paramObj["ip"]);
-					agent = String(paramObj["agent"]);
-				} catch (e:*) { }
+			if (url != "undefined" && url != "/" && url != null)
+				URL.open("/#/" + url.substring(1), "_self");
 			
-				if (url != "undefined" && url != "/" && url != null)
-					URL.open("/#/" + url.substring(1), "_self");
+			if (!ip || ip == "undefined")
+				ip = "IP unknown";
+			
+			if (!agent || agent == "undefined")
+				agent = "Agent Undefined";
 				
-				if (!ip || ip == "undefined")
-					ip = "IP unknown";
-				
-				if (!agent || agent == "undefined")
-					agent = "Agent Undefined";
-			}
+			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
 			function onAddedToStage(e:Event):void
 			{
+					
+				RunTimeTrace.show("just ADDED TO STAGE");
 				removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 				SWFFocus.init(stage);
 				StageRef.stage = stage;

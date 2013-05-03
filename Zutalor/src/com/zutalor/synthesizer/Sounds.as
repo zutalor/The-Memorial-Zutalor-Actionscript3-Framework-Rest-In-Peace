@@ -63,6 +63,7 @@ package com.zutalor.synthesizer
 		public function getVoice(preset:SynthPreset, noteNumber:Number, eg:ADSREnvelopeGenerator, mods:Array):IAudioSource
 		{
 			var ampFilter:AmpFilter;
+			var panFilter:PanFilter;
 			var audioSource:IAudioSource;
 			var indx:int;
 			var freq:Number;
@@ -90,8 +91,15 @@ package com.zutalor.synthesizer
 				{
 					SamplerSource(audioSource).pitchModulations.push(mods[i]);
 				}
+	
 			ampFilter = new AmpFilter(audioSource, eg);
-			return ampFilter;
+			if (preset.pan)
+			{
+				panFilter = new PanFilter(ampFilter, preset.pan);
+				return panFilter;
+			}
+			else
+				return ampFilter;
 		}
 		
 		protected function getSoundUrl(sampleMap:SampleMap, noteNumber:Number):String

@@ -415,7 +415,7 @@ package com.zutalor.view.navigator
 			
 			if (uip.action == "sendKeystroke")
 				uiController.onKey(hke.message);
-			else if (uip.state)
+			else if (uip.state && uip.activeForStateType == currentStateType)
 				activateState(uip.state);
 			else if (currentStateType != "uiControllerMethod"
 									&& (uip.activeForStateType == "all" || uip.activeForStateType == currentStateType))
@@ -683,6 +683,10 @@ package com.zutalor.view.navigator
 				case "space" :
 					inputText += " ";
 					speakKey(" ", sayLastWord);
+					break;
+				case "shift" :
+					speakKey(key);
+					trace("shift");
 					break;
 				case "rewind" :
 					sayAnswer();
