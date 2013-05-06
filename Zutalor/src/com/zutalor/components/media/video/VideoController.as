@@ -10,6 +10,7 @@
 	import com.zutalor.utils.EmbeddedResources;
 	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.StageRef;
+	import com.zutalor.widgets.RunTimeTrace;
 	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.NetStatusEvent;
@@ -65,15 +66,12 @@
 		
 		override public function load(url:String, width:int, height:int, x:int=0, y:int=0):void
 		{
-			var s:Stage;
-			
 			_scaleToFit = scaleToFit;
 			
 			if (!bufferSecs)
 				bufferSecs = 7;
 			
 			_paused = false;
-			
 			if (!nc)
 			{
 				nc = new NetConnection();
@@ -90,20 +88,24 @@
 			}
 			stream.client = this;
 			stream.bufferTime = bufferSecs;
-			
-		/*	s = StageRef.stage;
-			if (Application.settings.stageVideoAvailable)
+			view.x  = x;
+			view.y = y;
+			setupVideo();
+
+			function setupVideo():void
 			{
-				trace("using stage video");
-				sv = ObjectPool.getStageVideo();
-				sv.addEventListener(StageVideoEvent.RENDER_STATE, onStageVideoStateChange);
-				sv.attachNetStream(stream);
+				if (false && Application.settings.stageVideoAvailable)
+				{
+					sv = ObjectPool.getStageVideo();
+					sv.addEventListener(StageVideoEvent.RENDER_STATE, onStageVideoStateChange);
+					sv.attachNetStream(stream);
+				}
+				else
+				{
+					sv = null;
+					getSoftwarePlayer();
+				}
 			}
-			else
-			{
-				sv = null;*/
-				getSoftwarePlayer();
-		//	}
 			
 			function getSoftwarePlayer():void
 			{
@@ -411,6 +413,7 @@
 				case "NetStream.Play.StreamNotFound":
 					dispatchEvent(new MediaEvent(MediaEvent.STREAM_NOT_FOUND));
 					_isPlaying = false;
+					RunTimeTrace.show("Stream not found.");
 					onPlaybackComplete();
 					break;
 				case "NetStream.Seek.InvalidTime":

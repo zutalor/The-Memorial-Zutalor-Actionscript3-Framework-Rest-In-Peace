@@ -86,8 +86,7 @@ package com.zutalor.application
 			
 			function onAddedToStage(e:Event):void
 			{
-					
-				RunTimeTrace.show("just ADDED TO STAGE");
+				//RunTimeTrace.show("Added to Stage");
 				removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 				SWFFocus.init(stage);
 				StageRef.stage = stage;
@@ -107,6 +106,7 @@ package com.zutalor.application
 		{
 			_appController.removeEventListener(AppEvent.INITIALIZED, onInitialized);
 			dispatchEvent(new AppEvent(AppEvent.INITIALIZED));
+			//RunTimeTrace.show("On initialized", 200);
 		}
 		
 		private function onUncaughtError(e:UncaughtErrorEvent):void

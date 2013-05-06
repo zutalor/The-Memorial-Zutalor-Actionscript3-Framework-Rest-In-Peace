@@ -1,32 +1,63 @@
 package com.zutalor.widgets
 {
+	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.StageRef;
-	import flash.display.Shape;
+	import flash.display.Sprite;
+	import flash.events.TimerEvent;
 	import flash.text.TextField;
+	import flash.text.TextFieldType;
+	import flash.text.TextFormat;
+	import flash.utils.Timer;
 	/**
 	 * ...
 	 * @author Geoff
 	 */
 	public class RunTimeTrace
 	{
-		public static var message:TextField = new TextField();
-		public static var shape:Shape = new Shape();
+		private static var message:TextField = new TextField();
+		private static var background:Sprite = new Sprite();
+		private static var timer:Timer = new Timer(2000);
+		private static var lastX:int;
+		private static var lastY:int;
 		
 		
 		public function RunTimeTrace()
 		{
 		}
 		
-		public static function show(s:String):void
+		public static function show(s:String, x:int = 0, y:int = 0):void
 		{
+			if (x)
+				lastX = x * Scale.curAppScale;
+				
+			if (y)
+				lastY = y * Scale.curAppScale;
+				
+			var tf:TextFormat = new TextFormat();
+			tf.size = 40;
+			tf.font = "_sans";
 			message.text = s;
-			shape.graphics.beginFill(0xFFFFFF);
-			shape.graphics.drawRect(0, 0, message.textWidth * 1.2, message.textHeight * 1.2);
+			message.setTextFormat(tf);
+			message.type = TextFieldType.INPUT;
+			message.maxChars = 50;
+			message.width = 300;
+			background.graphics.beginFill(0xFFFFFF);
+			background.graphics.drawRect(0, 0, message.textWidth * 1.4, message.textHeight * 1.6);
 			message.x = message.y = 4;
-			if (StageRef.stage)
+			background.addChild(message);
+			timer.start();
+			timer.addEventListener(TimerEvent.TIMER, addToStage);
+			addToStage();
+			
+			
+			function addToStage():void
 			{
-				StageRef.stage.addChild(shape);
-				StageRef.stage.addChild(message);
+				if (StageRef.stage)
+				{
+					StageRef.stage.addChild(background);
+					background.x = lastX;
+					background.y = lastY;
+				}
 			}
 		}
 	}

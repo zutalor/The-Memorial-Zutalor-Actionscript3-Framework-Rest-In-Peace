@@ -1,4 +1,4 @@
-package com.zutalor.utils 
+package com.zutalor.widgets
 {
 	import flash.display.Shape;
 	import flash.events.MouseEvent;
@@ -8,7 +8,7 @@ package com.zutalor.utils
 	 * ...
 	 * @author Geoff
 	 */
-	public class SimpleMessage 
+	public class SimpleMessage
 	{
 		private static var text:TextField = new TextField();
 		private static var shp:Shape = new Shape();
@@ -25,11 +25,11 @@ package com.zutalor.utils
 			StageRef.stage.addChild(shp);
 			StageRef.stage.addChild(text);
 			text.x = text.y = 5;
-		}	
+		}
 		
 		private static function onClick(me:MouseEvent):void
 		{
-			me.stopImmediatePropagation();	
+			me.stopImmediatePropagation();
 			shp.removeEventListener(MouseEvent.CLICK, onClick);
 			StageRef.stage.removeChild(shp);
 			StageRef.stage.removeChild(text);

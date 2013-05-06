@@ -164,11 +164,12 @@ package com.zutalor.positioning
 				scale = 1;
 			
 			var colSize:Number = wR / 5;
-			switch(align)
+			switch(align) //x
 			{
 				case LEFT :
 				case TOP_LEFT :
 				case BOTTOM_LEFT :
+				case BOTTOM :
 					tX = 0.0;
 					break;
 				case BOTTOM_ONE_FIFTH :
@@ -200,7 +201,6 @@ package com.zutalor.positioning
 				case TOP_RIGHT :
 					tY = 0.0;
 					break;
-					
 				case BOTTOM :
 				case BOTTOM_LEFT :
 				case BOTTOM_RIGHT :

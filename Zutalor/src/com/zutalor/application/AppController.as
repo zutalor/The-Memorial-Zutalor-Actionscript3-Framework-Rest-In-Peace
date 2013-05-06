@@ -1,5 +1,6 @@
 ﻿package com.zutalor.application
 {
+	import com.adobe.utils.IntUtil;
 	import com.asual.swfaddress.SWFAddress;
 	import com.asual.swfaddress.SWFAddressEvent;
 	import com.greensock.TweenMax;
@@ -27,8 +28,10 @@
 	import com.zutalor.view.rendering.ViewCreator;
 	import com.zutalor.view.utils.ViewCloser;
 	import com.zutalor.view.utils.ViewUtils;
+	import com.zutalor.widgets.RunTimeTrace;
 	import com.zutalor.widgets.Spinner;
 	import flash.display.Bitmap;
+	import flash.display.Stage;
 	import flash.display.StageOrientation;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -93,7 +96,7 @@
 		private function initialize():void
 		{
 			var samplePlayer:SamplePlayer;
-			
+
 			if (_loadingSoundClassName)
 			{
 				samplePlayer = new SamplePlayer();
@@ -105,10 +108,10 @@
 				samplePlayer.dispose();
 				samplePlayer = null;
 			}
-			
+
 			if (_splashEmbedClassName)
 				showSplash();
-				
+			
 			MasterClock.initialize();
 			MasterClock.defaultInterval = 1000 / StageRef.stage.frameRate;
 			AppXmlLoader.init(_bootXmlUrl, _inlineXML, init);
@@ -116,10 +119,26 @@
 
 		private function showSplash():void
 		{
+			var w:int;
+			var h:int;
+			var stage:Stage;
+			
+			stage = StageRef.stage;
+			if (StageRef.stage.fullScreenSourceRect)
+			{
+				w = stage.fullScreenSourceRect.width;
+				h = stage.fullScreenSourceRect.height;
+			}
+			else
+			{
+				w = stage.stageWidth > stage.fullScreenWidth ? stage.fullScreenWidth : stage.stageWidth;
+				h = stage.stageHeight > stage.fullScreenHeight ? stage.fullScreenHeight : stage.stageHeight;
+			}
+			//RunTimeTrace.show(w + " " + h);
 			splash = EmbeddedResources.createInstance(_splashEmbedClassName);
 			StageRef.stage.addChild(splash);
-			splash.x = (StageRef.stage.stageWidth - splash.width) / 2;
-			splash.y = (StageRef.stage.stageHeight - splash.height) / 2;
+			splash.x = (w - splash.width) / 2;
+			splash.y = (h - splash.height) / 2;
 			TweenMax.from(splash, 1, { alpha:0 } );
 		}
 		
@@ -293,9 +312,10 @@
 		
 		private function init():void
 		{
-			ap = Application.settings;
+						
 			vu = new ViewUtils();
 
+			ap = Application.settings;
 			vpm = ViewController.presets;
 			
 			if (_ip)
@@ -304,10 +324,11 @@
 			if (_agent)
 				ap.agent = _agent;
 
+			vu.calcScale();
+	
 			_appStateCallStack = new gDictionary();
 
 			StageRef.stage.addEventListener(StageVideoAvailabilityEvent.STAGE_VIDEO_AVAILABILITY, onStageVideoAbility);
-			vu.calcScale();
 			StageRef.stage.addEventListener(Event.RESIZE, vu.onStageResize);
 			MasterClock.initialize();
 			Remoting.gateway = ap.gateway;

@@ -23,7 +23,7 @@
 	 */
 	public class MediaPlayer extends Component implements IMediaPlayer, IComponent
 	{
-		protected var mediaController:MediaController;
+		public var mediaController:MediaController;
 		protected var _volume:Number;
 		private var _url:String;
 		private var _playerType:String;

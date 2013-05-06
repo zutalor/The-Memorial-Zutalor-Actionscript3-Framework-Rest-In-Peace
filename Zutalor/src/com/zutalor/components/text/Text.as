@@ -105,7 +105,7 @@ package com.zutalor.components.text
 			textField.antiAliasType = _tap.antiAliasType;
 			textField.multiline = _tap.multiline;
 			textField.wordWrap = _tap.wordWrap;
-			//textField.embedFonts = true;
+			textField.embedFonts = true;
 			if (_tap.maxChars)
 				textField.maxChars = _tap.maxChars;
 			

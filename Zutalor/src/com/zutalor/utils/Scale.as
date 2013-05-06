@@ -1,4 +1,4 @@
-﻿package com.zutalor.utils 
+﻿package com.zutalor.utils
 {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -20,7 +20,7 @@
 		public static function calcAppScale(stage:Stage, designWidth:int, designHeight:int):void
 		{
 			_currentScaleX = stage.stageWidth / designWidth;
-			_currentScaleY = stage.stageHeight / designHeight;			
+			_currentScaleY = stage.stageHeight / designHeight;
 		}
 
 		public static function constrainAppScaleRatio():void
@@ -31,7 +31,7 @@
 			if (_currentScaleY > _currentScaleX)
 				_currentScaleY = _currentScaleX;
 				
-			_currentScale = _currentScaleX;	
+			_currentScale = _currentScaleX;
 		}
 		
 		public static function get curAppScaleX():Number
@@ -49,7 +49,7 @@
 			return _currentScale;
 		}
 		
-		public static function accumulateXScale(c:DisplayObject, currentScale:Number = 1):Number 
+		public static function accumulateXScale(c:DisplayObject, currentScale:Number = 1):Number
 		{
 			_scaleX = currentScale;
 				
@@ -65,14 +65,14 @@
 			}
 			
 		}
-		public static function accumulateYScale(c:DisplayObject, scale:Number = 1):Number 
+		public static function accumulateYScale(c:DisplayObject, scale:Number = 1):Number
 		{
 			_scaleY = scale;
 				
 			if (c != null)
 			{
 				_scaleY *= c.scaleY;
-				accumulateYScale(c.parent, _scaleY);		
+				accumulateYScale(c.parent, _scaleY);
 				return _scaleY;
 			}
 			else

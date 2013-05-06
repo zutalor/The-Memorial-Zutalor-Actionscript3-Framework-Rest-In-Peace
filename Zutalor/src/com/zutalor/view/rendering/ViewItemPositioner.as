@@ -6,6 +6,7 @@ package com.zutalor.view.rendering
 	import com.zutalor.positioning.Aligner;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.containers.base.ContainerObject;
+	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.view.controller.ViewController;
@@ -43,10 +44,10 @@ package com.zutalor.view.rendering
 			vip.vPad = calcHeight(vip.vPad);
 			
 			if (vip.width)
-				viewItem.width = _containerWidth - vip.x - vip.hPad;
+				viewItem.width = vip.width;
 					
 			if (vip.height)
-				viewItem.height = _containerHeight - vip.y - vip.vPad;
+				viewItem.height = vip.height;
 						
 			if (vip.align)
 				aligner.alignObject(viewItem, _containerWidth, _containerHeight, vip.align, vip.hPad, vip.vPad);
