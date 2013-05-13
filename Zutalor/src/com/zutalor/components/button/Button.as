@@ -60,9 +60,7 @@
 			_sb = new SimpleButton(_up, _over, _down, _up);
 			addChild(_sb);
 			vip.text = StringUtils.stripLeadingSpaces(vip.text);
-			vip.hPad = _bp.hPad;
-			vip.vPad = _bp.vPad;
-
+			
 			if (!_bp.textAttributesDown)
 			{
 				_bp.textAttributesDown = _bp.textAttributesDisabled = _bp.textAttributesOver = _bp.textAttributesUp;

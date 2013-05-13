@@ -97,6 +97,8 @@
 		{
 			MapXML.attributesToClass(xml , this);
 
+			if (name == "r-button")
+				trace("");
 			if (!alpha)
 				alpha = 1;
 			

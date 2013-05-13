@@ -1,6 +1,7 @@
 package com.zutalor.view.rendering
 {
 	import adobe.utils.CustomActions;
+	import com.greensock.plugins.BevelFilterPlugin;
 	import com.zutalor.components.base.Component;
 	import com.zutalor.containers.Container;
 	import com.zutalor.positioning.Aligner;
@@ -33,28 +34,34 @@ package com.zutalor.view.rendering
 		public function positionItem(vip:ViewItemProperties):void
 		{
 			var viewItem:Component;
+			var w:Number;
+			var h:Number;
+			var x:Number;
+			var y:Number;
+			var hPad:Number;
+			var vPad:Number;
 			
 			viewItem = _c.getChildByName(vip.name) as Component;
 			
-			vip.width = calcWidth(vip.width);
-			vip.height = calcHeight(vip.height);
-			vip.x = calcWidth(vip.x);
-			vip.y = calcHeight(vip.y);
-			vip.hPad = calcWidth(vip.hPad);
-			vip.vPad = calcHeight(vip.vPad);
+			w = calcWidth(vip.width);
+			h = calcHeight(vip.height);
+			x = calcWidth(vip.x);
+			y = calcHeight(vip.y);
+			hPad = calcWidth(vip.hPad);
+			vPad = calcHeight(vip.vPad);
 			
-			if (vip.width)
-				viewItem.width = vip.width;
+			if (w)
+				viewItem.width = w;
 					
-			if (vip.height)
-				viewItem.height = vip.height;
+			if (h)
+				viewItem.height = h;
 						
 			if (vip.align)
-				aligner.alignObject(viewItem, _containerWidth, _containerHeight, vip.align, vip.hPad, vip.vPad);
+				aligner.alignObject(viewItem, _containerWidth, _containerHeight, vip.align, hPad, vPad);
 			else
 			{
-				viewItem.x = vip.x + vip.hPad;
-				viewItem.y = vip.y + vip.vPad;
+				viewItem.x = x + hPad;
+				viewItem.y = y + vPad;
 			}
 			
 			if (vip.rotation)
