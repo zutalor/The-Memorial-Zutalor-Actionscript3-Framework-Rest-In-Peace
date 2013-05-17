@@ -26,7 +26,6 @@ package com.zutalor.view.rendering
 		{
 			var viewItem:Component;
 			var ViewItemClass:Class;
-			var vip:ViewItemProperties;
 				
 			ViewItemClass = Plugins.getClass(vip.type);
 			viewItem = new ViewItemClass(vip.name);

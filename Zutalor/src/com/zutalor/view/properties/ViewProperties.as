@@ -1,7 +1,7 @@
 ﻿package com.zutalor.view.properties
 {
 	import com.zutalor.application.Application;
-	import com.zutalor.containers.ViewContainer;
+	import com.zutalor.containers.Container;
 	import com.zutalor.interfaces.IProperties;
 	import com.zutalor.properties.PropertiesBase;
 	import com.zutalor.utils.MapXML;
@@ -11,6 +11,7 @@
 	 */
 	public class ViewProperties extends PropertiesBase implements IProperties
 	{
+		public var type:String;
 		public var uiControllerInstanceName:String;
 		public var initialMethod:String;
 		public var initialMethodParams:String;
@@ -43,7 +44,9 @@
 		public var mediaPreset:String;
 		public var appState:String;
 		public var filterPreset:String;
-		public var container:ViewContainer;
+		public var cacheAsBitmap:Boolean;
+		public var cachAsBitmapMatrix:Boolean;
+		public var container:Container;
 		
 		public function ViewProperties() {}
 		

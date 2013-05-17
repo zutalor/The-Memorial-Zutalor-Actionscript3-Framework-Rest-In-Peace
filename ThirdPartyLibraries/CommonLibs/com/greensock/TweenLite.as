@@ -404,7 +404,7 @@ package com.greensock {
 					this.setEnabled(false, false);
 				}
 			}
-			if (_overwrite > 1 && this.cachedPT1 && (siblings = masterList[this.target]) && siblings.length > 1) {
+			if (_overwrite > 1 && this.cachedPT1 && (siblings == masterList[this.target]) && siblings.length > 1) {
 				if (overwriteManager.manageOverwrites(this, this.propTweenLookup, siblings, _overwrite)) {
 					//one of the plugins had activeDisable set to true, so properties may have changed when it was disabled meaning we need to re-init()
 					init();

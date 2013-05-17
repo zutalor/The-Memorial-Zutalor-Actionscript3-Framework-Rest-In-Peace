@@ -18,8 +18,6 @@ package com.zutalor.components.base
 		{
 			super(containerName);
 			vip = new ViewItemProperties();
-			cacheAsBitmap = true;
-			cacheAsBitmapMatrix = new Matrix();
 		}
 		
 		public function render(viewItemProperties:ViewItemProperties = null):void

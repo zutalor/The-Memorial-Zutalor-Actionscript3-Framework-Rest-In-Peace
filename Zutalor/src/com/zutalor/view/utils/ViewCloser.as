@@ -57,7 +57,9 @@ package com.zutalor.view.utils
 
         private function resetContainer():void
         {
-			StageRef.stage.removeChild(_vp.container);
+			if (_vp.container.parent == StageRef.stage)
+				StageRef.stage.removeChild(_vp.container);
+			
 			_vp.container.recycle();
             if (_onComplete != null)
                 _onComplete();

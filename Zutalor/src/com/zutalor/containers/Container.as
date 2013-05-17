@@ -5,6 +5,7 @@
 	import com.zutalor.containers.utils.ObjectRemover;
 	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.StageRef;
+	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.widgets.Focus;
 	import flash.display.DisplayObject;
 	/**
@@ -12,15 +13,12 @@
 	 * @author Geoff Pepos
 	 */
 	public class Container extends ContainerObject implements IDisposable
-	{
-		public static const SCROLLING_CONTAINER:String = "scrollingContainer";
-		public static const CONTAINER:String = "container";
-		public static const PARALLAX_CONTAINER:String = "parallaxContainer";
-		public static const VIEW_CONTAINER:String = "viewContainer";
-		
+	{	
 		public const HORIZONTAL:String = "horizontal";
 		public const VERTICAL:String = "vertical";
 		
+		public var viewController:ViewController;
+				
 		public function Container(containerName:String)
 		{
 			if (containerName)
@@ -76,6 +74,15 @@
 		public function callContainerMethod(method:String, params:String):void
 		{
 			this[method](params);
+			//TODO check for errors
+		}
+		
+		public function callContainerChildMethod(itemName:String, method:String, params:String):void
+		{
+			var item:*;
+			//TODO check errors
+			item = this[item];
+			item[method](params);
 		}
 		
 		override public function recycle():void

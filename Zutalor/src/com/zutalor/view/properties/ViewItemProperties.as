@@ -52,6 +52,7 @@
 
 		public var x:Number;
 		public var y:Number;
+		public var z:Number;
 		public var hPad:Number;
 		public var vPad:Number;
 		public var vx:Number;

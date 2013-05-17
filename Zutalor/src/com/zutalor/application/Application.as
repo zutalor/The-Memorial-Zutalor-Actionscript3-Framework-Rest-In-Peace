@@ -86,10 +86,10 @@ package com.zutalor.application
 			
 			function onAddedToStage(e:Event):void
 			{
-				//RunTimeTrace.show("Added to Stage");
+				StageRef.stage = stage;
 				removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 				SWFFocus.init(stage);
-				StageRef.stage = stage;
+				
 				stage.stageFocusRect = false;
 				stage.scaleMode = StageScaleMode.NO_SCALE;
 				stage.align = StageAlign.TOP_LEFT;
@@ -97,16 +97,12 @@ package com.zutalor.application
 				for (var i:int = 0; i < stage.numChildren; i++)
 					stage.getChildAt(i).visible = false;
 				
-				_appController = new AppController(bootXmlUrl, ip, agent, inlineXML, splashEmbedClassName, loadingSoundClassName);
-				_appController.addEventListener(AppEvent.INITIALIZED, onInitialized);
+				_appController = new AppController(bootXmlUrl, ip, agent, inlineXML, splashEmbedClassName, loadingSoundClassName, onInitialized);
 			}
 		}
 
-		private function onInitialized(e:Event):void
-		{
-			_appController.removeEventListener(AppEvent.INITIALIZED, onInitialized);
-			dispatchEvent(new AppEvent(AppEvent.INITIALIZED));
-			//RunTimeTrace.show("On initialized", 200);
+		protected function onInitialized():void
+		{ 
 		}
 		
 		private function onUncaughtError(e:UncaughtErrorEvent):void

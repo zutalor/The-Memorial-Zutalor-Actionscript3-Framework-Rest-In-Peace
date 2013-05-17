@@ -44,7 +44,7 @@ package com.zutalor.positioning
 		override protected function onDown(me:MouseEvent):void
 		{
 			super.onDown(me);
-			co.addEventListener(MouseEvent.MOUSE_OUT, onUp);
+			//co.addEventListener(MouseEvent.MOUSE_OUT, onUp);
 		}
 		
 		override protected function onUp(me:MouseEvent):void

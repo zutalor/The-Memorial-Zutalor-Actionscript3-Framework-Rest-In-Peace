@@ -10,27 +10,32 @@
 	 */
 	public class ViewContainer extends Container implements IContainerObject
 	{
-		public var viewController:ViewController;
+		private var _width:Number;
+		private var _height:Number;
 		
 		public function ViewContainer(containerName:String)
 		{
 			super(containerName);
 		}
 		
-		override public function set x(n:Number):void
+		override public function set width(w:Number):void
 		{
-			super.x = n;
+			_width = w;
 		}
 		
-		public function callViewItemMethod(viewItem:String, method:String, params:String):void
+		override public function set height(h:Number):void
 		{
-			var item:*;
-			//TODO check for more errors
-			item = viewController.getItemByName(viewItem);
-			if (item)
-				item[method](params);
-			else
-				ShowError.fail(ViewContainer,viewItem + " not found on " + name);
+			_height = h;
+		}
+		
+		override public function get width():Number
+		{
+			return _width;
+		}
+		
+		override public function get height():Number
+		{
+			return _height;
 		}
 				
 		override public function stop(fadeSeconds:Number = 0):void
@@ -39,14 +44,14 @@
 				viewController.stop();
 		}
 		
-		override public function contentChanged():void
-		{
-		}
-		
 		override public function dispose():void
 		{
-			super.dispose();
-			viewController.dispose();
+			if (viewController)
+			{
+				super.dispose();
+				viewController.dispose();
+				viewController = null;
+			}
 		}
 	}
 }

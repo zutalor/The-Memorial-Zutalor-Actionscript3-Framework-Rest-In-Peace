@@ -76,7 +76,7 @@ package com.zutalor.components.html
 				
 				function onError(e:Event):void
 				{
-					ShowError.fail(this,"StyleSheetUtils, could not read: " + e.target.url);
+					ShowError.fail(StyleSheet,"StyleSheetUtils, could not read: " + e.target.url);
 				}
 			}
 		}

@@ -66,7 +66,6 @@
 		
 		public function change(itemName:String=null, state:String=null, pip:PlaylistItemProperties = null):*	
 		{
-			var pip:PlaylistItemProperties;
 			var p:*;
 			var playListIndex:int;
 			var extension:String;							
@@ -325,7 +324,6 @@
 		private function playNext(p:*):void
 		{
 			var pip:PlaylistItemProperties;
-			var p:*;
 			
 			if (_players.getByKey(p.name))
 			{

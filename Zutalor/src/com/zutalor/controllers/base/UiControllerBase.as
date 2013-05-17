@@ -35,6 +35,7 @@ package com.zutalor.controllers.base
 			{
 				NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 				NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, onDeactivate);
+				NativeApplication.nativeApplication.addEventListener("suspend", onDeactivate);
 				NativeApplication.nativeApplication.addEventListener(Event.EXITING, onExiting);
 			}
         }

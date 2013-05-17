@@ -31,6 +31,7 @@ package com.zutalor.positioning.base
 		public var quantizeVPosition:Boolean;
 		public var onPositionUpdate:Function;
 		public var target:*;
+		public var resetPosition:Boolean = true;
 				
 		protected var ppX:PositionProperties;
 		protected var ppY:PositionProperties;
@@ -222,6 +223,9 @@ package com.zutalor.positioning.base
 			var oldX:int;
 			var oldY:int;
 			
+			if (!resetPosition)
+				return;
+				
 			oldX = ppX.getCurPos();
 			oldY = ppY.getCurPos();
 			

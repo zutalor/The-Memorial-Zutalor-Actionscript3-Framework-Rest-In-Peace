@@ -94,8 +94,9 @@
 
 			function setupVideo():void
 			{
-				if (false && Application.settings.stageVideoAvailable)
+				if (Application.settings.stageVideoAvailable)
 				{
+					RunTimeTrace.show("using stage video " + view.x + " " + view.y);
 					sv = ObjectPool.getStageVideo();
 					sv.addEventListener(StageVideoEvent.RENDER_STATE, onStageVideoStateChange);
 					sv.attachNetStream(stream);
@@ -120,17 +121,13 @@
 				videoDisplay.attachNetStream(stream);
 				view.addChild(videoDisplay);
 			}
-		}
-		
-		private function onStageVideoStateChange(event:StageVideoEvent = null):void
-		{
-			var rc:Rectangle;
-			var scale:Number;
 			
-			if (sv)
+			function onStageVideoStateChange(event:StageVideoEvent = null):void
 			{
-				scale = Scale.curAppScale;
-				rc = new Rectangle(view.x, view.y, view.width, view.height);
+				var rc:Rectangle;
+
+				sv.removeEventListener(StageVideoEvent.RENDER_STATE, onStageVideoStateChange);
+				rc = new Rectangle(view.x, view.y, width, height);
 				sv.viewPort = rc;
 			}
 		}
@@ -331,9 +328,6 @@
 		
 		override public function dispose():void
 		{
-			if (sv)
-				sv.removeEventListener(StageVideoEvent.RENDER_STATE, onStageVideoStateChange);
-				
 			if (stream)
 			{
 				stream.removeEventListener(NetStatusEvent.NET_STATUS, onNSStatus);
@@ -373,9 +367,6 @@
 			lastSeekableTime = metadata.lastkeyframetimestamp;
 			dispatchEvent(new MediaEvent(MediaEvent.METADATA));
 			
-			if (sv)
-				onStageVideoStateChange();
-
 			stream.resume();
 			dispatchEvent(new MediaEvent(MediaEvent.PLAY));
 		}

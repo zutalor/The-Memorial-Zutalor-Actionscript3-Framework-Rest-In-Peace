@@ -2,6 +2,7 @@
 {
 	import com.zutalor.properties.PropertiesBase;
 	import com.zutalor.utils.MapXML;
+	import com.zutalor.utils.StageRef;
 	import com.zutalor.widgets.Focus;
 	
 	/**
@@ -54,9 +55,9 @@
 			
 			MapXML.attributesToClass(xml , this);
 			name = name.toLowerCase();
-
+				
 			if (!language)
-				language = "English";
+				language = "en";
 			
 			if (!colorTheme)
 				colorTheme = "default";

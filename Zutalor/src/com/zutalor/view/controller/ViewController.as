@@ -5,6 +5,7 @@
 	import com.zutalor.application.Application;
 	import com.zutalor.components.base.Component;
 	import com.zutalor.containers.base.ContainerObject;
+	import com.zutalor.containers.Container;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
@@ -14,6 +15,7 @@
 	import com.zutalor.positioning.Dragger;
 	import com.zutalor.properties.NestedPropsManager;
 	import com.zutalor.utils.gDictionary;
+	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.view.mediators.ViewEventMediator;
 	import com.zutalor.view.mediators.ViewModelMediator;
@@ -63,7 +65,7 @@
 			return _presets;
 		}
 	
-		public function load(vc:ViewContainer, pViewId:String, appState:String, pOnComplete:Function):void
+		public function load(vc:Container, pViewId:String, appState:String, pOnComplete:Function):void
 		{
 			viewId = pViewId;
 			onComplete = pOnComplete;
@@ -91,6 +93,9 @@
 			if (vp.height <= 1)
 				vp.height = Application.settings.designHeight * vp.height;
 				
+			vc.width = vp.width;
+			vc.height = vp.height;	
+				
 			numViewItems = presets.getNumItems(viewId);
 			viewEventMediator = new ViewEventMediator(this);
 			viewItemPositioner = new ViewItemPositioner(vp.container, vp.width, vp.height);
@@ -107,7 +112,7 @@
 		
 		// PUBLIC METHODS
 			
-		public function get container():ViewContainer
+		public function get container():Container
 		{
 			return vp.container;
 		}

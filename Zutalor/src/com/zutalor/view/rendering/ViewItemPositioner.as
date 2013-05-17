@@ -57,12 +57,17 @@ package com.zutalor.view.rendering
 				viewItem.height = h;
 						
 			if (vip.align)
+			{
 				aligner.alignObject(viewItem, _containerWidth, _containerHeight, vip.align, hPad, vPad);
+			}
 			else
 			{
 				viewItem.x = x + hPad;
 				viewItem.y = y + vPad;
 			}
+			
+			if (vip.z)
+				viewItem.z = vip.z;
 			
 			if (vip.rotation)
 				viewItem.rotation = vip.rotation;

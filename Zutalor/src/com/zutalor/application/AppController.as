@@ -67,6 +67,7 @@
 		private var _inlineXML:XML;
 		private var splash:Bitmap;
 		private var _loadingSoundClassName:String;
+		private var _onInitialized:Function;
 
 		private const DEBUG_ANALYTICS:Boolean =  false;
 		
@@ -80,8 +81,10 @@
 			_presets.parseXML(options.xml[options.nodeId]);
 		}
 		
-		public function AppController(bootXmlUrl:String, ip:String, agent:String, inlineXML:XML, splashClassName:String=null, loadingSoundClassName:String=null)
+		public function AppController(bootXmlUrl:String, ip:String, agent:String, inlineXML:XML, 
+											splashClassName:String, loadingSoundClassName:String, onInitialized:Function)
 		{
+			_onInitialized = onInitialized;
 			_splashEmbedClassName = splashClassName;
 			_loadingSoundClassName = loadingSoundClassName;
 			_ip = ip;
@@ -139,7 +142,6 @@
 			StageRef.stage.addChild(splash);
 			splash.x = (w - splash.width) / 2;
 			splash.y = (h - splash.height) / 2;
-			TweenMax.from(splash, 1, { alpha:0 } );
 		}
 		
 		private function onCloseView(e:Event):void
@@ -354,6 +356,9 @@
 		
 		private function onInitComplete():void
 		{
+			if (_onInitialized != null)
+				_onInitialized();
+				
 			if (ap.loadingSequenceName)
 			{
 				_loadingSequence = new Sequence();
@@ -373,7 +378,7 @@
 				SWFAddress.setValue("");
 			}
 			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, onSWFAddressChange);
-			dispatchEvent(new AppEvent(AppEvent.INITIALIZED));
+
 			if (splash)
 			{
 				TweenMax.to(splash, .1, { alpha:0, onComplete:removeSplash } );

@@ -12,7 +12,9 @@ package com.zutalor.utils
 		{
 			var e:Enumerator = Enumerator.create(Klass);
 			var key:Object;
-			while( key = e.next() )
+			
+			key = e.next();
+			while( key )
 			{
 				if (Klass[key] is Boolean)
 				{
@@ -27,6 +29,7 @@ package com.zutalor.utils
 					if (!Klass[key])
 						Klass[key] = xml.attribute(key);		
 				}
+				key = e.next();
 			}
 			xml = null;
 			e.dispose();

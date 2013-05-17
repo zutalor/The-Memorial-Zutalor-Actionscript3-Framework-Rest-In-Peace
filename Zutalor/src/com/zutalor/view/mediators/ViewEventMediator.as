@@ -7,7 +7,7 @@ package com.zutalor.view.mediators
 	import com.zutalor.components.group.ComponentGroupProperties;
 	import com.zutalor.components.group.RadioGroup;
 	import com.zutalor.components.text.Text;
-	import com.zutalor.containers.ViewContainer;
+	import com.zutalor.containers.Container;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.loaders.URL;
@@ -55,7 +55,7 @@ package com.zutalor.view.mediators
 			_hkm = HotKeyManager.gi();
 		}
 		
-		public function addListenersToContainer(c:ViewContainer):void
+		public function addListenersToContainer(c:Container):void
 		{
 			var vip:ViewItemProperties;
 			var keys:Array;
@@ -82,7 +82,7 @@ package com.zutalor.view.mediators
 			}
 		}
 		
-		public function removeListenersFromContainer(c:ViewContainer):void
+		public function removeListenersFromContainer(c:Container):void
 		{
 			var vip:ViewItemProperties;
 			var numKeys:int;
@@ -349,12 +349,12 @@ package com.zutalor.view.mediators
 			}
 		}
 		
-		private function callViewItemMethod(viewName:String, viewItem:String, method:String, params:String):void
+		private function callViewItemMethod(viewName:String, viewItemName:String, method:String, params:String):void
 		{
 			var vp:ViewProperties;
 			
 			vp = ViewController.presets.getPropsById(viewName);
-			vp.container.callViewItemMethod(viewItem, method, params);
+			vp.container.callContainerChildMethod(viewItemName, method, params);
 		}
 		
 		private function callViewContainerMethod(viewName:String, method:String, params:String):void
@@ -538,7 +538,7 @@ package com.zutalor.view.mediators
 								FullScreen.toggle();
 								break;
 							default:
-								var c:ViewContainer = ViewController.presets.getPropsById(containerNames[i]).container;
+								var c:Container = ViewController.presets.getPropsById(containerNames[i]).container;
 								for (i = 0; i < containerNames.length; i++)
 									c.dispatchEvent(new UIEvent(vip.tapAction, containerNames[i], vc.vp.appState));
 						}

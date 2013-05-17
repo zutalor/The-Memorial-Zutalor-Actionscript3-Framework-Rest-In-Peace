@@ -12,21 +12,18 @@ package com.zutalor.positioning
 		public static const SCALE:String = "scale";
 		public static const KEEP:String = "keep";
 		public static const RESIZE_TO_STAGE:String = "resizeToStage";
-		public static const FIT_TO_STAGE:String = "fitToStage";
-		public static const STRETCH_TO_STAGE:String = "stretchToStage";
 		public static const HORIZONTAL:String = "horizontal";
 		public static const VERTICAL:String = "vertical";
 		public static const GRID:String = "grid";
 		
 		private var aligner:Aligner;
-		private var obj:ContainerObject;
 		
 		public function Arranger()
 		{
 			aligner = new Aligner();
 		}
 				
-		public function alignToStage(obj:ContainerObject, align:String, hPad:int, vPad:int):void
+		public function alignToStage(obj:Object, align:String, hPad:int, vPad:int):void
 		{
 			var sw:Number;
 			var sh:Number;
@@ -41,8 +38,6 @@ package com.zutalor.positioning
 		public function resize(obj:ContainerObject, resizeMode:String):void
 		{
 			var fillRect:Boolean;
-			if (resizeMode == STRETCH_TO_STAGE)
-				fillRect = true;
 			
 			switch (resizeMode)
 			{
@@ -53,16 +48,12 @@ package com.zutalor.positioning
 					obj.width = StageRef.stage.stageWidth;
 					obj.height = StageRef.stage.stageHeight;
 					break;
-				case FIT_TO_STAGE :
-				case STRETCH_TO_STAGE :
-					aligner.alignObject(obj, StageRef.stage.stageWidth, StageRef.stage.stageHeight, "fit", 0, 0, fillRect);
-					break;
 			}
 		}
 		
-		public function align(obj:ContainerObject, align:String, width:Number, height:Number, hPad:Number = 0, vPad:Number = 0, filRect:Boolean = false):void
+		public function align(obj:Object, align:String, width:Number, height:Number, hPad:Number = 0, vPad:Number = 0):void
 		{
-			aligner.alignObject(obj, width, height, align, hPad, vPad, filRect);
+			aligner.alignObject(obj, width, height, align, hPad, vPad);
 		}
 	}
 }
