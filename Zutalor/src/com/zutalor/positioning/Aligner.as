@@ -17,7 +17,7 @@ package com.zutalor.positioning
 		public static const TOP_LEFT : String = "top-left";
 		public static const TOP_RIGHT : String = "top-right";
 				
-		public function alignObject(object : Object, width:Number, height:Number, align : String = "center", hPad:Number = 0, vPad:Number = 0):void
+		public function alignObject(object : Object, width:Number, height:Number, align : String = "center", hPad:Number = 0, vPad:Number = 0):Number
 		{
 			var scaleX:Number;
 			var scaleY:Number;
@@ -43,9 +43,7 @@ package com.zutalor.positioning
 			else
 				scale = scaleX;
 			
-			if (scale)
-				object.scaleX = object.scaleY = scale;
-			else
+			if (!scale)
 				scale = 1;
 			
 			var colSize:Number = wR / 5;
@@ -102,6 +100,7 @@ package com.zutalor.positioning
 					tY = 0.5 * (hR - hD);
 					break;
 			}
+			
 			if (hPad)
 				tX += (hPad * scale);
 			
@@ -111,6 +110,8 @@ package com.zutalor.positioning
 				
 			object.x = tX;
 			object.y = tY;
+			
+			return scale;
 		}
 	}
 }

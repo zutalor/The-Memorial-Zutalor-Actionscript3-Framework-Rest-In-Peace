@@ -15,6 +15,7 @@
 	import flash.events.Event;
 	import flash.events.NetStatusEvent;
 	import flash.events.StageVideoEvent;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.media.SoundTransform;
 	import flash.media.StageVideo;
@@ -96,7 +97,6 @@
 			{
 				if (Application.settings.stageVideoAvailable)
 				{
-					RunTimeTrace.show("using stage video " + view.x + " " + view.y);
 					sv = ObjectPool.getStageVideo();
 					sv.addEventListener(StageVideoEvent.RENDER_STATE, onStageVideoStateChange);
 					sv.attachNetStream(stream);
@@ -128,6 +128,7 @@
 
 				sv.removeEventListener(StageVideoEvent.RENDER_STATE, onStageVideoStateChange);
 				rc = new Rectangle(view.x, view.y, width, height);
+				//sv.zoom = new Point(.5, .5);
 				sv.viewPort = rc;
 			}
 		}

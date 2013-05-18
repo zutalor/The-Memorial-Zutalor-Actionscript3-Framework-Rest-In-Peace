@@ -6,9 +6,7 @@ package com.zutalor.components.media.flipbook
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.sprites.CenterSprite;
-	import com.zutalor.utils.ArrayUtils;
 	import com.zutalor.utils.DisplayUtils;
-	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.MathG;
 	import com.zutalor.view.rendering.ViewCreator;
 	import flash.display.Bitmap;
@@ -19,12 +17,9 @@ package com.zutalor.components.media.flipbook
 	import flash.events.IOErrorEvent;
 	import flash.events.MouseEvent;
 	import flash.events.ProgressEvent;
-	import flash.events.TimerEvent;
 	import flash.geom.Rectangle;
-	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.utils.getTimer;
-	import flash.utils.Timer;
 	
 	public class FlipBook extends CenterSprite implements IDisposable
 	{

@@ -1,14 +1,9 @@
 ﻿package com.zutalor.widgets 
 {
-	import adobe.utils.CustomActions;
-	import com.greensock.easing.Quint;
-	import com.greensock.TweenMax;
 	import com.zutalor.containers.base.ContainerObject;
+	import com.zutalor.containers.Container;
 	import com.zutalor.containers.ViewContainer;
-	import com.zutalor.application.ApplicationProperties;
-	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
-	import flash.display.Sprite;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 
@@ -18,7 +13,7 @@
 	 */
 	public class Motion
 	{	
-		public static function isContainerInMotion(c:ViewContainer):Boolean
+		public static function isContainerInMotion(c:Container):Boolean
 		{
 			var ms:ContainerObject;
 			
@@ -101,7 +96,7 @@
 			//TweenMax.from(ms, .5, { scaleY:ms.scaleY * .75, scaleX:ms.scaleX * .75, ease: Quint.easeOut } );
 		}		
 
-		public static function chainContainerChildren(c:ViewContainer, springLength:Number = 50):void 
+		public static function chainContainerChildren(c:Container, springLength:Number = 50):void 
 		{		
 			var gravity:Number = 0
 			var spring:Number = .05;

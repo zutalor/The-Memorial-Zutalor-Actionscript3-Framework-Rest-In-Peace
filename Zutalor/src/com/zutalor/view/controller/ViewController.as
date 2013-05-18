@@ -6,7 +6,6 @@
 	import com.zutalor.components.base.Component;
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.Container;
-	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.interfaces.IMediaPlayer;
@@ -15,13 +14,11 @@
 	import com.zutalor.positioning.Dragger;
 	import com.zutalor.properties.NestedPropsManager;
 	import com.zutalor.utils.gDictionary;
-	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.ShowError;
 	import com.zutalor.view.mediators.ViewEventMediator;
 	import com.zutalor.view.mediators.ViewModelMediator;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.view.properties.ViewProperties;
-	import com.zutalor.view.rendering.ViewItemFilterApplier;
 	import com.zutalor.view.rendering.ViewItemPositioner;
 	import com.zutalor.view.rendering.ViewRenderer;
 	import com.zutalor.view.transition.ItemFX;

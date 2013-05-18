@@ -3,19 +3,19 @@ package com.zutalor.application
 	import com.adobe.swffocus.SWFFocus;
 	import com.zutalor.air.AirPlugin;
 	import com.zutalor.air.AirStatus;
-	import com.zutalor.events.AppEvent;
 	import com.zutalor.loaders.URL;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.widgets.Dialog;
-	import com.zutalor.widgets.RunTimeTrace;
 	import flash.desktop.NativeApplication;
 	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
+	import flash.display.Stage;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.events.UncaughtErrorEvent;
 
 	/**
@@ -23,8 +23,21 @@ package com.zutalor.application
 	 * @author Geoff Pepos
 	 */
 	
-	public class Application extends Sprite
+	public class Application extends EventDispatcher
 	{
+		public var bootXmlUrl:String;
+		public var inlineXML:XML
+		public var splashEmbedClassNameSD:String;
+		public var splashEmbedClassNameHD:String;
+		public var loadingSoundClassName:String;
+		public var PresetInitializer:Class;
+		public var onInitialized:Function;
+		public var ip:String;
+		public var agent:String;
+		public var main:Sprite;
+		
+		
+		private var _onInitialized:Function;
 		private var _appController:AppController;
 		
 		protected static var _presets:PropertyManager;
@@ -42,22 +55,22 @@ package com.zutalor.application
 			return _presets.getPropsByIndex(0);
 		}
 		
-		public function Application()
+		public function Application(pMain:Sprite)
 		{
-
+			main = pMain;
+			main.root.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR,
+																							onUncaughtError);
 		}
 		
-		protected function start(bootXmlUrl:String, inlineXML:XML = null, splashEmbedClassName:String = null,
-																							loadingSoundClassName:String = null, PresetInitializer:Class = null):void
+		public function start(pBootXmlUrl:String):void
 		{
 			var paramObj:Object
 			var url:String;
-			var ip:String;
-			var agent:String;
 			var appPresetInitializer:AppPresetInitializer;
 			
-			parent.root.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR,
-																							onUncaughtError);
+			bootXmlUrl = pBootXmlUrl;
+			main.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+
 			if (PresetInitializer)
 				appPresetInitializer = new PresetInitializer();
 			else
@@ -67,7 +80,7 @@ package com.zutalor.application
 			AirStatus.initialize();
 																									
 			try {
-				paramObj = LoaderInfo(this.root.loaderInfo).parameters;
+				paramObj = LoaderInfo(main.root.loaderInfo).parameters;
 				url = String(paramObj["url"]);
 				ip = String(paramObj["ip"]);
 				agent = String(paramObj["agent"]);
@@ -80,29 +93,24 @@ package com.zutalor.application
 				ip = "IP unknown";
 			
 			if (!agent || agent == "undefined")
-				agent = "Agent Undefined";
-				
-			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			
-			function onAddedToStage(e:Event):void
-			{
-				StageRef.stage = stage;
-				removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-				SWFFocus.init(stage);
-				
-				stage.stageFocusRect = false;
-				stage.scaleMode = StageScaleMode.NO_SCALE;
-				stage.align = StageAlign.TOP_LEFT;
-				
-				for (var i:int = 0; i < stage.numChildren; i++)
-					stage.getChildAt(i).visible = false;
-				
-				_appController = new AppController(bootXmlUrl, ip, agent, inlineXML, splashEmbedClassName, loadingSoundClassName, onInitialized);
-			}
+				agent = "Agent Undefined";			
 		}
-
-		protected function onInitialized():void
-		{ 
+		
+		private function onAddedToStage(e:Event):void
+		{
+			var stage:Stage;
+			
+			stage = StageRef.stage = main.stage;
+			main.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			SWFFocus.init(stage);
+			stage.stageFocusRect = false;
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP_LEFT;
+			
+			for (var i:int = 0; i < stage.numChildren; i++)
+				stage.getChildAt(i).visible = false;
+			
+			_appController = new AppController(this);
 		}
 		
 		private function onUncaughtError(e:UncaughtErrorEvent):void

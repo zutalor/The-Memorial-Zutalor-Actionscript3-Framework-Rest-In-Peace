@@ -1,6 +1,5 @@
 ﻿package com.zutalor.application
 {
-	import com.adobe.utils.IntUtil;
 	import com.asual.swfaddress.SWFAddress;
 	import com.asual.swfaddress.SWFAddressEvent;
 	import com.greensock.TweenMax;
@@ -21,18 +20,15 @@
 	import com.zutalor.utils.EmbeddedResources;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.MasterClock;
-	import com.zutalor.utils.Scale;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.properties.ViewProperties;
 	import com.zutalor.view.rendering.ViewCreator;
 	import com.zutalor.view.utils.ViewCloser;
 	import com.zutalor.view.utils.ViewUtils;
-	import com.zutalor.widgets.RunTimeTrace;
 	import com.zutalor.widgets.Spinner;
 	import flash.display.Bitmap;
 	import flash.display.Stage;
-	import flash.display.StageOrientation;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.StageVideoAvailabilityEvent;
@@ -50,6 +46,7 @@
 		
 		private var appStateProps:AppStateProperties;
 		private var curContainerLoading:String;
+		private var _app:Application;
 		
 		private var ap:ApplicationProperties;
 		private var vpm:NestedPropsManager;
@@ -59,15 +56,7 @@
 		private var _firstState:String;
 		private var _appStateCallStack:gDictionary;
 		private var _curAppState:String;
-		private var _splashEmbedClassName:String;
-		private var _bootXmlUrl:String;
-		private var _currentOrientation:String;
-		private var _ip:String;
-		private var _agent:String;
-		private var _inlineXML:XML;
 		private var splash:Bitmap;
-		private var _loadingSoundClassName:String;
-		private var _onInitialized:Function;
 
 		private const DEBUG_ANALYTICS:Boolean =  false;
 		
@@ -81,29 +70,22 @@
 			_presets.parseXML(options.xml[options.nodeId]);
 		}
 		
-		public function AppController(bootXmlUrl:String, ip:String, agent:String, inlineXML:XML, 
-											splashClassName:String, loadingSoundClassName:String, onInitialized:Function)
+		public function AppController(app:Application)
 		{
-			_onInitialized = onInitialized;
-			_splashEmbedClassName = splashClassName;
-			_loadingSoundClassName = loadingSoundClassName;
-			_ip = ip;
-			_agent = agent;
-			_bootXmlUrl = bootXmlUrl;
-			_inlineXML = inlineXML;
-			initialize();
+			_app = app;
+			_construct();
 		}
 		
 // PRIVATE METHODS
 		
-		private function initialize():void
+		private function _construct():void
 		{
 			var samplePlayer:SamplePlayer;
 
-			if (_loadingSoundClassName)
+			if (_app.loadingSoundClassName)
 			{
 				samplePlayer = new SamplePlayer();
-				samplePlayer.play(null, EmbeddedResources.getClass(_loadingSoundClassName), disposeSamplePlayer);
+				samplePlayer.play(null, EmbeddedResources.getClass(_app.loadingSoundClassName), disposeSamplePlayer);
 			}
 			
 			function disposeSamplePlayer():void
@@ -112,12 +94,12 @@
 				samplePlayer = null;
 			}
 
-			if (_splashEmbedClassName)
+			if (_app.splashEmbedClassNameHD || _app.splashEmbedClassNameSD)
 				showSplash();
 			
 			MasterClock.initialize();
 			MasterClock.defaultInterval = 1000 / StageRef.stage.frameRate;
-			AppXmlLoader.init(_bootXmlUrl, _inlineXML, init);
+			AppXmlLoader.init(_app.bootXmlUrl, _app.inlineXML, init);
 		}
 
 		private function showSplash():void
@@ -138,7 +120,17 @@
 				h = stage.stageHeight > stage.fullScreenHeight ? stage.fullScreenHeight : stage.stageHeight;
 			}
 			//RunTimeTrace.show(w + " " + h);
-			splash = EmbeddedResources.createInstance(_splashEmbedClassName);
+			if (!_app.splashEmbedClassNameSD)
+				_app.splashEmbedClassNameSD = _app.splashEmbedClassNameHD;
+			
+			if (!_app.splashEmbedClassNameHD)
+				_app.splashEmbedClassNameHD = _app.splashEmbedClassNameSD; 
+				
+			if (StageRef.stage.stageWidth > 320 && _app.splashEmbedClassNameHD)	
+				splash = EmbeddedResources.createInstance(_app.splashEmbedClassNameHD);
+			else if (_app.splashEmbedClassNameSD)	
+				splash = EmbeddedResources.createInstance(_app.splashEmbedClassNameSD);
+			
 			StageRef.stage.addChild(splash);
 			splash.x = (w - splash.width) / 2;
 			splash.y = (h - splash.height) / 2;
@@ -234,33 +226,6 @@
 				processStateChange();
 		}
 		
-		private function checkOrientation():void
-		{
-			return;
-			var orientation:String;
-			if (AirStatus.isMobile)
-			{
-				if (_currentOrientation != StageRef.stage.deviceOrientation)
-				{
-					switch (StageRef.stage.deviceOrientation)
-					{
-						case StageOrientation.ROTATED_RIGHT:
-						case StageOrientation.ROTATED_LEFT:
-							orientation = StageOrientation.DEFAULT;
-							break;
-						case StageOrientation.UPSIDE_DOWN:
-							orientation = StageOrientation.UPSIDE_DOWN;
-							break;
-						default:
-							orientation = StageOrientation.DEFAULT;
-							break;
-					}
-					StageRef.stage.setOrientation(orientation);
-					_currentOrientation = orientation;
-				}
-			}
-		}
-		
 		private function processStateChange():void
 		{
 			var viewCreator:ViewCreator;
@@ -290,7 +255,7 @@
 						_curViewProps.transitionPreset = appStateProps.transitionPreset;
 					
 					_curViewProps.mediaPreset = appStateProps.mediaPreset;
-					viewCreator.create(appStateProps.viewId, appStateProps.name, onAppContainerLoadComplete);
+					viewCreator.create(appStateProps.viewId, appStateProps.name, onViewContainerLoadComplete);
 					viewCreator.container.addEventListener(UIEvent.CLOSE, onCloseView, false, 0, true);
 				}
 			}
@@ -302,7 +267,7 @@
 			dispatchEvent(new Event(Event.COMPLETE));
 		}
 				
-		private function onAppContainerLoadComplete():void
+		private function onViewContainerLoadComplete():void
 		{
 			if (curContainerLoading)
 			{
@@ -313,18 +278,17 @@
 		}
 		
 		private function init():void
-		{
-						
+		{			
 			vu = new ViewUtils();
 
 			ap = Application.settings;
 			vpm = ViewController.presets;
 			
-			if (_ip)
-				ap.ip = _ip;
+			if (_app.ip)
+				ap.ip = _app.ip;
 				
-			if (_agent)
-				ap.agent = _agent;
+			if (_app.agent)
+				ap.agent = _app.agent;
 
 			vu.calcScale();
 	
@@ -349,15 +313,14 @@
 			}
 			
 			StageRef.stage.addEventListener(UIEvent.APP_STATE_SELECTED, onStateChangeEvent);
-			//MasterClock.registerCallback(checkOrientation, true, 500);
 			StyleSheets.loadCss(onInitComplete);
 			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, onSWFAddressFirstBroadcast);
 		}
 		
 		private function onInitComplete():void
 		{
-			if (_onInitialized != null)
-				_onInitialized();
+			if (_app.onInitialized != null)
+				_app.onInitialized();
 				
 			if (ap.loadingSequenceName)
 			{
