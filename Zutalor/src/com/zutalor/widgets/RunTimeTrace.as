@@ -39,8 +39,8 @@ package com.zutalor.widgets
 			message.text = s;
 			message.setTextFormat(tf);
 			message.type = TextFieldType.INPUT;
-			message.maxChars = 50;
-			message.width = 300;
+			message.maxChars = 600;
+			message.width = 600;
 			background.graphics.beginFill(0xFFFFFF);
 			background.graphics.drawRect(0, 0, message.textWidth * 1.4, message.textHeight * 1.6);
 			message.x = message.y = 4;

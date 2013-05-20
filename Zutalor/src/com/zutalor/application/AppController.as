@@ -321,7 +321,7 @@
 		{
 			if (_app.onInitialized != null)
 				_app.onInitialized();
-				
+			
 			if (ap.loadingSequenceName)
 			{
 				_loadingSequence = new Sequence();
