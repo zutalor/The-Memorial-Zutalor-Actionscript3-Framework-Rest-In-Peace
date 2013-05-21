@@ -35,7 +35,7 @@ package com.zutalor.audio
 	public class SimpleFilter extends FilterSupport
 	{
 		
-		private const BLOCK_SIZE:int = 2048;
+		private const BLOCK_SIZE:int = 4096;
 		private const SAMPLERATE:Number = 44.1;
 		private var sourceSound:Sound;
 		private var historyBufferSize:int;

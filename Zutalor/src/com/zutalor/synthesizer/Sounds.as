@@ -68,7 +68,6 @@ package com.zutalor.synthesizer
 			var indx:int;
 			var freq:Number;
 			var factor:Number;
-			var noteNumber:Number;
 			var sampleMap:SampleMap;
 			var url:String;
 
