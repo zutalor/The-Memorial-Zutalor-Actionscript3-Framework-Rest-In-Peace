@@ -13,29 +13,12 @@
 		private var _width:Number;
 		private var _height:Number;
 		
+		public var viewController:ViewController;
+		
 		public function ViewContainer(containerName:String)
 		{
 			super(containerName);
-		}
-		
-		override public function set width(w:Number):void
-		{
-			_width = w;
-		}
-		
-		override public function set height(h:Number):void
-		{
-			_height = h;
-		}
-		
-		override public function get width():Number
-		{
-			return _width;
-		}
-		
-		override public function get height():Number
-		{
-			return _height;
+			viewController = new ViewController();
 		}
 				
 		override public function stop(fadeSeconds:Number = 0):void

@@ -8,7 +8,7 @@ package com.zutalor.containers
 	 * ...
 	 * @author Geoff
 	 */
-	public class ScrollingContainer extends Container
+	public class ScrollingContainer extends ViewContainer
 	{
 		public var scroller:Scroller;
 		private var _scrollRect:Rectangle;

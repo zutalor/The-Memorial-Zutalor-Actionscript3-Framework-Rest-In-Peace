@@ -11,15 +11,18 @@ package com.zutalor.view.rendering
 	public class ViewItemPositioner
 	{
 		private var _c:ContainerObject;
-		private var _containerWidth:Number;
-		private var _containerHeight:Number;
+		public var containerWidth:Number;
+		public var containerHeight:Number;
 		private var aligner:Aligner;
+		
+		
 		
 		public function ViewItemPositioner(c:ContainerObject, width:Number, height:Number)
 		{
 			_c = c;
-			_containerWidth = width;
-			_containerHeight = height;
+			containerWidth = width;
+			trace(width);
+			containerHeight = height;
 			aligner = new Aligner();
 		}
 		
@@ -50,7 +53,7 @@ package com.zutalor.view.rendering
 						
 			if (vip.align)
 			{
-				aligner.alignObject(viewItem, _containerWidth, _containerHeight, vip.align, hPad, vPad);
+				aligner.alignObject(viewItem, containerWidth, containerHeight, vip.align, hPad, vPad);
 			}
 			else
 			{
@@ -90,7 +93,7 @@ package com.zutalor.view.rendering
 			if (isNaN(w))
 				return 0;
 			else if (w <= 1 && w > 0)
-				return _containerWidth * w;
+				return containerWidth * w;
 			else
 				return w;
 		}
@@ -100,7 +103,7 @@ package com.zutalor.view.rendering
 			if (isNaN(h))
 				return 0;
 			else if (h <= 1 && h > 0)
-				return _containerHeight * h;
+				return containerHeight * h;
 			else
 				return h;
 		}

@@ -3,6 +3,7 @@ package com.zutalor.view.rendering
 	import com.zutalor.components.base.Component;
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.Container;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.view.properties.ViewItemProperties;
@@ -12,9 +13,9 @@ package com.zutalor.view.rendering
 		private var onItemRendered:Function;
 		private var filterApplier:Function;
 		private var positioner:Function;
-		private var container:Container;
+		private var container:ViewContainer;
 
-		public function ViewItemRenderer(c:Container, filterApplier:Function, positioner:Function = null)
+		public function ViewItemRenderer(c:ViewContainer, filterApplier:Function, positioner:Function = null)
 		{
 			this.onItemRendered = onItemRendered;
 			this.filterApplier = filterApplier;

@@ -9,6 +9,7 @@
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.properties.ViewProperties;
 	import flash.events.Event;
+	import flash.geom.Rectangle;
 	import flash.ui.Mouse;
 
 	/**
@@ -61,12 +62,22 @@
 				{
 					vp = views.getPropsById(c.name);
 					if (vp)
-					{
-						arranger.resize(vp.container, vp.resizeMode);
-						arranger.alignToStage(vp.container, vp.align, vp.hPad, vp.vPad);
-					}
+						arrangeContainer();
 						
 				} catch (e:Error) {}
+			}
+			
+			function arrangeContainer():void
+			{
+				var rect:Rectangle;
+				
+				arranger.resize(vp.container, vp.resizeMode);
+				rect = new Rectangle(0, 0, vp.container.width * Scale.curAppScale, 
+													vp.height * Scale.curAppScale);
+				
+				arranger.alignToStage(rect, vp.align, vp.hPad, vp.vPad);
+				vp.container.x = rect.x;
+				vp.container.y = rect.y;
 			}
 		}
 	}

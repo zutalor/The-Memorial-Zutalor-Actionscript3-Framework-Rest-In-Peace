@@ -6,6 +6,7 @@
 	import com.zutalor.components.base.Component;
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.containers.Container;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.events.UIEvent;
 	import com.zutalor.interfaces.IMediaPlayer;
@@ -62,7 +63,7 @@
 			return _presets;
 		}
 	
-		public function load(vc:Container, pViewId:String, appState:String, pOnComplete:Function):void
+		public function load(vc:ViewContainer, pViewId:String, appState:String, pOnComplete:Function):void
 		{
 			viewId = pViewId;
 			onComplete = pOnComplete;

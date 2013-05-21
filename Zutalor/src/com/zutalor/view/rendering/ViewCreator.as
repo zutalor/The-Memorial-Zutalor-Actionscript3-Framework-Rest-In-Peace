@@ -5,7 +5,6 @@
 	import com.zutalor.containers.ScrollingContainer;
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.filters.Filters;
-	import com.zutalor.plugin.Plugins;
 	import com.zutalor.positioning.Arranger;
 	import com.zutalor.transition.TransitionTypes;
 	import com.zutalor.utils.Scale;
@@ -25,7 +24,7 @@
 	{
 		
 		private var vp:ViewProperties;
-		private var c:Container;
+		private var c:ViewContainer;
 		private var _onComplete:Function;
 		private var _parent:ContainerObject;
 		
@@ -56,9 +55,6 @@
 				Klass = ViewContainer;
 			
 			vp.container = c = new Klass(vp.name);
-			
-			if (!c.viewController)
-				c.viewController = new ViewController();
 			
 			if (_parent)
 				_parent.addChild(vp.container);
@@ -96,8 +92,8 @@
 				vp.transitionPreset = "fade";
 			
 			arranger.resize(vp.container, vp.resizeMode);
-			rect = new Rectangle(0, 0, vp.container.width * Scale.curAppScale, 
-												vp.container.height * Scale.curAppScale);
+			rect = new Rectangle(0, 0, vp.width * Scale.curAppScale, 
+												vp.height * Scale.curAppScale);
 			
 			arranger.alignToStage(rect, vp.align, vp.hPad, vp.vPad);
 

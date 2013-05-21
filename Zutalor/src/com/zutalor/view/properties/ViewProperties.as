@@ -2,6 +2,7 @@
 {
 	import com.zutalor.application.Application;
 	import com.zutalor.containers.Container;
+	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.interfaces.IProperties;
 	import com.zutalor.properties.PropertiesBase;
 	import com.zutalor.utils.MapXML;
@@ -46,7 +47,7 @@
 		public var filterPreset:String;
 		public var cacheAsBitmap:Boolean;
 		public var cachAsBitmapMatrix:Boolean;
-		public var container:Container;
+		public var container:ViewContainer;
 		
 		public function ViewProperties() {}
 		

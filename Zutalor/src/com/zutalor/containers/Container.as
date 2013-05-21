@@ -16,8 +16,6 @@
 	{	
 		public const HORIZONTAL:String = "horizontal";
 		public const VERTICAL:String = "vertical";
-		
-		public var viewController:ViewController;
 				
 		public function Container(containerName:String)
 		{
