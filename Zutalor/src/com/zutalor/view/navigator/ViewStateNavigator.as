@@ -88,6 +88,7 @@ package com.zutalor.view.navigator
 			var curSound:int;
 			var numSounds:int;
 			
+			text = textToSpeechUtils.getTextForSpeech(text);
 			if (soundName)
 			{
 				sounds = soundName.split(",");
@@ -705,7 +706,7 @@ package com.zutalor.view.navigator
 		
 		protected function sayText():void
 		{
-			speak(textToSpeechUtils.getTextForSpeech(np.tp.tText), np.tp.sound, sayPrompt, np.promptId);
+			speak(np.tp.tText, np.tp.sound, sayPrompt, np.promptId);
 		}
 		
 		protected function sayAnswer():void
@@ -796,7 +797,7 @@ package com.zutalor.view.navigator
 				uiController.onModelChange("prompt");
 				uiController.vc.getItemByName("prompt").alpha = 0;
 				TweenMax.to(uiController.vc.getItemByName("prompt"), .5, { alpha:1 } );
-				speak(textToSpeechUtils.getTextForSpeech(tp.tText), tp.sound, onComplete, onCompleteArgs);
+				speak(tp.tText, tp.sound, onComplete, onCompleteArgs);
 			}
 		}
 		

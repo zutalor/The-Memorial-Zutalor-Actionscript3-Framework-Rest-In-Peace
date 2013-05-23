@@ -39,25 +39,49 @@
 			return nameParts[nameParts.length -2];
 		}
 		
-		public static function formatTime(v:Number):String
+		public static function formatTime(ms:Number):String
 		{
 			var time:String;
-			var sec:int;
+			var seconds:uint;
+			var hours:uint;
+			var minutes:uint;
+			var days:uint;
+			
+			var x:Number;
+			
+			x = ms / 1000;
+			seconds = x % 60;
+			x /= 60;
+			minutes = x % 60;
+			x /= 60;
+			hours = x % 24;
+			x /= 24;
+			days = x;
 			
 			time = "";
-			if (v > 5940) // hours
-				time = String(Math.floor(v / 3600)) + ":";
 			
-			time += String(Math.floor(v / 60)) + ":";
+			if (days == 1)
+				time = days + " day ";
+			else if (days)
+				time = days + " days ";
 			
-			sec = Math.ceil(v % 60)
-			
-			if (sec < 10)
-				time += "0" + String(sec);
-			else
-				time += String(Math.ceil(v % 60));
+			time += gts(hours) + ":" + gts(minutes) + ":" + gts(seconds);
 			
 			return time;
+			
+			function gts(t:uint):String
+			{
+				var ts:String;
+				
+				if (t == 0)
+					ts = "00";
+				else if (t < 10)
+					ts = "0" + t;
+				else
+					ts = t + ""; //hack!
+
+				return ts;	
+			}
 		}
 		
 		public static function stripLinks(s:String):String

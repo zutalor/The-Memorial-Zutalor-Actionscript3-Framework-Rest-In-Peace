@@ -28,6 +28,8 @@ package com.zutalor.file
 		public static const APP_STORAGE:String = "storage";
 		public static const DOCUMENTS:String = "documents";
 		public static const USER:String = "user";
+		public static const CACHE:String = "cache";
+		
 		
 		public function FileSaver():void
 		{
@@ -39,7 +41,7 @@ package com.zutalor.file
 			removeListeners();
 		}
 		
-		public function saveData(fileData:ByteArray, dest:String, destDirectory:String = "desktop"):void
+		public function write(fileData:ByteArray, dest:String, destDirectory:String = "desktop"):void
 		{
 			this.dest = dest;
 			this.fileData = fileData;
@@ -47,7 +49,7 @@ package com.zutalor.file
 			writeAirFile();
 		}
 		
-		public function copyFile(url:String, dest:String, destDirectory:String="desktop"):void
+		public function copy(url:String, dest:String, destDirectory:String="desktop"):void
 		{
 			this.dest = dest;
 			this.destDir = destDirectory;
@@ -81,6 +83,9 @@ package com.zutalor.file
 			
 			switch(destDir)
 			{
+				case CACHE :
+					file = File.cacheDirectory;
+					break;
 				case APP_STORAGE :
 					file = File.applicationStorageDirectory;
 					break;

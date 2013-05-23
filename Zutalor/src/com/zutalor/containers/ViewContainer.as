@@ -20,6 +20,26 @@
 			super(containerName);
 			viewController = new ViewController();
 		}
+		
+		override public function set width(n:Number):void
+		{
+			_width = n;
+		}
+		
+		override public function get width():Number
+		{
+			return _width;
+		}
+		
+		override public function get height():Number
+		{
+			return _height;
+		}
+		
+		override public function set height(n:Number):void
+		{
+			_height = n;
+		}
 				
 		override public function stop(fadeSeconds:Number = 0):void
 		{
