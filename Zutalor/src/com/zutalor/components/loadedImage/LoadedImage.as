@@ -37,7 +37,7 @@ package com.zutalor.components.loadedImage
 		private function onLoad(e:Event):void
 		{
 			var bm:Bitmap;
-			
+			loader.removeEventListener(Event.COMPLETE, onLoad);
 			bm = loader.content as Bitmap;
 			bm.smoothing = true;
 			addChild(bm);

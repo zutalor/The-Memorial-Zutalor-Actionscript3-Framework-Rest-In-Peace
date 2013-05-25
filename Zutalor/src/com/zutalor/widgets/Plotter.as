@@ -43,7 +43,7 @@ package com.zutalor.widgets
 			if (!yA)
 				_line.render(ArrayUtils.fitEvenDistribution(xA, _displayData, _width, _height, start, end), false, dotSize, speed, onComplete);
 			else
-				_line.render(ArrayUtils.fitUnevenDistribution(xA, yA, _displayData, start, end));
+				_line.render(ArrayUtils.fitUnevenDistribution(xA, yA, _displayData, start, end), false, dotSize, speed, onComplete);
 		}
 				
 		override public function dispose():void

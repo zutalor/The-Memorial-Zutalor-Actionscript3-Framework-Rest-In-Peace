@@ -41,7 +41,7 @@
 				dest[i] = source[i];
 		}
 		
-		public static function fitEvenDistribution(source:Array, dest:Array, width:int, height:int, start:int, end:int):Array
+		public static function fitEvenDistribution(source:Array, dest:Array, width:int, height:int, start:Number, end:Number):Array
 		{
 			var destIndx:int;
 			var xIncr:Number;
@@ -135,7 +135,7 @@
 			
 		public static function getMin(a:Array):Number
 		{
-			var min:Number = 0;
+			var min:Number = Number.MAX_VALUE;
 			
 			for (var i:int = 0; i < a.length; i++)
 				if (a[i] < min)

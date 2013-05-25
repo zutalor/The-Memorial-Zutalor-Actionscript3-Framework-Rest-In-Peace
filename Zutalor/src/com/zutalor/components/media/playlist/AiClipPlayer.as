@@ -225,13 +225,12 @@ package com.zutalor.components.media.playlist
 					pip = _ppm.getItemPropsByName(_sp.playlist.playlistName, _clipsToPlay[_clipIndex]);
 					if (pip)
 					{
-						if (!(!_volume && pip.url.indexOf(".mp3") != -1))
-							if (!_players.getByKey(pip.name) && _cueList.indexOf(pip.name) == -1)
-							{
-								p = _mediaState.change(null, UIEvent.CUE_UP, pip)
-								if (p)
-									_cueList.push(pip.name);
-							}
+						if (!_players.getByKey(pip.name) && _cueList.indexOf(pip.name) == -1)
+						{
+							p = _mediaState.change(null, UIEvent.CUE_UP, pip)
+							if (p)
+								_cueList.push(pip.name);
+						}
 					}
 					_clipIndex++;
 				}
