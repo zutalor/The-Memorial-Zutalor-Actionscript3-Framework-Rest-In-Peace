@@ -45,6 +45,7 @@ package com.zutalor.file
 		{
 			this.dest = dest;
 			this.fileData = fileData;
+			this.fileData.compress();
 			this.destDir = destDirectory;
 			writeAirFile();
 		}

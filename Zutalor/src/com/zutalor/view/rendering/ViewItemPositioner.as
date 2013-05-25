@@ -21,7 +21,6 @@ package com.zutalor.view.rendering
 		{
 			_c = c;
 			containerWidth = width;
-			trace(width);
 			containerHeight = height;
 			aligner = new Aligner();
 		}

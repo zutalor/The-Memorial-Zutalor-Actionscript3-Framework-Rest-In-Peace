@@ -16,6 +16,8 @@ package com.zutalor.positioning
 		public static const TOP : String = "top";
 		public static const TOP_LEFT : String = "top-left";
 		public static const TOP_RIGHT : String = "top-right";
+		public static const TOP_CENTER : String = "top-center";
+		public static const BOTTOM_CENTER : String = "bottom-center";
 				
 		public function alignObject(object : Object, width:Number, height:Number, align : String = "center", hPad:Number = 0, vPad:Number = 0):Number
 		{
@@ -55,6 +57,10 @@ package com.zutalor.positioning
 				case BOTTOM :
 					tX = 0.0;
 					break;
+				case BOTTOM_CENTER :
+				case TOP_CENTER :
+					tX = (wR * + wD) * .5;
+					break;
 				case BOTTOM_ONE_FIFTH :
 					tX = colSize - (wD * .5);
 					break;
@@ -82,9 +88,11 @@ package com.zutalor.positioning
 				case TOP :
 				case TOP_LEFT :
 				case TOP_RIGHT :
+				case TOP_CENTER :
 					tY = 0.0;
 					break;
 				case BOTTOM :
+				case BOTTOM_CENTER :
 				case BOTTOM_LEFT :
 				case BOTTOM_RIGHT :
 				case BOTTOM_LEFT :

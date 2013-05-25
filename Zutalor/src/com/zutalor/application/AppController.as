@@ -119,7 +119,7 @@
 				w = stage.stageWidth > stage.fullScreenWidth ? stage.fullScreenWidth : stage.stageWidth;
 				h = stage.stageHeight > stage.fullScreenHeight ? stage.fullScreenHeight : stage.stageHeight;
 			}
-			//RunTimeTrace.show(w + " " + h);
+			
 			if (!_app.splashEmbedClassNameSD)
 				_app.splashEmbedClassNameSD = _app.splashEmbedClassNameHD;
 			
