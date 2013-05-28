@@ -15,6 +15,7 @@
 		public var data:String;
 		public var commands:String;
 		public var scale9Data:String;
+		public var alpha:Number;
 		public var rotation:Number;
 		public var width:int;
 		public var height:int;

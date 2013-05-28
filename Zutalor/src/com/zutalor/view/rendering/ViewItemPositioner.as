@@ -41,7 +41,13 @@ package com.zutalor.view.rendering
 			h = calcHeight(vip.height);
 			x = calcWidth(vip.x);
 			y = calcHeight(vip.y);
+			
+			
+			if (hPad < 0)
+				trace(hPad)
 			hPad = calcWidth(vip.hPad);
+			trace(hPad)
+			
 			vPad = calcHeight(vip.vPad);
 			
 			if (w)
@@ -54,11 +60,13 @@ package com.zutalor.view.rendering
 			{
 				aligner.alignObject(viewItem, containerWidth, containerHeight, vip.align, hPad, vPad);
 			}
-			else
-			{
+			
+			if (x)
 				viewItem.x = x + hPad;
+				
+			if (y)	
 				viewItem.y = y + vPad;
-			}
+			
 			
 			if (vip.z)
 				viewItem.z = vip.z;
@@ -89,9 +97,13 @@ package com.zutalor.view.rendering
 				
 		private function calcWidth(w:Number):Number
 		{
+			var v:Number;
+			
 			if (isNaN(w))
 				return 0;
-			else if (w <= 1 && w > 0)
+			
+			v = Math.abs(w);	
+			if (v <= 1 && v > 0)
 				return containerWidth * w;
 			else
 				return w;
@@ -99,9 +111,13 @@ package com.zutalor.view.rendering
 		
 		private function calcHeight(h:Number):Number
 		{
+			var v:Number;
+
 			if (isNaN(h))
 				return 0;
-			else if (h <= 1 && h > 0)
+			
+			v = Math.abs(h);	
+			if (v <= 1 && v > 0)
 				return containerHeight * h;
 			else
 				return h;

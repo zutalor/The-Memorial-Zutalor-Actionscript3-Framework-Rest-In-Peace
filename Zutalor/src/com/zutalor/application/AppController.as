@@ -247,16 +247,19 @@
 				}
 				else if (appStateProps.viewId && !_appStateCallStack.getByKey(_curAppState))
 				{
-					_appStateCallStack.insert(_curAppState, appStateProps);
 					_curViewProps = vpm.getPropsById(appStateProps.viewId);
-					curContainerLoading = _curViewProps.name;
-					viewCreator = new ViewCreator();
-					if (appStateProps.transitionPreset)
-						_curViewProps.transitionPreset = appStateProps.transitionPreset;
-					
-					_curViewProps.mediaPreset = appStateProps.mediaPreset;
-					viewCreator.create(appStateProps.viewId, appStateProps.name, onViewContainerLoadComplete);
-					viewCreator.container.addEventListener(UIEvent.CLOSE, onCloseView, false, 0, true);
+					if (_curViewProps)
+					{
+						_appStateCallStack.insert(_curAppState, appStateProps);
+						curContainerLoading = _curViewProps.name;
+						viewCreator = new ViewCreator();
+						if (appStateProps.transitionPreset)
+							_curViewProps.transitionPreset = appStateProps.transitionPreset;
+						
+						_curViewProps.mediaPreset = appStateProps.mediaPreset;
+						viewCreator.create(appStateProps.viewId, appStateProps.name, onViewContainerLoadComplete);
+						viewCreator.container.addEventListener(UIEvent.CLOSE, onCloseView, false, 0, true);
+					}
 				}
 			}
 		}

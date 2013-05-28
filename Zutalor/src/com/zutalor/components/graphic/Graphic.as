@@ -153,6 +153,9 @@ package com.zutalor.components.graphic
 			if (gri.blendMode)
 				item.blendMode = gri.blendMode;
 				
+			if (gri.alpha)
+				item.alpha = gri.alpha;
+				
 			if (gri.scale)
 				item.scaleX = item.scaleY = gri.scale;
 			
@@ -352,7 +355,7 @@ package com.zutalor.components.graphic
 				g.beginFill(fillColor, grs.fillAlpha);
 			
 			if (grs.alpha)
-					item.alpha = grs.alpha;
+				item.alpha = grs.alpha;
 		}
 		
 		private function getScale9GridRect(scale9DataString:String):Rectangle

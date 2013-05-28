@@ -5,10 +5,11 @@ package com.zutalor.positioning
 		public static const BOTTOM : String = "bottom";
 		public static const BOTTOM_LEFT : String = "bottom-left";
 		public static const BOTTOM_RIGHT : String = "bottom-right";
-		public static const BOTTOM_ONE_FIFTH:String = "bottom-one-fifth";
-		public static const BOTTOM_TWO_FIFTH:String = "bottom-two-fifth";
-		public static const BOTTOM_THREE_FIFTH:String = "bottom-three-fifth";
-		public static const BOTTOM_FOUR_FIFTH:String = "bottom-four-fifth";
+		public static const BOTTOM_L:String = "bottom-l";
+		public static const BOTTOM_LM:String = "bottom-lm";
+		public static const BOTTOM_M:String = "bottom-m";
+		public static const BOTTOM_RM:String = "bottom-rm";
+		public static const BOTTOM_R:String = "bottom-r";
 
 		public static const LEFT : String = "left";
 		public static const CENTER : String = "center";
@@ -61,17 +62,20 @@ package com.zutalor.positioning
 				case TOP_CENTER :
 					tX = (wR * + wD) * .5;
 					break;
-				case BOTTOM_ONE_FIFTH :
+				case BOTTOM_L :
 					tX = colSize - (wD * .5);
 					break;
-				case BOTTOM_TWO_FIFTH :
+				case BOTTOM_LM :
 					tX = (colSize * 2) - (wD * .5);
 					break;
-				case BOTTOM_THREE_FIFTH :
+				case BOTTOM_M :
 					tX = (colSize * 3) - (wD * .5);
 					break;
-				case BOTTOM_FOUR_FIFTH :
+				case BOTTOM_RM :
 					tX = (colSize * 4) - (wD * .5);
+					break;
+				case BOTTOM_R :
+					tX = (colSize * 5) - (wD * .5);
 					break;
 				case RIGHT :
 				case TOP_RIGHT :
@@ -97,10 +101,11 @@ package com.zutalor.positioning
 				case BOTTOM_RIGHT :
 				case BOTTOM_LEFT :
 				case BOTTOM_RIGHT :
-				case BOTTOM_ONE_FIFTH :
-				case BOTTOM_TWO_FIFTH :
-				case BOTTOM_THREE_FIFTH :
-				case BOTTOM_FOUR_FIFTH :
+				case BOTTOM_L :
+				case BOTTOM_LM :
+				case BOTTOM_M :
+				case BOTTOM_RM :
+				case BOTTOM_R :
 					tY = hR - hD;
 					break;
 					
