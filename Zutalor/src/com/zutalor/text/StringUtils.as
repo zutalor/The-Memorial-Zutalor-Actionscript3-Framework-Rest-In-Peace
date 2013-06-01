@@ -782,7 +782,7 @@ package com.zutalor.text
 			if (!str)
 				return("");
 				
-			while (str.charAt(0) == " ")
+			while (str.charAt(0) == " " || str.charAt(0) == "\n" || str.charAt(0) == "\t")
 			{
 				str = str.substring(1, str.length);
 			}
