@@ -1,9 +1,11 @@
 package com.zutalor.gesture
 {
+	import com.greensock.loading.core.DisplayObjectLoader;
 	import com.gskinner.utils.IDisposable;
 	import com.zutalor.containers.base.ContainerObject;
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.ShowError;
+	import flash.display.DisplayObject;
 	import flash.events.EventDispatcher;
 	import flash.utils.getQualifiedClassName;
 	import org.gestouch.events.GestureEvent;
@@ -19,7 +21,7 @@ package com.zutalor.gesture
 	public class GestureListener extends EventDispatcher implements IDisposable 
 	{		
 		private var _activeGestures:gDictionary;
-		private var _target:ContainerObject;
+		private var _target:DisplayObject;
 		
 		private static var _gestureClasses:gDictionary;
 		
@@ -39,7 +41,7 @@ package com.zutalor.gesture
 			return className;
 		}
 		
-		public function GestureListener(target:ContainerObject)
+		public function GestureListener(target:DisplayObject)
 		{
 			_target = target;
 			_activeGestures = new gDictionary();

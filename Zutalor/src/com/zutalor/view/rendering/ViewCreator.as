@@ -63,7 +63,10 @@
 			
 			if (vp.cachAsBitmapMatrix)
 			{
-				vp.container.cacheAsBitmapMatrix = vp.container.transform.concatenatedMatrix;
+				CONFIG::air
+				{
+					vp.container.cacheAsBitmapMatrix = vp.container.transform.concatenatedMatrix;
+				}
 				vp.cacheAsBitmap = true;
 			}
 			

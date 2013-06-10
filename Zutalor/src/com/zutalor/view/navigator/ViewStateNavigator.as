@@ -19,6 +19,7 @@ package com.zutalor.view.navigator
 	import com.zutalor.utils.gDictionary;
 	import com.zutalor.utils.HotKeyManager;
 	import com.zutalor.utils.MasterClock;
+	import com.zutalor.utils.StageRef;
 	import flash.events.KeyboardEvent;
 	import flash.system.Capabilities;
 	import flash.utils.getTimer;
@@ -35,6 +36,7 @@ package com.zutalor.view.navigator
 		protected var textToSpeechUtils:TextToSpeechUtils;
 		protected var uiController:UiControllerBase;
 		protected var hotKeys:PropertyManager;
+		protected var gestures:PropertyManager;
 		protected var inputText:String;
 		protected var np:NavigatorProperties;
 		protected var tMeta:XML;
@@ -338,6 +340,16 @@ package com.zutalor.view.navigator
 					hkm.removeMapping(userInputProperties.name);
 			}
 		}
+		
+		protected function gestureListeners(add:Boolean):void
+		{
+			var l:int;
+			l = gestures.length;
+			for (var i:int = 0; i < l; i++)
+			{
+				
+			}
+		}
 										
 		protected function init():void
 		{
@@ -540,6 +552,7 @@ package com.zutalor.view.navigator
 		protected function onMultipleChoice(uip:UserInputProperties, stateType:String):void
 		{
 			var promptDelay:int;
+			var qSoundFile:String;
 			
 			if (stateType == "confirmation")
 				np.answerIndex = np.confirmationAnswers.indexOf(uip.name.toLowerCase());
@@ -552,15 +565,18 @@ package com.zutalor.view.navigator
 			{
 				np.answerText = String(XML(np.tp.tText)..Q[np.answerIndex]);
 				np.correctAnswer = XML(np.tp.tText)..answers.@correctAnswer;
-				np.answer = np.answerText.substr(0, 1).toUpperCase();
+				np.answer = textToSpeechUtils.getTextForDisplay(np.answerText).substr(0, 1).toUpperCase();
 				
 				if (XML(np.tp.tMeta).state.@noPromptDelay != "true")
 					promptDelay = PROMPT_DELAY_ON_ANSWER;
 				
+				if (np.tp.sound)
+					qSoundFile = np.tp.sound + "-ans-" + np.answer.toLowerCase();
+			
 				if (np.promptId != "none")
-					speak(np.answerText, XML(np.tp.tText)..Q[np.answerIndex].@sound, sayPrompt, "onAnswered");
+					speak(np.answerText, qSoundFile, sayPrompt, "onAnswered");
 				else
-					speak(np.answerText, XML(np.tp.tText)..Q[np.answerIndex].@sound);
+					speak(np.answerText, qSoundFile);
 			}
 		}
 		

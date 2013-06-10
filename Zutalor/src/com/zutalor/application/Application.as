@@ -8,7 +8,7 @@ package com.zutalor.application
 	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.widgets.Dialog;
-	import flash.desktop.NativeApplication;
+
 	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
 	import flash.display.Stage;
@@ -17,6 +17,11 @@ package com.zutalor.application
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.UncaughtErrorEvent;
+	
+	CONFIG::air
+	{
+		import flash.desktop.NativeApplication;	
+	}
 
 	/**
 	 * ...
@@ -75,8 +80,11 @@ package com.zutalor.application
 				appPresetInitializer = new PresetInitializer();
 			else
 				appPresetInitializer = new AppPresetInitializer();
-				
-			Plugins.registerClassAndCreateCachedInstance(AirPlugin);
+			
+			CONFIG::air {
+				Plugins.registerClassAndCreateCachedInstance(AirPlugin);
+			}
+	
 			AirStatus.initialize();
 																									
 			try {
@@ -121,8 +129,11 @@ package com.zutalor.application
 			
 			function onConfirm():void
 			{
-				if (AirStatus.isNativeApplication)
-					NativeApplication.nativeApplication.exit();
+				CONFIG::air
+				{
+					if (AirStatus.isNativeApplication)
+						NativeApplication.nativeApplication.exit();
+				}
 			}
 		}
 	}

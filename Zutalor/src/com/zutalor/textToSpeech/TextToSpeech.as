@@ -139,8 +139,11 @@ package Zutalor.src.com.zutalor.textToSpeech
 		{
 			var sa:Array;
 			
-			sa = text.split(" ");
-			return apiUrl + sa.join("_");
+			//sa = text.split(" ");
+			//return apiUrl + sa.join("_");
+			
+
+			return apiUrl + unescape(text);
 			
 			//return apiUrl 	+ "&format=" + format + "&frequency=" + frequency + "&bitrate"
 			//				+ bitrate + "&bitdepth" + bitdepth

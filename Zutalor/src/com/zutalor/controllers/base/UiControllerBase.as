@@ -9,10 +9,15 @@ package com.zutalor.controllers.base
 	import com.zutalor.utils.Logger;
 	import com.zutalor.view.controller.ViewController;
 	import com.zutalor.view.controller.ViewControllerRegistry;
-	import flash.desktop.NativeApplication;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
+	
+	CONFIG::air
+	{
+		import flash.desktop.NativeApplication;
+	}	
+	
 	/**
 	 * ...
 	 * @author Geoff Pepos
@@ -31,12 +36,16 @@ package com.zutalor.controllers.base
 			{
 				_vController = params["controller"];
 			}
+			
 			if (AirStatus.isNativeApplication)
 			{
-				NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-				NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, onDeactivate);
-				NativeApplication.nativeApplication.addEventListener("suspend", onDeactivate);
-				NativeApplication.nativeApplication.addEventListener(Event.EXITING, onExiting);
+				CONFIG::air {
+					NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+					NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, onDeactivate);
+					NativeApplication.nativeApplication.addEventListener("suspend", onDeactivate);
+					NativeApplication.nativeApplication.addEventListener(Event.EXITING, onExiting);
+				}
+				var t:int; // put this here to get compiler to not issue warning about empty block.
 			}
         }
 
@@ -68,7 +77,12 @@ package com.zutalor.controllers.base
 		{
 			if (AirStatus.isNativeApplication)
 			{
-				NativeApplication.nativeApplication.exit();
+				var t:int; // put this here to get compiler to not issue warning about empty block.
+
+				CONFIG::air
+				{
+					NativeApplication.nativeApplication.exit();
+				}
 			}
 		}
 				

@@ -12,40 +12,13 @@ package com.zutalor.air
 	 */
 	public class AirPlugin
 	{
-		private var _nativeApplication:Boolean;
-		private var _isPortable:Boolean;
-		
 		public function AirPlugin() 
 		{
 		}
 		
-		public function get isNativeApplication():Boolean
-		{
-			return _nativeApplication;
-			
-		}
-		
-		public function get isPortable():Boolean
-		{
-			return _isPortable;
-		}		
-		
 		public function initialize():void
 		{
-			FramerateThrottler.initialize();
-		
-			if (Capabilities.playerType == "Desktop")
-			{
-				_nativeApplication = true;
-			}
-			
-			else if (Capabilities.cpuArchitecture=="ARM")
-			{
-				_nativeApplication = true;
-				_isPortable = true;
-			}	
-			
-			if (_nativeApplication)
+			if (AirStatus.isNativeApplication)
 			{
 				FramerateThrottler.initialize();
 				NativeApplication.nativeApplication.addEventListener(Event.EXITING, onExiting);
@@ -54,7 +27,7 @@ package com.zutalor.air
 		
 		public function nwClose():void
 		{
-			StageRef.stage.nativeWindow.close();			
+			StageRef.stage.nativeWindow.close();
 		}
 		
 		public function nativeApplicationExit():void

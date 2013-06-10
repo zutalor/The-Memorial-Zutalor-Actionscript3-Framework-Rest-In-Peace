@@ -19,6 +19,7 @@
 	import com.zutalor.sequence.Sequence;
 	import com.zutalor.utils.EmbeddedResources;
 	import com.zutalor.utils.gDictionary;
+	import com.zutalor.utils.GUID;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.controller.ViewController;
@@ -33,7 +34,6 @@
 	import flash.events.EventDispatcher;
 	import flash.events.StageVideoAvailabilityEvent;
 	import flash.media.StageVideoAvailability;
-	
 	
 	/**
 	 * ...
@@ -296,8 +296,10 @@
 			vu.calcScale();
 	
 			_appStateCallStack = new gDictionary();
-
-			StageRef.stage.addEventListener(StageVideoAvailabilityEvent.STAGE_VIDEO_AVAILABILITY, onStageVideoAbility);
+			
+			if (!ap.targetTenPointOne)
+				StageRef.stage.addEventListener(StageVideoAvailabilityEvent.STAGE_VIDEO_AVAILABILITY, onStageVideoAbility);
+			
 			StageRef.stage.addEventListener(Event.RESIZE, vu.onStageResize);
 			MasterClock.initialize();
 			Remoting.gateway = ap.gateway;
