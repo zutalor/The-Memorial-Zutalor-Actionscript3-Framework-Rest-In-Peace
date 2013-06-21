@@ -37,5 +37,4 @@ package com.zutalor.utils
 			fileStream.writeBytes(ba);
 		}
 	}
-
 }
