@@ -364,23 +364,26 @@ package com.zutalor.components.media.playlist
 			_isPlaying = false;
 			hasStarted = false;
 			
-			if (_pp.ai)
+			if (_pp)
 			{
-				if (_aiPlayer)
-					_aiPlayer.stop(fadeOut);
-			}
-			else
-			{
-				numPlayers = _players.length;
-				
-				for (i = 0; i < numPlayers; i++)
+				if (_pp.ai)
 				{
-					p = _players.getByIndex(i);
-					if (p.name.indexOf(RECYCLE) == -1)
-						p.stop(fadeOut);
+					if (_aiPlayer)
+						_aiPlayer.stop(fadeOut);
 				}
+				else
+				{
+					numPlayers = _players.length;
+					
+					for (i = 0; i < numPlayers; i++)
+					{
+						p = _players.getByIndex(i);
+						if (p.name.indexOf(RECYCLE) == -1)
+							p.stop(fadeOut);
+					}
+				}
+				MasterClock.callOnce(onStopComplete, fadeOut * 1000);
 			}
-			MasterClock.callOnce(onStopComplete, fadeOut * 1000);
 		}
 		
 		public function set volume(v:Number):void

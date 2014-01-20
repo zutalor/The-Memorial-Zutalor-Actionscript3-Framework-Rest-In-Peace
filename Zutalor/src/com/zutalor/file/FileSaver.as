@@ -20,6 +20,7 @@ package com.zutalor.file
 		private var urlReq:URLRequest;
 		private var urlStream:URLStream;
 		private var fileData:ByteArray;
+		private var fileStr:String;
 		private var dest:String;
 		private var destDir:String;
 		
@@ -41,7 +42,16 @@ package com.zutalor.file
 			removeListeners();
 		}
 		
-		public function write(fileData:ByteArray, dest:String, destDirectory:String = "desktop"):void
+		public function writeString(str:String, dest:String, destDirectory:String = "desktop"):void
+		{
+			this.dest = dest;
+			this.fileData = null;
+			this.fileStr = str;
+			this.destDir = destDirectory;
+			writeAirFile();
+		}
+		
+		public function writeBytes(fileData:ByteArray, dest:String, destDirectory:String = "desktop"):void
 		{
 			this.dest = dest;
 			this.fileData = fileData;
@@ -106,7 +116,12 @@ package com.zutalor.file
 			
 			file = file.resolvePath(dest);
 			fileStream.open(file, FileMode.WRITE);
-			fileStream.writeBytes(fileData, 0, fileData.length);
+			
+			if (fileData)
+				fileStream.writeBytes(fileData, 0, fileData.length);
+			else
+				fileStream.writeUTFBytes(fileStr);
+				
 			fileStream.close();
 			dispatchEvent(new Event(Event.COMPLETE));
 		}

@@ -6,6 +6,7 @@ package com.zutalor.view.rendering
 	import com.zutalor.containers.ViewContainer;
 	import com.zutalor.plugin.Plugins;
 	import com.zutalor.translate.Translate;
+	import com.zutalor.utils.EmbeddedResources;
 	import com.zutalor.view.properties.ViewItemProperties;
 
 	public class ViewItemRenderer
@@ -27,9 +28,18 @@ package com.zutalor.view.rendering
 		{
 			var viewItem:Component;
 			var ViewItemClass:Class;
-				
-			ViewItemClass = Plugins.getClass(vip.type);
-			viewItem = new ViewItemClass(vip.name);
+			
+			if (vip.type == "embed")
+			{
+				viewItem = new Component("vip.name");
+				ViewItemClass = EmbeddedResources.getClass(vip.className)
+				viewItem.addChild(new ViewItemClass());
+			}
+			else
+			{
+				ViewItemClass = Plugins.getClass(vip.type);
+				viewItem = new ViewItemClass(vip.name);
+			}
 			container.push(viewItem);
 			viewItem.name = vip.name;
 			viewItem.render(vip);

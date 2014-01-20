@@ -130,7 +130,7 @@ package com.zutalor.gesture
 			
 			className = getClassName(ge.target.reflect());
 			agp = _activeGestures.getByKey(className);
-			age = new AppGestureEvent(agp.type, Gesture(ge.target));
+			age = new AppGestureEvent(className, Gesture(ge.target));
 			agp.listener(age);
 		}
 		

@@ -246,16 +246,12 @@ package com.zutalor.components.media.playlist
 			for (var i:int = 0; i < _sp.layerClipNames.length; i++)
 			{
 				pip = _ppm.getItemPropsByName(_sp.playlist.playlistName, _sp.layerClipNames[i]);
-				if (!(!_volume && pip.url.indexOf(".mp3") != -1)) // don't play if volume is 0
-					if (clipSelector != null)
-					{
-						if (clipSelector(pip.context))
-						{
-							_clipsToPlay.push(_sp.layerClipNames[i]);
-						}
-					}
-					else
-						_clipsToPlay.push(_sp.layerClipNames[i]);
+				if (volume && clipSelector != null && clipSelector(pip.context))
+				{
+					_clipsToPlay.push(_sp.layerClipNames[i]);
+				}
+				else
+					_clipsToPlay.push(_sp.layerClipNames[i]);
 			}
 			fillClipCache();
 		}

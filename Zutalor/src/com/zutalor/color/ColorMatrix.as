@@ -99,7 +99,7 @@
 //changes in v2.41
 // Added several default values to methods
 
-package com.zutalor.utils {
+package com.zutalor.color {
 	
     import __AS3__.vec.Vector;
     

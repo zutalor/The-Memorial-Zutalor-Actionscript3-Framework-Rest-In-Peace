@@ -202,7 +202,7 @@
 				state = state.toLowerCase();
 				SWFAddress.setTitle(ap.appName + " - " + state);
 				SWFAddress.setValue(state);
-				if (ap.googleAnalyticsAccount && AirStatus.isNativeApplication || DEBUG_ANALYTICS)
+				if (ap.googleAnalyticsAccount || DEBUG_ANALYTICS)
 					Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.TRACK_PAGE_VIEW,
 																			{ page:state } );
 				changeAppState(state);
@@ -309,12 +309,12 @@
 				Spinner.init(ap.spinnerGraphicId, ap.spinnerGraphicCyclesPerSecond,
 						EmbeddedResources.getClass(ap.spinnerSoundClassName), ap.spinnerSoundInterval);
 				
-			if (ap.googleAnalyticsAccount && AirStatus.isNativeApplication || DEBUG_ANALYTICS)
+			if (ap.googleAnalyticsAccount || DEBUG_ANALYTICS)
 			{
 				Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.INITIALIZE,
-									{ display:StageRef.stage, accountId:ap.googleAnalyticsAccount, debug:DEBUG_ANALYTICS } );
+									{ display:StageRef.stage, accountId:ap.googleAnalyticsAccount, debug:DEBUG_ANALYTICS, enabled:ap.production } );
 				Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.TRACK_PAGE_VIEW,
-									{ page:ap.appName + " " + ap.version + " started." } );
+									{ page:ap.appName + " " + ap.version + " Started." } );
 			}
 			
 			StageRef.stage.addEventListener(UIEvent.APP_STATE_SELECTED, onStateChangeEvent);

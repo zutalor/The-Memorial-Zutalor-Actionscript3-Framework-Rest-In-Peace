@@ -2,20 +2,14 @@
 {
 	import com.zutalor.application.Application;
 	import com.zutalor.components.media.base.MediaController;
-	import com.zutalor.positioning.Aligner;
 	import com.zutalor.events.MediaEvent;
 	import com.zutalor.interfaces.IMediaController;
 	import com.zutalor.objectPool.ObjectPool;
-	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.EmbeddedResources;
-	import com.zutalor.utils.Scale;
-	import com.zutalor.utils.StageRef;
 	import com.zutalor.widgets.RunTimeTrace;
-	import flash.display.Stage;
 	import flash.events.Event;
 	import flash.events.NetStatusEvent;
 	import flash.events.StageVideoEvent;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.media.SoundTransform;
 	import flash.media.StageVideo;
@@ -251,7 +245,6 @@
 		override public function onPlaybackComplete(e:Event = null):void
 		{
 			super.onPlaybackComplete(e);
-			MasterClock.stop(onPlaybackComplete);
 		}
 		
 		override public function closeStream():void

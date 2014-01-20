@@ -9,6 +9,7 @@ package com.zutalor.analytics
 	public class Analytics
 	{
 		private var _tracker:AnalyticsTracker;		
+		private var _enabled:Boolean;
 		
 		public function Analytics() 
 		{
@@ -17,14 +18,15 @@ package com.zutalor.analytics
 		
 		public function initialize(params:Object):void
 		{
-			trace(params[0], params[1], params[2]);
+			_enabled = params["enabled"];
 			_tracker = new GATracker(params["display"], params["accountId"], "AS3", params["debug"] );
 
 		}
 
 		public function trackPageView(params:Object):void
 		{
-			_tracker.trackPageview(params["page"]);
+			if (_enabled)
+				_tracker.trackPageview(params["page"]);
 		}
 	}	
 }

@@ -155,7 +155,7 @@
 			
 			if (!fadeOut)
 				fadeOut = 0;
-
+				
 			mediaController.addEventListener(MediaEvent.PLAY, onPlayStarted);
 			
 			if (startDelay)
@@ -299,7 +299,7 @@
 		private function cleanUpAfterStop():void
 		{
 			Spinner.hide();
-			mediaController.volume = mediaController.view.alpha = 1;
+			mediaController.volume = 1;
 			setPlayPauseButton();
 		}
 		

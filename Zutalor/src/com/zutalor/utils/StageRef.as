@@ -34,10 +34,11 @@ package com.zutalor.utils
 			_gestureListener.deactivateGesture(type)
 		}
 		
-		public static function removeAllGestureListeners():void
+/*		public static function removeAllGestureListeners():void TODO Buggy
 		{
 			_gestureListener.deactivateAllGestures();
 		}
+*/	
 	}
 
 }
