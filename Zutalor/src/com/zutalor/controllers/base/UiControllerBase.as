@@ -188,7 +188,7 @@ package com.zutalor.controllers.base
 			
 		}
 		
-		public function stop():void
+		public function stop(message:String = null):void
 		{
 			
 		}

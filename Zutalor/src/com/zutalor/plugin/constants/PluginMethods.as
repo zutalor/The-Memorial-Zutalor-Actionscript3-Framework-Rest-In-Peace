@@ -22,7 +22,6 @@
 		public static const SET_PREV_BUTTON_VISIBILITY:String = "setPrevButtonVisibility";
 		public static const SET_NEXT_BUTTON_VISIBILITY:String = "setNextButtonVisibility";
 		public static const INITIALIZE:String = "initialize";
-		public static const TRACK_PAGE_VIEW:String = "trackPageView";
 		public static const NW_CLOSE:String = "nwClose";
 		public static const NATIVE_APP_EXIT:String = "nativeApplicationExit";
 		public static const NW_MINIMIZE:String = "nwMinimize";

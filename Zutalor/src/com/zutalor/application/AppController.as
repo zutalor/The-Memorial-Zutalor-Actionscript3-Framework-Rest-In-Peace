@@ -5,6 +5,7 @@
 	import com.greensock.TweenMax;
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.amfphp.Remoting;
+	import com.zutalor.analytics.Analytics;
 	import com.zutalor.application.ApplicationProperties;
 	import com.zutalor.audio.SamplePlayer;
 	import com.zutalor.color.Color;
@@ -156,6 +157,7 @@
 				appState = _appStateCallStack.getKeyByIndex(_appStateCallStack.length - 1);
 				SWFAddress.setTitle(ap.appName + " - " + appState);
 				SWFAddress.setValue(appState);
+				Analytics.trackPageView(appState);
 				_curViewProps = null;
 			}
 		}
@@ -202,9 +204,6 @@
 				state = state.toLowerCase();
 				SWFAddress.setTitle(ap.appName + " - " + state);
 				SWFAddress.setValue(state);
-				if (ap.googleAnalyticsAccount || DEBUG_ANALYTICS)
-					Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.TRACK_PAGE_VIEW,
-																			{ page:state } );
 				changeAppState(state);
 			}
 		}
@@ -212,6 +211,7 @@
 		private function changeAppState(state:String):void
 		{
 			_curAppState = state;
+			Analytics.trackPageView(state);
 			if (_curViewProps && !_curViewProps.contentPersists)
 			{
 				if (appStateProps.viewId == _curViewProps.name)
@@ -311,10 +311,12 @@
 				
 			if (ap.googleAnalyticsAccount || DEBUG_ANALYTICS)
 			{
-				Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.INITIALIZE,
-									{ display:StageRef.stage, accountId:ap.googleAnalyticsAccount, debug:DEBUG_ANALYTICS, enabled:ap.production } );
-				Plugins.callMethod(PluginClasses.ANALYTICS, PluginMethods.TRACK_PAGE_VIEW,
-									{ page:ap.appName + " " + ap.version + " Started." } );
+				if (ap.targetMobile && AirStatus.isMobile && ap.production)
+					Analytics.initialize(StageRef.stage, ap.googleAnalyticsAccount);
+				else
+					Analytics.initialize(StageRef.stage, ap.googleAnalyticsTestAccount);
+					
+				Analytics.trackPageView(ap.version + " - " + ap.appName + " " + "Started");
 			}
 			
 			StageRef.stage.addEventListener(UIEvent.APP_STATE_SELECTED, onStateChangeEvent);

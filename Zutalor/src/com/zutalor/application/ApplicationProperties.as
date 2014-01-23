@@ -40,16 +40,13 @@
 		public var enableTextToSpeech:Boolean;
 		public var stageVideoAvailable:Boolean;
 		public var googleAnalyticsAccount:String;
+		public var googleAnalyticsTestAccount:String;
 		public var showFocus:Boolean;
 				
 		//air & phone related
 		
-		public var flurryIOSKey:String;
-		public var flurryTestingIOSKey:String;
-		public var flurryAndroidKey:String;
-		public var flurryTestingAndroidKey:String;
 		public var portrait:Boolean;
-		public var targetPortable:Boolean;
+		public var targetMobile:Boolean;
 		public var targetTenPointOne:Boolean;
 		
 		public function ApplicationProperties() {}

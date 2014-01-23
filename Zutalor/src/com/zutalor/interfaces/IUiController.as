@@ -15,6 +15,7 @@
 		function getValueObject(params:Object = null):*
 		function exit():void
 		function dispose():void
+		function stop(message:String = null):void
 		function onModelError(args:* = null):void
 		function onModelChange(args:* = null):void
 		function valueUpdated(params:*):void

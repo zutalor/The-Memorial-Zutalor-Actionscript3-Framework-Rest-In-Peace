@@ -2,31 +2,40 @@ package com.zutalor.analytics
 {
 	import com.google.analytics.AnalyticsTracker;
 	import com.google.analytics.GATracker;
+	import com.zutalor.air.AirStatus;
+	import flash.display.DisplayObject;
 	/**
 	 * ...
 	 * @author Geoff Pepos
 	 */
 	public class Analytics
 	{
-		private var _tracker:AnalyticsTracker;		
-		private var _enabled:Boolean;
+		private static var _tracker:AnalyticsTracker;		
+		public static var enabled:Boolean;
 		
 		public function Analytics() 
 		{
 			
 		}
 		
-		public function initialize(params:Object):void
+		public static function initialize(display:DisplayObject, accountId:String, debug:Boolean = false):void
 		{
-			_enabled = params["enabled"];
-			_tracker = new GATracker(params["display"], params["accountId"], "AS3", params["debug"] );
-
+			if (accountId)
+			{
+				enabled = true;
+				_tracker = new GATracker(display, accountId, "AS3", debug);
+			}
 		}
 
-		public function trackPageView(params:Object):void
+		public static function trackPageView(page:String):void
 		{
-			if (_enabled)
-				_tracker.trackPageview(params["page"]);
+			if (enabled)
+			{
+				if (AirStatus.isNativeApplication)
+					_tracker.trackPageview(" " + page);
+				else
+					_tracker.trackPageview(page);
+			}
 		}
 	}	
 }

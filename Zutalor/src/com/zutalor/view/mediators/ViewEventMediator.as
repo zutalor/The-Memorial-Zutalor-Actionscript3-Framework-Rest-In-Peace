@@ -1,6 +1,7 @@
 package com.zutalor.view.mediators
 {
 	import com.zutalor.air.AirStatus;
+	import com.zutalor.analytics.Analytics;
 	import com.zutalor.components.base.Component;
 	import com.zutalor.components.button.Button;
 	import com.zutalor.components.group.ComponentGroup;
@@ -454,6 +455,7 @@ package com.zutalor.view.mediators
 							viewItemMethodCall();
 							break;
 						case ViewItemProperties.URL :
+								Analytics.trackPageView(vip.tapAction);
 							url();
 							break;
 						default :
