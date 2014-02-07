@@ -34,13 +34,14 @@ package com.zutalor.widgets
 				lastY = y * Scale.curAppScale;
 				
 			var tf:TextFormat = new TextFormat();
-			tf.size = 40;
+			tf.size = 20;
 			tf.font = "_sans";
+			message.selectable = false;
 			message.text = s;
 			message.setTextFormat(tf);
 			message.type = TextFieldType.INPUT;
 			message.maxChars = 600;
-			message.width = 600;
+			message.width = 2000;
 			background.graphics.beginFill(0xFFFFFF);
 			background.graphics.drawRect(0, 0, message.textWidth * 1.4, message.textHeight * 1.6);
 			message.x = message.y = 4;

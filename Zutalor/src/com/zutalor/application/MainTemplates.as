@@ -51,7 +51,7 @@ package
 		private function init():void
 		{
 			EmbeddedResources.register(QiPhoneResources);
-			Plugins.registerClassAndCreateCachedInstance(QiUiController);
+			Plugins.registerClassAndCreateCachedInstance(QiUXController);
 			initializePresets();
 			initializePlugins();
 			super.start("xml/boot.xml");

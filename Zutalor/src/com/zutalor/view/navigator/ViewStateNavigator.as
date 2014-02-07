@@ -5,7 +5,7 @@ package com.zutalor.view.navigator
 	import com.zutalor.application.Application;
 	import com.zutalor.audio.GraphSettings;
 	import com.zutalor.audio.SamplePlayer;
-	import com.zutalor.controllers.base.UiControllerBase;
+	import com.zutalor.controllers.base.UXControllerBase;
 	import com.zutalor.events.HotKeyEvent;
 	import com.zutalor.gesture.UserInputProperties;
 	import com.zutalor.properties.PropertyManager;
@@ -34,7 +34,7 @@ package com.zutalor.view.navigator
 		
 		protected var samplePlayer:SamplePlayer;
 		protected var textToSpeechUtils:TextToSpeechUtils;
-		protected var uiController:UiControllerBase;
+		protected var uxController:UXControllerBase;
 		protected var hotKeys:PropertyManager;
 		protected var gestures:PropertyManager;
 		protected var inputText:String;
@@ -72,9 +72,9 @@ package com.zutalor.view.navigator
 		
 		protected static const VALID_INPUT:String = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890~`!@#$%^&*()_+-={}[]:;\\',<>/|" + '"';
 		
-		public function ViewStateNavigator(pUiController:UiControllerBase)
+		public function ViewStateNavigator(pUXController:UXControllerBase)
 		{
-			uiController = pUiController;
+			uxController = pUXController;
 			init();
 		}
 		
@@ -119,7 +119,7 @@ package com.zutalor.view.navigator
 			}
 		}
 
-		public function onUiControllerMethodCompleted(args:XMLList, data:Object, id:String):void
+		public function onUXControllerMethodCompleted(args:XMLList, data:Object, id:String):void
 		{
 			np.data = data;
 			np.id = id;
@@ -169,15 +169,15 @@ package com.zutalor.view.navigator
 					np.tp.alreadyMerged = true;
 					mergeStates(merge);
 				}
-				uiController.getValueObject().text = textToSpeechUtils.getTextForDisplay(np.tp.tText);
-				uiController.getValueObject().prompt = "";
-				uiController.getValueObject().inputText = inputText = "";
-				uiController.onModelChange();
+				uxController.getValueObject().text = textToSpeechUtils.getTextForDisplay(np.tp.tText);
+				uxController.getValueObject().prompt = "";
+				uxController.getValueObject().inputText = inputText = "";
+				uxController.onModelChange();
 				
 				if (np.curTransitionType)
 				{
 					bitMapSlide.out(np.curTransitionType);
-					transition.simpleRender(uiController.vc.container, np.curTransitionType, "in", initializeState);
+					transition.simpleRender(uxController.vc.container, np.curTransitionType, "in", initializeState);
 				}
 				else
 					initializeState();
@@ -261,18 +261,18 @@ package com.zutalor.view.navigator
 			if (!repeatDelay)
 				repeatDelay = 3000;
 			
-			if (String(XML(np.tp.tMeta).state.@includeUiControllerData) != "true")
+			if (String(XML(np.tp.tMeta).state.@includeUXControllerData) != "true")
 				np.data = null;
 
 			MasterClock.unRegisterCallback(checkForKeystrokePause);
 			MasterClock.unRegisterCallback(checkForUserDelay);
 			hkm.registerOnKeyUp(onKeyUp);
 			
-			if (currentStateType == "uiControllerMethod")
+			if (currentStateType == "uxControllerMethod")
 			{
 				stop();
 				np.data = "";
-				uiController[XML(np.tp.tMeta).state.@method](XML(np.tp.tMeta).state);
+				uxController[XML(np.tp.tMeta).state.@method](XML(np.tp.tMeta).state);
 			}
 			else
 			{
@@ -296,7 +296,7 @@ package com.zutalor.view.navigator
 					questionStartTime = getTimer();
 				
 				if (currentStateType == "page")
-					uiController.logEvent("Page: " + currentState);
+					uxController.logEvent("Page: " + currentState);
 				
 				if (repeatText)
 					MasterClock.registerCallback(sayText, true, repeatDelay);
@@ -317,9 +317,9 @@ package com.zutalor.view.navigator
 			if (method)
 			{
 				if (params)
-					uiController[method](params);
+					uxController[method](params);
 				else
-					uiController[method]();
+					uxController[method]();
 			}
 		}
 		
@@ -408,7 +408,7 @@ package com.zutalor.view.navigator
 		{
 			if (!np.inTransition
 					&& hkm.keyInvalidated
-					&& currentStateType != "uiControllerMethod"
+					&& currentStateType != "uxControllerMethod"
 					&& ke.charCode && ke.charCode != TAB)
 						playEmbedded("Unrecognized");
 						
@@ -427,10 +427,10 @@ package com.zutalor.view.navigator
 			uip = hotKeys.getPropsByName(hke.message);
 			
 			if (uip.action == "sendKeystroke")
-				uiController.onKey(hke.message);
+				uxController.onKey(hke.message);
 			else if (uip.state && uip.activeForStateType == currentStateType)
 				activateState(uip.state);
-			else if (currentStateType != "uiControllerMethod"
+			else if (currentStateType != "uxControllerMethod"
 									&& (uip.activeForStateType == "all" || uip.activeForStateType == currentStateType))
 				onUserInput(uip);
 		
@@ -469,7 +469,7 @@ package com.zutalor.view.navigator
 			switch (uip.action)
 			{
 				case "exit" :
-					uiController.exit();
+					uxController.exit();
 					break;
 				case "goodbye" :
 					activateState("goodbye");
@@ -488,14 +488,14 @@ package com.zutalor.view.navigator
 						break;
 					if (textToSpeech.tempo < 2.7)
 						textToSpeech.tempo += .1;
-					uiController.logEvent("Tempo Change: " + textToSpeech.tempo.toPrecision(2));
+					uxController.logEvent("Tempo Change: " + textToSpeech.tempo.toPrecision(2));
 					break;
 				case "slower" :
 					if (textToSpeech.paused)
 						break;
 					if (textToSpeech.tempo > .3)
 						textToSpeech.tempo -= .1;
-					uiController.logEvent("Tempo Change: " + textToSpeech.tempo.toPrecision(2));
+					uxController.logEvent("Tempo Change: " + textToSpeech.tempo.toPrecision(2));
 					break;
 				case "rewind" :
 					textToSpeech.rewind();
@@ -611,7 +611,7 @@ package com.zutalor.view.navigator
 					break;
 				default :
 					if (np.nextState == "exit")
-						uiController.exit();
+						uxController.exit();
 					else
 						activateState(np.nextState);
 					break;
@@ -648,7 +648,7 @@ package com.zutalor.view.navigator
 			answer.UTCTimezoneOffset = String(date.getTimezoneOffset() / 60 * -1);
 			answer.questionId = np.tp.name;
 			
-			answer.correctAnswer = Object(uiController).getCorrectAnswer(answer);
+			answer.correctAnswer = Object(uxController).getCorrectAnswer(answer);
 			if (answer.correctAnswer && answer.answer == answer.correctAnswer)
 				answer.answerIsCorrect = "Y";
 			else if (answer.correctAnswer && answer.answer != answer.correctAnswer)
@@ -714,8 +714,8 @@ package com.zutalor.view.navigator
 		
 		protected function updateInputTextView():void
 		{
-			uiController.getValueObject().inputText =  "<P>" + textToSpeechUtils.getTextForDisplay(inputText) + "</P>";
-			uiController.onModelChange("inputText");
+			uxController.getValueObject().inputText =  "<P>" + textToSpeechUtils.getTextForDisplay(inputText) + "</P>";
+			uxController.onModelChange("inputText");
 			np.answer = np.answerText = inputText;
 			np.correctAnswer = null;
 		}
@@ -799,7 +799,7 @@ package com.zutalor.view.navigator
 		
 		protected function submitCurrentAnswer(answer:AnswerProperties):void
 		{
-			uiController[np.answerMethod](answer,
+			uxController[np.answerMethod](answer,
 							String(XML(np.tp.tMeta).state.@onCompleteState));
 		}
 		
@@ -809,10 +809,10 @@ package com.zutalor.view.navigator
 			tp = Translate.presets.getPropsByName(id);
 			if (tp)
 			{
-				uiController.getValueObject().prompt = textToSpeechUtils.getTextForDisplay(tp.tText);
-				uiController.onModelChange("prompt");
-				uiController.vc.getItemByName("prompt").alpha = 0;
-				TweenMax.to(uiController.vc.getItemByName("prompt"), .5, { alpha:1 } );
+				uxController.getValueObject().prompt = textToSpeechUtils.getTextForDisplay(tp.tText);
+				uxController.onModelChange("prompt");
+				uxController.vc.getItemByName("prompt").alpha = 0;
+				TweenMax.to(uxController.vc.getItemByName("prompt"), .5, { alpha:1 } );
 				speak(tp.tText, tp.sound, onComplete, onCompleteArgs);
 			}
 		}
@@ -820,7 +820,7 @@ package com.zutalor.view.navigator
 		protected function stop():void
 		{
 			textToSpeech.stop();
-			uiController.stop();
+			uxController.stop();
 			samplePlayer.stop();
 		}
 	}

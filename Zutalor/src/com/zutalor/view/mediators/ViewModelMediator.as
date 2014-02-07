@@ -110,7 +110,7 @@ package com.zutalor.view.mediators
  		{		
 			if (vip.voName)
 			{
-				_valueObject = Plugins.callMethod(vc.vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
+				_valueObject = Plugins.callMethod(vc.vp.uxControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );
 				if (_valueObject)
 					_valueObject[vip.name] = item.value;
 				else
@@ -125,7 +125,7 @@ package com.zutalor.view.mediators
 			
 			if (vip.voName)
 			{
-				_valueObject = Plugins.callMethod(vc.vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );						
+				_valueObject = Plugins.callMethod(vc.vp.uxControllerInstanceName, PluginMethods.GET_VALUE_OBJECT, { voName:vip.voName } );						
 				item.value = _valueObject[vip.name];
 			}
 		}

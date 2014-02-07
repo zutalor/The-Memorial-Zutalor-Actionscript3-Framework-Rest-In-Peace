@@ -67,7 +67,7 @@ package com.zutalor.application
 																							onUncaughtError);
 		}
 		
-		public function start(pBootXmlUrl:String):void
+		public function start(pBootXmlUrl:String = null):void
 		{
 			var paramObj:Object
 			var url:String;

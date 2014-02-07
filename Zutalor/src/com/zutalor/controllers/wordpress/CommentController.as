@@ -2,8 +2,8 @@ package com.zutalor.controllers.wordpress
 {
 	import com.zutalor.amfphp.Remoting;
 	import com.zutalor.constants.ModelMethods;
-	import com.zutalor.controllers.base.UiControllerBase;
-	import com.zutalor.interfaces.IUiController;
+	import com.zutalor.controllers.base.UXControllerBase;
+	import com.zutalor.interfaces.IUXController;
 	import com.zutalor.plugin.Plugins;
 	import flashpress.vo.WpCommentVO;
 	import flashpress.vo.WpTermVO;
@@ -11,7 +11,7 @@ package com.zutalor.controllers.wordpress
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class CommentController extends UiControllerBase implements IUiController
+	public class CommentController extends UXControllerBase implements IUXController
 	{
 		private var _wpCommentVO:WpCommentVO;
 		private var _wpTermVO:WpTermVO;	

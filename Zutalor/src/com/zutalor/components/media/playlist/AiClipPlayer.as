@@ -96,7 +96,7 @@ package com.zutalor.components.media.playlist
 				p.stop(fade);
 			}
 			if (fade)
-				MasterClock.callOnce(onStopComplete, fade * 1000);
+				MasterClock.callOnce(onStopComplete, fade * 1100);
 			else
 				onStopComplete();
 		}

@@ -212,8 +212,8 @@ package com.zutalor.view.mediators
 				{
 					Focus.show(item, vc.container);
 					vip = vc.getItemPropsByName(item.name);
-					if (vc.vp.uiControllerInstanceName)
-						Plugins.callMethod(vc.vp.uiControllerInstanceName, PluginMethods.ON_FOCUS_IN, {itemWithFocus: item, focusEvent: fe});
+					if (vc.vp.uxControllerInstanceName)
+						Plugins.callMethod(vc.vp.uxControllerInstanceName, PluginMethods.ON_FOCUS_IN, {itemWithFocus: item, focusEvent: fe});
 				}
 			}
 		}
@@ -483,7 +483,7 @@ package com.zutalor.view.mediators
 					{
 						var dest:String;
 						
-						dest = vc.vp.uiControllerInstanceName;
+						dest = vc.vp.uxControllerInstanceName;
 						
 						if (vip.voName)
 							vc.viewModelMediator.copyViewItemToValueObject(vip, vc.container.getChildByName(vip.name));
@@ -503,7 +503,7 @@ package com.zutalor.view.mediators
 					function uiEvent():void
 					{
 						var dest:String;
-						dest = vc.vp.uiControllerInstanceName;
+						dest = vc.vp.uxControllerInstanceName;
 						
 						switch (vip.tapAction)
 						{

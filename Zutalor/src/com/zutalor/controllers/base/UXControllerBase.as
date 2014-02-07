@@ -2,7 +2,7 @@ package com.zutalor.controllers.base
 {
 	import com.zutalor.air.AirStatus;
 	import com.zutalor.events.UIEvent;
-	import com.zutalor.interfaces.IUiController;
+	import com.zutalor.interfaces.IUXController;
 	import com.zutalor.plugin.constants.PluginClasses;
 	import com.zutalor.plugin.constants.PluginMethods;
 	import com.zutalor.plugin.Plugins;
@@ -22,12 +22,12 @@ package com.zutalor.controllers.base
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class UiControllerBase implements IUiController
+	public class UXControllerBase implements IUXController
 	{
 		private var _vController:ViewController;
 		private var _currentView:String;
 		
-		public function UiControllerBase() {}
+		public function UXControllerBase() {}
 		
 		final public function init(params:Object):void
 		{

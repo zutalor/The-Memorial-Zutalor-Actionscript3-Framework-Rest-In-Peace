@@ -13,7 +13,7 @@
 	public class ViewProperties extends PropertiesBase implements IProperties
 	{
 		public var type:String;
-		public var uiControllerInstanceName:String;
+		public var uxControllerInstanceName:String;
 		public var initialMethod:String;
 		public var initialMethodParams:String;
 		public var toolTipPreset:String;

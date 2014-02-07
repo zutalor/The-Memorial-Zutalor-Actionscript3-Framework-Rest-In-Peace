@@ -86,9 +86,9 @@ package com.zutalor.view.rendering
 			if (vp.initialMethod)
 			{
 				if (vp.initialMethodParams)
-					Plugins.callMethod(vp.uiControllerInstanceName, vp.initialMethod,vp.initialMethodParams);
+					Plugins.callMethod(vp.uxControllerInstanceName, vp.initialMethod,vp.initialMethodParams);
 				else
-					Plugins.callMethod(vp.uiControllerInstanceName, vp.initialMethod);
+					Plugins.callMethod(vp.uxControllerInstanceName, vp.initialMethod);
 			}
 			onComplete();
 		}

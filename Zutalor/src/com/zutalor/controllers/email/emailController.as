@@ -2,7 +2,7 @@ package com.zutalor.controllers.email
 {
 	import com.zutalor.amfphp.Remoting;
 
-	import com.zutalor.interfaces.IUiController;
+	import com.zutalor.interfaces.IUXController;
 	import com.zutalor.application.ApplicationProperties;
 	import com.zutalor.view.properties.ViewItemProperties;
 	import com.zutalor.properties.ViewPropsManager;
@@ -11,7 +11,7 @@ package com.zutalor.controllers.email
 	 * ...
 	 * @author Geoff Pepos
 	 */
-	public class EmailController extends UiControllerBase implements IUiController
+	public class EmailController extends UXControllerBase implements IUXController
 	{
 		private var _emailVO:EmailVO;
 		public var emailTo:String;

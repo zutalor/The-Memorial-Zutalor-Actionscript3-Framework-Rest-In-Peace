@@ -46,7 +46,10 @@ package com.zutalor.application
 			_loaders = [];
 			
 			if (inlineXML)
+			{
 				parseProps(inlineXML);
+				loadXml();
+			}
 			
 			if (bootXmlUrl)
 				loadBootXml(bootXmlUrl);
@@ -91,11 +94,14 @@ package com.zutalor.application
 			_xmlFiles = urls.length;
 			_xmlFilesProcessed = 0;
 			
-			for (var i:int = 0; i < _xmlFiles; i++)
-			{
-				_loaders[i] = new URLLoaderG();
-				_loaders[i].load(urls[i] + _cacheBuster, onLoadComplete);
-			}
+			if (!_xmlFiles)
+				_onComplete();
+			else			
+				for (var i:int = 0; i < _xmlFiles; i++)
+				{
+					_loaders[i] = new URLLoaderG();
+					_loaders[i].load(urls[i] + _cacheBuster, onLoadComplete);
+				}
 			
 			function addPath(path:String, a:Array):Array
 			{
@@ -121,8 +127,7 @@ package com.zutalor.application
 					_loaders[i] = null;
 				}
 				 _loaders = null;
-
-					_onComplete();
+				_onComplete();
 			}
 		}
 		

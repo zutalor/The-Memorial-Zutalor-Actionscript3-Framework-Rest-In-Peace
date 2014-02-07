@@ -78,10 +78,10 @@
 			vp.container = vc;
 			vp.container.viewController = this;
 
-			if (vp.uiControllerInstanceName)
+			if (vp.uxControllerInstanceName)
 			{
-				Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.INIT, { controller:this, id:viewId } );
-				defaultVO = Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.GET_VALUE_OBJECT);
+				Plugins.callMethod(vp.uxControllerInstanceName, PluginMethods.INIT, { controller:this, id:viewId } );
+				defaultVO = Plugins.callMethod(vp.uxControllerInstanceName, PluginMethods.GET_VALUE_OBJECT);
 				viewModelMediator = new ViewModelMediator(this);
 			}
 			
@@ -121,10 +121,10 @@
 				viewItemPositioner.positionItem(presets.getItemPropsByIndex(viewId, i));
 		}
 		
-		public function callUiControllerMethod(method:String, arg:*, controllerId:String = null):void
+		public function callUXControllerMethod(method:String, arg:*, controllerId:String = null):void
 		{
 			if (!controllerId)
-				controllerId = vp.uiControllerInstanceName;
+				controllerId = vp.uxControllerInstanceName;
 			
 			Plugins.callMethod(controllerId, method, arg);
 		}
@@ -200,7 +200,7 @@
 			
 				if (vip.voName)
 				{
-					Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
+					Plugins.callMethod(vp.uxControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
 					item = vp.container.getChildByName(itemName) as Component;
 					viewModelMediator.copyViewItemToValueObject(vip, item);
 				}
@@ -213,7 +213,7 @@
 					vip = presets.getItemPropsByIndex(viewId, i);
 					if (vip.voName)
 					{
-						Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
+						Plugins.callMethod(vp.uxControllerInstanceName, PluginMethods.VALUE_UPDATED, { itemName:vip.name, voName:vip.voName } );
 						item = vp.container.getChildAt(i) as Component;
 						viewModelMediator.copyViewItemToValueObject(vip, item);
 					}
@@ -301,7 +301,7 @@
 			numViewItems = 0;
 			viewModelMediator = null;
 			viewEventMediator = null;
-			Plugins.callMethod(vp.uiControllerInstanceName, PluginMethods.DISPOSE)
+			Plugins.callMethod(vp.uxControllerInstanceName, PluginMethods.DISPOSE)
 		}
 		
 		// GET THE UI ITEM's OBJECT OR PROPERTIES

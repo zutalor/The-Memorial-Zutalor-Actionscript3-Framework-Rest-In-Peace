@@ -23,7 +23,7 @@
 	 */
 	public class MediaPlayer extends Component implements IMediaPlayer, IComponent
 	{
-		public var mediaController:MediaController;
+		private var mediaController:MediaController;
 		protected var _volume:Number;
 		private var _url:String;
 		private var _playerType:String;
@@ -172,11 +172,17 @@
 			setPlayPauseButton();
 		}
 				
-		public function seek(value:Number):void
+		public function seek(timeSecs:Number):void
 		{
-			mediaController.seek(value);
+			if (timeSecs < mediaController.totalTime)
+				mediaController.seek(timeSecs);
 		}
-				
+		
+		public function get currentTime():Number
+		{
+			return mediaController.currentTime;
+		}
+		
 		override public function stop(fadeOut:Number = 0):void
 		{
 			MasterClock.unRegisterCallback(onEndClip);

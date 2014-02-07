@@ -1,11 +1,11 @@
 package com.zutalor.controllers
 {
 	import com.zutalor.components.button.Button;
-	import com.zutalor.controllers.base.UiControllerBase;
+	import com.zutalor.controllers.base.UXControllerBase;
 	import com.zutalor.translate.Translate;
 	import com.zutalor.widgets.Dialog;
 
-	public class DialogController extends UiControllerBase
+	public class DialogController extends UXControllerBase
 	{	
 		private var _vo:Object;
 		private var _callBack:Function;

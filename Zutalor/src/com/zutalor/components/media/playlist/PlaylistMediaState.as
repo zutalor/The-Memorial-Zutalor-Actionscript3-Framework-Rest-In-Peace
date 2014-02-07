@@ -309,15 +309,12 @@
 		
 		public function recyclePlayer(me:MediaEvent):void
 		{
-			var pip:PlaylistItemProperties;
-			
 			if (_players.getByKey(me.target.name))
 			{
 				me.target.visible = false;
 				//traceAction("Recycled", p);
 				//trace("Recycled", me.target.name, "isPlaying", me.target.isPlaying);
 				_players.insert(me.target.name, me.target, RECYCLE);
-				pip = _ppm.getItemPropsByName(_sp.playlist.playlistName, me.target.name);
 			}			
 		}
 		

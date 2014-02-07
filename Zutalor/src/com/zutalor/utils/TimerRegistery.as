@@ -171,6 +171,7 @@
 		{
 			var t:uint;
 			var methodToCall:Function;
+			var args:*;
 			
 			e.stopImmediatePropagation();
 
@@ -186,15 +187,18 @@
 				{
 					if (_callbacks[i] != null && _running[i] && (t > _lastTime[i] + _intervals[i]))
 					{
-						if (!_args[i])
-							_callbacks[i]();
-						else
-							_callbacks[i](_args[i]);
+						methodToCall = _callbacks[i];
+						args = _args[i];
 						
 						if (_fireOnce[i])
 							_callbacks[i] = null;
 						else
 							_lastTime[i] = t;
+							
+						if (!args)	
+							methodToCall();
+						else
+							methodToCall(args);
 					}
 				}
 			}

@@ -486,7 +486,7 @@ package depreciated
 						switch (vip.action)
 						{
 							case UIEvent.CLOSE :
-								Props.uiController.closeView(vip.onTapContainerNames);
+								Props.uxController.closeView(vip.onTapContainerNames);
 								break;
 							case UIEvent.CREATE: 
 							case UIEvent.UPDATE: 
