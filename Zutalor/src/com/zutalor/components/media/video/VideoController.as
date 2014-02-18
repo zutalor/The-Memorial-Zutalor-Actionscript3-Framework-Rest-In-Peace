@@ -39,7 +39,7 @@
 		private var _buffercount:int;
 		
 		public var scaleToFit:Boolean = true;
-		public var bufferSecs:Number = 2;
+		public var bufferSecs:Number = 6;
 		
 		override public function VideoController()
 		{

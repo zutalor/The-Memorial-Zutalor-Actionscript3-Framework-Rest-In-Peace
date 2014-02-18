@@ -8,6 +8,8 @@ package com.zutalor.application
 	import com.zutalor.properties.PropertyManager;
 	import com.zutalor.utils.StageRef;
 	import com.zutalor.widgets.Dialog;
+	import flash.display.StageDisplayState;
+	import flash.events.SoftKeyboardEvent;
 
 	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
@@ -110,16 +112,28 @@ package com.zutalor.application
 			
 			stage = StageRef.stage = main.stage;
 			main.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			SWFFocus.init(stage);
-			stage.stageFocusRect = false;
+			
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			
-			for (var i:int = 0; i < stage.numChildren; i++)
-				stage.getChildAt(i).visible = false;
+			stage.addEventListener( SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATING, preventSoftKeyboard ); 
+			stage.addEventListener( SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, preventSoftKeyboard ); 
+			stage.addEventListener( SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, preventSoftKeyboard ); 
 			
 			_appController = new AppController(this);
+
+			/*SWFFocus.init(stage);
+			stage.stageFocusRect = false;
+			for (var i:int = 0; i < stage.numChildren; i++)
+				stage.getChildAt(i).visible = false;*/
+
 		}
+		
+		private function preventSoftKeyboard( event:SoftKeyboardEvent ):void 
+		{ 
+            event.preventDefault(); 
+            StageRef.stage.focus = null; //close the keyboard, if raised 
+		} 
 		
 		private function onUncaughtError(e:UncaughtErrorEvent):void
 		{
