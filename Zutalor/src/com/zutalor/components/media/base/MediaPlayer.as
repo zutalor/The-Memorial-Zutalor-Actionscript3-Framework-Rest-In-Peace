@@ -1,21 +1,23 @@
 ﻿package com.zutalor.components.media.base
 {
+	import com.greensock.easing.Quad;
 	import com.greensock.TweenMax;
 	import com.zutalor.components.base.Component;
-	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.components.media.base.MediaProperties;
 	import com.zutalor.events.MediaEvent;
 	import com.zutalor.events.MediaLoadProgressEvent;
+	import com.zutalor.interfaces.IComponent;
 	import com.zutalor.interfaces.IMediaPlayer;
 	import com.zutalor.properties.PropertyManager;
-	import com.zutalor.widgets.Spinner;
 	import com.zutalor.utils.MasterClock;
 	import com.zutalor.utils.ShowError;
+	import com.zutalor.utils.StageRef;
 	import com.zutalor.view.properties.ViewItemProperties;
+	import com.zutalor.widgets.Spinner;
 	import flash.display.DisplayObject;
+	import flash.display.Shape;
 	import flash.events.Event;
 	import flash.utils.getTimer;
-	import flash.utils.Timer;
 	
 	/**
 	 * ...
@@ -41,6 +43,7 @@
 		
 		private var _bufferTime:Number;
 		private var _savedVolume:Number;
+		private var _cover:Shape;
 		
 		private static var presets:PropertyManager;
 				
@@ -96,6 +99,7 @@
 		{
 			endVariance = 0;
 			_playerType = _playerType;
+			_cover = new Shape();
 			this.mediaController = mediaController;
 			mediaController.view = this;
 			mediaController.addEventListener(MediaEvent.COMPLETE, onPlayComplete);
@@ -106,14 +110,16 @@
 		}
 		
 		protected function onPlayStarted(me:MediaEvent=null):void
-		{
+		{			
 			mediaController.removeEventListener(MediaEvent.PLAY, onPlayStarted);
 			dispatchEvent(new MediaEvent(MediaEvent.PLAY));
 			Spinner.hide();
+			
 			if (viewFadeIn)
 			{
-				mediaController.view.alpha = 0;
-				TweenMax.to(mediaController.view, viewFadeIn, { alpha:1 } );
+				makeCover();
+				_cover.alpha = 1;
+				TweenMax.to(_cover, viewFadeIn, { alpha:0, ease:Quad.easeIn,  onComplete:removeCover } );
 			}
 			if (audioFadeIn)
 			{
@@ -129,6 +135,22 @@
 				MasterClock.registerCallback(onTotalTimeFound, true, 1000);
 				
 			setPlayPauseButton();
+			
+			function removeCover():void
+			{
+				_cover.visible = false;
+			}
+		}
+		
+		private function makeCover():void
+		{
+			_cover.graphics.clear();
+			_cover.graphics.beginFill(0x0);
+			_cover.graphics.drawRect(0, 0, mediaController.view.width, mediaController.view.height);
+			_cover.alpha = 1;
+			_cover.visible = true;
+			_cover.graphics.endFill();
+			StageRef.stage.addChild(_cover);
 		}
 		
 		// PUBLIC METHODS
@@ -189,9 +211,21 @@
 			MasterClock.unRegisterCallback(onOverLapClip);
 			
 			if (fadeOut)
-				TweenMax.to(mediaController, fadeOut, { alpha:0, volume:0, onComplete:onStopComplete } );
+			{
+				makeCover();
+				StageRef.stage.addChild(_cover);
+				_cover.alpha = 0;
+				TweenMax.to(_cover, fadeOut, { alpha:1, onComplete:removeCover } );
+				TweenMax.to(mediaController, fadeOut, {  volume:0, onComplete:onStopComplete } );
+			}
 			else
 				onStopComplete();
+				
+			function removeCover():void
+			{
+				mediaController.view.visible = false;
+				_cover.visible = false;
+			}
 		}
 				
 		public function get view():DisplayObject

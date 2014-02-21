@@ -116,10 +116,6 @@ package com.zutalor.application
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			
-			stage.addEventListener( SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATING, preventSoftKeyboard ); 
-			stage.addEventListener( SoftKeyboardEvent.SOFT_KEYBOARD_ACTIVATE, preventSoftKeyboard ); 
-			stage.addEventListener( SoftKeyboardEvent.SOFT_KEYBOARD_DEACTIVATE, preventSoftKeyboard ); 
-			
 			_appController = new AppController(this);
 
 			/*SWFFocus.init(stage);
@@ -128,12 +124,6 @@ package com.zutalor.application
 				stage.getChildAt(i).visible = false;*/
 
 		}
-		
-		private function preventSoftKeyboard( event:SoftKeyboardEvent ):void 
-		{ 
-            event.preventDefault(); 
-            StageRef.stage.focus = null; //close the keyboard, if raised 
-		} 
 		
 		private function onUncaughtError(e:UncaughtErrorEvent):void
 		{

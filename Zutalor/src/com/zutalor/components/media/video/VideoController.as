@@ -10,7 +10,6 @@
 	import flash.events.Event;
 	import flash.events.NetStatusEvent;
 	import flash.events.StageVideoEvent;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.media.SoundTransform;
 	import flash.media.StageVideo;
@@ -39,7 +38,7 @@
 		private var _buffercount:int;
 		
 		public var scaleToFit:Boolean = true;
-		public var bufferSecs:Number = 6;
+		public var bufferSecs:Number = 11;
 		
 		override public function VideoController()
 		{
@@ -71,19 +70,23 @@
 				nc.connect(null);
 			}
 			_url = url;
-			
-			if (stream)
-				stream.close();
-			else
-			{
-				stream = new NetStream(nc);
-				stream.addEventListener(NetStatusEvent.NET_STATUS, onNSStatus, false, 0, true);
-			}
-			stream.client = this;
-			stream.bufferTime = bufferSecs;
+			setupStream();
 			view.x  = x;
 			view.y = y;
 			setupVideo();
+			
+			function setupStream():void
+			{
+				if (stream)
+					stream.close();
+				else
+				{
+					stream = new NetStream(nc);
+					stream.addEventListener(NetStatusEvent.NET_STATUS, onNSStatus, false, 0, true);
+				}	
+				stream.client = this;
+				stream.bufferTime = bufferSecs;
+			}
 
 			function setupVideo():void
 			{
@@ -163,6 +166,7 @@
 			var urls:Array;
 			
 			super.play(start);
+			
 			if (_url)
 			{
 				if (_paused)
@@ -193,7 +197,6 @@
 						}
 						else
 						{
-							stream.close();
 							urls = _url.split(",");
 							for (var i:int = 0; i < urls.length; i++)
 								stream.play(urls[i]);
@@ -381,23 +384,19 @@
 					_buffering = false;
 					break;
 				case "NetStream.Buffer.Flush":
-					dispatchEvent(new MediaEvent(MediaEvent.BUFFER_FULL));
+					dispatchEvent(new MediaEvent(MediaEvent.BUFFER_FLUSH));
 					_buffering = false;
 					break;
 				case "NetStream.Play.Start":
-					dispatchEvent(new MediaEvent(MediaEvent.BUFFER_FULL));
+					dispatchEvent(new MediaEvent(MediaEvent.PLAY));
 					_buffering = false;
 					break;
 				case "NetStream.Play.Stop":
 				case "NetStream.Play.Complete":
-					dispatchEvent(new MediaEvent(MediaEvent.BUFFER_FULL));
-					_paused = false;
-					_isPlaying = false;
 					onPlaybackComplete();
 					break;
 				case "NetStream.Play.StreamNotFound":
 					dispatchEvent(new MediaEvent(MediaEvent.STREAM_NOT_FOUND));
-					_isPlaying = false;
 					RunTimeTrace.show("Stream Not Found: " + _url);
 					onPlaybackComplete();
 					break;

@@ -1,4 +1,4 @@
-package com.zutalor.utils
+package com.zutalor.widgets
 {
 	import com.zutalor.components.media.video.VideoController;
 	import com.zutalor.events.MediaEvent;

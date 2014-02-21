@@ -39,13 +39,13 @@ package com.zutalor.controllers.base
 			
 			if (AirStatus.isNativeApplication)
 			{
-				CONFIG::air {
+				//CONFIG::air {
 					NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 					NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE, onDeactivate);
 					NativeApplication.nativeApplication.addEventListener("suspend", onDeactivate);
 					NativeApplication.nativeApplication.addEventListener(Event.EXITING, onExiting);
-				}
-				var t:int; // put this here to get compiler to not issue warning about empty block.
+				//}
+				//var t:int; // put this here to get compiler to not issue warning about empty block.
 			}
         }
 
@@ -79,10 +79,10 @@ package com.zutalor.controllers.base
 			{
 				var t:int; // put this here to get compiler to not issue warning about empty block.
 
-				CONFIG::air
-				{
+				//CONFIG::air
+				//{
 					NativeApplication.nativeApplication.exit();
-				}
+				//}
 			}
 		}
 				

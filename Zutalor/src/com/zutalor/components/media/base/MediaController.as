@@ -156,6 +156,7 @@
 		{
 			//trace("MediaControler: play complete", url)
 			_isPlaying = false;
+			_isPlaying = false;
 			dispatchEvent(new MediaEvent(MediaEvent.COMPLETE));
 		}		
 					
