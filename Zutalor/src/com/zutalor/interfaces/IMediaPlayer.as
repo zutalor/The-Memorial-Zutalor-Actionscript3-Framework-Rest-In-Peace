@@ -22,7 +22,7 @@
 		function play():void
 		function pause():void
 		function seek(value:Number):void
-		function stop(fadeOut:Number = 0):void
+		function stop(fadeOut:Number = 0, onComplete:Function = null):void
 		function dispose():void
 	}
 }

@@ -8,7 +8,7 @@ package com.zutalor.interfaces
 	{
 		function dispose():void
 		function recycle():void
-		function stop(fadeSeconds:Number = 0):void
+		function stop(fadeSeconds:Number = 0, onComplete:Function = null):void
 		function set enabled(value:Boolean):void
 		function get enabled():Boolean
 	}

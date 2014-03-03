@@ -10,6 +10,7 @@
 	import flash.events.Event;
 	import flash.events.NetStatusEvent;
 	import flash.events.StageVideoEvent;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.media.SoundTransform;
 	import flash.media.StageVideo;
@@ -38,7 +39,7 @@
 		private var _buffercount:int;
 		
 		public var scaleToFit:Boolean = true;
-		public var bufferSecs:Number = 11;
+		public var bufferSecs:Number = 6;
 		
 		override public function VideoController()
 		{
@@ -59,7 +60,7 @@
 				return false;
 		}
 		
-		override public function load(url:String, width:int, height:int, x:int=0, y:int=0):void
+		override public function load(url:String, width:int, height:int, x:int = 0, y:int = 0):void
 		{
 			_scaleToFit = scaleToFit;
 			
@@ -70,29 +71,31 @@
 				nc.connect(null);
 			}
 			_url = url;
-			setupStream();
-			view.x  = x;
-			view.y = y;
-			setupVideo();
 			
-			function setupStream():void
+			if (stream)
 			{
-				if (stream)
-					stream.close();
-				else
-				{
-					stream = new NetStream(nc);
-					stream.addEventListener(NetStatusEvent.NET_STATUS, onNSStatus, false, 0, true);
-				}	
+				if (videoDisplay)
+					videoDisplay.clear();
+					
+				stream.close();
+			}
+			else
+			{
+				stream = new NetStream(nc);
+				stream.addEventListener(NetStatusEvent.NET_STATUS, onNSStatus, false, 0, true);
 				stream.client = this;
 				stream.bufferTime = bufferSecs;
 			}
-
+			
+			view.visible = true;
+			view.x = x;
+			view.y = y;
+			setupVideo();
+			
 			function setupVideo():void
 			{
 				if (Application.settings.stageVideoAvailable)
 				{
-					RunTimeTrace.show("stage video");
 					sv = ObjectPool.getStageVideo();
 					sv.addEventListener(StageVideoEvent.RENDER_STATE, onStageVideoStateChange);
 					sv.attachNetStream(stream);
@@ -110,18 +113,15 @@
 				{
 					videoDisplay = new Video(width, height);
 					videoDisplay.smoothing = true;
+					videoDisplay.attachNetStream(stream);
+					view.addChild(videoDisplay);
 				}
-				else
-					videoDisplay.clear();
-				
-				videoDisplay.attachNetStream(stream);
-				view.addChild(videoDisplay);
 			}
 			
 			function onStageVideoStateChange(event:StageVideoEvent = null):void
 			{
 				var rc:Rectangle;
-
+				
 				sv.removeEventListener(StageVideoEvent.RENDER_STATE, onStageVideoStateChange);
 				rc = new Rectangle(0, 0, width, height);
 				sv.viewPort = rc;
@@ -163,10 +163,8 @@
 		override public function play(start:Number = 0):void
 		{
 			var className:Array;
-			var urls:Array;
 			
 			super.play(start);
-			
 			if (_url)
 			{
 				if (_paused)
@@ -197,9 +195,8 @@
 						}
 						else
 						{
-							urls = _url.split(",");
-							for (var i:int = 0; i < urls.length; i++)
-								stream.play(urls[i]);
+							//stream.close();
+							stream.play(_url);
 						}
 					}
 				}
@@ -230,10 +227,7 @@
 		{
 			
 			if (_isPlaying)
-			{
-				//if (returnToZeroOnStop)
-				//	stream.seek(0);
-				
+			{	
 				if (stream)
 				{
 					stream.pause();
@@ -285,7 +279,7 @@
 		override public function seek(time:Number):void
 		{
 			stream.seek(time);
-			//trace(url, "seek");
+//trace(url, "seek");
 		}
 		
 		override public function seekToPercent(percent:Number):void
@@ -343,12 +337,12 @@
 		
 		public function onXMPData(e:*):void
 		{
-			//trace("WARNING: XMP Data received, but this FLV class doesn't implement it yet.");
+//trace("WARNING: XMP Data received, but this FLV class doesn't implement it yet.");
 		}
 		
 		public function onPlayStatus(e:*):void
 		{
-			
+		
 		}
 		
 		public function onCuePoint(infoObject:Object):void
@@ -368,45 +362,46 @@
 			dispatchEvent(new MediaEvent(MediaEvent.PLAY));
 		}
 		
-		// PRIVATE METHODS
+// PRIVATE METHODS
 		
 		private function onNSStatus(stats:NetStatusEvent):void
 		{
-			//trace (_url, stats.info.code);
+//trace (_url, stats.info.code);
 			switch (stats.info.code)
 			{
-				case "NetStream.Buffer.Empty":
+				case "NetStream.Buffer.Empty": 
 					_buffering = true;
 					dispatchEvent(new MediaEvent(MediaEvent.BUFFER_EMPTY));
 					break;
-				case "NetStream.Buffer.Full":
+				case "NetStream.Buffer.Full": 
 					dispatchEvent(new MediaEvent(MediaEvent.BUFFER_FULL));
 					_buffering = false;
 					break;
-				case "NetStream.Buffer.Flush":
+				case "NetStream.Buffer.Flush": 
 					dispatchEvent(new MediaEvent(MediaEvent.BUFFER_FLUSH));
 					_buffering = false;
 					break;
-				case "NetStream.Play.Start":
+				case "NetStream.Play.Start": 
 					dispatchEvent(new MediaEvent(MediaEvent.PLAY));
 					_buffering = false;
 					break;
-				case "NetStream.Play.Stop":
-				case "NetStream.Play.Complete":
+				case "NetStream.Play.Stop": 
+				case "NetStream.Play.Complete": 
 					onPlaybackComplete();
 					break;
-				case "NetStream.Play.StreamNotFound":
+				case "NetStream.Play.StreamNotFound": 
 					dispatchEvent(new MediaEvent(MediaEvent.STREAM_NOT_FOUND));
-					RunTimeTrace.show("Stream Not Found: " + _url);
+					_isPlaying = false;
+				//	RunTimeTrace.show("Stream Not Found: " + _url);
 					onPlaybackComplete();
 					break;
-				case "NetStream.Seek.InvalidTime":
+				case "NetStream.Seek.InvalidTime": 
 					dispatchEvent(new MediaEvent(MediaEvent.SEEK_INVALID_TIME));
 					break;
-				case "NetStream.Seek.Notify":
+				case "NetStream.Seek.Notify": 
 					dispatchEvent(new MediaEvent(MediaEvent.SEEK_NOTIFY));
 					break;
-				case "NetStream.Unpause.Notify":
+				case "NetStream.Unpause.Notify": 
 					break;
 			
 			}

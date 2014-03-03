@@ -343,7 +343,7 @@ package com.zutalor.components.media.playlist
 			}
 		}
 		
-		override public function stop(fadeSecs:Number=-1):void
+		override public function stop(fadeSecs:Number=-1, onComplete:Function = null):void
 		{
 			var numPlayers:int;
 			var p:MediaPlayer;

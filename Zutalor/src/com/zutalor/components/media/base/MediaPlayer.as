@@ -44,6 +44,7 @@
 		private var _bufferTime:Number;
 		private var _savedVolume:Number;
 		private var _cover:Shape;
+		private var _onComplete:Function;
 		
 		private static var presets:PropertyManager;
 				
@@ -150,7 +151,7 @@
 			_cover.alpha = 1;
 			_cover.visible = true;
 			_cover.graphics.endFill();
-			StageRef.stage.addChild(_cover);
+			addChild(_cover);
 		}
 		
 		// PUBLIC METHODS
@@ -196,7 +197,7 @@
 				
 		public function seek(timeSecs:Number):void
 		{
-			if (timeSecs < mediaController.totalTime)
+			if (timeSecs < mediaController.totalTime && timeSecs + mediaController.totalTime >= 0)
 				mediaController.seek(timeSecs);
 		}
 		
@@ -205,26 +206,28 @@
 			return mediaController.currentTime;
 		}
 		
-		override public function stop(fadeOut:Number = 0):void
+		override public function stop(fadeOut:Number = 0, onComplete:Function = null):void
 		{
+			_onComplete = onComplete;
 			MasterClock.unRegisterCallback(onEndClip);
 			MasterClock.unRegisterCallback(onOverLapClip);
 			
 			if (fadeOut)
 			{
 				makeCover();
-				StageRef.stage.addChild(_cover);
+				addChild(_cover);
 				_cover.alpha = 0;
 				TweenMax.to(_cover, fadeOut, { alpha:1, onComplete:removeCover } );
-				TweenMax.to(mediaController, fadeOut, {  volume:0, onComplete:onStopComplete } );
+				TweenMax.to(mediaController, fadeOut, {  volume:0 } );
 			}
-			else
+			else				
 				onStopComplete();
 				
 			function removeCover():void
 			{
-				mediaController.view.visible = false;
 				_cover.visible = false;
+				mediaController.view.visible = false;
+				onStopComplete();
 			}
 		}
 				
@@ -246,6 +249,11 @@
 		public function set returnToZero(b:Boolean):void
 		{
 			mediaController.returnToZeroOnStop = b;
+		}
+		
+		public function get totalTime():Number
+		{
+			return mediaController.totalTime;
 		}
 		
 		public function set totalTime(n:Number):void
@@ -332,6 +340,9 @@
 					
 		private function onStopComplete():void
 		{
+			if (_onComplete != null)
+				_onComplete();
+				
 			mediaController.stop();
 			cleanUpAfterStop();
 		}

@@ -41,7 +41,7 @@
 			_height = n;
 		}
 				
-		override public function stop(fadeSeconds:Number = 0):void
+		override public function stop(fadeSeconds:Number = 0, onComplete:Function = null):void
 		{
 			if (viewController)
 				viewController.stop();

@@ -154,7 +154,7 @@
 			
 		public function onPlaybackComplete(e:Event = null):void
 		{
-			//trace("MediaControler: play complete", url)
+			//trace("MediaControler: play complete", _url)
 			_isPlaying = false;
 			_isPlaying = false;
 			dispatchEvent(new MediaEvent(MediaEvent.COMPLETE));
